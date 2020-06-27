@@ -23,8 +23,8 @@ export default class extends Component {
         <div className="container-fluid main-section">
           <div className="row">
             <div className="col">
-            <BigCarrousel image={'main-banner.jpg'} />
-        <ProductCategoryIcons />
+              <BigCarrousel image={'main-banner.jpg'} />
+              <ProductCategoryIcons />
               <div>
                 <div>
                   {this.props.title}

@@ -1,17 +1,18 @@
-import React, {forwardRef} from 'react';
+import React, {forwardRef, useState} from 'react';
 // import Link from 'next/link'
 import T from 'prop-types';
 import { 
   PermIdentityIcon,
   ShoppingCartIcon,
 } from '@material-ui/icons';
+import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import MenuIcon from '@material-ui/icons/Menu';
 import { 
   AppBar,
   withStyles, 
   MenuList, 
   MenuItem,
-  IconButton,
   Typography,
   Toolbar,
   Paper,
@@ -19,7 +20,15 @@ import {
   Menu,
   Button,
   Grid,
+  Hidden,
+  SwipeableDrawer,
+  Divider,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText
 } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 
 const styles = (theme) => ({
   root: {
@@ -33,54 +42,54 @@ const styles = (theme) => ({
   title: {
     flexGrow: 1,
   },
-  style: {
-
+  sideMenuRoot: {
+    width: 250,
   }
 })
 
 const Header = ({classes, data}) => {
+  const [openMobile, setOpenMobile] = useState(false);
+
+  const handleMobileMenu = () => {
+    setOpenMobile(!openMobile);
+  }
+  const renderSideMenu = (
+    <SwipeableDrawer
+      anchor={'left'}
+      open={openMobile}
+      onClose={handleMobileMenu}
+      onOpen={handleMobileMenu}
+    >
+      <div className={classes.sideMenuRoot}>
+      <List>
+        <ListItem>
+            <ListItemIcon><ShoppingCartOutlinedIcon/></ListItemIcon>
+            <ListItemText primary={"testing"} />
+        </ListItem>
+        <ListItem>
+            <ListItemIcon><ShoppingCartOutlinedIcon/></ListItemIcon>
+            <ListItemText primary={"testx"} />
+        </ListItem>
+      </List>
+      <Divider />
+      </div>
+    </SwipeableDrawer>
+  );
+
   return (
     <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar variant="dense">
-          {/* <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
+      <AppBar position="static" className="AppBarBackColor">
+        <Toolbar variant="regular">
+          <IconButton onClick={handleMobileMenu} className={classes.menuButton} color="inherit" aria-label="Menu">
             <MenuIcon />
-          </IconButton> */}
-          <Typography variant="h6" className={classes.title} color="inherit">
-            Photos
-          </Typography>
-          <Button color="inherit">Login</Button>
+          </IconButton>
+          <div className={classes.title}><Link href="/"><img src="/images/logo-white.png" alt="" /></Link></div>
+          <Button href="#" color="inherit"><ShoppingCartOutlinedIcon style={{ fontSize: 40 }} /></Button>
+          <Button href="#" color="inherit"><PermIdentityOutlinedIcon style={{ fontSize: 40 }} /></Button>
         </Toolbar>
       </AppBar>
+      {renderSideMenu}
     </div>
-    // <nav className="navbar navbar-expand-md navbar-dark fixed-top main-nav-panel">
-    //   <Link href="/"><a className="navbar-brand"><img src="/images/logo-white.png" alt="" /></a></Link>
-    //   <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-    //     <span className="navbar-toggler-icon"></span>
-    //   </button>
-    //   <div className="collapse navbar-collapse" id="navbarCollapse">
-    //     <form className="form-inline my-2 my-lg-0">
-    //       <input className="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" />
-    //       <button className="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-    //     </form>
-    //     <ul className="navbar-nav mr-auto">
-    //       <li className="nav-item active">
-    //         <Link href="/">
-    //           <a className="nav-link active">
-    //             <ShoppingCartIcon color="white" style={{ fontSize: 40 }}/>
-    //           </a>
-    //         </Link>
-    //       </li>
-    //       <li className="nav-item">
-    //         <Link href="/about">
-    //           <a className="nav-link active">
-    //             <PermIdentityIcon color="white" style={{ fontSize: 40 }} />
-    //           </a>
-    //         </Link>
-    //       </li>
-    //     </ul>
-    //   </div>
-    // </nav>
   );
 }
 

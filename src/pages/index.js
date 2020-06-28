@@ -2,8 +2,15 @@ import React, { Component } from 'react';
 import fetch from 'isomorphic-unfetch';
 import Head from 'next/head';
 
+import { 
+  Grid,
+} from '@material-ui/core';
+
+
 import LayoutTemplate from '../components/LayoutTemplate';
 import BigCarrousel from '../components/BigCarrousel';
+import ProductGallery from '../components/ProductGallery';
+import ProductGalleryMiniBanner from '../components/ProductGalleryMiniBanner';
 import ProductCategoryIcons from '../components/ProductCategoryIcons'
 
 export default class extends Component {
@@ -20,23 +27,14 @@ export default class extends Component {
   render () {
     return (
       <LayoutTemplate>
-        <div className="container-fluid main-section">
-          <div className="row">
-            <div className="col">
-              <BigCarrousel image={'main-banner.jpg'} />
-              <ProductCategoryIcons />
-              <div>
-                <div>
-                  {this.props.title}
-                </div>
-                <div>
-                  <img src={this.props.imageUrl} />
-                </div>
-                <h1>The value of customKey is: {process.env.CUSTOM_KEY}</h1>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Grid container className="main-section">
+          <Grid item>
+            <BigCarrousel image={'main-banner.jpg'} />
+            <ProductCategoryIcons />
+            <ProductGallery title="Nuevas Llegadas" />
+            <ProductGalleryMiniBanner />
+          </Grid>
+        </Grid>
       </LayoutTemplate>
     )
   }

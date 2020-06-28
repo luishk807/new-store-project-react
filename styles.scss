@@ -19,7 +19,7 @@ body {
   background-color: #f5f5f5;
 }
 .main-section {
-  padding: $stickyFooterLimit 15px 0px;
+  padding: 0px 15px 0px;
 }
 .main-nav-panel {
   background-color: $main_color;
@@ -28,7 +28,9 @@ body {
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
-
+.AppBarBackColor {
+  background-color: $main_color !important,
+}
 .footer > .container {
   padding-right: 15px;
   padding-left: 15px;

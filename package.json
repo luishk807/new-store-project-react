@@ -28,6 +28,7 @@
     "sass": "^1.26.8"
   },
   "devDependencies": {
-    "@svgr/webpack": "^5.4.0"
+    "@svgr/webpack": "^5.4.0",
+    "babel-plugin-styled-components": "^1.10.7"
   }
 }

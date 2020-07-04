@@ -84,7 +84,7 @@ const ProductGallery = ({classes, data, title, galleryType}) => {
           )
         }else{
           ProductGalleryItemsChild.push(
-            <div key={index} className={`col-lg-3 col-md-4 col-sm-12 d-inline`}>
+            <div key={index} className={`col-lg-2 col-md-4 col-sm-12 d-inline`}>
               <ListItem button className={classes.listItemCont}>
                 <ListItemIcon>
                     <img className={`img-fluid`} src={`/images/products/${info.image}`} alt={info.name}/>

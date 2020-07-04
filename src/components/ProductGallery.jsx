@@ -27,6 +27,9 @@ const styles = (theme) => ({
   miniBanner: {
     margin: '5px 0px',
   },
+  listChildItem: {
+    display: 'inline-block'
+  }
 })
 
 const ProductGallery = ({classes, data, title, galleryType}) => {
@@ -65,7 +68,7 @@ const ProductGallery = ({classes, data, title, galleryType}) => {
       ProductGalleryStoreSample.forEach((info, index) => {
         if(info.feature){
           ProductGalleryItems.push(
-            <div key={index} className={`col-lg-3 col-md-8 col-sm-12`}>
+            <div key={index} className={`col-lg-4 col-md-8 col-sm-12`}>
               <ListItem>
                   {title}
               </ListItem>
@@ -84,7 +87,7 @@ const ProductGallery = ({classes, data, title, galleryType}) => {
           )
         }else{
           ProductGalleryItemsChild.push(
-            <div key={index} className={`col-lg-2 col-md-4 col-sm-12 d-inline`}>
+            <div key={index} className={`col-lg-3 col-md-4 col-sm-12 ${classes.listChildItem}`}>
               <ListItem button className={classes.listItemCont}>
                 <ListItemIcon>
                     <img className={`img-fluid`} src={`/images/products/${info.image}`} alt={info.name}/>
@@ -96,7 +99,7 @@ const ProductGallery = ({classes, data, title, galleryType}) => {
         }
       })
       ProductGalleryItems.push(
-        <div className={`col-lg-9 col-md-8 col-sm-12`}>
+        <div className={`col-lg-8 col-md-8 col-sm-12`}>
           {ProductGalleryItemsChild}
         </div>
       );

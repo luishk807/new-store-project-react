@@ -10,7 +10,6 @@ import {
 import LayoutTemplate from '../components/LayoutTemplate';
 import BigCarrousel from '../components/BigCarrousel';
 import ProductGallery from '../components/ProductGallery';
-import ProductGalleryMiniBanner from '../components/ProductGalleryMiniBanner';
 import ProductCategoryIcons from '../components/ProductCategoryIcons'
 
 export default class extends Component {
@@ -31,8 +30,11 @@ export default class extends Component {
           <Grid item>
             <BigCarrousel image={'main-banner.jpg'} />
             <ProductCategoryIcons />
-            <ProductGallery title="Nuevas Llegadas" />
-            <ProductGalleryMiniBanner />
+            <ProductGallery galleryType='new-arrival' title="Nuevas Llegadas" />
+            <ProductGallery galleryType='store-list' title="Tiendas" />
+            <ProductGallery galleryType='mini-banner'/>
+            <ProductGallery galleryType='store-feature' title="Nuevas Llegadas" />
+            <ProductGallery galleryType='brand-list' title="Top Brands" />
           </Grid>
         </Grid>
       </LayoutTemplate>

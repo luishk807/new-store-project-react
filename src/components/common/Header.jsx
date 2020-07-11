@@ -10,6 +10,8 @@ import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
+import SearchBar from './SearchBar';
+
 import { 
   AppBar,
   withStyles, 
@@ -22,7 +24,6 @@ import {
   Menu,
   Button,
   Grid,
-  Hidden,
   SwipeableDrawer,
   Divider,
   List,
@@ -33,8 +34,13 @@ import {
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 
+import Modal from './Modal';
+
 const styles = (theme) => ({
   root: {
+
+  },
+  grow: {
     flexGrow: 1,
   },
   horizMenu:{
@@ -82,13 +88,14 @@ const styles = (theme) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch',
+      width: '50ch',
     },
   },
 })
 
 const Header = ({classes, data}) => {
   const [openMobile, setOpenMobile] = useState(false);
+  const [openCategory, setOpenCategory] = useState(false);
 
   const handleMobileMenu = () => {
     setOpenMobile(!openMobile);
@@ -117,37 +124,38 @@ const Header = ({classes, data}) => {
   );
 
   return (
+    <>
     <div className={classes.root}>
       <AppBar position="static" className="AppBarBackColor">
         <Toolbar variant="regular">
           <IconButton onClick={handleMobileMenu} className={classes.menuButton} color="inherit" aria-label="Menu">
             <MenuIcon />
           </IconButton>
-          <div className={classes.title}><Link href="/"><img src="/images/logo-white.png" alt="" /></Link></div>
-          <Button href="#" color="inherit">
+          <div className={`${classes.title} d-none d-sm-block`}><Link href="/"><img src="/images/logo-white.png" alt="" /></Link></div>
+          <Button onClick={() => setOpenCategory(true)} href="#" color="inherit" className='d-none d-sm-block'>
             <Typography className={classes.title} variant="h6" noWrap>
               category
             </Typography>
           </Button>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <SearchIcon />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
+          <SearchBar/>
+          <div className={classes.grow} />
           <Button href="#" color="inherit"><ShoppingCartOutlinedIcon style={{ fontSize: 40 }} /></Button>
-          <Button href="#" color="inherit"><PermIdentityOutlinedIcon style={{ fontSize: 40 }} /></Button>
+          <Button href="#" color="inherit" className='d-none d-sm-block'><PermIdentityOutlinedIcon style={{ fontSize: 40 }} /></Button>
         </Toolbar>
       </AppBar>
       {renderSideMenu}
     </div>
+    <Modal
+      onOpen={openCategory}
+      onClose={() => setOpenCategory(false)}
+    >
+        <Grid container>
+         <Grid item>
+              Test
+         </Grid>
+      </Grid>
+    </Modal>
+    </>
   );
 }
 

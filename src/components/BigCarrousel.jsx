@@ -5,20 +5,18 @@ import {
   Grid,
 } from '@material-ui/core';
 
+const styles = (theme) => {}
 
-
-const styles = (theme) => {
-
-}
 const BigCarrousel = ({classes, image}) => {
   return (
     <Grid container>
-      <Grid item>
+      <Grid item lg={12}>
           <img className='img-fluid' src={`/images/banners/main/${image}`} alt=""/>
       </Grid>
     </Grid>
   );
 }
+
 BigCarrousel.protoTypes = {
   classes: T.object,
   image: T.object,

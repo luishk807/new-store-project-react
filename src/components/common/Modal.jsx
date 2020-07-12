@@ -1,18 +1,12 @@
 import React from 'react';
 import T from 'prop-types';
-
 import { 
   withStyles, 
-  Link,
-  Button,
-  Grid,
   Fade,
   Backdrop,
   Paper,
 } from '@material-ui/core';
-
 import MaterialModal from '@material-ui/core/Modal';
-
 
 const styles = (theme) => ({
   modal: {

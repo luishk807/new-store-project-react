@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import fetch from 'isomorphic-unfetch';
-import Head from 'next/head';
-
 import { 
   Grid,
 } from '@material-ui/core';
-
 
 import LayoutTemplate from '../components/LayoutTemplate';
 import BigCarrousel from '../components/BigCarrousel';

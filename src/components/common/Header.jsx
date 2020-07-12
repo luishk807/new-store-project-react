@@ -1,27 +1,16 @@
-import React, {forwardRef, useState} from 'react';
+import React, { useState} from 'react';
 // import Link from 'next/link'
 import T from 'prop-types';
-import { 
-  PermIdentityIcon,
-  ShoppingCartIcon,
-} from '@material-ui/icons';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { fade } from '@material-ui/core/styles';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
-import SearchIcon from '@material-ui/icons/Search';
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchBar from './SearchBar';
-
 import { 
   AppBar,
   withStyles, 
-  MenuList, 
-  MenuItem,
   Typography,
   Toolbar,
-  Paper,
   Link,
-  Menu,
   Button,
   Grid,
   SwipeableDrawer,
@@ -30,15 +19,15 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
-  InputBase
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 
+import SearchBar from './SearchBar';
 import Modal from './Modal';
 
 const styles = (theme) => ({
   root: {
-
+    color: 'red',
   },
   grow: {
     flexGrow: 1,

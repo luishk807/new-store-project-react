@@ -1,12 +1,10 @@
 import React from 'react';
 import T from 'prop-types';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import { fade } from '@material-ui/core/styles';
 import { 
-  withStyles, 
-  Grid,
+  withStyles,
   InputBase
 } from '@material-ui/core';
-
 import SearchIcon from '@material-ui/icons/Search';
 
 const styles = (theme) => ({

@@ -2,12 +2,10 @@ import React from 'react';
 import T from 'prop-types';
 import {
   withStyles,
-  List,
   ListItem,
   ListItemIcon,
   ListItemText,
   Button,
-  Link,
 } from '@material-ui/core';
 
 import { 
@@ -188,4 +186,5 @@ ProductGallery.protoTypes = {
   title: T.string,
   galleryType: T.string.isRequired,
 }
+
 export default withStyles(styles)(ProductGallery);

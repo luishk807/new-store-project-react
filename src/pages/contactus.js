@@ -5,24 +5,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { 
-  AppBar,
-  MenuList, 
-  MenuItem,
-  Typography,
-  Toolbar,
   Hidden,
-  Paper,
-  Link,
-  Menu,
-  Button,
-  Grid,
-  SwipeableDrawer,
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  InputBase
 } from '@material-ui/core';
 
 const styles = makeStyles((theme) => ({

@@ -1,18 +1,14 @@
 import React from 'react';
 import T from 'prop-types';
-import { ShoppingCartIcon } from '@material-ui/icons';
 import { 
   withStyles,
   Grid,
-  Typography,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Divider,
 } from '@material-ui/core';
 import CAR_WHEEL from '../svg/car_wheel.svg';
-
 
 const styles = (theme) => ({
   title: {
@@ -31,7 +27,6 @@ const styles = (theme) => ({
 });
 
 const ProductCategoryIcons = ({classes, data}) => {
-  
   return (
     <Grid container>
       <Grid item>
@@ -53,8 +48,10 @@ const ProductCategoryIcons = ({classes, data}) => {
     </Grid>
   );
 }
+
 ProductCategoryIcons.propTypes = {
   classes: T.object.isRequired,
   data: T.object,
 };
+
 export default withStyles(styles)(ProductCategoryIcons);

@@ -2,7 +2,6 @@ import React from 'react';
 
 import LayoutTemplate from '../components/LayoutTemplate';
 
-
 const About = () => {
   return (
     <LayoutTemplate>

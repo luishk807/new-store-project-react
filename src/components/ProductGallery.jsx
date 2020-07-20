@@ -6,6 +6,7 @@ import {
   ListItemIcon,
   ListItemText,
   Button,
+  Typography,
 } from '@material-ui/core';
 
 import { 
@@ -35,33 +36,6 @@ const ProductGallery = ({classes, data, title, galleryType}) => {
   let ProductGalleryItemsChild = [];
 
   switch(galleryType){
-    case 'new-arrival': 
-      ProductGalleryItems = ProductGallerySample.map((info, index) => {
-        if (info.feature) {
-          return (
-            <div key={index} className={`col-lg-4 col-md-8 col-sm-12`}>
-              <ListItem button className={classes.listItemCont}>
-                <ListItemIcon>
-                    <img className={`img-fluid`} src={`/images/products/${info.image}`} alt={info.name}/>
-                </ListItemIcon>
-                <ListItemText primary={info.name} />
-              </ListItem>
-            </div>
-          )
-        } else {
-          return (
-            <div key={index} className={`col-lg-2 col-md-4 col-sm-12`}>
-              <ListItem component="a" href="/product" button className={classes.listItemCont}>
-                <ListItemIcon>
-                    <img className={`img-fluid`} src={`/images/products/${info.image}`} alt={info.name}/>
-                </ListItemIcon>
-                <ListItemText primary={info.name} />
-              </ListItem>
-            </div>
-          )
-        }
-      })
-    break;
     case 'store-feature': 
       ProductGalleryStoreSample.forEach((info, index) => {
         if(info.feature){

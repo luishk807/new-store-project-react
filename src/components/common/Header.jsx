@@ -99,12 +99,12 @@ const Header = ({classes, data}) => {
       <div className={classes.sideMenuRoot}>
       <List>
         <ListItem>
-            <ListItemIcon><ShoppingCartOutlinedIcon/></ListItemIcon>
-            <ListItemText primary={"testing"} />
+          <ListItemIcon><ShoppingCartOutlinedIcon/></ListItemIcon>
+          <ListItemText primary={"testing"} />
         </ListItem>
         <ListItem>
-            <ListItemIcon><ShoppingCartOutlinedIcon/></ListItemIcon>
-            <ListItemText primary={"testx"} />
+          <ListItemIcon><ShoppingCartOutlinedIcon/></ListItemIcon>
+          <ListItemText primary={"testx"} />
         </ListItem>
       </List>
       <Divider />

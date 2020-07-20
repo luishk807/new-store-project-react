@@ -5,7 +5,7 @@ import {
   Grid,
 } from '@material-ui/core';
 
-const styles = (theme) => {}
+const styles = (theme) => ({});
 
 const BigCarrousel = ({classes, image}) => {
   return (

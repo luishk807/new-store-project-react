@@ -8,6 +8,7 @@ import LayoutTemplate from '../components/LayoutTemplate';
 import BigCarrousel from '../components/BigCarrousel';
 import ProductGallery from '../components/ProductGallery';
 import ProductCategoryIcons from '../components/ProductCategoryIcons'
+import NewArrival from '../components/NewArrival';
 
 export default class extends Component {
   static async getInitialProps() {
@@ -27,7 +28,7 @@ export default class extends Component {
           <Grid item>
             <BigCarrousel image={'main-banner.jpg'} />
             <ProductCategoryIcons />
-            <ProductGallery galleryType='new-arrival' title="Nuevas Llegadas" />
+            <NewArrival title="Nuevas Llegadas" />
             <ProductGallery galleryType='store-list' title="Tiendas" />
             <ProductGallery galleryType='mini-banner'/>
             <ProductGallery galleryType='store-feature' title="Nuevas Llegadas" />

@@ -39,9 +39,11 @@ const NewArrival = ({classes, data, title}) => {
               <div className={`row`}>
                 {
                  ProductGallerySample.map((info, index) => {
-                    return info.feature ? 
-                      <CardIcon key={index} data={info} classes={{img: classes.newArrivalMainImg, root: classes.cardFeature}}/> :
-                      <CardIcon key={index} data={info} />
+                    if (info.feature) {
+                      return <CardIcon key={index} data={info} classes={{img: classes.newArrivalMainImg, root: classes.cardFeature}}/> 
+                    } else {
+                      return <CardIcon key={index} data={info} />
+                    } 
                   })
                 }
               </div>

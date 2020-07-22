@@ -9,7 +9,10 @@ html {
 body {
   margin-bottom: $stickyFooterLimit; /* Margin bottom by footer height */
 }
-
+a:hover {
+  text-decoration: none;
+  color: inherit,
+}
 .footer {
   position: absolute;
   bottom: 0;

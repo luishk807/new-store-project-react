@@ -11,6 +11,9 @@ import {
 import CAR_WHEEL from '../svg/car_wheel.svg';
 
 const styles = (theme) => ({
+  root: {
+    display: 'flex',
+  },
   title: {
     color: 'red',
     borderTop: '2px solid red',
@@ -28,24 +31,26 @@ const styles = (theme) => ({
 
 const ProductCategoryIcons = ({classes, data}) => {
   return (
-    <Grid container>
-      <Grid item>
-        <List component="nav" aria-label="main mailbox folders">
-          <ListItem button className={classes.listItemCont}>
-            <ListItemIcon className={classes.listItemIcons}>
-              <CAR_WHEEL width='70px' height="70px"/>
-            </ListItemIcon>
-            <ListItemText primary="Inbox" />
-          </ListItem>
-          <ListItem button className={classes.listItemCont}>
-            <ListItemIcon className={classes.listItemIcons}>
-              <CAR_WHEEL width='70px' height="70px"/>
-            </ListItemIcon>
-            <ListItemText primary="Inbox" />
-          </ListItem>
-        </List>
+    <div className={classes.root}>
+      <Grid container>
+        <Grid item>
+          <List component="nav" aria-label="main mailbox folders">
+            <ListItem button className={classes.listItemCont}>
+              <ListItemIcon className={classes.listItemIcons}>
+                <CAR_WHEEL width='70px' height="70px"/>
+              </ListItemIcon>
+              <ListItemText primary="Inbox" />
+            </ListItem>
+            <ListItem button className={classes.listItemCont}>
+              <ListItemIcon className={classes.listItemIcons}>
+                <CAR_WHEEL width='70px' height="70px"/>
+              </ListItemIcon>
+              <ListItemText primary="Inbox" />
+            </ListItem>
+          </List>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 }
 

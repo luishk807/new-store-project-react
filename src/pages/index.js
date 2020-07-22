@@ -11,15 +11,15 @@ import ProductCategoryIcons from '../components/ProductCategoryIcons'
 import NewArrival from '../components/NewArrival';
 
 export default class extends Component {
-  static async getInitialProps() {
-    const res = await fetch("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY")
-    const data = await res.json()
+  // static async getInitialProps() {
+  //   const res = await fetch("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY")
+  //   const data = await res.json()
 
-    return {
-      title: data.title,
-      imageUrl: data.url
-    }
-  }
+  //   return {
+  //     title: data.title,
+  //     imageUrl: data.url
+  //   }
+  // }
 
   render () {
     return (

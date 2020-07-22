@@ -1,6 +1,6 @@
 import React, { useState} from 'react';
 // import Link from 'next/link'
-import T from 'prop-types';
+import * as T from 'prop-types';
 import { fade } from '@material-ui/core/styles';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';

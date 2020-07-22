@@ -1,5 +1,5 @@
 import React from 'react';
-import T from 'prop-types';
+import * as T from 'prop-types';
 import { fade } from '@material-ui/core/styles';
 import { 
   withStyles,

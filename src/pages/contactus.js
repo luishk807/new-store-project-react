@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import T from 'prop-types';
+import * as T from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import withWidth, { isWidthDown } from '@material-ui/core/withWidth';

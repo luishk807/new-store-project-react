@@ -71,14 +71,14 @@ const ProductGallery = ({classes, data, title, galleryType}) => {
         }
       })
       ProductGalleryItems.push(
-        <div className={`col-lg-8 col-md-8 col-sm-12`}>
+        <div key="store-feature" className={`col-lg-8 col-md-8 col-sm-12`}>
           {ProductGalleryItemsChild}
         </div>
       );
     break;
     case 'mini-banner':
       ProductGalleryItems.push(
-        <div className={classes.miniBanner}>
+        <div key="mini-banner" className={classes.miniBanner}>
           <div className={`container-fluid`}>
             <div className={`row`}>
               {

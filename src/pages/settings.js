@@ -15,6 +15,7 @@ import {
 import LayoutTemplate from '../components/LayoutTemplate';
 import { SettingSample } from '../constants/SettingSample';
 import Order from '../../public/images/svg/order.svg';
+import CardIcon from '../components/common/CardIcon';
 
 const styles = (theme) => ({
   root: {

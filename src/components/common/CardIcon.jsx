@@ -7,6 +7,7 @@ import {
   CardContent,
   CardMedia,
   CardActionArea,
+  Link,
 } from '@material-ui/core';
 
 const styles = (theme) => ({
@@ -24,28 +25,26 @@ const styles = (theme) => ({
   },
 });
 
-const CardIcon = ({classes, data}) => {
+const CardIcon = ({classes, title, children, link="/"}) => {
     return (
       <Card className={`${classes.root} ${classes.cardHolder}`} variant="outlined">
         <CardActionArea>
-          <CardMedia 
-            className={classes.img}
-            image={`/images/products/${data.image}`}
-            title={data.name}
-          />
-          <CardContent>
-            <Typography
-              align="center"
-            >
-              {data.name}
-            </Typography>
-          </CardContent>
+          <Link href={link}>
+            <CardMedia className={classes.img}>
+              {children}
+            </CardMedia>
+            <CardContent>
+              <Typography align="center" variant="h5" component="h5">{title}</Typography>
+            </CardContent>
+          </Link>
         </CardActionArea>
       </Card>
     )
 }
 CardIcon.protoTypes = {
   classes: T.object,
-  data: T.object,
+  title: T.string,
+  children: T.node,
+  link: T.string,
 } 
 export default withStyles(styles)(CardIcon);

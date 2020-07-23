@@ -40,9 +40,17 @@ const NewArrival = ({classes, data, title}) => {
                 {
                  ProductGallerySample.map((info, index) => {
                     if (info.feature) {
-                      return <CardIcon key={index} data={info} classes={{img: classes.newArrivalMainImg, root: classes.cardFeature}}/> 
+                      return (
+                        <CardIcon key={index} title={info.name} classes={{ root: classes.cardFeature, img: classes.newArrivalMainImg}}>
+                          <img src={`/images/products/${info.image}`} alt={info.name}/>
+                        </CardIcon>
+                      )
                     } else {
-                      return <CardIcon key={index} data={info} />
+                      return (
+                        <CardIcon key={index} title={info.name}>
+                          <img src={`/images/products/${info.image}`} alt={info.name}/>
+                        </CardIcon>
+                      )
                     } 
                   })
                 }

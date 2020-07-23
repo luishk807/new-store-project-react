@@ -21,6 +21,7 @@ import { ProductSample } from '../constants/ProductSample';
 import Rate from '../components/common/Rate';
 import RateBox from '../components/common/RateBox';
 import Select from '../components/common/Select';
+import Icons from '../components/common/Icons';
 
 const styles = (theme) => ({
   root: {
@@ -97,7 +98,7 @@ const Product = ({classes, data = ProductSample}) => {
                 <Select onChange={handleSelectChange} title="quant" id="quant-select" />
                 <Typography align="left" variant="h5" component="h5">Disponibilidad {data.stock}</Typography>
                 <Typography className={classes.deliveryIcon} align="left" variant="h5" component="h5">
-                  <LocalShippingOutlinedIcon />&nbsp;Entrega a todo Panama
+                  <Icons name="delivery" />&nbsp;Entrega a todo Panama
                 </Typography>
               </Grid>
             </Grid>

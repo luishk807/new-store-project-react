@@ -15,6 +15,10 @@ const styles = (theme) => ({
     width: '30%',
     height: 400,
   },
+  cardNonFeature: {
+    height: 300,
+    width: '15%',
+  },
   newArrivalMainImg: {
     height: 197,
     width: 236,
@@ -47,7 +51,7 @@ const NewArrival = ({classes, data, title}) => {
                       )
                     } else {
                       return (
-                        <CardIcon key={index} title={info.name}>
+                        <CardIcon key={index} title={info.name} classes={{ root: classes.cardNonFeature }}>
                           <img src={`/images/products/${info.image}`} alt={info.name}/>
                         </CardIcon>
                       )

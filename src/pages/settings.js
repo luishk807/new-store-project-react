@@ -13,9 +13,12 @@ import {
 } from '@material-ui/core';
 
 import LayoutTemplate from '../components/LayoutTemplate';
-import { SettingSample } from '../constants/SettingSample';
-import Order from '../../public/images/svg/order.svg';
+import { 
+  SettingSample,
+  SettingButtonsSample,
+} from '../constants/SettingSample';
 import CardIcon from '../components/common/CardIcon';
+import Icons from '../components/common/Icons';
 
 const styles = (theme) => ({
   root: {
@@ -23,15 +26,27 @@ const styles = (theme) => ({
   },
   cardRoot: {
     padding: 10,
+    backgroundColor: 'rgb(239,239,239)',
+    border: '1px solid orange',
+    '& a:hover': {
+      color: 'white',
+      textDecoration: 'none',
+    },
+    '& a:hover svg': {
+      fill: 'white',
+    },
+    '&:hover': {
+      backgroundColor: 'orange',
+    },
   },
   cardMediaCont: {
     textAlign: 'center',
     width: '60%',
     margin: '0px auto',
+    fill: 'orange',
   },
-  cardIconMedia: {
-    width: '100%',
-    height: 'auto',
+  cardLink: {
+    color: 'orange',
   }
 });
 
@@ -43,36 +58,18 @@ const Settings = ({classes}) => {
       <div className={classes.root}>
         <Typography align="left" variant="h4" component="h3">Welcome {data.name}</Typography>
         <Grid container spacing={2}>
-          <Grid item lg={3}>
-            <Card className={classes.cardRoot} variant="outlined">
-              <CardActionArea>
-                <Link href="">
-                  <CardMedia className={classes.cardMediaCont}>
-                    <Order className={classes.cardIconMedia}/>
-                  </CardMedia>
-                  <CardContent>
-                    <Typography align="center" variant="h5" component="h5">Your Order</Typography>
-                  </CardContent>
-                </Link>
-              </CardActionArea>
-            </Card>
-          </Grid>
-          <Grid item lg={3}>
-            <Card className={classes.cardRoot} variant="outlined">
-              <CardActionArea>
-                <Link href="">
-                  <CardMedia className={classes.cardMediaCont}>
-                    <Order className={classes.cardIconMedia} />
-                  </CardMedia>
-                  <CardContent>
-                    <Typography align="center" variant="h5" component="h5">Your Order</Typography>
-                  </CardContent>
-                </Link>
-              </CardActionArea>
-            </Card>
-          </Grid>
+        {
+          SettingButtonsSample.map((button, index) => {
+            return (
+              <Grid key={index} item lg={3}>
+                <CardIcon title={button.label} classes={{link: classes.cardLink, img: classes.cardMediaCont, root: classes.cardRoot}}>
+                  <Icons name={button.name} />
+                </CardIcon>
+              </Grid>
+            )
+          })
+        }
         </Grid>
-
       </div>
     </LayoutTemplate>
   );

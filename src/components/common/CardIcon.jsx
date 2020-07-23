@@ -15,21 +15,20 @@ const styles = (theme) => ({
     padding: 5,
     margin:5,
   },
-  cardHolder: {
-    height: 300,
-    width: '15%',
-  },
   img: {
     height: 180,
     width: 180,
   },
+  link: {
+    color: 'inherit',
+  }
 });
 
 const CardIcon = ({classes, title, children, link="/"}) => {
     return (
-      <Card className={`${classes.root} ${classes.cardHolder}`} variant="outlined">
+      <Card className={classes.root} variant="outlined">
         <CardActionArea>
-          <Link href={link}>
+          <Link href={link} className={classes.link}>
             <CardMedia className={classes.img}>
               {children}
             </CardMedia>

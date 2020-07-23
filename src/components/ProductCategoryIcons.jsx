@@ -8,7 +8,8 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import CAR_WHEEL from '../svg/car_wheel.svg';
+
+import Icons from './common/Icons';
 
 const styles = (theme) => ({
   root: {
@@ -26,6 +27,10 @@ const styles = (theme) => ({
   listItemIcons: {
     borderBottom: '3px solid blue',
     paddingBottom: 7,
+  },
+  icon: {
+    width: 70,
+    height: 70,
   }
 });
 
@@ -37,13 +42,13 @@ const ProductCategoryIcons = ({classes, data}) => {
           <List component="nav" aria-label="main mailbox folders">
             <ListItem button className={classes.listItemCont}>
               <ListItemIcon className={classes.listItemIcons}>
-                <CAR_WHEEL width='70px' height="70px"/>
+                <Icons name='carwheel' classes={{icon: classes.icon}} />
               </ListItemIcon>
               <ListItemText primary="Inbox" />
             </ListItem>
             <ListItem button className={classes.listItemCont}>
               <ListItemIcon className={classes.listItemIcons}>
-                <CAR_WHEEL width='70px' height="70px"/>
+                <Icons name='carwheel' classes={{icon: classes.icon}} />
               </ListItemIcon>
               <ListItemText primary="Inbox" />
             </ListItem>

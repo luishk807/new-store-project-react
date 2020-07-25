@@ -2,16 +2,17 @@ import React, {useState} from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
-  Typography,
   Grid,
   InputLabel,
   FormControl,
   NativeSelect, 
 } from '@material-ui/core';
 
+import Typography from '../common/Typography';
+
 const styles = (theme) => ({
   root: {
-    with: '100%',
+    width: '100%',
   },
   productSelectDrop: {
     minWidth: '100%',
@@ -36,6 +37,7 @@ const Select = ({classes, data, title, id, onChange}) => {
       <FormControl className={classes.productSelectDrop}>
         <InputLabel htmlFor={id} className={classes.productSelectLabel}>Cantidad</InputLabel>
         <NativeSelect
+          value={ data && data - 1 }
           inputProps={{
             name: title,
             id: id

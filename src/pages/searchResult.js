@@ -2,7 +2,6 @@ import React from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
-  Typography,
   Grid,
   Card,
   CardMedia,
@@ -12,6 +11,7 @@ import {
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import Rate from '../components/common/Rate';
+import Typography from '../components/common/Typography';
 import LayoutTemplate from '../components/LayoutTemplate';
 import ProductCategoryIcons from '../components/ProductCategoryIcons'
 

@@ -4,7 +4,6 @@ import ImageGallery from 'react-image-gallery';
 import classNames from 'classnames';
 import {
   Grid,
-  Typography,
   withStyles,
   Link,
   FormControl,
@@ -16,6 +15,7 @@ import LocalShippingOutlinedIcon from '@material-ui/icons/LocalShippingOutlined'
 import MessageOutlinedIcon from '@material-ui/icons/MessageOutlined';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 
+import Typography from '../components/common/Typography';
 import LayoutTemplate from '../components/LayoutTemplate';
 import { ProductSample } from '../constants/ProductSample';
 import Rate from '../components/common/Rate';
@@ -97,7 +97,7 @@ const Product = ({classes, data = ProductSample}) => {
                 <Typography align="center" variant="h1" component="h2">US ${data.total}</Typography>
                 <Select onChange={handleSelectChange} title="quant" id="quant-select" />
                 <Typography align="left" variant="h5" component="h5">Disponibilidad {data.stock}</Typography>
-                <Typography className={classes.deliveryIcon} align="left" variant="h5" component="h5">
+                <Typography className={classes.deliveryIcon} align="left" variant="h5" component="body1">
                   <Icons name="delivery" />&nbsp;Entrega a todo Panama
                 </Typography>
               </Grid>

@@ -1,6 +1,6 @@
 /*-------------------------------------------------- */
 $main_color: rgb(243,108,32);
-$stickyFooterLimit: 100px;
+$stickyFooterLimit: 260px;
 
 html {
   position: relative;
@@ -17,9 +17,10 @@ a:hover {
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: 60px; /* Set the fixed height of the footer here */
+  min-height: 100px; /* Set the fixed height of the footer here */
   line-height: 60px; /* Vertically center the text there */
-  background-color: #f5f5f5;
+  color: white;
+  background-color: $main_color;
 }
 .main-section {
   padding: 0px 15px 0px;
@@ -27,6 +28,52 @@ a:hover {
 .main-nav-panel {
   background-color: $main_color;
   color: white;
+}
+.secondButton{
+  border: 1px solid $main_color !important;
+  color: $main_color !important;
+  padding: 5px 20px !important;
+  font-size: .7em !important;
+  &:hover {
+    background-color: $main_color !important;
+    color: white !important;
+  }
+}
+.mainButton {
+  width: 100%;
+  background-color: $main_color !important;
+  border: 1px solid $main_color !important;
+  margin: 10px 0px !important;
+  border-radius: 5px !important;
+  color: white !important;
+  &:hover {
+    background-color: white !important;
+    color: $main_color !important;
+  }
+}
+.cardRoot {
+  padding: 10;
+  background-color: rgb(239,239,239);
+  border: 1px solid $main_color;
+  & a:hover {
+    color: white;
+    text-decoration: none;
+  };
+  & a:hover svg {
+    fill: white;
+  };
+  &:hover {
+    background-color: $main_color;
+  };
+}
+.cardMediaCont {
+  text-align: 'center';
+  width: 60%;
+  margin: 0px auto;
+  fill: $main_color;
+}
+.cardLink {
+  color: $main_color;
 }
 /* Custom page CSS
 -------------------------------------------------- */

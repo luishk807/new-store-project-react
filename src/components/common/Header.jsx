@@ -8,7 +8,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import { 
   AppBar,
   withStyles, 
-  Typography,
   Toolbar,
   Link,
   Button,
@@ -21,6 +20,8 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
+
+import Typography from '../common/Typography';
 
 import SearchBar from './SearchBar';
 import Modal from './Modal';
@@ -128,7 +129,7 @@ const Header = ({classes, data}) => {
           </Button>
           <SearchBar/>
           <div className={classes.grow} />
-          <Button href="#" color="inherit"><ShoppingCartOutlinedIcon style={{ fontSize: 40 }} /></Button>
+          <Button href="/cart" color="inherit"><ShoppingCartOutlinedIcon style={{ fontSize: 40 }} /></Button>
           <Button href="/settings" color="inherit" className='d-none d-sm-block'><PermIdentityOutlinedIcon style={{ fontSize: 40 }} /></Button>
         </Toolbar>
       </AppBar>

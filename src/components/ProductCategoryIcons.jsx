@@ -8,7 +8,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-
+import { ProductGallerySample } from '../constants/ProductCategoryIconsSample';
 import Icons from './common/Icons';
 
 const styles = (theme) => ({
@@ -35,23 +35,24 @@ const styles = (theme) => ({
 });
 
 const ProductCategoryIcons = ({classes, data}) => {
+  const categories = ProductGallerySample;
   return (
     <div className={classes.root}>
       <Grid container>
         <Grid item>
           <List component="nav" aria-label="main mailbox folders">
-            <ListItem button className={classes.listItemCont}>
-              <ListItemIcon className={classes.listItemIcons}>
-                <Icons name='carwheel' classes={{icon: classes.icon}} />
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
-            </ListItem>
-            <ListItem button className={classes.listItemCont}>
-              <ListItemIcon className={classes.listItemIcons}>
-                <Icons name='carwheel' classes={{icon: classes.icon}} />
-              </ListItemIcon>
-              <ListItemText primary="Inbox" />
-            </ListItem>
+            {
+              categories && categories.map((data, index) => {
+                return (
+                  <ListItem button className={classes.listItemCont}>
+                    <ListItemIcon className={classes.listItemIcons}>
+                      <Icons name='carwheel' classes={{icon: classes.icon}} />
+                    </ListItemIcon>
+                    <ListItemText primary="Inbox" />
+                  </ListItem>
+                );
+              })
+            }
           </List>
         </Grid>
       </Grid>

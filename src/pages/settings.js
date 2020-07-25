@@ -2,7 +2,6 @@ import React from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
-  Typography,
   Card,
   CardMedia,
   CardContent,
@@ -12,6 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import Typography from '../components//common/Typography';
 import LayoutTemplate from '../components/LayoutTemplate';
 import { 
   SettingSample,
@@ -24,30 +24,6 @@ const styles = (theme) => ({
   root: {
     padding: 5,
   },
-  cardRoot: {
-    padding: 10,
-    backgroundColor: 'rgb(239,239,239)',
-    border: '1px solid orange',
-    '& a:hover': {
-      color: 'white',
-      textDecoration: 'none',
-    },
-    '& a:hover svg': {
-      fill: 'white',
-    },
-    '&:hover': {
-      backgroundColor: 'orange',
-    },
-  },
-  cardMediaCont: {
-    textAlign: 'center',
-    width: '60%',
-    margin: '0px auto',
-    fill: 'orange',
-  },
-  cardLink: {
-    color: 'orange',
-  }
 });
 
 const Settings = ({classes}) => {
@@ -62,7 +38,7 @@ const Settings = ({classes}) => {
           SettingButtonsSample.map((button, index) => {
             return (
               <Grid key={index} item lg={3}>
-                <CardIcon title={button.label} classes={{link: classes.cardLink, img: classes.cardMediaCont, root: classes.cardRoot}}>
+                <CardIcon title={button.label} classes={{link: `cardLink`, img: `cardMediaCont`, root: `cardRoot`}}>
                   <Icons name={button.name} />
                 </CardIcon>
               </Grid>

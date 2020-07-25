@@ -6,11 +6,13 @@ import {
   CardHeader,
   CardContent,
   Avatar,
-  Typography,
   Grid,
 } from '@material-ui/core';
 import { blue } from '@material-ui/core/colors';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
+
+import Typography from '../common/Typography';
+
 import Rate from './Rate';
 
 const styles = (theme) => ({

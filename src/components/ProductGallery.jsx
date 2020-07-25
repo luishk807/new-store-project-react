@@ -6,7 +6,6 @@ import {
   ListItemIcon,
   ListItemText,
   Button,
-  Typography,
 } from '@material-ui/core';
 
 import { 
@@ -16,6 +15,8 @@ import {
   ProductGalleryStoreLists,
   ProductGalleryLogoSample,
  } from '../constants/ProductGallery';
+
+ import Typography from '../components/common/Typography';
 
 const styles = (theme) => ({
   listItemCont: {

@@ -2,13 +2,13 @@ import React from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
-  Typography,
   Card,
   CardContent,
   CardMedia,
   CardActionArea,
   Link,
 } from '@material-ui/core';
+import Typography from '../common/Typography';
 
 const styles = (theme) => ({
   root: {

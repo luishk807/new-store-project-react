@@ -2,7 +2,6 @@ import React from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
-  Typography,
   Card,
   CardMedia,
   CardContent,
@@ -30,6 +29,8 @@ import Youtube from '../../../public/images/svg/social-youtube.svg';
 import Instagram from '../../../public/images/svg/social-instagram.svg';
 import Whatssap from '../../../public/images/svg/social-whatssap.svg';
 import Chat from '../../../public/images/svg/chat.svg';
+
+import Typography from '../common/Typography';
 
 const styles = (theme) => ({
   icon: {

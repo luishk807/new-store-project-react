@@ -9,13 +9,14 @@ import {
   FormControl,
   Button,
   TextField,
+  Typography,
   Divider,
 } from '@material-ui/core';
 import LocalShippingOutlinedIcon from '@material-ui/icons/LocalShippingOutlined';
 import MessageOutlinedIcon from '@material-ui/icons/MessageOutlined';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 
-import Typography from '../components/common/Typography';
+//import Typography from '../components/common/Typography';
 import LayoutTemplate from '../components/LayoutTemplate';
 import { ProductSample } from '../constants/ProductSample';
 import Rate from '../components/common/Rate';
@@ -27,14 +28,14 @@ const styles = (theme) => ({
   root: {
     padding:10
   },
-  deliveryIcon: {
+  deliveryText: {
     color: '#51DC55',
-    '& svg': {
-      width: 80,
-      height: 80,
-      fill: '#51DC55',
-    },
     margin: '10px 0px',
+  },
+  deliveryIcon: {
+    width: 80,
+    height: 80,
+    fill: '#51DC55',
   },
   productBottomSec: {
     padding: 10,
@@ -79,6 +80,7 @@ const Product = ({classes, data = ProductSample}) => {
     const value = event.target.value;
     console.log("hey hey", value)
   };
+
   return (
     <LayoutTemplate>
       <div className={classes.root}>
@@ -97,8 +99,8 @@ const Product = ({classes, data = ProductSample}) => {
                 <Typography align="center" variant="h1" component="h2">US ${data.total}</Typography>
                 <Select onChange={handleSelectChange} title="quant" id="quant-select" />
                 <Typography align="left" variant="h5" component="h5">Disponibilidad {data.stock}</Typography>
-                <Typography className={classes.deliveryIcon} align="left" variant="h5" component="body1">
-                  <Icons name="delivery" />&nbsp;Entrega a todo Panama
+                <Typography className={classes.deliveryText} align="left" variant="body1" component="p">
+                  <Icons name="delivery" classes={{icon: classes.deliveryIcon}}  />&nbsp;Entrega a todo Panama
                 </Typography>
               </Grid>
             </Grid>

@@ -9,11 +9,12 @@ const styles = (theme) => ({
 
 });
 
-const Typography = ({classes, children, variant, component, align}) => {
+const Typography = ({className={}, children, color, variant = null, component = "p", align = "left"}) => {
   return (
     <MuiTypography
-      classes={classes}
+      className={className}
       variant={variant}
+      color={color}
       component={component}
       align={align}
     >
@@ -23,7 +24,8 @@ const Typography = ({classes, children, variant, component, align}) => {
 }
 
 Typography.protoTypes = {
-  classes: T.object,
+  className: T.object,
+  color: T.object,
   children: T.node,
   variant: T.string,
   component: T.string,

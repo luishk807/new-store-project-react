@@ -144,7 +144,7 @@ const Cart = (props) => {
                         </Hidden>
                         <Grid item lg={12} xs={8} className={classes.cartActionCont}>
                           <Typography align="right" variant="body1" component="p">
-                            <Button className={`secondButton my-2`}>Delete</Button>
+                            <Button className={`smallMainButton my-2`}>Delete</Button>
                           </Typography>
                         </Grid>
                       </Grid>

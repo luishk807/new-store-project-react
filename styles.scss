@@ -29,11 +29,22 @@ a:hover {
   background-color: $main_color;
   color: white;
 }
-.secondButton{
+.smallMainButton{
   border: 1px solid $main_color !important;
   color: $main_color !important;
   padding: 5px 20px !important;
   font-size: .7em !important;
+  &:hover {
+    background-color: $main_color !important;
+    color: white !important;
+  }
+}
+.secondButton{
+  border: 1px solid $main_color !important;
+  color: $main_color !important;
+  margin: 10px 0px !important;
+  border-radius: 5px !important;
+  width: 100%;
   &:hover {
     background-color: $main_color !important;
     color: white !important;

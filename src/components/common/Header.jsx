@@ -130,7 +130,7 @@ const Header = ({classes, data}) => {
           <SearchBar/>
           <div className={classes.grow} />
           <Button href="/cart" color="inherit"><ShoppingCartOutlinedIcon style={{ fontSize: 40 }} /></Button>
-          <Button href="/settings" color="inherit" className='d-none d-sm-block'><PermIdentityOutlinedIcon style={{ fontSize: 40 }} /></Button>
+          <Button href="/login" color="inherit" className='d-none d-sm-block'><PermIdentityOutlinedIcon style={{ fontSize: 40 }} /></Button>
         </Toolbar>
       </AppBar>
       {renderSideMenu}

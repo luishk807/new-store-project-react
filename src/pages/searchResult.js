@@ -12,7 +12,7 @@ import {
 import Pagination from '@material-ui/lab/Pagination';
 import Rate from '../components/common/Rate';
 import Typography from '../components/common/Typography';
-import LayoutTemplate from '../components/LayoutTemplate';
+import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import ProductCategoryIcons from '../components/ProductCategoryIcons'
 
 import { SearchResultSample } from '../constants/SearchResultSample';

@@ -4,7 +4,7 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import LayoutTemplate from '../components/LayoutTemplate';
+import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import BigCarrousel from '../components/BigCarrousel';
 import ProductGallery from '../components/ProductGallery';
 import ProductCategoryIcons from '../components/ProductCategoryIcons'

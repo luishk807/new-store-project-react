@@ -5,9 +5,9 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import Typography from '../common/Typography';
+import Typography from '../Typography';
 
-import { FooterSample } from '../../constants/FooterSample';
+import { FooterSample } from '../../../constants/FooterSample';
 
 const styles = (theme) => ({
   footerLink: {

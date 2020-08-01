@@ -11,8 +11,8 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
-import Typography from '../components//common/Typography';
-import LayoutTemplate from '../components/LayoutTemplate';
+import Typography from '../components/common/Typography';
+import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import { 
   SettingSample,
   SettingButtonsSample,

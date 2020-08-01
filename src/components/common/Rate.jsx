@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 
-import Typography from '../common/Typography';
+import Typography from './Typography';
 
 import { RateLabels } from '../../../config.js';
 

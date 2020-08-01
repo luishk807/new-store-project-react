@@ -7,7 +7,7 @@ import {
   TextField,
 } from '@material-ui/core';
 
-import LayoutTemplate from '../components/LayoutTemplate';
+import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
 import { typography } from '@material-ui/system';
 import LoginPanel  from '../components/LoginPanel';

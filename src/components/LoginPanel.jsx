@@ -7,8 +7,8 @@ import {
   TextField,
 } from '@material-ui/core';
 
-import LayoutTemplate from '../components/LayoutTemplate';
-import Typography from '../components/common/Typography';
+import LayoutTemplate from './common/Layout/LayoutTemplate';
+import Typography from './common/Typography';
 
 const styles = (theme) => ({
   root: {

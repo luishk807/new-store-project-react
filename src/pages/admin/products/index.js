@@ -17,4 +17,4 @@ Index.protoTypes = {
   classes: T.object
 }
 
-export default withStyles(styles)(Index) ;
+export default withStyles(styles)(Index);

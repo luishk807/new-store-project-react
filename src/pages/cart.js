@@ -13,7 +13,7 @@ import {
   CardActions,
   withWidth,
 } from '@material-ui/core';
-import LayoutTemplate from '../components/LayoutTemplate';
+import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
 import Select from '../components/common/Select';
 import { CartSample } from '../constants/CartSample';

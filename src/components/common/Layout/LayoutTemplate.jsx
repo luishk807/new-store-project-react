@@ -6,8 +6,8 @@ import {
 } from '@material-ui/core';
 import * as T from 'prop-types';
 
-import Header from './common/Header';
-import Footer from './common/Footer';
+import Header from '../Header/Header';
+import Footer from '../Footer/Footer';
 
 const styles = (theme) => ({
   root: {

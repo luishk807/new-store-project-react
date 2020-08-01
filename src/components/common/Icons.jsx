@@ -30,7 +30,7 @@ import Instagram from '../../../public/images/svg/social-instagram.svg';
 import Whatssap from '../../../public/images/svg/social-whatssap.svg';
 import Chat from '../../../public/images/svg/chat.svg';
 
-import Typography from '../common/Typography';
+import Typography from './Typography';
 
 const styles = (theme) => ({
   icon: {

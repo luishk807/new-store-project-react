@@ -7,14 +7,16 @@ import {
 } from '@material-ui/core';
 import * as T from 'prop-types';
 
-import Header from '../Header';
-import Footer from '../Footer';
+import Header from '../Header/AdminHeader';
+import Footer from '../Footer/AdminFooter';
+
+import Typography from '../Typography';
 
 const styles = (theme) => ({
   root: {
     marginTop: 20,
     flexGrow: 1,
-  }
+  },
 })
 const AdminLayoutTemplate = ({classes, children}) => (
   <section>

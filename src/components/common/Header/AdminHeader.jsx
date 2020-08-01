@@ -21,10 +21,10 @@ import {
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 
-import Typography from '../common/Typography';
+import Typography from '../Typography';
 
-import SearchBar from './SearchBar';
-import Modal from './Modal';
+import SearchBar from '../SearchBar';
+import Modal from '../Modal';
 
 const styles = (theme) => ({
   root: {

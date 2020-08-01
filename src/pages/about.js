@@ -1,6 +1,6 @@
 import React from 'react';
 
-import LayoutTemplate from '../components/LayoutTemplate';
+import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 
 const About = () => {
   return (

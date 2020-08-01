@@ -8,7 +8,7 @@ import {
   NativeSelect, 
 } from '@material-ui/core';
 
-import Typography from '../common/Typography';
+import Typography from './Typography';
 
 const styles = (theme) => ({
   root: {

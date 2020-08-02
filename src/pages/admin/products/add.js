@@ -14,9 +14,11 @@ import {
   MenuItem,
   TextareaAutosize
 } from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import {DropzoneDialog} from 'material-ui-dropzone'
 import ColorPicker from 'material-ui-color-picker'
 
+import Snackbar from '../../../components/common/Snackbar';
 import { ProductGallerySample } from '../../../constants/ProductCategoryIconsSample';
 import Typography from '../../../components/common/Typography';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
@@ -50,20 +52,14 @@ const styles = (theme) => ({
 
 const Add = ({classes}) => {
   const [category, setCategory] = useState('');
-  const [color, setColor] = useState('#FFF');
+  const [openSnack, setOpenSnack] = useState(false);
   const categories = ProductGallerySample; 
 
   const [file, setFiles] = useState({
     open: false,
     files: []
   });
-
-  const onChangeColor = (color) => {
-    console.log(color);
-    if (color) {
-      setColor(color)
-    }
-  }
+  
   const handleClose = () => {
     setFiles({
       ...file,
@@ -86,9 +82,6 @@ const Add = ({classes}) => {
     });
   }
 
-  const handleChange = (event) => {
-    setCategory(event.target.value);
-  };
 
   return (
     <AdminLayoutTemplate>
@@ -127,7 +120,7 @@ const Add = ({classes}) => {
                   labelId="category"
                   id="category-helper"
                   value={category}
-                  onChange={handleChange}
+                  onChange={(event) => setCategory(event.target.value)}
                 >
                   <MenuItem value="">
                     <em>None</em>
@@ -190,10 +183,11 @@ const Add = ({classes}) => {
               <Button className={`mainButton`}>Cancel</Button>
             </Grid>
             <Grid item lg={6} xs={12} item>
-              <Button className={`mainButton`}>Add Product</Button>
+              <Button className={`mainButton`} onClick={() => setOpenSnack(true)}>Add Product</Button>
             </Grid>
           </Grid>
         </form>
+        <Snackbar open={openSnack} onClose={() => setOpenSnack(false)} content="Product Added" />
       </div>
     </AdminLayoutTemplate>
   );

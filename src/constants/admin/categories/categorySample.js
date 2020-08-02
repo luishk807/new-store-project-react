@@ -1,50 +1,50 @@
-export const ProductGallerySample = [
+export const CategorySample = [
   {
-    id: '1',
+    id: 1,
     name: 'Computer',
   },
   {
-    id: '2',
+    id: 2,
     name: 'Furtniture'
   },
   {
-    id: '3',
+    id: 3,
     name: 'Beauty',
   },
   {
-    id: '4',
+    id: 4,
     name: 'Baby',
   },
   {
-    id: '5',
+    id: 5,
     name: 'Furniture',
   },
   {
-    id: '6',
+    id: 6,
     name: 'Toys',
   },
   {
-    id: '7',
+    id: 7,
     name: 'Sport',
   },
   {
-    id: '8',
+    id: 8,
     name: 'Appliance',
   },
   {
-    id: '9',
+    id: 9,
     name: 'Garden',
   },
   {
-    id: '10',
+    id: 10,
     name: 'Health',
   },
   {
-    id: '11',
+    id: 11,
     name: 'Jewerly',
   },
   {
-    id: '12',
+    id: 12,
     name: 'Clothing',
   }
 ]

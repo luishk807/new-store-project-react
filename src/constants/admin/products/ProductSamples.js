@@ -6,6 +6,7 @@ export const ProductSamples = [
     quantity: 2,
     total: 28.90,
     link: '/',
+    brand_id: 1,
     created: '2020-05-22',
   },
   {
@@ -14,6 +15,7 @@ export const ProductSamples = [
     desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus euismod enim quis fringilla pellentesque. Pellentesque porta nisi vitae posuere sodales',
     quantity: 2,
     total: 28.90,
+    brand_id: 1,
     image: 'product-2.jpg',
     link: '/',
     created: '2020-05-22',
@@ -41,6 +43,13 @@ export const ProductColorsSamples = [
     product_id: 1,
     name: 'black',
     code: '#000',
+    created: '2020-05-22',
+  },
+  {
+    id: 2,
+    product_id: 1,
+    name: 'White',
+    code: '#fff',
     created: '2020-05-22',
   },
 ]

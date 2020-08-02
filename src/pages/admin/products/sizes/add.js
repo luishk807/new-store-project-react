@@ -120,7 +120,7 @@ const Add = ({classes}) => {
                 />
               </FormControl>
             </Grid>
-            <Grid item lg={6} xs={12} item>
+            <Grid item lg={12} xs={12} item>
               <FormControl fullWidth className={classes.margin}>
                 <InputLabel id="category">Category</InputLabel>
                 <Select
@@ -141,11 +141,31 @@ const Add = ({classes}) => {
                 <FormHelperText>Select Category</FormHelperText>
               </FormControl>
             </Grid>
+            <Grid item lg={3} xs={12} item>
+              <FormControl fullWidth className={classes.margin}>
+                <ColorPicker
+                    style={{backgroundColor: color, border: '1px solid #ccc'}}
+                    name='color'
+                    defaultValue={color}
+                    // value={color}
+                    onChange={onChangeColor}
+                    className={classes.colorInput}
+                  />
+                  <FormHelperText id="color-label">Choose color</FormHelperText> 
+              </FormControl>
+            </Grid>
             <Grid item lg={6} xs={12} item>
+              <FormControl fullWidth className={classes.margin}>
+                <InputLabel htmlFor="email">Size</InputLabel>
+                <Input id="email" aria-describedby="email-label" />
+                <FormHelperText id="email-label">Type your email</FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item lg={12} xs={12} item>
               <FormControl fullWidth className={classes.margin}>
                 <InputLabel htmlFor="email">Brand</InputLabel>
                 <Input id="email" aria-describedby="email-label" />
-                <FormHelperText id="email-label">Select your brand</FormHelperText>
+                <FormHelperText id="email-label">Type your email</FormHelperText>
               </FormControl>
             </Grid>
             <Grid item lg={6} xs={12} item>
@@ -166,7 +186,7 @@ const Add = ({classes}) => {
               <FormControl fullWidth className={classes.margin}>
                 <InputLabel htmlFor="email">Vendor</InputLabel>
                 <Input id="email" aria-describedby="email-label" />
-                <FormHelperText id="email-label">Select your vendors</FormHelperText>
+                <FormHelperText id="email-label">Type your email</FormHelperText>
               </FormControl>
             </Grid>
             <Grid item lg={12} xs={12} item>

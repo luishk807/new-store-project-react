@@ -9,11 +9,15 @@ import {
   FormHelperText,
   Button,  
   OutlinedInput, 
+  Select, 
   InputAdornment,
+  MenuItem,
   TextareaAutosize
 } from '@material-ui/core';
 import {DropzoneDialog} from 'material-ui-dropzone'
+import ColorPicker from 'material-ui-color-picker'
 
+import { ProductGallerySample } from '../../../constants/ProductCategoryIconsSample';
 import Typography from '../../../components/common/Typography';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 
@@ -36,14 +40,30 @@ const styles = (theme) => ({
     },
     margin: '20px auto 0px auto',
   },
+  colorInput: {
+    marginTop: 18,
+    [theme.breakpoints.down('sm')]: {
+      marginTop: 'auto',
+    },
+  },
 });
 
 const Add = ({classes}) => {
+  const [category, setCategory] = useState('');
+  const [color, setColor] = useState('#FFF');
+  const categories = ProductGallerySample; 
+
   const [file, setFiles] = useState({
     open: false,
     files: []
   });
 
+  const onChangeColor = (color) => {
+    console.log(color);
+    if (color) {
+      setColor(color)
+    }
+  }
   const handleClose = () => {
     setFiles({
       ...file,
@@ -57,7 +77,6 @@ const Add = ({classes}) => {
       files: files,
       open: false
     });
-    console.log(file)
   }
 
   const handleOpen = () => {
@@ -66,6 +85,10 @@ const Add = ({classes}) => {
       open: true,
     });
   }
+
+  const handleChange = (event) => {
+    setCategory(event.target.value);
+  };
 
   return (
     <AdminLayoutTemplate>
@@ -99,19 +122,39 @@ const Add = ({classes}) => {
             </Grid>
             <Grid item lg={12} xs={12} item>
               <FormControl fullWidth className={classes.margin}>
-                <InputLabel htmlFor="email">Category</InputLabel>
-                <Input id="email" aria-describedby="email-label" />
-                <FormHelperText id="email-label">Type your email</FormHelperText>
+                <InputLabel id="category">Category</InputLabel>
+                <Select
+                  labelId="category"
+                  id="category-helper"
+                  value={category}
+                  onChange={handleChange}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {
+                    categories.map((item, index) => {
+                      return(<MenuItem key={index} value={item.id}>{item.name}</MenuItem>)
+                    })
+                  }
+                </Select>
+                <FormHelperText>Select Category</FormHelperText>
               </FormControl>
             </Grid>
-            <Grid item lg={12} xs={12} item>
+            <Grid item lg={3} xs={12} item>
               <FormControl fullWidth className={classes.margin}>
-                <InputLabel htmlFor="email">Color</InputLabel>
-                <Input id="email" aria-describedby="email-label" />
-                <FormHelperText id="email-label">Type your email</FormHelperText>
+                <ColorPicker
+                    style={{backgroundColor: color, border: '1px solid #ccc'}}
+                    name='color'
+                    defaultValue={color}
+                    // value={color}
+                    onChange={onChangeColor}
+                    className={classes.colorInput}
+                  />
+                  <FormHelperText id="color-label">Choose color</FormHelperText> 
               </FormControl>
             </Grid>
-            <Grid item lg={12} xs={12} item>
+            <Grid item lg={6} xs={12} item>
               <FormControl fullWidth className={classes.margin}>
                 <InputLabel htmlFor="email">Size</InputLabel>
                 <Input id="email" aria-describedby="email-label" />
@@ -121,13 +164,6 @@ const Add = ({classes}) => {
             <Grid item lg={12} xs={12} item>
               <FormControl fullWidth className={classes.margin}>
                 <InputLabel htmlFor="email">Brand</InputLabel>
-                <Input id="email" aria-describedby="email-label" />
-                <FormHelperText id="email-label">Type your email</FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid item lg={12} xs={12} item>
-              <FormControl fullWidth className={classes.margin}>
-                <InputLabel htmlFor="email">Category</InputLabel>
                 <Input id="email" aria-describedby="email-label" />
                 <FormHelperText id="email-label">Type your email</FormHelperText>
               </FormControl>

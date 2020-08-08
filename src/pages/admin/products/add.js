@@ -21,6 +21,7 @@ import {
 } from '@material-ui/lab';
 import {DropzoneDialog} from 'material-ui-dropzone'
 import ColorPicker from 'material-ui-color-picker'
+import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 
 import Snackbar from '../../../components/common/Snackbar';
 import { CategorySample } from '../../../constants/admin/categories/CategorySample';
@@ -38,17 +39,17 @@ const styles = (theme) => ({
     width: '100%',
     textAlign: 'center',
   },
-  margin: {
-    margin: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-      margin: 0,
-    },
-  },
+  // margin: {
+  //   margin: theme.spacing(1),
+  //   [theme.breakpoints.down('sm')]: {
+  //     margin: 0,
+  //   },
+  // },
   formItems: {
-    width: '50%',
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-    },
+    width: '100%',
+    // [theme.breakpoints.down('sm')]: {
+    //   width: '100%',
+    // },
     margin: '20px auto 0px auto',
   },
   colorInput: {
@@ -65,136 +66,133 @@ const Add = ({classes}) => {
   const vendors = VendorSample;
   const [openSnack, setOpenSnack] = useState(false);
   const [form, setForm] = useState({
-    name: {
-      value: '',
-      error:false,
-    },
-    stock: {
-      value: '',
-      error: false,
-    },
-    category: {
-      value: categories[0].id,
-      error: false,
-    },
-    amount: {
-      value: '',
-      error: false,
-    },
-    brand: {
-      value: brands[0],
-      error: false,
-    },
-    model: {
-      value: '',
-      error: false,
-    },
-    code: {
-      value: '',
-      error: false,
-    },
-    description: {
-      value: '',
-      error: false,
-    },
-    vendor: {
-      value: vendors[0],
-      error: false,
-    },
+    name: null,
+    stock: null,
+    category: categories[0].id,
+    amount: null,
+    email: '',
+    brand: brands[0],
+    model: null,
+    code: null,
+    description: null,
+    vendor: vendors[0],
     image: {
       values: [],
       open: false,
     }
   })
   
-  const formOnChange = (e) => {
-    if(form[e.target.name]){
-      form[e.target.name].value = e.target.value;
-      console.log(form)
-    }
+  const formOnChange = ({ target: { name, value } }) => {
+    setForm({
+      ...form,
+      [name]: value === '' ? null : value,
+    });
+    console.log(form)
   }
   const handleSubmit = (e) => {
-    console.log(e)
+    console.log(form)
     setOpenSnack(true)
   }
   const handleClose = () => {
-    setFiles({
-      ...file,
-      open: false
-    });
+    setForm({
+      ...form,
+      image: {
+        ...form.image,
+        open: false,
+      }
+    })
   }
 
   const handleSave = (files) => {
-    //Saving files to state for further use and closing Modal.
-    setFiles({
-      files: files,
-      open: false
-    });
+    setForm({
+      ...form,
+      image: {
+        ...form.image,
+        files: files,
+      }
+    })
+    console.log(form)
   }
 
   const handleOpen = () => {
-    setFiles({
-      ...file,
-      open: true,
-    });
+    setForm({
+      ...form,
+      image: {
+        ...form.image,
+        open: true,
+      }
+    })
   }
 
 
   return (
     <AdminLayoutTemplate>
       <div className={classes.root}>
-        <form  noValidate autoComplete="off">
+        <ValidatorForm
+          onSubmit={handleSubmit}
+          onError={errors => console.log(errors)}
+        >
           <Grid container spacing={2} className={classes.formItems}>
             <Grid item lg={12} xs={12}>
               <Typography align="center" variant="h4" component="h4">Add Product</Typography>
             </Grid>
-            <Grid item lg={12} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin}>
-                <TextField onChange={formOnChange} error={form.name.error} helperText="Product Name" variant="outlined" name="name" label="Product Name"  />
-              </FormControl>
-            </Grid>
-            <Grid item lg={6} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin}>
-                <TextField error={form.stock.error} onChange={formOnChange} helperText="Stock" variant="outlined" name="stock" label="Stock"  />
-              </FormControl>
-            </Grid>
-            <Grid item lg={6} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin} variant="outlined">
-                <InputLabel htmlFor="amount">Amount</InputLabel>
-                <OutlinedInput
-                  name="amount"
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                  labelWidth={60}
+            <Grid item lg={12} xs={12}>
+              <TextValidator
+                  label="Name"
                   onChange={formOnChange}
-                  error={form.amount.error}
+                  name="name"
+                  className={classes.formItems}
+                  value={form.name}
+                  validators={['required']}
+                  errorMessages={['this field is required']}
                 />
-                <FormHelperText name="amount">Amount</FormHelperText>
-              </FormControl>
             </Grid>
-            <Grid item lg={6} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin} variant="outlined" >
-                <InputLabel name="category">Category</InputLabel>
-                <Select
-                  labelname="category"
-                  name="category"
-                  value={form.category.value}
-                  label="category"
-                  error={form.category.error}
+            <Grid item lg={12} xs={12}>
+                <TextValidator
+                  label="Email"
                   onChange={formOnChange}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  {
-                    categories.map((item, index) => {
-                      return(<MenuItem key={index} value={item.id}>{item.name}</MenuItem>)
-                    })
-                  }
-                </Select>
-                <FormHelperText name="category">Select Category</FormHelperText>
-              </FormControl>
+                  className={classes.formItems}
+                  name="email"
+                  value={form.email}
+                  validators={['required', 'isEmail']}
+                  errorMessages={['this field is required', 'email is not valid']}
+                />
+            </Grid>
+            <Grid item lg={12} xs={12}>
+                <TextValidator
+                  label="Stock"
+                  onChange={formOnChange}
+                  className={classes.formItems}
+                  name="stock"
+                  value={form.stock}
+                  validators={['required']}
+                  errorMessages={['this field is required']}
+                />
             </Grid>
             <Grid item lg={6} xs={12} className={classes.formItem}>
+              <TextValidator
+                  label="Amount"
+                  onChange={formOnChange}
+                  className={classes.formItems}
+                  name="amount"
+                  value={form.amount}
+                  validators={['required']}
+                  errorMessages={['this field is required']}
+                />
+            </Grid>
+            <Grid item lg={6} xs={12} className={classes.formItem}>
+                <TextValidator
+                  label="Amount"
+                  onChange={formOnChange}
+                  className={classes.formItems}
+                  name="amount"
+                  select
+                  value={form.amount}
+                  validators={['required']}
+                  errorMessages={['this field is required']}
+                />
+            </Grid>
+           {/*  <Grid item lg={6} xs={12} className={classes.formItem}>
               <FormControl fullWidth className={classes.margin} variant="outlined">
                 <Autocomplete
                   name="brand"
@@ -204,7 +202,7 @@ const Add = ({classes}) => {
                     console.log("hey",form)
                   }}
                   getOptionLabel={(option) => option.name}
-                  defaultValue={form.brand.value}
+                  defaultValue={form.brand}
                   renderInput={(params) => <TextField {...params} label="Brand" variant="outlined" />}
                 />
                 <FormHelperText name="brand">Select your brand</FormHelperText>
@@ -212,12 +210,12 @@ const Add = ({classes}) => {
             </Grid>
             <Grid item lg={6} xs={12} className={classes.formItem}>
               <FormControl fullWidth className={classes.margin} variant="outlined">
-                <TextField error={form.model.error} helperText="Type the product model" variant="outlined" name="model" label="Model"  />
+                <TextField helperText="Type the product model" variant="outlined" name="model" label="Model"  />
               </FormControl>
             </Grid>
             <Grid item lg={6} xs={12} className={classes.formItem}>
               <FormControl fullWidth className={classes.margin} variant="outlined">
-                <TextField error={form.code.error} helperText="Type product sku code" variant="outlined" name="code" label="Sku Code"  />
+                <TextField helperText="Type product sku code" variant="outlined" name="code" label="Sku Code"  />
               </FormControl>
             </Grid>
             <Grid item lg={12} xs={12} className={classes.formItem}>
@@ -227,7 +225,7 @@ const Add = ({classes}) => {
                   options={vendors}
                   onChange={formOnChange}
                   getOptionLabel={(option) => option.name}
-                  defaultValue={form.vendor.value}
+                  defaultValue={form.vendor}
                   renderInput={(params) => <TextField {...params} label="Vendor" variant="outlined" />}
                 />
                 <FormHelperText name="vendor">Select your vendor</FormHelperText>
@@ -250,7 +248,7 @@ const Add = ({classes}) => {
                   onClose={handleClose.bind(this)}
                 />
               </FormControl>
-            </Grid>
+            </Grid> */}
             <Grid item lg={6} xs={12} className={classes.formItem}>
               <FormControl fullWidth className={classes.margin}>
                 <Button className={`mainButton`}>Cancel</Button>
@@ -258,11 +256,11 @@ const Add = ({classes}) => {
             </Grid>
             <Grid item lg={6} xs={12} className={classes.formItem}>
               <FormControl fullWidth className={classes.margin}>
-                <Button className={`mainButton`} onClick={handleSubmit}>Add Product</Button>
+                <Button type="submit" className={`mainButton`}>Add Product</Button>
               </FormControl>
             </Grid>
           </Grid>
-        </form>
+        </ValidatorForm>
         <Snackbar open={openSnack} onClose={() => setOpenSnack(false)} content="Product Added" />
       </div>
     </AdminLayoutTemplate>

@@ -70,10 +70,10 @@ const Add = ({classes}) => {
   });
   const [form, setForm] = useState({
     name: null,
-    stock: null,
-    category: categories[0],
-    amount: null,
     email: '',
+    stock: null,
+    amount: null,
+    category: categories[0],
     brand: brands[0],
     model: null,
     code: null,
@@ -118,11 +118,11 @@ const Add = ({classes}) => {
       error: false,
       text: '',
     },
-    description: {
+    vendor: {
       error: false,
       text: '',
     },
-    vendor: {
+    description: {
       error: false,
       text: '',
     },
@@ -140,73 +140,73 @@ const Add = ({classes}) => {
         [name]: value,
       });
     }
-    console.log(form)
   }
 
-  const handleSubmit = (e) => {
-    for(var i in form){
-      const error = validateForm(i, form[i]);
-      if(!error){
-        setSnack({
-          severity: 'error',
-          open: true,
-          text: errors[i].text,
-        })
-        return;
+  const handleSubmit = async (e) => {
+    let errorFound = false;
+    let key = '';
+    for (var i in form) {
+      errorFound = await validateForm(i, form[i]);
+      console.log(errorFound)
+      key = i;
+      if(!errorFound){
+        break;
       }
     }
-    setSnack({
-      severity: 'success',
-      open: true,
-      text: 'Product Added',
-    })
+    if (!errorFound) {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `Unable to Add Product, ${i} is required`
+      })
+    } else {
+      setSnack({
+        severity: 'success',
+        open: true,
+        text: 'Product Added',
+      })
+    }
   }
-  const saveErrors = (key, err = false, str = '') => {
-    console.log(key, err, ' and ',str)
-    setErrors({
+  const saveErrors = async (key, err = false, str = '') => {
+    await setErrors({
       ...errors,
       [key]: {
         error: err,
         text: str,
       }
     });
-    console.log(errors)
   }
-  const validateForm = (name = null, value = null) => {
-    if(name){
-      saveErrors(name)
-      switch(name){
-        case "name":
-        case "stock":
-        case "model":
-        case "amount":
-        case "email":
-        case "description":
-        case "code": {
-          if(value && value.length > 0){
-            return true
-          }else{
-            console.log(name, 'anem')
-            saveErrors(name, true, `${name} is required`)
-            return false;
-          }
-          break;
-        }
-        case "category": 
-        case "brand": 
-        case "vendor": {
-          if(value && value.id){
-            return true
-          }
-          return false;
-          break;
-        }
-        default: {
+  const validateForm = async(name = null, value = null) => {
+    switch(name){
+      case "name": 
+      case "stock":
+      case "model":
+      case "amount":
+      case "email":
+      case "description":
+      case "code": {
+        console.log("check", name, ' and ', value)
+        if(value && value.length > 0){
+          saveErrors(name)
+          return true
+        }else{
+          saveErrors(name, true, `${name} is required`)
           return false;
         }
+        break;
       }
-    }else{
-      console.log("check form ");
+      case "category": 
+      case "brand": 
+      case "vendor": {
+        if(value && value.id){
+          return true
+        }
+        return false;
+        break;
+      }
+      default: {
+        return false;
+      }
     }
   }
   const handleClose = () => {
@@ -223,7 +223,7 @@ const Add = ({classes}) => {
     setForm({
       ...form,
       image: {
-        ...form.image,
+        open: false,
         files: files,
       }
     })
@@ -331,12 +331,26 @@ const Add = ({classes}) => {
             </Grid>
             <Grid item lg={6} xs={12} className={classes.formItem}>
               <FormControl fullWidth className={classes.margin} variant="outlined">
-                <TextField helperText="Type the product model" variant="outlined" name="model" label="Model"  />
+                <TextField 
+                  error={errors.model.error}
+                  helperText={errors.model.text} 
+                  variant="outlined" 
+                  name="model" 
+                  label="Model" 
+                  onChange={formOnChange}
+                />
               </FormControl>
             </Grid>
             <Grid item lg={6} xs={12} className={classes.formItem}>
               <FormControl fullWidth className={classes.margin} variant="outlined">
-                <TextField helperText="Type product sku code" variant="outlined" name="code" label="Sku Code"  />
+                <TextField 
+                  error={errors.code.error}
+                  helperText={errors.code.text} 
+                  variant="outlined" 
+                  name="code" 
+                  label="Sku Code" 
+                  onChange={formOnChange}
+                />
               </FormControl>
             </Grid>
             <Grid item lg={12} xs={12} className={classes.formItem}>
@@ -356,7 +370,14 @@ const Add = ({classes}) => {
             </Grid>
             <Grid item lg={12} xs={12} className={classes.formItem}>
               <FormControl fullWidth className={classes.margin}>
-                <TextareaAutosize name="description" rowsMin={3} placeholder="Description" />
+                <TextareaAutosize 
+                  error={errors.description.error}
+                  helperText={errors.description.text} 
+                  name="description" 
+                  rowsMin={3} 
+                  onChange={formOnChange} 
+                  placeholder="Description" 
+                />
               </FormControl>
             </Grid>
             <Grid item lg={12} xs={12} className={classes.formItem}>

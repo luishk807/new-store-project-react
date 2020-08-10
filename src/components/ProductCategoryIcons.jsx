@@ -44,7 +44,7 @@ const ProductCategoryIcons = ({classes, data}) => {
             {
               categories && categories.map((data, index) => {
                 return (
-                  <ListItem button className={classes.listItemCont}>
+                  <ListItem key={index} button className={classes.listItemCont}>
                     <ListItemIcon className={classes.listItemIcons}>
                       <Icons name='carwheel' classes={{icon: classes.icon}} />
                     </ListItemIcon>

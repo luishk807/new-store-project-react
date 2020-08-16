@@ -5,9 +5,9 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import { CategorySample } from '../../../constants/admin/categories/CategorySample';
-import { BrandsSample } from '../../../constants/admin/brands/BrandsSample';
-import { VendorSample } from '../../../constants/admin/vendors/VendorSample';
+import { CategorySample } from '../../../constants/samples/admin/categories/CategorySample';
+import { BrandsSample } from '../../../constants/samples/admin/brands/BrandsSample';
+import { VendorSample } from '../../../constants/samples/admin/vendors/VendorSample';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import Form from '../../../components/common/Form';
 

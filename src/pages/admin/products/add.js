@@ -1,33 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import { 
   withStyles,
   Grid,
-  FormControl,
-  InputLabel, 
-  Input, 
-  FormHelperText,
-  Button,  
-  OutlinedInput, 
-  Select, 
-  InputAdornment,
-  MenuItem,
-  TextField,
-  TextareaAutosize
 } from '@material-ui/core';
-import { 
-  MuiAlert,
-  Autocomplete,
-} from '@material-ui/lab';
-import {DropzoneDialog} from 'material-ui-dropzone'
-import ColorPicker from 'material-ui-color-picker'
 
-import Snackbar from '../../../components/common/Snackbar';
 import { CategorySample } from '../../../constants/admin/categories/CategorySample';
 import { BrandsSample } from '../../../constants/admin/brands/BrandsSample';
 import { VendorSample } from '../../../constants/admin/vendors/VendorSample';
-import Typography from '../../../components/common/Typography';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
+import Form from '../../../components/common/Form';
 
 const styles = (theme) => ({
   root: {
@@ -38,31 +20,14 @@ const styles = (theme) => ({
     width: '100%',
     textAlign: 'center',
   },
-  margin: {
-    margin: theme.spacing(1),
-    [theme.breakpoints.down('sm')]: {
-      margin: 0,
-    },
-  },
-  formItems: {
-    width: '50%',
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-    },
-    margin: '20px auto 0px auto',
-  },
-  colorInput: {
-    marginTop: 18,
-    [theme.breakpoints.down('sm')]: {
-      marginTop: 'auto',
-    },
-  },
 });
 
 const Add = ({classes}) => {
   const categories = CategorySample;
   const brands = BrandsSample;
   const vendors = VendorSample;
+  const [errors, setErrors] = useState({});
+  const [showForm, setShowForm] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -84,53 +49,6 @@ const Add = ({classes}) => {
       open: false,
     }
   })
-
-  const [errors, setErrors] = useState({
-    name: {
-      error: false,
-      text: '',
-    },
-    stock: {
-      error: false,
-      text: '',
-    },
-    category: {
-      error: false,
-      text: '',
-    },
-    amount: {
-      error: false,
-      text: '',
-    },
-    email: {
-      error: false,
-      text: '',
-    },
-    brand: {
-      error: false,
-      text: '',
-    },
-    model: {
-      error: false,
-      text: '',
-    },
-    code: {
-      error: false,
-      text: '',
-    },
-    vendor: {
-      error: false,
-      text: '',
-    },
-    description: {
-      error: false,
-      text: '',
-    },
-    image: {
-      error: false,
-      text: '',
-    },
-  })
   
   const formOnChange = (e, edrop = null) => {
     const { name, value } = edrop ? edrop : e.target;
@@ -142,12 +60,16 @@ const Add = ({classes}) => {
     }
   }
 
+  const handleCancel = () => {
+    console.log("cancel form")
+  }
+
   const handleSubmit = async (e) => {
+    console.log("submitting", form)
     let errorFound = false;
     let key = '';
     for (var i in form) {
       errorFound = await validateForm(i, form[i]);
-      console.log(errorFound)
       key = i;
       if(!errorFound){
         break;
@@ -185,7 +107,6 @@ const Add = ({classes}) => {
       case "email":
       case "description":
       case "code": {
-        console.log("check", name, ' and ', value)
         if(value && value.length > 0){
           saveErrors(name)
           return true
@@ -204,19 +125,21 @@ const Add = ({classes}) => {
         return false;
         break;
       }
+      case "image": {
+        if(value.files && value.files.length){
+          return true
+        }
+        return false;
+        break;
+      }
       default: {
         return false;
       }
     }
   }
-  const handleClose = () => {
-    setForm({
-      ...form,
-      image: {
-        ...form.image,
-        open: false,
-      }
-    })
+
+  const onCloseSnack = () => {
+    setSnack({...snack, open: false})
   }
 
   const handleSave = (files) => {
@@ -227,186 +150,37 @@ const Add = ({classes}) => {
         files: files,
       }
     })
-    console.log(form)
   }
 
-  const handleOpen = () => {
-    setForm({
-      ...form,
-      image: {
-        ...form.image,
-        open: true,
+  useEffect(() => {
+    let newErrors = {}
+
+    Object.keys(form).map((field, index) => {
+      newErrors[field] = {
+        error: false,
+        text: '',
       }
     })
-  }
+    setErrors(newErrors);
+    setShowForm(true);
+  }, [])
 
-
-  return (
+  return showForm && (
     <AdminLayoutTemplate>
       <div className={classes.root}>
-        <form
-          // onSubmit={handleSubmit}
-        >
-          <Grid container spacing={2} className={classes.formItems}>
-            <Grid item lg={12} xs={12}>
-              <Typography align="center" variant="h4" component="h4">Add Product</Typography>
-            </Grid>
-            <Grid item lg={12} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin} variant="outlined">
-                <TextField 
-                  error={errors.name.error}
-                  helperText={errors.name.text} 
-                  variant="outlined" 
-                  name="name" 
-                  onChange={formOnChange}
-                  label="Name" 
-                />
-              </FormControl>
-            </Grid>
-            <Grid item lg={12} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin} variant="outlined">
-                <TextField 
-                  error={errors.email.error}
-                  helperText={errors.email.text} 
-                  variant="outlined" 
-                  name="email" 
-                  onChange={formOnChange} 
-                  label="Email" 
-                />
-              </FormControl>
-            </Grid>
-            <Grid item lg={6} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin} variant="outlined">
-                <TextField 
-                  error={errors.stock.error}
-                  helperText={errors.stock.text} 
-                  variant="outlined" 
-                  name="stock" 
-                  onChange={formOnChange}
-                  label="Stock" 
-                />
-              </FormControl>
-            </Grid>
-            <Grid item lg={6} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin} variant="outlined">
-                <TextField 
-                  error={errors.amount.error}
-                  helperText={errors.amount.text} 
-                  variant="outlined" 
-                  name="amount" 
-                  onChange={formOnChange}
-                  label="Amount" 
-                />
-              </FormControl>
-            </Grid>
-            <Grid item lg={6} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin} variant="outlined">
-                <Autocomplete
-                  name="category"
-                  options={categories}
-                  onChange={(e, value) => {
-                    formOnChange(null, { name: 'category', value: value})
-                  }}
-                  getOptionLabel={(option) => option.name}
-                  defaultValue={form.category}
-                  renderInput={(params) => <TextField {...params} label="Category" variant="outlined" />}
-                />
-                <FormHelperText name="category">Select your category</FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid item lg={6} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin} variant="outlined">
-                <Autocomplete
-                  name="brand"
-                  options={brands}
-                  onChange={(e, value) => {
-                    formOnChange(null, { name: 'brand', value: value})
-                  }}
-                  getOptionLabel={(option) => option.name}
-                  defaultValue={form.brand}
-                  renderInput={(params) => <TextField {...params} label="Brand" variant="outlined" />}
-                />
-                <FormHelperText name="brand">Select your brand</FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid item lg={6} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin} variant="outlined">
-                <TextField 
-                  error={errors.model.error}
-                  helperText={errors.model.text} 
-                  variant="outlined" 
-                  name="model" 
-                  label="Model" 
-                  onChange={formOnChange}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item lg={6} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin} variant="outlined">
-                <TextField 
-                  error={errors.code.error}
-                  helperText={errors.code.text} 
-                  variant="outlined" 
-                  name="code" 
-                  label="Sku Code" 
-                  onChange={formOnChange}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item lg={12} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin}>
-                <Autocomplete
-                  name="vendor"
-                  options={vendors}
-                  onChange={(e, value) => {
-                    formOnChange(null, { name: 'vendor', value: value})
-                  }}
-                  getOptionLabel={(option) => option.name}
-                  defaultValue={form.vendor}
-                  renderInput={(params) => <TextField {...params} label="Vendor" variant="outlined" />}
-                />
-                <FormHelperText name="vendor">Select your vendor</FormHelperText>
-              </FormControl>
-            </Grid>
-            <Grid item lg={12} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin}>
-                <TextareaAutosize 
-                  error={errors.description.error}
-                  helperText={errors.description.text} 
-                  name="description" 
-                  rowsMin={3} 
-                  onChange={formOnChange} 
-                  placeholder="Description" 
-                />
-              </FormControl>
-            </Grid>
-            <Grid item lg={12} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin}>
-                <Button className={`secondButton`} onClick={handleOpen.bind(this)}>Upload Image</Button>
-                <DropzoneDialog
-                  open={form.image.open}
-                  onSave={handleSave.bind(this)}
-                  acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
-                  showPreviews={true}
-                  maxFileSize={5000000}
-                  onClose={handleClose.bind(this)}
-                />
-              </FormControl>
-            </Grid>
-            <Grid item lg={6} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin}>
-                <Button className={`mainButton`}>Cancel</Button>
-              </FormControl>
-            </Grid>
-            <Grid item lg={6} xs={12} className={classes.formItem}>
-              <FormControl fullWidth className={classes.margin}>
-                {/* <Button type="submit" className={`mainButton`}>Add Product</Button> */}
-                <Button onClick={handleSubmit} className={`mainButton`}>Add Product</Button>
-              </FormControl>
-            </Grid>
-          </Grid>
-        </form>
-        <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false})} content={snack.text} />
+        <Form 
+          title="Product" 
+          fileOnSave={handleSave} 
+          fields={form} 
+          errors={errors} 
+          onChange={formOnChange} 
+          onSubmit={handleSubmit} 
+          formSubmit={handleSubmit}
+          formCancel={handleCancel}
+          type="submit"
+          snack={snack}
+          onCloseSnack={onCloseSnack}
+        />
       </div>
     </AdminLayoutTemplate>
   );

@@ -6,7 +6,7 @@ import {
 
 import { 
   ProductGallerySample,
- } from '../constants/ProductGallery';
+ } from '../constants/samples/ProductGallery';
 
 import CardIcon from './common/CardIcon';
 

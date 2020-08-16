@@ -17,7 +17,7 @@ import {
 import {DropzoneDialog} from 'material-ui-dropzone'
 import ColorPicker from 'material-ui-color-picker'
 
-import { ProductGallerySample } from '../../../constants/ProductCategoryIconsSample';
+import { ProductGallerySample } from '../../../constants/samples/ProductCategoryIconsSample';
 import Typography from '../../../components/common/Typography';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 

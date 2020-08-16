@@ -8,7 +8,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import { ProductGallerySample } from '../constants/ProductCategoryIconsSample';
+import { ProductGallerySample } from '../constants/samples/ProductCategoryIconsSample';
 import Icons from './common/Icons';
 
 const styles = (theme) => ({

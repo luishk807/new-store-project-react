@@ -16,7 +16,7 @@ import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import { 
   SettingSample,
   SettingButtonsSample,
-} from '../constants/SettingSample';
+} from '../constants/samples/SettingSample';
 import CardIcon from '../components/common/CardIcon';
 import Icons from '../components/common/Icons';
 

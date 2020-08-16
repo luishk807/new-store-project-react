@@ -16,7 +16,7 @@ import {
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
 import Select from '../components/common/Select';
-import { CartSample } from '../constants/CartSample';
+import { CartSample } from '../constants/samples/CartSample';
 import { makeStyles } from '@material-ui/core/styles';
 
 const styles = makeStyles((theme) => ({

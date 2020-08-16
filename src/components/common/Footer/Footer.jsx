@@ -7,7 +7,7 @@ import {
 
 import Typography from '../Typography';
 
-import { FooterSample } from '../../../constants/FooterSample';
+import { FooterSample } from '../../../constants/samples/FooterSample';
 
 const styles = (theme) => ({
   footerLink: {

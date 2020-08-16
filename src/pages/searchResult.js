@@ -15,7 +15,7 @@ import Typography from '../components/common/Typography';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import ProductCategoryIcons from '../components/ProductCategoryIcons'
 
-import { SearchResultSample } from '../constants/SearchResultSample';
+import { SearchResultSample } from '../constants/samples/SearchResultSample';
 
 const styles = (theme) => ({
   root: {

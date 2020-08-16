@@ -18,7 +18,7 @@ import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 
 //import Typography from '../components/common/Typography';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
-import { ProductSample } from '../constants/ProductSample';
+import { ProductSample } from '../constants/samples/ProductSample';
 import Rate from '../components/common/Rate';
 import RateBox from '../components/common/RateBox';
 import Select from '../components/common/Select';

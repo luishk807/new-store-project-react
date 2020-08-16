@@ -14,7 +14,7 @@ import {
   ProductGalleryMiniBannerSample,
   ProductGalleryStoreLists,
   ProductGalleryLogoSample,
- } from '../constants/ProductGallery';
+ } from '../constants/samples/ProductGallery';
 
  import Typography from '../components/common/Typography';
 

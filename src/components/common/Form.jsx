@@ -21,9 +21,9 @@ import {
 } from '@material-ui/lab';
 
 import FileUploader from './FileUploader';
-import { CategorySample } from '../../constants/admin/categories/CategorySample';
-import { BrandsSample } from '../../constants/admin/brands/BrandsSample';
-import { VendorSample } from '../../constants/admin/vendors/VendorSample';
+import { CategorySample } from '../../constants/samples/admin/categories/CategorySample';
+import { BrandsSample } from '../../constants/samples/admin/brands/BrandsSample';
+import { VendorSample } from '../../constants/samples/admin/vendors/VendorSample';
 import { FORM_SCHEMA } from '../../config';
 import Typography from './Typography';
 import Snackbar from './Snackbar';

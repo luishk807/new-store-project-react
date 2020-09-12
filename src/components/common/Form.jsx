@@ -20,10 +20,8 @@ import {
   Autocomplete,
 } from '@material-ui/lab';
 
+import Api from '../../services/api';
 import FileUploader from './FileUploader';
-import { CategorySample } from '../../constants/samples/admin/categories/CategorySample';
-import { BrandsSample } from '../../constants/samples/admin/brands/BrandsSample';
-import { VendorSample } from '../../constants/samples/admin/vendors/VendorSample';
 import { FORM_SCHEMA } from '../../config';
 import Typography from './Typography';
 import Snackbar from './Snackbar';
@@ -75,11 +73,12 @@ const Form = ({
   formCancel: handleCancel,
   onCloseSnack,
 }) => {
-  const formOptions = {
-    vendor: VendorSample,
-    brand: BrandsSample,
-    category: CategorySample
-  }
+  const [formOptions, setFormOptions] = useState({
+    vendor: {},
+    brand: {},
+    category: {}
+  })
+  const [useFormOption, setUseFormOptions] = useState(false)
   const [formTitle, setFormTitle] = useState('');
   const [formBtnTitle, setFormBtnTitle] = useState('');
   
@@ -112,7 +111,7 @@ const Form = ({
                 onChange={(e, value) => {
                   formOnChange(null, { name: {field}, value: value})
                 }}
-                getOptionLabel={(option) => option.name}
+                getOptionLabel={(option) => 'name' in option ? option.name : option.first_name + " " + option.last_name}
                 defaultValue={fields[field]}
                 renderInput={(params) => <TextField {...params} label={field} variant="outlined" />}
               />
@@ -148,7 +147,22 @@ const Form = ({
     }
   });
   
-  
+  useEffect(() => {
+    const loadFormOption = async() => {
+      const categories = await Api.get('/categories');
+      const vendors = await Api.get('/vendors');
+      const brands = await Api.get('/brands');
+      setFormOptions({
+        brand: brands,
+        vendor: vendors,
+        category: categories
+      })
+      setUseFormOptions(true)
+    }
+    
+   loadFormOption()
+  }, [useFormOption])
+
   useEffect(() => {
     switch(type) {
       case "submit": {
@@ -177,7 +191,7 @@ const Form = ({
             <Typography className={classes.typography} align="center" variant="h4" component="h4">{formTitle}</Typography>
           </Grid>
           {
-            formFields && formFields
+            useFormOption && formFields
           }
           <Grid item lg={6} xs={12} className={classes.formItem}>
             <FormControl fullWidth className={classes.margin}>

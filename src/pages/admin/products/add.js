@@ -5,11 +5,17 @@ import {
   Grid,
 } from '@material-ui/core';
 
+import { 
+  getProducts,
+  getProductById,
+  addProduct,
+} from '../../../api/admin/products';
 import { CategorySample } from '../../../constants/samples/admin/categories/CategorySample';
 import { BrandsSample } from '../../../constants/samples/admin/brands/BrandsSample';
 import { VendorSample } from '../../../constants/samples/admin/vendors/VendorSample';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import Form from '../../../components/common/Form';
+import Api from '../../../services/api';
 
 const styles = (theme) => ({
   root: {
@@ -23,9 +29,9 @@ const styles = (theme) => ({
 });
 
 const Add = ({classes}) => {
-  const categories = CategorySample;
-  const brands = BrandsSample;
-  const vendors = VendorSample;
+  // const categories = CategorySample;
+  // const brands = BrandsSample;
+  // const vendors = VendorSample;
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [snack, setSnack] = useState({
@@ -35,15 +41,14 @@ const Add = ({classes}) => {
   });
   const [form, setForm] = useState({
     name: null,
-    email: '',
     stock: null,
     amount: null,
-    category: categories[0],
-    brand: brands[0],
+    category: null,
+    brand: null,
     model: null,
     code: null,
     description: null,
-    vendor: vendors[0],
+    vendor: null,
     image: {
       values: [],
       open: false,
@@ -66,6 +71,11 @@ const Add = ({classes}) => {
 
   const handleSubmit = async (e) => {
     console.log("submitting", form)
+    // axios.get('http://localhost:8080/api/products').then((data) => {
+    //   console.log('data', data)
+    // })
+    // const data = await getProductById({id: 1});
+    // console.log("data", data);
     let errorFound = false;
     let key = '';
     for (var i in form) {
@@ -82,6 +92,8 @@ const Add = ({classes}) => {
         text: `Unable to Add Product, ${i} is required`
       })
     } else {
+      const confirm = await addProduct(form)
+      console.log(confirm)
       setSnack({
         severity: 'success',
         open: true,
@@ -162,9 +174,27 @@ const Add = ({classes}) => {
       }
     })
     setErrors(newErrors);
-    setShowForm(true);
-  }, [])
 
+    const loadFormOption = async() => {
+      const categories = await Api.get('/categories');
+      const vendors = await Api.get('/vendors');
+      const brands = await Api.get('/brands');
+      setForm({
+        ...form,
+        category: categories[0],
+        brand: brands[0],
+        vendor: vendors[0],
+      })
+
+
+      setShowForm(true);
+    }
+    
+   loadFormOption()
+
+ 
+  }, [])
+  
   return showForm && (
     <AdminLayoutTemplate>
       <div className={classes.root}>

@@ -1,7 +1,7 @@
 import React from 'react';
 import * as T from 'prop-types';
 import { withStyles } from '@material-ui/core';
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
+import AdminLayoutTemplate from '../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({});
 

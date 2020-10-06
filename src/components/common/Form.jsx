@@ -2,25 +2,22 @@ import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
-  Card,
-  CardMedia,
-  CardContent,
-  CardActionArea,
-  Link,
   Grid,
+  GridList,
+  GridListTile,
+  GridListTileBar,
+  IconButton,
   Button,  
   TextField,
   FormControl,
-  makeStyles,
   FormHelperText,
   TextareaAutosize,
 } from '@material-ui/core';
 import { 
-  MuiAlert,
   Autocomplete,
 } from '@material-ui/lab';
-
-import Api from '../../services/api';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import { loadMainOptions } from '../../utils/form';
 import FileUploader from './FileUploader';
 import { FORM_SCHEMA } from '../../config';
 import Typography from './Typography';
@@ -57,6 +54,23 @@ const styles = (theme) => ({
       marginTop: 'auto',
     },
   },
+  userImagesItem: {
+
+  },
+  gridList: {
+    width: '100%',
+    // Promote the list into his own layer on Chrome. This cost memory but helps keeping high FPS.
+    transform: 'translateZ(0)',
+    justifyContent: 'center',
+  },
+  icon: {
+    color: 'white'
+  },
+  titleBar: {
+    background:
+      'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
+      'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
+  },
 });
 
 const Form = ({
@@ -64,14 +78,14 @@ const Form = ({
   classes, 
   title, 
   errors, 
-  onChange: 
-  formOnChange, 
+  onChange: formOnChange, 
   fields,
   snack,
   fileOnSave,
   formSubmit: handleSubmit,
   formCancel: handleCancel,
   onCloseSnack,
+  onImageDelete,
 }) => {
   const [formOptions, setFormOptions] = useState({
     vendor: {},
@@ -81,10 +95,37 @@ const Form = ({
   const [useFormOption, setUseFormOptions] = useState(false)
   const [formTitle, setFormTitle] = useState('');
   const [formBtnTitle, setFormBtnTitle] = useState('');
+  const userImages = fields['image'].saved;
   
+  const imageClickHandle = (e) => {
+    const markDelete = userImages[e];
+    userImages.splice(e,1);
+    userImagesCont.splice(e,1);
+    onImageDelete(markDelete)
+  }
+
+  const userImagesCont = userImages && userImages.length ? userImages.map((data, index) => {
+    return (
+      <GridListTile key={index} cols={1}>
+        <img src={`${process.env.BACKEND_URL}/images/products/${data.img_url}`} alt />
+        <GridListTileBar
+          titlePosition="top"
+          actionIcon={
+            <IconButton className={classes.icon} onClick={()=>imageClickHandle(index)}>
+              <DeleteOutlinedIcon />
+            </IconButton>
+          }
+          actionPosition="right"
+          className={classes.titleBar}
+        />
+      </GridListTile>
+    )
+  }) : [];
+
   const formFields = Object.keys(fields).map((field, index) => {
     switch(FORM_SCHEMA[field]) {
-      case "textfield": {
+      case "textfield":
+      case "number": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
             <FormControl fullWidth className={classes.margin} variant="outlined">
@@ -93,6 +134,7 @@ const Form = ({
                 helperText={errors[field].text} 
                 variant="outlined" 
                 name={field} 
+                defaultValue={fields[field]}
                 onChange={formOnChange}
                 label={field} 
               />
@@ -124,7 +166,19 @@ const Form = ({
       case "file": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
-            <FileUploader onSave={fileOnSave} />
+            {
+              userImagesCont && (
+                <Grid container justify="center">
+                  <GridList cellHeight={160} className={classes.gridList} cols={2}>
+                  {
+                    userImagesCont
+                  }
+                  </GridList>
+                </Grid>
+              )
+            }
+
+            <FileUploader onSave={fileOnSave}/>
           </Grid>
         )
         break;
@@ -136,6 +190,7 @@ const Form = ({
               <TextareaAutosize 
                 name={field} 
                 rowsMin={3} 
+                defaultValue={fields[field]}
                 onChange={formOnChange} 
                 placeholder={field} 
               />
@@ -149,14 +204,14 @@ const Form = ({
   
   useEffect(() => {
     const loadFormOption = async() => {
-      const categories = await Api.get('/categories');
-      const vendors = await Api.get('/vendors');
-      const brands = await Api.get('/brands');
+      const {category, vendor, brand} = await loadMainOptions();
+
       setFormOptions({
-        brand: brands,
-        vendor: vendors,
-        category: categories
+        'category': category,
+        'vendor': vendor,
+        'brand': brand
       })
+
       setUseFormOptions(true)
     }
     
@@ -223,6 +278,7 @@ Form.protoTypes = {
   onChange: T.func,
   fileOnSave: T.func,
   formSubmit: T.func,
+  onImageDelete: T.func,
   formCancel: T.func,
   snack: T.object,
   onCloseSnack: T.func,

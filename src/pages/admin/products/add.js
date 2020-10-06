@@ -10,12 +10,9 @@ import {
   getProductById,
   addProduct,
 } from '../../../api/admin/products';
-import { CategorySample } from '../../../constants/samples/admin/categories/CategorySample';
-import { BrandsSample } from '../../../constants/samples/admin/brands/BrandsSample';
-import { VendorSample } from '../../../constants/samples/admin/vendors/VendorSample';
+import { validateForm, loadMainOptions } from '../../../utils/form';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import Form from '../../../components/common/Form';
-import Api from '../../../services/api';
 
 const styles = (theme) => ({
   root: {
@@ -29,9 +26,6 @@ const styles = (theme) => ({
 });
 
 const Add = ({classes}) => {
-  // const categories = CategorySample;
-  // const brands = BrandsSample;
-  // const vendors = VendorSample;
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [snack, setSnack] = useState({
@@ -70,19 +64,16 @@ const Add = ({classes}) => {
   }
 
   const handleSubmit = async (e) => {
-    console.log("submitting", form)
-    // axios.get('http://localhost:8080/api/products').then((data) => {
-    //   console.log('data', data)
-    // })
-    // const data = await getProductById({id: 1});
-    // console.log("data", data);
     let errorFound = false;
     let key = '';
     for (var i in form) {
       errorFound = await validateForm(i, form[i]);
       key = i;
-      if(!errorFound){
+      if (!errorFound){
+        saveErrors(name)
         break;
+      } else {
+        saveErrors(name, true, `${name} is required`)
       }
     }
     if (!errorFound) {
@@ -92,12 +83,13 @@ const Add = ({classes}) => {
         text: `Unable to Add Product, ${i} is required`
       })
     } else {
-      const confirm = await addProduct(form)
-      console.log(confirm)
-      setSnack({
-        severity: 'success',
-        open: true,
-        text: 'Product Added',
+      addProduct(form).then((res) => {
+        setSnack({
+          severity: 'success',
+          open: true,
+          text: 'Product Added',
+        })
+        window.location.href='/admin/products'
       })
     }
   }
@@ -109,45 +101,6 @@ const Add = ({classes}) => {
         text: str,
       }
     });
-  }
-  const validateForm = async(name = null, value = null) => {
-    switch(name){
-      case "name": 
-      case "stock":
-      case "model":
-      case "amount":
-      case "email":
-      case "description":
-      case "code": {
-        if(value && value.length > 0){
-          saveErrors(name)
-          return true
-        }else{
-          saveErrors(name, true, `${name} is required`)
-          return false;
-        }
-        break;
-      }
-      case "category": 
-      case "brand": 
-      case "vendor": {
-        if(value && value.id){
-          return true
-        }
-        return false;
-        break;
-      }
-      case "image": {
-        if(value.files && value.files.length){
-          return true
-        }
-        return false;
-        break;
-      }
-      default: {
-        return false;
-      }
-    }
   }
 
   const onCloseSnack = () => {
@@ -164,6 +117,17 @@ const Add = ({classes}) => {
     })
   }
 
+  const loadFormOption = async() => {
+    const {category, vendor, brand} = await loadMainOptions();
+    setForm({
+      ...form,
+      'category': category[0],
+      'vendor': vendor[0],
+      'brand': brand[0]
+    })
+    setShowForm(true);
+  }
+
   useEffect(() => {
     let newErrors = {}
 
@@ -174,25 +138,7 @@ const Add = ({classes}) => {
       }
     })
     setErrors(newErrors);
-
-    const loadFormOption = async() => {
-      const categories = await Api.get('/categories');
-      const vendors = await Api.get('/vendors');
-      const brands = await Api.get('/brands');
-      setForm({
-        ...form,
-        category: categories[0],
-        brand: brands[0],
-        vendor: vendors[0],
-      })
-
-
-      setShowForm(true);
-    }
-    
    loadFormOption()
-
- 
   }, [])
   
   return showForm && (

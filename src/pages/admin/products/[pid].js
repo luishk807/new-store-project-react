@@ -1,15 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
+import { useRouter } from 'next/router';
 import { 
   withStyles,
   Grid,
 } from '@material-ui/core';
 
-import { CategorySample } from '../../../constants/samples/admin/categories/CategorySample';
-import { BrandsSample } from '../../../constants/samples/admin/brands/BrandsSample';
-import { VendorSample } from '../../../constants/samples/admin/vendors/VendorSample';
+import { 
+  getProducts,
+  getProductById,
+  saveProduct,
+} from '../../../api/admin/products';
+import Api from '../../../services/api';
+import { validateForm, loadMainOptions } from '../../../utils/form';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import Form from '../../../components/common/Form';
+import { FORM_SCHEMA } from '../../../config';
 
 const styles = (theme) => ({
   root: {
@@ -23,11 +29,11 @@ const styles = (theme) => ({
 });
 
 const Edit = ({classes}) => {
-  const categories = CategorySample;
-  const brands = BrandsSample;
-  const vendors = VendorSample;
+  const router = useRouter()
+  const pid = router.query.pid;
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
+  const [imageDelete, setImageDelete] = useState({})
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -35,15 +41,14 @@ const Edit = ({classes}) => {
   });
   const [form, setForm] = useState({
     name: null,
-    email: '',
     stock: null,
     amount: null,
-    category: categories[0],
-    brand: brands[0],
+    category: null,
+    brand: null,
     model: null,
     code: null,
     description: null,
-    vendor: vendors[0],
+    vendor: null,
     image: {
       values: [],
       open: false,
@@ -61,32 +66,41 @@ const Edit = ({classes}) => {
   }
 
   const handleCancel = () => {
-    console.log("cancel form")
+    window.location.href='/admin/products';
   }
 
   const handleSubmit = async (e) => {
-    console.log("submitting", form)
     let errorFound = false;
     let key = '';
     for (var i in form) {
-      errorFound = await validateForm(i, form[i]);
+      errorFound = await validateForm(i, form[i], ['image']);
       key = i;
-      if(!errorFound){
+      if (!errorFound){
+        saveErrors(name)
         break;
+      } else {
+        saveErrors(name, true, `${name} is required`)
       }
     }
     if (!errorFound) {
       setSnack({
         severity: 'error',
         open: true,
-        text: `Unable to Edit Product, ${i} is required`
+        text: `Unable to Add Product, ${i} is required`
       })
     } else {
+      const formSubmit = form;
+      formSubmit['saved'] = imageDelete;
+      delete formSubmit.image.saved
+      console.log("submitting", formSubmit)
+      const confirm = await saveProduct(pid, formSubmit)
+      console.log(confirm)
       setSnack({
-        severity: 'success',
+        severity: confirm.data.data ? 'success' : 'error',
         open: true,
-        text: 'Product Saved',
+        text: confirm.data.message,
       })
+      handleCancel()
     }
   }
   const saveErrors = async (key, err = false, str = '') => {
@@ -98,45 +112,6 @@ const Edit = ({classes}) => {
       }
     });
   }
-  const validateForm = async(name = null, value = null) => {
-    switch(name){
-      case "name": 
-      case "stock":
-      case "model":
-      case "amount":
-      case "email":
-      case "description":
-      case "code": {
-        if(value && value.length > 0){
-          saveErrors(name)
-          return true
-        }else{
-          saveErrors(name, true, `${name} is required`)
-          return false;
-        }
-        break;
-      }
-      case "category": 
-      case "brand": 
-      case "vendor": {
-        if(value && value.id){
-          return true
-        }
-        return false;
-        break;
-      }
-      case "image": {
-        if(value.files && value.files.length){
-          return true
-        }
-        return false;
-        break;
-      }
-      default: {
-        return false;
-      }
-    }
-  }
 
   const onCloseSnack = () => {
     setSnack({...snack, open: false})
@@ -146,15 +121,54 @@ const Edit = ({classes}) => {
     setForm({
       ...form,
       image: {
+        ...form.image,
         open: false,
         files: files,
       }
     })
   }
+  
+  const markUserImageDelete = async(images) => {
+    const index = Object.keys(imageDelete).length;
+    setImageDelete(prevValue => ({
+      ...prevValue,
+      [index] : images
+    }))
+  }
+
+
+  const loadFormOption = async() => {
+    let inputs = {}
+    const mainOptions = await loadMainOptions();
+    if (pid) {
+      Api.get('/products',{
+        id: pid
+      }).then((res) => {
+        let info = res[0];
+        for(var field in form){
+          let value = info[field];
+          if (FORM_SCHEMA[field] == "dropdown") {
+            const value = mainOptions[field].filter((data) => data.id == info[field])
+            inputs[field] = value[0]
+          } else if (FORM_SCHEMA[field] == "file") {
+            const images = info['product_images'];
+            inputs['image'] = {
+              'saved': images
+            }
+          } else {
+            inputs[field] = value
+          }
+        }
+        return inputs;
+      }).then((res) => {
+        setForm(res)
+        setShowForm(true);
+      })
+    }
+  }
 
   useEffect(() => {
     let newErrors = {}
-
     Object.keys(form).map((field, index) => {
       newErrors[field] = {
         error: false,
@@ -162,9 +176,11 @@ const Edit = ({classes}) => {
       }
     })
     setErrors(newErrors);
-    setShowForm(true);
-  }, [])
 
+   loadFormOption()
+
+  }, [pid, showForm])
+  
   return showForm && (
     <AdminLayoutTemplate>
       <div className={classes.root}>
@@ -177,6 +193,7 @@ const Edit = ({classes}) => {
           onSubmit={handleSubmit} 
           formSubmit={handleSubmit}
           formCancel={handleCancel}
+          onImageDelete={markUserImageDelete}
           type="edit"
           snack={snack}
           onCloseSnack={onCloseSnack}

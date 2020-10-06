@@ -25,7 +25,7 @@ const styles = (theme) => ({
   },
 });
 
-const FileUploader = ({classes={}, onSave}) => {
+const FileUploader = ({classes={}, onSave, files}) => {
   const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false)
@@ -47,9 +47,10 @@ const FileUploader = ({classes={}, onSave}) => {
       <DropzoneDialog
         open={open}
         onSave={handleSave.bind(this)}
-        acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+        acceptedFiles={['image/jpeg', 'image/png']}
         showPreviews={true}
-        maxFileSize={5000000}
+        maxFileSize={2000000}
+        files={files}
         onClose={handleClose.bind(this)}
       />
     </FormControl>
@@ -59,6 +60,7 @@ const FileUploader = ({classes={}, onSave}) => {
 FileUploader.protoType = {
   classes: T.object,
   onSave: T.func,
+  files: T.array,
 }
 
 export default withStyles(styles)(FileUploader);

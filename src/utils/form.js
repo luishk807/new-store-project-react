@@ -1,7 +1,4 @@
 import { FORM_SCHEMA } from '../config';
-import { CategorySample } from '../constants/samples/admin/categories/CategorySample';
-import { BrandsSample } from '../constants/samples/admin/brands/BrandsSample';
-import { VendorSample } from '../constants/samples/admin/vendors/VendorSample';
 import Api from '../services/api';
 
 export const validateForm = async(name = null, value = null, ignore = []) => {

@@ -18,6 +18,9 @@ const styles = (theme) => ({
   },
   item: {
     padding: 5
+  },
+  mainImage: {
+    width: 150,
   }
 });
 
@@ -49,6 +52,7 @@ const Index = ({classes}) => {
   const loadProducts = async() => {
     const getProducts = await Api.get("/products");
     const productHtml = getProducts.map((product, index) => {
+      const main_image = product.product_images.length > 0 ? product.product_images[0].img_url : null
       return (
         <Grid item key={index} lg={12} className={classes.item}>
           <Grid container>
@@ -56,7 +60,7 @@ const Index = ({classes}) => {
              {index + 1}
             </Grid>
             <Grid item lg={4} xs={12}>
-              image
+              <img className={classes.mainImage} src={`${process.env.IMAGE_URL}/${main_image}`} />
             </Grid>
             <Grid item lg={2} xs={12}>
               <Link href="products/[pid]" as={`products/${product.id}`}>

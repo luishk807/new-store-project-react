@@ -107,7 +107,7 @@ const Form = ({
   const userImagesCont = userImages && userImages.length ? userImages.map((data, index) => {
     return (
       <GridListTile key={index} cols={1}>
-        <img src={`${process.env.BACKEND_URL}/images/products/${data.img_url}`} alt />
+        <img src={`${process.env.IMAGE_URL}/${data.img_url}`} alt />
         <GridListTileBar
           titlePosition="top"
           actionIcon={

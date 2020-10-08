@@ -7,8 +7,27 @@ export const FORM_TYPE = {
   textArea: 'textarea',
 }
 
+export const OPTIONS_DROP = {
+  STATUS: {
+    key: 'status',
+    option: 'statuses'
+  },
+  BRAND: {
+    key: 'brand',
+    option: 'brands',
+  },
+  CATEGORY: {
+    key: 'category',
+    option: 'categories',
+  },
+  VENDOR: {
+    key: 'vendor',
+    option: 'vendors',
+  }
+}
 export const FORM_SCHEMA = {
   name: FORM_TYPE.text,
+  status: FORM_TYPE.drop,
   email: FORM_TYPE.text,
   stock: FORM_TYPE.number,
   amount: FORM_TYPE.number,

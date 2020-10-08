@@ -7,15 +7,15 @@ import {
 } from '@material-ui/core';
 
 import { 
-  getProducts,
-  getProductById,
-  saveProduct,
-} from '../../../api/admin/products';
+  getBrands,
+  getBrandById,
+  saveBrand,
+} from '../../../api/admin/brands';
 import Api from '../../../services/api';
 import { validateForm, loadMainOptions } from '../../../utils/form';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import Form from '../../../components/common/Form';
-import { FORM_SCHEMA } from '../../../config';
+import { FORM_SCHEMA, OPTIONS_DROP } from '../../../config';
 
 const styles = (theme) => ({
   root: {
@@ -30,7 +30,7 @@ const styles = (theme) => ({
 
 const Edit = ({classes}) => {
   const router = useRouter()
-  const pid = router.query.pid;
+  const bid = router.query.bid;
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [imageDelete, setImageDelete] = useState({})
@@ -41,14 +41,7 @@ const Edit = ({classes}) => {
   });
   const [form, setForm] = useState({
     name: null,
-    stock: null,
-    amount: null,
-    category: null,
-    brand: null,
-    model: null,
-    code: null,
-    description: null,
-    vendor: null,
+    status: null,
     image: {
       values: [],
       open: false,
@@ -66,7 +59,7 @@ const Edit = ({classes}) => {
   }
 
   const handleCancel = () => {
-    window.location.href='/admin/products';
+    window.location.href='/admin/brands';
   }
 
   const handleSubmit = async (e) => {
@@ -86,14 +79,14 @@ const Edit = ({classes}) => {
       setSnack({
         severity: 'error',
         open: true,
-        text: `Unable to Add Product, ${i} is required`
+        text: `Unable to Add Brand, ${i} is required`
       })
     } else {
       const formSubmit = form;
       formSubmit['saved'] = imageDelete;
       delete formSubmit.image.saved
       console.log("submitting", formSubmit)
-      const confirm = await saveProduct(pid, formSubmit)
+      const confirm = await saveBrand(bid, formSubmit)
       console.log(confirm)
       setSnack({
         severity: confirm.data.data ? 'success' : 'error',
@@ -140,19 +133,20 @@ const Edit = ({classes}) => {
   const loadFormOption = async() => {
     let inputs = {}
     const mainOptions = await loadMainOptions();
-    console.log('iotion', mainOptions)
-    if (pid) {
-      Api.get('/products',{
-        id: pid
+    console.log("main", mainOptions)
+    if (bid) {
+      Api.get('/brands',{
+        id: bid
       }).then((res) => {
         let info = res[0];
+        console.log(info,'info')
         for(var field in form){
           let value = info[field];
           if (FORM_SCHEMA[field] == "dropdown") {
             const value = mainOptions[field].filter((data) => data.id == info[field])
             inputs[field] = value[0]
           } else if (FORM_SCHEMA[field] == "file") {
-            const images = info['product_images'];
+            const images = info['img'];
             inputs['image'] = {
               'saved': images
             }
@@ -180,13 +174,13 @@ const Edit = ({classes}) => {
 
    loadFormOption()
 
-  }, [pid, showForm])
+  }, [bid, showForm])
   
   return showForm && (
     <AdminLayoutTemplate>
       <div className={classes.root}>
         <Form 
-          title="Product" 
+          title="Brand" 
           fileOnSave={handleSave} 
           fields={form} 
           errors={errors} 

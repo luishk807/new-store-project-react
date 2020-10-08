@@ -79,7 +79,7 @@ const Header = ({classes, data}) => {
           <IconButton onClick={handleMobileMenu} className={classes.menuButton} color="inherit" aria-label="Menu">
             <MenuIcon />
           </IconButton>
-          <div className={`${classes.title} d-none d-sm-block`}><Link href="/"><img src="/images/logo-white.png" alt="" /></Link></div>
+          <div className={`${classes.title} d-none d-sm-block`}><Link href="/admin/home"><img src="/images/logo-white.png" alt="" /></Link></div>
           <div className={classes.grow} />
           <Button href="/login" color="inherit" className='d-none d-sm-block'><PermIdentityOutlinedIcon style={{ fontSize: 40 }} /></Button>
         </Toolbar>

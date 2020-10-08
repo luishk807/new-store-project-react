@@ -22,6 +22,7 @@ import FileUploader from './FileUploader';
 import { FORM_SCHEMA } from '../../config';
 import Typography from './Typography';
 import Snackbar from './Snackbar';
+import { getImageUrlByType } from '../../utils/form';
 
 const styles = (theme) => ({
   root: {
@@ -86,16 +87,18 @@ const Form = ({
   formCancel: handleCancel,
   onCloseSnack,
   onImageDelete,
+  fileLimit,
 }) => {
   const [formOptions, setFormOptions] = useState({
-    vendor: {},
-    brand: {},
-    category: {}
+    vendors: {},
+    brands: {},
+    categorys: {}
   })
+  console.log(fields)
   const [useFormOption, setUseFormOptions] = useState(false)
   const [formTitle, setFormTitle] = useState('');
   const [formBtnTitle, setFormBtnTitle] = useState('');
-  const userImages = fields['image'].saved;
+  const userImages = fields['image'] && 'saved' in fields['image'] ? fields['image'].saved : null;
   
   const imageClickHandle = (e) => {
     const markDelete = userImages[e];
@@ -103,11 +106,12 @@ const Form = ({
     userImagesCont.splice(e,1);
     onImageDelete(markDelete)
   }
-
-  const userImagesCont = userImages && userImages.length ? userImages.map((data, index) => {
+  
+  const imgMainUrl = getImageUrlByType(title);
+  const userImagesCont = userImages && typeof userImages == "object" ? userImages.map((data, index) => {
     return (
       <GridListTile key={index} cols={1}>
-        <img src={`${process.env.IMAGE_URL}/${data.img_url}`} alt />
+        <img src={`${imgMainUrl}/${data.img_url}`} />
         <GridListTileBar
           titlePosition="top"
           actionIcon={
@@ -120,7 +124,23 @@ const Form = ({
         />
       </GridListTile>
     )
-  }) : [];
+  }) : userImages ? (
+    (
+      <GridListTile cols={1}>
+        <img src={`${imgMainUrl}/${userImages}`} />
+        <GridListTileBar
+          titlePosition="top"
+          actionIcon={
+            <IconButton className={classes.icon} onClick={()=>imageClickHandle(index)}>
+              <DeleteOutlinedIcon />
+            </IconButton>
+          }
+          actionPosition="right"
+          className={classes.titleBar}
+        />
+      </GridListTile>
+    )
+  ) : [];
 
   const formFields = Object.keys(fields).map((field, index) => {
     switch(FORM_SCHEMA[field]) {
@@ -151,7 +171,7 @@ const Form = ({
                 name={field}
                 options={formOptions[field]}
                 onChange={(e, value) => {
-                  formOnChange(null, { name: {field}, value: value})
+                  formOnChange(null, { name: field, value: value})
                 }}
                 getOptionLabel={(option) => 'name' in option ? option.name : option.first_name + " " + option.last_name}
                 defaultValue={fields[field]}
@@ -178,7 +198,7 @@ const Form = ({
               )
             }
 
-            <FileUploader onSave={fileOnSave}/>
+            <FileUploader fileLimit={fileLimit} onSave={fileOnSave}/>
           </Grid>
         )
         break;
@@ -204,12 +224,13 @@ const Form = ({
   
   useEffect(() => {
     const loadFormOption = async() => {
-      const {category, vendor, brand} = await loadMainOptions();
+      const {category, vendor, brand, status} = await loadMainOptions();
 
       setFormOptions({
         'category': category,
         'vendor': vendor,
-        'brand': brand
+        'brand': brand,
+        'status': status,
       })
 
       setUseFormOptions(true)
@@ -277,6 +298,7 @@ Form.protoTypes = {
   fields: T.object,
   onChange: T.func,
   fileOnSave: T.func,
+  fileLimit: T.bool,
   formSubmit: T.func,
   onImageDelete: T.func,
   formCancel: T.func,

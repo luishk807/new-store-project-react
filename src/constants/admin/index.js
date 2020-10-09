@@ -5,6 +5,12 @@ export const ADMIN_SECTIONS = {
     url: 'vendors',
     option: 'vendor'
   },
+  'product': {
+    name: 'Product',
+    key: 'product',
+    url: 'products',
+    option: 'product'
+  },
   'brand': {
     name: 'Brand',
     key: 'brand',

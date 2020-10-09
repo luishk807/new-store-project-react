@@ -25,7 +25,7 @@ const styles = (theme) => ({
   },
 });
 
-const Edit = ({classes, id, name, entryForm}) => {
+const EditForm = ({classes, id, name, entryForm}) => {
   const router = useRouter()
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
@@ -128,10 +128,10 @@ const Edit = ({classes, id, name, entryForm}) => {
         for(var field in form){
           let value = info[field];
           if (FORM_SCHEMA[field] == "dropdown") {
-            const value = mainOptions[field].filter((data) => data.id == info[field])
+            const value = mainOptions[field].filter((data) => 'id' in data ? data.id == info[field] : data.value == info[field])
             inputs[field] = value[0]
           } else if (FORM_SCHEMA[field] == "file") {
-            const images = info['img'];
+            const images = 'product_images' in info ? info['product_images'] : info['img'];
             inputs['image'] = {
               'saved': images
             }
@@ -183,11 +183,11 @@ const Edit = ({classes, id, name, entryForm}) => {
   );
 }
 
-Edit.protoTypes = {
+EditForm.protoTypes = {
   classes: T.object,
   id: T.number,
   name: T.string,
   entryForm: T.object,
 }
 
-export default withStyles(styles)(Edit);
+export default withStyles(styles)(EditForm);

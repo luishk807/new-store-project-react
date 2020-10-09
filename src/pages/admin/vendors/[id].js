@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-import Edit from '../../../components/common/Form/Edit';
+import EditForm from '../../../components/common/Form/EditForm';
 
 const styles = (theme) => ({
   root: {
@@ -19,7 +19,7 @@ const styles = (theme) => ({
   },
 });
 
-const EditForm = ({classes}) => {
+const Edit = ({classes}) => {
    const router = useRouter()
    const id = router.query.id;
 
@@ -36,12 +36,12 @@ const EditForm = ({classes}) => {
   }
   
   return (
-    <Edit name={ADMIN_SECTIONS.vendor.key} id={id} entryForm={form} />
+    <EditForm name={ADMIN_SECTIONS.vendor.key} id={id} entryForm={form} />
   );
 }
 
-EditForm.protoTypes = {
+Edit.protoTypes = {
   classes: T.object
 }
 
-export default withStyles(styles)(EditForm);
+export default withStyles(styles)(Edit);

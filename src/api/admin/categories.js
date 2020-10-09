@@ -1,10 +1,10 @@
 import Api from '../../services/api';
 
-export const getProducts = () => {
-  return Api.get('/products');
+export const getCategories = () => {
+  return Api.get('/categories');
 }
 
-export const getProductById = (id) => {
+export const getCategoryById = (id) => {
   if (!id) {
     return;
   }
@@ -12,18 +12,17 @@ export const getProductById = (id) => {
   const data = {
     id: id
   }
-  
-  return Api.get('/products', data);
+  return Api.get('/categories', data);
 }
 
-export const deleteProduct = (id) => {
+export const deleteCategory = (id) => {
   const config = {
     'cotent-Type': 'application/x-www-form-urlencoded'
   }
-  return Api.delete(`/products/${id}`, {}, config);
+  return Api.delete(`/categories/${id}`, {}, config);
 }
 
-export const saveProduct = (id, data) => {
+export const saveCategory = (id, data) => {
   if (!Object.keys(data).length) {
     return;
   }
@@ -34,20 +33,22 @@ export const saveProduct = (id, data) => {
   const config = {
     'cotent-Type': 'application/x-www-form-urlencoded'
   }
-  return Api.save(`/products/${id}`, form, config);
+  return Api.save(`/categories/${id}`, form, config);
 }
 
-
-export const addProduct = (data) => {
+export const addCategory = (data) => {
   if (!Object.keys(data).length) {
     return;
   }
+
   const form = {
     ...data,
     'image': data.image.files
   }
+
   const config = {
-    'cotent-Type': 'application/x-www-form-urlencoded'
+    'Content-Type': 'application/json',
+    'Content-Length': Object.keys(data).length
   }
-  return Api.post('/products', form, config);
+  return Api.post('/categories', form, config);
 }

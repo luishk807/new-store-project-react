@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
-import { useRouter } from 'next/router';
 import { 
   withStyles,
   Grid,
 } from '@material-ui/core';
 
 import { 
-  getProducts,
-  getProductById,
-  saveProduct,
-} from '../../../api/admin/products';
-import Api from '../../../services/api';
+  getCategories,
+  getCategoryById,
+  addCategory,
+} from '../../../api/admin/categories';
+import { OPTIONS_DROP } from '../../../config';
 import { validateForm, loadMainOptions } from '../../../utils/form';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import Form from '../../../components/common/Form';
-import { FORM_SCHEMA } from '../../../config';
 
 const styles = (theme) => ({
   root: {
@@ -28,12 +26,9 @@ const styles = (theme) => ({
   },
 });
 
-const Edit = ({classes}) => {
-  const router = useRouter()
-  const pid = router.query.pid;
+const Add = ({classes}) => {
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
-  const [imageDelete, setImageDelete] = useState({})
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -41,18 +36,7 @@ const Edit = ({classes}) => {
   });
   const [form, setForm] = useState({
     name: null,
-    stock: null,
-    amount: null,
-    category: null,
-    brand: null,
-    model: null,
-    code: null,
-    description: null,
-    vendor: null,
-    image: {
-      values: [],
-      open: false,
-    }
+    icon: null
   })
   
   const formOnChange = (e, edrop = null) => {
@@ -66,14 +50,14 @@ const Edit = ({classes}) => {
   }
 
   const handleCancel = () => {
-    window.location.href='/admin/products';
+    window.location.href='/admin/categories'
   }
 
   const handleSubmit = async (e) => {
     let errorFound = false;
     let key = '';
     for (var i in form) {
-      errorFound = await validateForm(i, form[i], ['image']);
+      errorFound = await validateForm(i, form[i]);
       key = i;
       if (!errorFound){
         saveErrors(name)
@@ -86,21 +70,17 @@ const Edit = ({classes}) => {
       setSnack({
         severity: 'error',
         open: true,
-        text: `Unable to Add Product, ${i} is required`
+        text: `Unable to Add Category, ${i} is required`
       })
     } else {
-      const formSubmit = form;
-      formSubmit['saved'] = imageDelete;
-      delete formSubmit.image.saved
-      console.log("submitting", formSubmit)
-      const confirm = await saveProduct(pid, formSubmit)
-      console.log(confirm)
-      setSnack({
-        severity: confirm.data.data ? 'success' : 'error',
-        open: true,
-        text: confirm.data.message,
+      addCategory(form).then((res) => {
+        setSnack({
+          severity: 'success',
+          open: true,
+          text: 'Category Added',
+        })
+        handleCancel();
       })
-      handleCancel()
     }
   }
   const saveErrors = async (key, err = false, str = '') => {
@@ -121,55 +101,22 @@ const Edit = ({classes}) => {
     setForm({
       ...form,
       image: {
-        ...form.image,
         open: false,
         files: files,
       }
     })
   }
-  
-  const markUserImageDelete = async(images) => {
-    const index = Object.keys(imageDelete).length;
-    setImageDelete(prevValue => ({
-      ...prevValue,
-      [index] : images
-    }))
-  }
-
 
   const loadFormOption = async() => {
-    let inputs = {}
-    const mainOptions = await loadMainOptions();
-    console.log('iotion', mainOptions)
-    if (pid) {
-      Api.get('/products',{
-        id: pid
-      }).then((res) => {
-        let info = res[0];
-        for(var field in form){
-          let value = info[field];
-          if (FORM_SCHEMA[field] == "dropdown") {
-            const value = mainOptions[field].filter((data) => data.id == info[field])
-            inputs[field] = value[0]
-          } else if (FORM_SCHEMA[field] == "file") {
-            const images = info['product_images'];
-            inputs['image'] = {
-              'saved': images
-            }
-          } else {
-            inputs[field] = value
-          }
-        }
-        return inputs;
-      }).then((res) => {
-        setForm(res)
-        setShowForm(true);
-      })
-    }
+    setForm({
+      ...form,
+    })
+    setShowForm(true);
   }
 
   useEffect(() => {
     let newErrors = {}
+
     Object.keys(form).map((field, index) => {
       newErrors[field] = {
         error: false,
@@ -177,25 +124,23 @@ const Edit = ({classes}) => {
       }
     })
     setErrors(newErrors);
-
    loadFormOption()
-
-  }, [pid, showForm])
+  }, [])
   
   return showForm && (
     <AdminLayoutTemplate>
       <div className={classes.root}>
         <Form 
-          title="Product" 
+          title="Category" 
           fileOnSave={handleSave} 
+          fileLimit={true}
           fields={form} 
           errors={errors} 
           onChange={formOnChange} 
           onSubmit={handleSubmit} 
           formSubmit={handleSubmit}
           formCancel={handleCancel}
-          onImageDelete={markUserImageDelete}
-          type="edit"
+          type="submit"
           snack={snack}
           onCloseSnack={onCloseSnack}
         />
@@ -204,8 +149,8 @@ const Edit = ({classes}) => {
   );
 }
 
-Edit.protoTypes = {
+Add.protoTypes = {
   classes: T.object
 }
 
-export default withStyles(styles)(Edit);
+export default withStyles(styles)(Add);

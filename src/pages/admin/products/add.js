@@ -118,7 +118,7 @@ const Add = ({classes}) => {
   }
 
   const loadFormOption = async() => {
-    const {category, vendor, brand} = await loadMainOptions();
+    const {category, vendor, brand, status} = await loadMainOptions();
     setForm({
       ...form,
       'category': category[0],

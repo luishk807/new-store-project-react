@@ -1,4 +1,4 @@
-import { FORM_SCHEMA, OPTIONS_DROP } from '../config';
+import { FORM_SCHEMA, OPTIONS_DROP, CATEGORY_ICONS } from '../config';
 import Api from '../services/api';
 
 export const getImageUrlByType = (type) => {
@@ -19,7 +19,7 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
       console.log(ignore, name)
       return true
   }
-console.log("name", name)
+
   switch(FORM_SCHEMA[name]){
     case "textfield":
     case "textarea": {
@@ -39,7 +39,7 @@ console.log("name", name)
       break;
     }
     case "dropdown": {
-      if(value && value.id){
+      if(value && (value.id || value.name)){
         return true
       }
       return false;
@@ -66,12 +66,14 @@ export const loadMainOptions = async(option = null) => {
     const vendor = await Api.get('/vendors');
     const brand = await Api.get('/brands');
     const status = await Api.get('/statuses');
-    
+    const icon = await CATEGORY_ICONS;
+    console.log(icon)
     return {
       category,
       brand,
       vendor,
       status,
+      icon,
     }
   }
 }

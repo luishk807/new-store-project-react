@@ -19,7 +19,7 @@ import {
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import { loadMainOptions } from '../../utils/form';
 import FileUploader from './FileUploader';
-import { FORM_SCHEMA } from '../../config';
+import { FORM_SCHEMA, CATEGORY_ICONS } from '../../config';
 import Typography from './Typography';
 import Snackbar from './Snackbar';
 import { getImageUrlByType } from '../../utils/form';
@@ -224,13 +224,14 @@ const Form = ({
   
   useEffect(() => {
     const loadFormOption = async() => {
-      const {category, vendor, brand, status} = await loadMainOptions();
-
+      const {category, vendor, brand, status, icon} = await loadMainOptions();
+      
       setFormOptions({
         'category': category,
         'vendor': vendor,
         'brand': brand,
         'status': status,
+        'icon': icon,
       })
 
       setUseFormOptions(true)

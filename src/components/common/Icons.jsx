@@ -29,6 +29,19 @@ import Youtube from '../../../public/images/svg/social-youtube.svg';
 import Instagram from '../../../public/images/svg/social-instagram.svg';
 import Whatssap from '../../../public/images/svg/social-whatssap.svg';
 import Chat from '../../../public/images/svg/chat.svg';
+import Clothe from '../../../public/images/svg/categories/cloth.svg';
+import Toy from '../../../public/images/svg/categories/toy.svg';
+import Appliance from '../../../public/images/svg/categories/appliance.svg';
+import Beauty from '../../../public/images/svg/categories/beauty.svg';
+import Computer from '../../../public/images/svg/categories/computer.svg';
+import Furniture from '../../../public/images/svg/categories/furniture.svg';
+import Sport from '../../../public/images/svg/categories/sport.svg';
+import Baby from '../../../public/images/svg/categories/baby.svg';
+import Car from '../../../public/images/svg/categories/car.svg';
+import Garden from '../../../public/images/svg/categories/garden.svg';
+import Health from '../../../public/images/svg/categories/health.svg';
+import Broken from '../../../public/images/svg/categories/broken.svg';
+import Jewerly from '../../../public/images/svg/categories/jewerly.svg';
 
 import Typography from './Typography';
 
@@ -100,6 +113,47 @@ const Icons = ({classes, name}) => {
       case 'instagram':
         return <Intangram className={classes.icon}/>
       break;
+      case 'clothe':
+        return <Clothe className={classes.icon} />
+      break;
+      case 'car':
+        return <Car className={classes.icon} />
+      break;
+      case 'baby':
+        return <Baby className={classes.icon} />
+      break;
+      case 'sport':
+        return <Sport className={classes.icon} />
+      break;
+      case 'garden':
+        return <Garden className={classes.icon} />
+      break;
+      case 'toy':
+        return <Toy className={classes.icon} />
+      break;
+      case 'fitness':
+        return <Fitness className={classes.icon} />
+      break;
+      case 'health':
+        return <Health className={classes.icon} />
+      break;
+      case 'appliance':
+        return <Appliance className={classes.icon} />
+      break;
+      case 'beauty':
+        return <Beauty className={classes.icon} />
+      break;
+      case 'computer':
+        return <Computer className={classes.icon} />
+      break;
+      case 'furniture':
+        return <Furniture className={classes.icon} />
+      break;
+      case 'jewerly':
+        return <Jewerly className={classes.icon} />
+      break;
+      default:
+        return <Broken className={classes.icon} />
     }
   }
   return getIcon();

@@ -26,14 +26,11 @@ export const saveCategory = (id, data) => {
   if (!Object.keys(data).length) {
     return;
   }
-  const form = {
-    ...data,
-    'image': data.image.files
-  }
+
   const config = {
     'cotent-Type': 'application/x-www-form-urlencoded'
   }
-  return Api.save(`/categories/${id}`, form, config);
+  return Api.save(`/categories/${id}`, data, config);
 }
 
 export const addCategory = (data) => {
@@ -41,14 +38,9 @@ export const addCategory = (data) => {
     return;
   }
 
-  const form = {
-    ...data,
-    'image': data.image.files
-  }
-
   const config = {
     'Content-Type': 'application/json',
     'Content-Length': Object.keys(data).length
   }
-  return Api.post('/categories', form, config);
+  return Api.post('/categories', data, config);
 }

@@ -25,7 +25,8 @@ export const formatFormData = (form) => {
         })
       }
     } else if (FORM_SCHEMA[i] === "dropdown") {
-      formData.append(i,form[i].id)
+      const dropValue = 'id' in form[i] ? form[i].id : form[i].value;
+      formData.append(i,dropValue)
     } else if (i == "saved") {
       formData.append(i, JSON.stringify(form[i]))
     } else {

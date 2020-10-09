@@ -11,10 +11,16 @@ import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTe
 import { deleteCategory } from '../../../api/admin/categories';
 import Api from '../../../services/api';
 import Snackbar from '../../../components/common/Snackbar';
+import Icons from '../../../components/common/Icons';
 
 const styles = (theme) => ({
   root: {
     padding: 10,
+  },
+  categoryIcon: {
+    width: 80,
+    height: 80,
+    fill: '#000',
   },
   item: {
     padding: 5
@@ -59,11 +65,14 @@ const Index = ({classes}) => {
              {index + 1}
             </Grid>
             <Grid item lg={3} xs={12}>
+               <Icons name={category.icon} classes={{icon: classes.categoryIcon}}/>
+            </Grid>
+            <Grid item lg={3} xs={12}>
               <Link href="categories/[cid]" as={`categories/${category.id}`}>
                 {category.name}
               </Link>
             </Grid>
-            <Grid item lg={8} xs={12}>
+            <Grid item lg={5} xs={12}>
               [
                 <Button onClick={()=> { delCategory(category.id) }}>
                   delete
@@ -105,9 +114,12 @@ const Index = ({classes}) => {
 
             </Grid>
             <Grid item lg={3} xs={12}>
+              icon
+            </Grid>
+            <Grid item lg={3} xs={12}>
               name
             </Grid>
-            <Grid item lg={8} xs={12}>
+            <Grid item lg={5} xs={12}>
               action
             </Grid>
           </Grid>

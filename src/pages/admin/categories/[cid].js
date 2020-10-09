@@ -9,7 +9,7 @@ import {
 import { 
   getCategories,
   getCategoryById,
-  addCategory,
+  saveCategory,
 } from '../../../api/admin/categories';
 import Api from '../../../services/api';
 import { validateForm, loadMainOptions } from '../../../utils/form';
@@ -80,10 +80,8 @@ const Edit = ({classes}) => {
       })
     } else {
       const formSubmit = form;
-      formSubmit['saved'] = imageDelete;
-      delete formSubmit.image.saved
       console.log("submitting", formSubmit)
-      const confirm = await saveBrand(bid, formSubmit)
+      const confirm = await saveCategory(cid, formSubmit)
       console.log(confirm)
       setSnack({
         severity: confirm.data.data ? 'success' : 'error',
@@ -139,7 +137,7 @@ const Edit = ({classes}) => {
         for(var field in form){
           let value = info[field];
           if (FORM_SCHEMA[field] == "dropdown") {
-            const value = mainOptions[field].filter((data) => data.id == info[field])
+            const value = mainOptions[field].filter((data) => 'id' in data ? data.id == info[field] : data.value == info[field])
             inputs[field] = value[0]
           } else if (FORM_SCHEMA[field] == "file") {
             const images = info['img'];

@@ -92,9 +92,7 @@ const Edit = ({classes}) => {
       const formSubmit = form;
       formSubmit['saved'] = imageDelete;
       delete formSubmit.image.saved
-      console.log("submitting", formSubmit)
       const confirm = await saveProduct(pid, formSubmit)
-      console.log(confirm)
       setSnack({
         severity: confirm.data.data ? 'success' : 'error',
         open: true,
@@ -140,7 +138,6 @@ const Edit = ({classes}) => {
   const loadFormOption = async() => {
     let inputs = {}
     const mainOptions = await loadMainOptions();
-    console.log('iotion', mainOptions)
     if (pid) {
       Api.get('/products',{
         id: pid

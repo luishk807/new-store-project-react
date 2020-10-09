@@ -22,6 +22,7 @@ import FileUploader from './FileUploader';
 import { FORM_SCHEMA, CATEGORY_ICONS } from '../../config';
 import Typography from './Typography';
 import Snackbar from './Snackbar';
+import { ADMIN_SECTIONS } from '../../constants/admin';
 import { getImageUrlByType } from '../../utils/form';
 
 const styles = (theme) => ({
@@ -224,14 +225,16 @@ const Form = ({
   
   useEffect(() => {
     const loadFormOption = async() => {
-      const {category, vendor, brand, status, icon} = await loadMainOptions();
+      const section = ADMIN_SECTIONS
+      const options = await loadMainOptions();
       
       setFormOptions({
-        'category': category,
-        'vendor': vendor,
-        'brand': brand,
-        'status': status,
-        'icon': icon,
+        [section.category.option]: options.category,
+        [section.vendor.option]: options.vendor,
+        [section.brand.option]: options.brand,
+        [section.status.option]: options.status,
+        [section.workRole.option]: options.position,
+        'icon': options.icon,
       })
 
       setUseFormOptions(true)

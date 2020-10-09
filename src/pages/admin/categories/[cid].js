@@ -15,7 +15,7 @@ import Api from '../../../services/api';
 import { validateForm, loadMainOptions } from '../../../utils/form';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import Form from '../../../components/common/Form';
-import { FORM_SCHEMA, OPTIONS_DROP } from '../../../config';
+import { FORM_SCHEMA } from '../../../config';
 
 const styles = (theme) => ({
   root: {
@@ -80,9 +80,7 @@ const Edit = ({classes}) => {
       })
     } else {
       const formSubmit = form;
-      console.log("submitting", formSubmit)
       const confirm = await saveCategory(cid, formSubmit)
-      console.log(confirm)
       setSnack({
         severity: confirm.data.data ? 'success' : 'error',
         open: true,
@@ -133,7 +131,6 @@ const Edit = ({classes}) => {
         id: cid
       }).then((res) => {
         let info = res[0];
-        console.log(info,'info')
         for(var field in form){
           let value = info[field];
           if (FORM_SCHEMA[field] == "dropdown") {

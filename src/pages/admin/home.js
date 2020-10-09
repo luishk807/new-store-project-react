@@ -34,6 +34,11 @@ const Home = ({classes}) => {
             Categories
           </Link>
         </Grid>
+        <Grid item lg={12} xs={12}>
+          <Link href="vendors">
+            Vendors
+          </Link>
+        </Grid>
       </Grid>
     </AdminLayoutTemplate>
   );

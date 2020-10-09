@@ -5,14 +5,12 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import { 
-  getProducts,
-  getProductById,
-  addProduct,
-} from '../../../api/admin/products';
+import { addItem } from '../../../api/admin'
 import { validateForm, loadMainOptions } from '../../../utils/form';
+import { ADMIN_SECTIONS } from '../../../constants/admin';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import Form from '../../../components/common/Form';
+import { FORM_SCHEMA } from '../../../config';
 
 const styles = (theme) => ({
   root: {
@@ -25,7 +23,8 @@ const styles = (theme) => ({
   },
 });
 
-const Add = ({classes}) => {
+const AddForm = ({classes, name, entryForm}) => {
+  const section = ADMIN_SECTIONS[name];
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [snack, setSnack] = useState({
@@ -33,21 +32,7 @@ const Add = ({classes}) => {
     open: false,
     text: '',
   });
-  const [form, setForm] = useState({
-    name: null,
-    stock: null,
-    amount: null,
-    category: null,
-    brand: null,
-    model: null,
-    code: null,
-    description: null,
-    vendor: null,
-    image: {
-      values: [],
-      open: false,
-    }
-  })
+  const [form, setForm] = useState(entryForm)
   
   const formOnChange = (e, edrop = null) => {
     const { name, value } = edrop ? edrop : e.target;
@@ -60,7 +45,7 @@ const Add = ({classes}) => {
   }
 
   const handleCancel = () => {
-    window.location.href='/admin/products'
+    window.location.href=`/admin/${section.url}`
   }
 
   const handleSubmit = async (e) => {
@@ -80,14 +65,15 @@ const Add = ({classes}) => {
       setSnack({
         severity: 'error',
         open: true,
-        text: `Unable to Add Product, ${i} is required`
+        text: `Unable to Add ${section.name}, ${i} is required`
       })
     } else {
-      addProduct(form).then((res) => {
+      console.log("isbmititng", form)
+      addItem(ADMIN_SECTIONS[name].url, form).then((res) => {
         setSnack({
           severity: 'success',
           open: true,
-          text: 'Product Added',
+          text: `${section.name} Added`,
         })
         handleCancel();
       })
@@ -118,13 +104,17 @@ const Add = ({classes}) => {
   }
 
   const loadFormOption = async() => {
-    const {category, vendor, brand, status} = await loadMainOptions();
-    setForm({
-      ...form,
-      'category': category[0],
-      'vendor': vendor[0],
-      'brand': brand[0]
+    const options = await loadMainOptions();
+
+    Object.keys(entryForm).forEach(field => {
+      if (FORM_SCHEMA[field] == "dropdown" ) {
+        setForm({
+          ...form,
+          [field]:options[field][0]
+        })
+      }
     })
+
     setShowForm(true);
   }
 
@@ -145,7 +135,7 @@ const Add = ({classes}) => {
     <AdminLayoutTemplate>
       <div className={classes.root}>
         <Form 
-          title="Product" 
+          title={section.name} 
           fileOnSave={handleSave} 
           fields={form} 
           errors={errors} 
@@ -162,8 +152,10 @@ const Add = ({classes}) => {
   );
 }
 
-Add.protoTypes = {
-  classes: T.object
+AddForm.protoTypes = {
+  classes: T.object,
+  name: T.string,
+  entryForm: T.object,
 }
 
-export default withStyles(styles)(Add);
+export default withStyles(styles)(AddForm);

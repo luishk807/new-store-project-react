@@ -10,7 +10,6 @@ import {
   getBrandById,
   addBrand,
 } from '../../../api/admin/brands';
-import { OPTIONS_DROP } from '../../../config';
 import { validateForm, loadMainOptions } from '../../../utils/form';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import Form from '../../../components/common/Form';

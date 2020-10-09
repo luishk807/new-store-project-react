@@ -85,9 +85,7 @@ const Edit = ({classes}) => {
       const formSubmit = form;
       formSubmit['saved'] = imageDelete;
       delete formSubmit.image.saved
-      console.log("submitting", formSubmit)
       const confirm = await saveBrand(bid, formSubmit)
-      console.log(confirm)
       setSnack({
         severity: confirm.data.data ? 'success' : 'error',
         open: true,
@@ -133,13 +131,11 @@ const Edit = ({classes}) => {
   const loadFormOption = async() => {
     let inputs = {}
     const mainOptions = await loadMainOptions();
-    console.log("main", mainOptions)
     if (bid) {
       Api.get('/brands',{
         id: bid
       }).then((res) => {
         let info = res[0];
-        console.log(info,'info')
         for(var field in form){
           let value = info[field];
           if (FORM_SCHEMA[field] == "dropdown") {

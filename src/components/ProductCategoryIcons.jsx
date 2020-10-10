@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
 import { 
   withStyles,
@@ -10,6 +10,9 @@ import {
 } from '@material-ui/core';
 import { ProductGallerySample } from '../constants/samples/ProductCategoryIconsSample';
 import Icons from './common/Icons';
+
+import { ADMIN_SECTIONS } from '../constants/admin';
+import { getItems } from '../api';
 
 const styles = (theme) => ({
   root: {
@@ -35,20 +38,31 @@ const styles = (theme) => ({
 });
 
 const ProductCategoryIcons = ({classes, data}) => {
-  const categories = ProductGallerySample;
-  return (
+  const [categories, setCategories] = useState([]);
+
+  const getCategories = async() => {
+    const categories = await getItems(`/${ADMIN_SECTIONS.category.url}`);
+    console.log(categories)
+    setCategories(categories);
+  }
+
+  useEffect(() => {
+    getCategories();
+  }, [])
+
+  return categories && (
     <div className={classes.root}>
       <Grid container>
-        <Grid item>
+        <Grid item lg={12}>
           <List component="nav" aria-label="main mailbox folders">
             {
               categories && categories.map((data, index) => {
                 return (
                   <ListItem key={index} button className={classes.listItemCont}>
                     <ListItemIcon className={classes.listItemIcons}>
-                      <Icons name='carwheel' classes={{icon: classes.icon}} />
+                      <Icons name={data.icon} classes={{icon: classes.icon}} />
                     </ListItemIcon>
-                    <ListItemText primary="Inbox" />
+                    <ListItemText primary={data.name} />
                   </ListItem>
                 );
               })

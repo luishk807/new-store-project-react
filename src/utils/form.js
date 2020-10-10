@@ -75,7 +75,6 @@ export const loadMainOptions = async(option = null) => {
     const gender = await Api.get(`/genders`);
     const country = await Api.get(`/countries`);
     const icon = await CATEGORY_ICONS;
-    console.log(position)
     return {
       category,
       brand,

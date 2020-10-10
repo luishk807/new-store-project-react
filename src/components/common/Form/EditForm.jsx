@@ -6,7 +6,7 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import { saveItem } from '../../../api/admin';
+import { saveItem } from '../../../api';
 import Api from '../../../services/api';
 import { validateForm, loadMainOptions } from '../../../utils/form';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';

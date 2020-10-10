@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteItem } from '../../../api/admin';
+import { deleteItem } from '../../../api';
 import Api from '../../../services/api';
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import Snackbar from '../../../components/common/Snackbar';

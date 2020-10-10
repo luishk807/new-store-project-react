@@ -8,10 +8,11 @@ import {
 } from '@material-ui/core';
 
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteCategory } from '../../../api/admin/categories';
+import { deleteItem } from '../../../api';
 import Api from '../../../services/api';
 import Snackbar from '../../../components/common/Snackbar';
 import Icons from '../../../components/common/Icons';
+import { ADMIN_SECTIONS } from '../../../constants/admin';
 
 const styles = (theme) => ({
   root: {
@@ -39,7 +40,7 @@ const Index = ({classes}) => {
   });
 
   const delCategory = async(id) => {
-    deleteCategory(id).then((data) => {
+    deleteItem(ADMIN_SECTIONS.category.url, id).then((data) => {
       setSnack({
         severity: 'success',
         open: true,

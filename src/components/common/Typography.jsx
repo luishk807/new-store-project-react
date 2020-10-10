@@ -9,7 +9,7 @@ const styles = (theme) => ({
 
 });
 
-const Typography = ({className={}, children, color= "inherit", variant = null, component = "p", align = "left"}) => {
+const Typography = ({className="", children, color= "inherit", variant = null, component = "p", align = "left"}) => {
   return (
     <MuiTypography
       className={className}

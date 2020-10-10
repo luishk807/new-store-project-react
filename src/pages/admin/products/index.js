@@ -8,9 +8,10 @@ import {
 } from '@material-ui/core';
 
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteProduct } from '../../../api/admin/products';
+import { deleteItem } from '../../../api';
 import Api from '../../../services/api';
 import Snackbar from '../../../components/common/Snackbar';
+import { ADMIN_SECTIONS } from '../../../constants/admin';
 
 const styles = (theme) => ({
   root: {
@@ -33,7 +34,7 @@ const Index = ({classes}) => {
   });
 
   const delProduct = async(id) => {
-    deleteProduct(id).then((data) => {
+    deleteItem(ADMIN_SECTIONS.product.url, id).then((data) => {
       setSnack({
         severity: 'success',
         open: true,

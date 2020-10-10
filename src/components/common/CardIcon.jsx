@@ -19,6 +19,7 @@ const styles = (theme) => ({
     height: 180,
     width: 180,
   },
+  TypoRoot: {},
   link: {
     color: 'inherit',
   }
@@ -33,7 +34,7 @@ const CardIcon = ({classes, title, children, link="/"}) => {
               {children}
             </CardMedia>
             <CardContent>
-              <Typography align="center" variant="h5" component="h5">{title}</Typography>
+              <Typography className={classes.TypoRoot} align="center" variant="h5" component="h5">{title}</Typography>
             </CardContent>
           </Link>
         </CardActionArea>

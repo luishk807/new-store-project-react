@@ -16,6 +16,7 @@ import {
 import { 
   Autocomplete,
 } from '@material-ui/lab';
+import moment from 'moment'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import { loadMainOptions } from '../../utils/form';
 import FileUploader from './FileUploader';
@@ -24,6 +25,7 @@ import Typography from './Typography';
 import Snackbar from './Snackbar';
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import { getImageUrlByType } from '../../utils/form';
+import { removeCharacter } from '../../utils';
 
 const styles = (theme) => ({
   root: {
@@ -146,6 +148,7 @@ const Form = ({
   const formFields = Object.keys(fields).map((field, index) => {
     switch(FORM_SCHEMA[field]) {
       case "textfield":
+      case "email":
       case "number": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
@@ -157,7 +160,46 @@ const Form = ({
                 name={field} 
                 defaultValue={fields[field]}
                 onChange={formOnChange}
-                label={field} 
+                label={removeCharacter(field)} 
+              />
+            </FormControl>
+          </Grid>
+        )
+        break
+      }
+      case "password": {
+        return (
+          <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <TextField 
+                error={errors[field].error}
+                helperText={errors[field].text} 
+                variant="outlined" 
+                name={field} 
+                type="password"
+                defaultValue={fields[field]}
+                onChange={formOnChange}
+                label={removeCharacter(field)} 
+              />
+            </FormControl>
+          </Grid>
+        )
+        break
+      }
+      case "date": {
+        const initialDate = moment(new Date()).format('YYYY-DD-MM');
+        return (
+          <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <TextField 
+                error={errors[field].error}
+                helperText={errors[field].text} 
+                variant="outlined" 
+                name={field} 
+                type="date"
+                defaultValue={initialDate}
+                onChange={formOnChange}
+                label={removeCharacter(field)} 
               />
             </FormControl>
           </Grid>

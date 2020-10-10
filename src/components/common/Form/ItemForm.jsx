@@ -9,7 +9,7 @@ import {
 
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import { deleteItem, getItems } from '../../../api';
-import Api from '../../../services/api';
+
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import Snackbar from '../../../components/common/Snackbar';
 
@@ -26,22 +26,22 @@ const styles = (theme) => ({
 });
 
 const Index = ({classes}) => {
-  const selectedSection = ADMIN_SECTIONS.user;
-  const [users, setUsers] = useState(null);
+  const selectedSection = ADMIN_SECTIONS.brand;
+  const [items, setItems] = useState(null);
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
     text: '',
   });
 
-  const delUser = async(id) => {
-    deleteItem(selectedSection.url,id).then((data) => {
+  const delItem = async(id) => {
+    deleteItem(selectedSection.url, id).then((data) => {
       setSnack({
         severity: 'success',
         open: true,
         text: `${selectedSection.name} Deleted`,
       })
-      loadUsers()
+      loadItems()
     }).catch((err) => {
       setSnack({
         severity: 'error',
@@ -51,29 +51,29 @@ const Index = ({classes}) => {
     })
   }
 
-  const loadUsers = async() => {
-    const getStores = await getItems(selectedSection.url);
-    const userHtml = getStores.map((store, index) => {
+  const loadItems = async() => {
+    const getItemResult = await getItems(selectedSection.url);
+    const itemHtml = getItemResult.map((item, index) => {
       return (
         <Grid item key={index} lg={12} className={classes.item}>
           <Grid container>
             <Grid item lg={1} xs={12}>
              {index + 1}
             </Grid>
+            <Grid item lg={4} xs={12}>
+              <img className={classes.mainImage} src={`${process.env.IMAGE_URL}/${selectedSection.url}/${item.img}`} />
+            </Grid>
             <Grid item lg={2} xs={12}>
-              <Link href={`${selectedSection.url}/[vid]`} as={`${selectedSection.url}/${store.id}`}>
-                <a>{store.first_name}</a>
+              <Link href={`${selectedSection.url}/[bid]`} as={`${selectedSection.url}/${item.id}`}>
+                {item.name}
               </Link>
             </Grid>
-            <Grid item lg={4} xs={12}>
-                {store.email}
-            </Grid>
             <Grid item lg={2} xs={12}>
-              {store.phone}
+              {item.amount}
             </Grid>
             <Grid item lg={3} xs={12}>
               [
-                <Button onClick={()=> { delUser(store.id) }}>
+                <Button onClick={()=> { delItem(item.id) }}>
                   delete
                 </Button>
               ]
@@ -82,11 +82,11 @@ const Index = ({classes}) => {
         </Grid>
       )
     })
-    setUsers(userHtml);
+    setItems(itemHtml);
   }
   
   useEffect(() => {
-    loadUsers();
+    loadItems();
   }, [])
 
   return (
@@ -94,14 +94,14 @@ const Index = ({classes}) => {
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
       <Grid container className={classes.root}>
         <Grid item xs={12} lg={12}>
-          <h1>Users</h1>
+          <h1>{selectedSection.names}</h1>
         </Grid>
         <Grid item lg={12}>
           <Grid container>
               <Grid item lg={12} xs={12}>
                   [
                     <Link href={`${selectedSection.url}/add`}>
-                      Add User
+                      Add {selectedSection.names}
                     </Link>
                   ]
               </Grid>
@@ -115,19 +115,13 @@ const Index = ({classes}) => {
             <Grid item lg={2} xs={12}>
               name
             </Grid>
-            <Grid item lg={4} xs={12}>
-              email
-            </Grid>
-            <Grid item lg={2} xs={12}>
-              phone
-            </Grid>
             <Grid item lg={3} xs={12}>
               action
             </Grid>
           </Grid>
           <Grid container>
             {
-              users && users
+              items && items
             }
           </Grid>
         </Grid>

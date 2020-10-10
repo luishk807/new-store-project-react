@@ -8,8 +8,7 @@ import {
 } from '@material-ui/core';
 
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteItem } from '../../../api';
-import Api from '../../../services/api';
+import { deleteItem, getItems } from '../../../api';
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import Snackbar from '../../../components/common/Snackbar';
 
@@ -26,33 +25,34 @@ const styles = (theme) => ({
 });
 
 const Index = ({classes}) => {
-  const [brands, setBrands] = useState(null);
+  const selectedSection = ADMIN_SECTIONS.brand;
+  const [items, setItems] = useState(null);
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
     text: '',
   });
 
-  const delBrand = async(id) => {
-    deleteItem(ADMIN_SECTIONS.brand.url, id).then((data) => {
+  const delItem = async(id) => {
+    deleteItem(selectedSection.url, id).then((data) => {
       setSnack({
         severity: 'success',
         open: true,
-        text: 'Brand Deleted',
+        text: `${selectedSection.name} Deleted`,
       })
-      loadBrands()
+      loadItems()
     }).catch((err) => {
       setSnack({
         severity: 'error',
         open: true,
-        text: 'ERROR: Brand cannot be delete',
+        text: `ERROR: ${selectedSection.name} cannot be delete`,
       })
     })
   }
 
-  const loadBrands = async() => {
-    const getBrands = await Api.get("/brands");
-    const brandHtml = getBrands.map((brand, index) => {
+  const loadItems = async() => {
+    const getItemResult = await getItems(selectedSection.url);
+    const itemHtml = getItemResult.map((item, index) => {
       return (
         <Grid item key={index} lg={12} className={classes.item}>
           <Grid container>
@@ -60,19 +60,19 @@ const Index = ({classes}) => {
              {index + 1}
             </Grid>
             <Grid item lg={4} xs={12}>
-              <img className={classes.mainImage} src={`${process.env.IMAGE_URL}/brands/${brand.img}`} />
+              <img className={classes.mainImage} src={`${process.env.IMAGE_URL}/${selectedSection.url}/${item.img}`} />
             </Grid>
             <Grid item lg={2} xs={12}>
-              <Link href="brands/[bid]" as={`brands/${brand.id}`}>
-                {brand.name}
+              <Link href={`${selectedSection.url}/[bid]`} as={`${selectedSection.url}/${item.id}`}>
+                {item.name}
               </Link>
             </Grid>
             <Grid item lg={2} xs={12}>
-              {brand.amount}
+              {item.amount}
             </Grid>
             <Grid item lg={3} xs={12}>
               [
-                <Button onClick={()=> { delBrand(brand.id) }}>
+                <Button onClick={()=> { delItem(item.id) }}>
                   delete
                 </Button>
               ]
@@ -81,11 +81,11 @@ const Index = ({classes}) => {
         </Grid>
       )
     })
-    setBrands(brandHtml);
+    setItems(itemHtml);
   }
   
   useEffect(() => {
-    loadBrands();
+    loadItems();
   }, [])
 
   return (
@@ -99,7 +99,7 @@ const Index = ({classes}) => {
           <Grid container>
               <Grid item lg={12} xs={12}>
                   [
-                    <Link href="brands/add">
+                    <Link href={`${selectedSection.url}/add`}>
                       Add Brands
                     </Link>
                   ]
@@ -120,7 +120,7 @@ const Index = ({classes}) => {
           </Grid>
           <Grid container>
             {
-              brands && brands
+              items && items
             }
           </Grid>
         </Grid>

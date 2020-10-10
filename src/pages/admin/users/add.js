@@ -23,11 +23,11 @@ const Add = ({classes}) => {
     first_name: null,
     last_name: null,
     email: null,
+    password: null,
     phone: null,
     gender: null,
     mobile: null,
-    status: null,
-    password: null,
+    date_of_birth: null,
     image: {
       values: [],
       open: false,

@@ -27,19 +27,22 @@ const Edit = ({classes}) => {
     first_name: null,
     last_name: null,
     email: null,
+    password: null,
     phone: null,
     gender: null,
+    date_of_birth: null,
     mobile: null,
     status: null,
-    password: null,
     image: {
       values: [],
       open: false,
     }
   }
   
+  const ignoreEntry=['image', 'mobile', 'password']
+
   return (
-    <EditForm name={ADMIN_SECTIONS.user.key} id={id} entryForm={form} />
+    <EditForm ignoreForm={ignoreEntry} name={ADMIN_SECTIONS.user.key} id={id} entryForm={form} />
   );
 }
 

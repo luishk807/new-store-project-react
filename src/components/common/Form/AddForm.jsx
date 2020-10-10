@@ -23,7 +23,7 @@ const styles = (theme) => ({
   },
 });
 
-const AddForm = ({classes, name, entryForm}) => {
+const AddForm = ({classes, name, entryForm, ignoreForm}) => {
   const section = ADMIN_SECTIONS[name];
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
@@ -52,7 +52,7 @@ const AddForm = ({classes, name, entryForm}) => {
     let errorFound = false;
     let key = '';
     for (var i in form) {
-      errorFound = await validateForm(i, form[i]);
+      errorFound = await validateForm(i, form[i], ignoreForm);
       key = i;
       if (!errorFound){
         saveErrors(name)
@@ -155,6 +155,7 @@ AddForm.protoTypes = {
   classes: T.object,
   name: T.string,
   entryForm: T.object,
+  ignoreFrom: T.array,
 }
 
 export default withStyles(styles)(AddForm);

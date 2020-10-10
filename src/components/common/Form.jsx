@@ -187,7 +187,7 @@ const Form = ({
         break
       }
       case "date": {
-        const initialDate = moment(new Date()).format('YYYY-DD-MM');
+        const initialDate =fields[field] ? fields[field] : moment(new Date()).format('YYYY-DD-MM');
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
             <FormControl fullWidth className={classes.margin} variant="outlined">

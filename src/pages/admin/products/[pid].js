@@ -38,9 +38,10 @@ const Edit = ({classes}) => {
     }
   }
   
+  const ignoreEntry=['image']
 
   return (
-    <EditForm name={ADMIN_SECTIONS.product.key} id={id} entryForm={form} />
+    <EditForm ignoreForm={ignoreEntry} name={ADMIN_SECTIONS.product.key} id={id} entryForm={form} />
   );
 }
 

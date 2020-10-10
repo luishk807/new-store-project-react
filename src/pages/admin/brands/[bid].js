@@ -32,9 +32,11 @@ const Edit = ({classes}) => {
       open: false,
     }
   }
-  
+
+  const ignoreEntry=['image']
+
   return (
-    <EditForm name={ADMIN_SECTIONS.brand.key} id={id} entryForm={form} />
+    <EditForm ignoreForm={ignoreEntry} name={ADMIN_SECTIONS.brand.key} id={id} entryForm={form} />
   );
 }
 

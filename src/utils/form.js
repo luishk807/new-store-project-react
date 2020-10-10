@@ -12,6 +12,9 @@ export const getImageUrlByType = (type) => {
     case 'vendor':
       return `${process.env.IMAGE_URL}/vendors`;
       break;
+    case 'user':
+      return `${process.env.IMAGE_URL}/users`;
+      break;
     default:
       return process.env.IMAGE_URL;
       break;

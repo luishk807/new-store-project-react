@@ -25,7 +25,7 @@ const styles = (theme) => ({
   },
 });
 
-const EditForm = ({classes, id, name, entryForm}) => {
+const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
   const router = useRouter()
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
@@ -55,7 +55,7 @@ const EditForm = ({classes, id, name, entryForm}) => {
     let errorFound = false;
     let key = '';
     for (var i in form) {
-      errorFound = await validateForm(i, form[i], ['image']);
+      errorFound = await validateForm(i, form[i], ignoreForm);
       key = i;
       if (!errorFound){
         saveErrors(name)
@@ -140,6 +140,8 @@ const EditForm = ({classes, id, name, entryForm}) => {
             inputs['image'] = {
               'saved': images
             }
+          } else if (FORM_SCHEMA[field] == "password") {
+            inputs[field] = null
           } else {
             inputs[field] = value
           }
@@ -193,6 +195,7 @@ EditForm.protoTypes = {
   id: T.number,
   name: T.string,
   entryForm: T.object,
+  ignoreForm: T.array,
 }
 
 export default withStyles(styles)(EditForm);

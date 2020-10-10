@@ -7,11 +7,11 @@ import {
   Button,
 } from '@material-ui/core';
 
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteItem } from '../../../api/admin';
-import Api from '../../../services/api';
-import { ADMIN_SECTIONS } from '../../../constants/admin';
-import Snackbar from '../../../components/common/Snackbar';
+import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
+import { deleteItem } from '../../../../api/admin';
+import Api from '../../../../services/api';
+import { ADMIN_SECTIONS } from '../../../../constants/admin';
+import Snackbar from '../../../../components/common/Snackbar';
 
 const styles = (theme) => ({
   root: {
@@ -26,33 +26,33 @@ const styles = (theme) => ({
 });
 
 const Index = ({classes}) => {
-  const [stores, setStores] = useState(null);
+  const [userAddress, setUserAddress] = useState(null);
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
     text: '',
   });
 
-  const delStore = async(id) => {
-    deleteItem(ADMIN_SECTIONS.store.url,id).then((data) => {
+  const delAddress = async(id) => {
+    deleteItem(ADMIN_SECTIONS.userAddress.url,id).then((data) => {
       setSnack({
         severity: 'success',
         open: true,
-        text: `${ADMIN_SECTIONS.store.name} Deleted`,
+        text: `${ADMIN_SECTIONS.userAddress.name} Deleted`,
       })
-      loadStores()
+      loadUserAddresses()
     }).catch((err) => {
       setSnack({
         severity: 'error',
         open: true,
-        text: `ERROR: ${ADMIN_SECTIONS.store.name} cannot be delete`,
+        text: `ERROR: ${ADMIN_SECTIONS.userAddress.name} cannot be delete`,
       })
     })
   }
 
-  const loadStores = async() => {
-    const getStores = await Api.get(`/${ADMIN_SECTIONS.store.url}`);
-    const storeHtml = getStores.map((store, index) => {
+  const loadUserAddresses = async() => {
+    const getUserAddress = await Api.get(`/${ADMIN_SECTIONS.userAddress.url}`);
+    const userAddressHtml = getUserAddress.map((address, index) => {
       return (
         <Grid item key={index} lg={12} className={classes.item}>
           <Grid container>
@@ -60,19 +60,19 @@ const Index = ({classes}) => {
              {index + 1}
             </Grid>
             <Grid item lg={2} xs={12}>
-              <Link href={`${ADMIN_SECTIONS.store.url}/[vid]`} as={`${ADMIN_SECTIONS.store.url}/${store.id}`}>
-                {store.name}
+              <Link href={`${ADMIN_SECTIONS.userAddress.url}/[vid]`} as={`${ADMIN_SECTIONS.userAddress.url}/${address.id}`}>
+                {address.name}
               </Link>
             </Grid>
             <Grid item lg={4} xs={12}>
-                {store.address}
+                {address.address}
             </Grid>
             <Grid item lg={2} xs={12}>
-              {store.phone}
+              {address.phone}
             </Grid>
             <Grid item lg={3} xs={12}>
               [
-                <Button onClick={()=> { delStore(store.id) }}>
+                <Button onClick={()=> { delAddress(address.id) }}>
                   delete
                 </Button>
               ]
@@ -81,11 +81,11 @@ const Index = ({classes}) => {
         </Grid>
       )
     })
-    setStores(storeHtml);
+    setUserAddress(userAddressHtml);
   }
   
   useEffect(() => {
-    loadStores();
+    loadUserAddresses();
   }, [])
 
   return (
@@ -93,14 +93,14 @@ const Index = ({classes}) => {
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
       <Grid container className={classes.root}>
         <Grid item xs={12} lg={12}>
-          <h1>Stores</h1>
+          <h1>User Addresses</h1>
         </Grid>
         <Grid item lg={12}>
           <Grid container>
               <Grid item lg={12} xs={12}>
                   [
-                    <Link href={`${ADMIN_SECTIONS.store.url}/add`}>
-                      Add Store
+                    <Link href={`${ADMIN_SECTIONS.userAddress.url}/add`}>
+                      Add Address
                     </Link>
                   ]
               </Grid>
@@ -112,7 +112,7 @@ const Index = ({classes}) => {
 
             </Grid>
             <Grid item lg={2} xs={12}>
-              name
+              
             </Grid>
             <Grid item lg={4} xs={12}>
               address
@@ -126,7 +126,7 @@ const Index = ({classes}) => {
           </Grid>
           <Grid container>
             {
-              stores && stores
+              userAddress && userAddress
             }
           </Grid>
         </Grid>

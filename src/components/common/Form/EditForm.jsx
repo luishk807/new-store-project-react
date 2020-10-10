@@ -72,8 +72,10 @@ const EditForm = ({classes, id, name, entryForm}) => {
       })
     } else {
       const formSubmit = form;
-      formSubmit['saved'] = imageDelete;
-      delete formSubmit.image.saved
+      if ('image' in formSubmit) {
+        formSubmit['saved'] = imageDelete;
+        delete formSubmit.image.saved
+      }
       const confirm = await saveItem(ADMIN_SECTIONS[name].url, id, formSubmit)
       setSnack({
         severity: confirm.data.data ? 'success' : 'error',
@@ -129,6 +131,9 @@ const EditForm = ({classes, id, name, entryForm}) => {
           let value = info[field];
           if (FORM_SCHEMA[field] == "dropdown") {
             const value = mainOptions[field].filter((data) => 'id' in data ? data.id == info[field] : data.value == info[field])
+            if (field == 'country') {
+
+            }
             inputs[field] = value[0]
           } else if (FORM_SCHEMA[field] == "file") {
             const images = 'product_images' in info ? info['product_images'] : info['img'];

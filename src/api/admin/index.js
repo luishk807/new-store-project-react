@@ -25,9 +25,11 @@ export const saveItem = (section, id, data) => {
   if (!Object.keys(data).length) {
     return;
   }
-  const form = {
+  const form = 'image' in data ? {
     ...data,
     'image': data.image.files
+  } : {
+    ...data
   }
   const config = {
     'cotent-Type': 'application/x-www-form-urlencoded'

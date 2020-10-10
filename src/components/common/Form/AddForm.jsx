@@ -68,7 +68,6 @@ const AddForm = ({classes, name, entryForm}) => {
         text: `Unable to Add ${section.name}, ${i} is required`
       })
     } else {
-      console.log("isbmititng", form)
       addItem(ADMIN_SECTIONS[name].url, form).then((res) => {
         setSnack({
           severity: 'success',

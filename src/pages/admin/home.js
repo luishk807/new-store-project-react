@@ -30,6 +30,11 @@ const Home = ({classes}) => {
           </Link>
         </Grid>
         <Grid item lg={12} xs={12}>
+          <Link href="stores">
+            Stores
+          </Link>
+        </Grid>
+        <Grid item lg={12} xs={12}>
           <Link href="categories">
             Categories
           </Link>
@@ -37,6 +42,11 @@ const Home = ({classes}) => {
         <Grid item lg={12} xs={12}>
           <Link href="vendors">
             Vendors
+          </Link>
+        </Grid>
+        <Grid item lg={12} xs={12}>
+          <Link href="users">
+            Users
           </Link>
         </Grid>
       </Grid>

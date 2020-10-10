@@ -29,6 +29,12 @@ export const ADMIN_SECTIONS = {
     url: 'statuses',
     option: 'status',
   },
+  'store': {
+    name: 'Store',
+    key: 'store',
+    url: 'stores',
+    option: 'store',
+  },
   'vendor': {
     name: 'Vendor',
     key: 'vendor',
@@ -40,5 +46,17 @@ export const ADMIN_SECTIONS = {
     key: 'workrole',
     url: 'workroles',
     option: 'position',
+  },
+  'user': {
+    name: 'User',
+    key: 'user',
+    url: 'users',
+    option: 'user',
+  },
+  'userAddress': {
+    name: 'User Address',
+    key: 'userAddress',
+    url: 'useraddresses',
+    option: 'useraddress'
   },
 }

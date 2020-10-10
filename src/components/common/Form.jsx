@@ -234,9 +234,9 @@ const Form = ({
         [section.brand.option]: options.brand,
         [section.status.option]: options.status,
         [section.workRole.option]: options.position,
+        'country': options.country,
         'icon': options.icon,
       })
-
       setUseFormOptions(true)
     }
     

@@ -71,7 +71,9 @@ export const loadMainOptions = async(option = null) => {
     const vendor = await Api.get(`/${ADMIN_SECTIONS.vendor.url}`);
     const brand = await Api.get(`/${ADMIN_SECTIONS.brand.url}`);
     const status = await Api.get(`/${ADMIN_SECTIONS.status.url}`);
-
+    
+    const gender = await Api.get(`/genders`);
+    const country = await Api.get(`/countries`);
     const icon = await CATEGORY_ICONS;
     console.log(position)
     return {
@@ -79,8 +81,10 @@ export const loadMainOptions = async(option = null) => {
       brand,
       vendor,
       status,
+      country,
       position,
       icon,
+      gender,
     }
   }
 }

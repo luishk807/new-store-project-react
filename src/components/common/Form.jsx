@@ -112,9 +112,11 @@ const Form = ({
   
   const imgMainUrl = getImageUrlByType(title);
   const userImagesCont = userImages && typeof userImages == "object" ? userImages.map((data, index) => {
-    return (
+    console.log("dazta",data)
+    const imageSrc = typeof data === "object" && data ? data.img_url : data;
+    return imageSrc ? (
       <GridListTile key={index} cols={1}>
-        <img src={`${imgMainUrl}/${data.img_url}`} />
+        <img src={`${imgMainUrl}/${imageSrc}`} />
         <GridListTileBar
           titlePosition="top"
           actionIcon={
@@ -126,24 +128,8 @@ const Form = ({
           className={classes.titleBar}
         />
       </GridListTile>
-    )
-  }) : userImages ? (
-    (
-      <GridListTile cols={1}>
-        <img src={`${imgMainUrl}/${userImages}`} />
-        <GridListTileBar
-          titlePosition="top"
-          actionIcon={
-            <IconButton className={classes.icon} onClick={()=>imageClickHandle(index)}>
-              <DeleteOutlinedIcon />
-            </IconButton>
-          }
-          actionPosition="right"
-          className={classes.titleBar}
-        />
-      </GridListTile>
-    )
-  ) : [];
+    ) : null
+  }) : [];
 
   const formFields = Object.keys(fields).map((field, index) => {
     switch(FORM_SCHEMA[field]) {

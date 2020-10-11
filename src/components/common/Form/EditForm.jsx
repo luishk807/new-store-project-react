@@ -136,7 +136,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
             }
             inputs[field] = value[0]
           } else if (FORM_SCHEMA[field] == "file") {
-            const images = 'product_images' in info ? info['product_images'] : info['img'];
+            const images = 'product_images' in info ? info['product_images'] : [info['img']];
             inputs['image'] = {
               'saved': images
             }

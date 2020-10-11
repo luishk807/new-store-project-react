@@ -21,7 +21,7 @@ const styles = (theme) => ({
 
 const Edit = ({classes}) => {
   const router = useRouter()
-  const id = router.query.cid;
+  const id = router.query.id;
   const form = {
     name: null,
     status: null,

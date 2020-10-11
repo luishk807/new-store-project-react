@@ -68,12 +68,22 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
         text: `Unable to Add ${section.name}, ${i} is required`
       })
     } else {
-      addItem(ADMIN_SECTIONS[name].url, form).then((res) => {
-        setSnack({
-          severity: 'success',
-          open: true,
-          text: `${section.name} Added`,
-        })
+      addItem(ADMIN_SECTIONS[name].url, form).then((resp) => {
+        let saveResult = null;
+        const res = resp.data;
+        if (res.data) {
+          setSnack({
+            severity: 'success',
+            open: true,
+            text: `${section.name} Added`,
+          })
+        } else {
+          setSnack({
+            severity: 'error',
+            open: true,
+            text: `${section.name} error! ${res.message}`,
+          })
+        }
         handleCancel();
       })
     }

@@ -14,7 +14,7 @@ import Typography from '../Typography';
 
 const styles = (theme) => ({
   root: {
-    marginTop: 20,
+    marginTop: 80,
     flexGrow: 1,
   },
 })

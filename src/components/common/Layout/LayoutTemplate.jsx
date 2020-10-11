@@ -11,14 +11,14 @@ import Footer from '../Footer/Footer';
 
 const styles = (theme) => ({
   root: {
-    marginTop: 20,
+    marginTop: 80,
     flexGrow: 1,
   }
 })
 const LayoutTemplate = ({classes, children}) => (
   <section>
     <Head>
-      <title>My page titlse</title>
+      <title>AvenidaZ.com</title>
       <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/>
     </Head>
     <Header />

@@ -42,6 +42,8 @@ import Garden from '../../../public/images/svg/categories/garden.svg';
 import Health from '../../../public/images/svg/categories/health.svg';
 import Broken from '../../../public/images/svg/categories/broken.svg';
 import Jewerly from '../../../public/images/svg/categories/jewerly.svg';
+import LogoIcon from '../../../public/images/logoIcon.svg';
+import LogoIconWhite from '../../../public/images/logoIconWhite.svg';
 
 import Typography from './Typography';
 
@@ -56,6 +58,12 @@ const Icons = ({classes, name}) => {
   
   const getIcon = () => {
     switch(name) {
+      case 'logo':
+        return <LogoIcon className={classes.icon}/>
+      break;
+      case 'logoWhite':
+        return <LogoIconWhite className={classes.icon}/>
+      break;
       case 'order':
         return <Order className={classes.icon}/>
       break;

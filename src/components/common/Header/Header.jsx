@@ -4,11 +4,8 @@ import * as T from 'prop-types';
 import { fade } from '@material-ui/core/styles';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
-import MenuIcon from '@material-ui/icons/Menu';
 import { 
-  AppBar,
   withStyles, 
-  Toolbar,
   Link,
   Button,
   Grid,
@@ -19,8 +16,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import IconButton from '@material-ui/core/IconButton';
-
+import Icon from '../../../components/common/Icons';
 import Typography from '../Typography';
 
 import SearchBar from '../SearchBar';
@@ -28,18 +24,48 @@ import Modal from '../Modal';
 
 const styles = (theme) => ({
   root: {
-    color: 'red',
+    color: 'white',
+    boxShadow: '0px -2px 5px #000',
+    position: 'fixed',
+    top: 0,
+    width: '100%',
+    zIndex: '100',
   },
-  grow: {
-    flexGrow: 1,
-  },
-  horizMenu:{
-    '& div': {
-      display: 'inline-block',
+  menuButton: {
+    '& svg': {
+      fontSize: '1.5em'
+    },
+    [theme.breakpoints.up('lg')]: {
+      display: 'none'
     }
   },
   title: {
-    flexGrow: 1,
+    verticalAlign: 'middle',
+    textAlign: 'center'
+  },
+  headerContainer: {
+    color: 'white',
+    padding: '6px 10px',
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'space-between',
+      padding: '6px 0px',
+    }
+  },
+  headerContainerLeft: {
+    width: '15%'
+  },
+  headerContainerMiddle: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  headerContainerMiddleSub: {
+    justifyContent: 'center'
+  },
+  headerContainerRight: {
+    display: 'flex',
+    justifyContent: 'flex-end'
   },
   sideMenuRoot: {
     width: 250,
@@ -116,23 +142,50 @@ const Header = ({classes, data}) => {
   return (
     <>
     <div className={classes.root}>
-      <AppBar position="static" className="AppBarBackColor">
-        <Toolbar variant="regular">
-          <IconButton onClick={handleMobileMenu} className={classes.menuButton} color="inherit" aria-label="Menu">
-            <MenuIcon />
-          </IconButton>
-          <div className={`${classes.title} d-none d-sm-block`}><Link href="/"><img src="/images/logo-white.png" alt="" /></Link></div>
-          <Button onClick={() => setOpenCategory(true)} href="#" color="inherit" className='d-none d-sm-block'>
-            <Typography className={classes.title} variant="h6" noWrap>
-              category
-            </Typography>
-          </Button>
-          <SearchBar/>
-          <div className={classes.grow} />
-          <Button href="/cart" color="inherit"><ShoppingCartOutlinedIcon style={{ fontSize: 40 }} /></Button>
-          <Button href="/login" color="inherit" className='d-none d-sm-block'><PermIdentityOutlinedIcon style={{ fontSize: 40 }} /></Button>
-        </Toolbar>
-      </AppBar>
+      <Grid container className={`${classes.headerContainer} AppBarBackColor`}>
+          <Grid item lg={3} xs={2} className={`${classes.headerContainerLeft}`}>
+            <Grid container>
+              <Grid item lg={2} xs={2}  className={`${classes.menuButton}`}>
+                <Button onClick={handleMobileMenu}>
+                  <Icon name="logo" />
+                </Button>
+              </Grid>
+              <Grid item lg={4}>
+                <Link href="/">
+                  <img className={classes.logo} src="/images/logo-white.svg" alt="" />
+                </Link>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item lg={6} xs={8} className={`${classes.headerContainerMiddle}`}>
+            <Grid container className={classes.headerContainerMiddleSub}>
+              <Grid item lg={2}>
+                <Button onClick={() => setOpenCategory(true)} href="#" color="inherit" className='d-none d-sm-block'>
+                  <Typography className={classes.title} variant="h6" noWrap>
+                    category
+                  </Typography>
+                </Button>
+              </Grid>
+              <Grid item lg={10} xs={10}>
+                <SearchBar/>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item lg={3} xs={2}>
+            <Grid container className={`${classes.headerContainerRight}`}>
+              <Grid item>
+                <Button href="/cart" color="inherit">
+                  <ShoppingCartOutlinedIcon style={{ fontSize: 40 }} />
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button href="/login" color="inherit" className='d-none d-sm-block'>
+                  <PermIdentityOutlinedIcon style={{ fontSize: 40 }} />
+                </Button>
+              </Grid>
+            </Grid>
+          </Grid>
+      </Grid>
       {renderSideMenu}
     </div>
     <Modal

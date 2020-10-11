@@ -33,6 +33,7 @@ const Edit = ({classes}) => {
     date_of_birth: null,
     mobile: null,
     status: null,
+    userRole: null,
     image: {
       values: [],
       open: false,

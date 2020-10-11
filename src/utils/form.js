@@ -89,6 +89,7 @@ export const loadMainOptions = async(option = null) => {
     
     const gender = await Api.get(`/genders`);
     const country = await Api.get(`/countries`);
+    const userRole = await Api.get(`/userroles`);
     const icon = await CATEGORY_ICONS;
     return {
       category,
@@ -97,6 +98,7 @@ export const loadMainOptions = async(option = null) => {
       status,
       country,
       position,
+      userRole,
       icon,
       gender,
     }

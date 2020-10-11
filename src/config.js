@@ -90,4 +90,5 @@ export const FORM_SCHEMA = {
   phone: FORM_TYPE.text,
   country: FORM_TYPE.drop,
   township: FORM_TYPE.text,
+  userRole: FORM_TYPE.drop,
 }

@@ -28,6 +28,7 @@ const Add = ({classes}) => {
     gender: null,
     mobile: null,
     date_of_birth: null,
+    userRole: null,
     image: {
       values: [],
       open: false,

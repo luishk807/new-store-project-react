@@ -265,6 +265,7 @@ const Form = ({
         'country': options.country,
         'icon': options.icon,
         'gender': options.gender,
+        'userRole': options.userRole,
       })
       setUseFormOptions(true)
     }

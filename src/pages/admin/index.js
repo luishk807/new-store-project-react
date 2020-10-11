@@ -55,7 +55,9 @@ const Index = ({classes}) => {
     }
   }
 
-
+  const handleCancel = () => {
+    window.location.href=`/admin/home`
+  }
   const handleSubmit = async (e) => {
     let errorFound = false;
     let key = '';
@@ -78,13 +80,25 @@ const Index = ({classes}) => {
     } else {
       console.log(form,'form')
       login(form).then((res) => {
-        setSnack({
-          severity: 'success',
-          open: true,
-          text: `Login success`,
-        })
-        handleCancel();
+        console.log("good", res)
+        const data = res.data;
+
+        if (data.data) {
+          setSnack({
+            severity: 'success',
+            open: true,
+            text: `Login success`,
+          })
+          handleCancel();
+        } else {
+          setSnack({
+            severity: 'error',
+            open: true,
+            text: `ERROR: ${data.message}`,
+          })
+        }
       }).catch((err) => {
+        console.log("err", err)
         setSnack({
           severity: 'error',
           open: true,

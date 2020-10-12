@@ -20,6 +20,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "classnames": "^2.2.6",
+    "cookie-cutter": "^0.2.0",
     "dotenv": "^8.2.0",
     "file-loader": "^6.0.0",
     "isomorphic-unfetch": "^3.0.0",

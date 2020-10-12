@@ -10,6 +10,7 @@ import {
   TextField,
   Button,  
 } from '@material-ui/core';
+import cookieCutter from 'cookie-cutter';
 
 import { validateForm } from '../../utils/form';
 import Snackbar from '../../components/common/Snackbar';
@@ -79,32 +80,23 @@ const Index = ({classes}) => {
       })
     } else {
       console.log(form,'form')
-      login(form).then((res) => {
-        console.log("good", res)
-        const data = res.data;
-
-        if (data.data) {
-          setSnack({
-            severity: 'success',
-            open: true,
-            text: `Login success`,
-          })
-          handleCancel();
-        } else {
-          setSnack({
-            severity: 'error',
-            open: true,
-            text: `ERROR: ${data.message}`,
-          })
-        }
-      }).catch((err) => {
-        console.log("err", err)
+      const resp = await login(form);
+      if (resp.data) {
+        console.log(resp.data)
+        setSnack({
+          severity: 'success',
+          open: true,
+          text: `Login success`,
+        })
+        cookieCutter.set('authorization', resp.data.authorization)
+        handleCancel();
+      } else {
         setSnack({
           severity: 'error',
           open: true,
-          text: `Unable to login`,
+          text: `ERROR: ${data.message}`,
         })
-      })
+      }
     }
   }
 

@@ -1,4 +1,6 @@
 import axios, { post, put} from 'axios';
+import cookieCutter from 'cookie-cutter';
+
 import { formatForm, formatFormData } from '../utils/products';
 const API_HOST_URL = process.env.BACKEND_URL;
 
@@ -27,7 +29,13 @@ export default class Api {
     if (apiUrl.indexOf('http') !== 0) {
       apiUrl = `${config.baseUrl || Api.baseUrl || ''}${apiUrl}`;
     }
+    const authorization = cookieCutter.get('authorization')
 
+    config = {
+      ...config,
+      'authorization':authorization
+    }
+    
     const fetchConfig = {
       method: method,
       url: apiUrl,
@@ -35,7 +43,6 @@ export default class Api {
         ...(config || {}),
       },
     };
-
     //TODO: make sure image filefize is valid
     //TODO: make sure image file type is valid
     //TODO : make sure numbe of images is valid

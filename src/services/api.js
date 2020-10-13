@@ -31,32 +31,24 @@ export default class Api {
     }
     const authorization = cookieCutter.get('authorization')
 
-    config = {
-      ...config,
-      'authorization':authorization
-    }
-    
-    const fetchConfig = {
-      method: method,
-      url: apiUrl,
-      headers: {
-        ...(config || {}),
-      },
-    };
-    //TODO: make sure image filefize is valid
-    //TODO: make sure image file type is valid
-    //TODO : make sure numbe of images is valid
-    if(method === "POST") {
+    if(method === "POST" || method === "PUT") {
       const cleanForm = formatFormData(body)
-      const request = post(apiUrl, cleanForm, config)
-      return request;
-    } else if(method === "PUT") {
-      const cleanForm = formatFormData(body)
-      const request = put(apiUrl, cleanForm, config)
+      const request = put(apiUrl, cleanForm, { headers: {'Authorization': `Basic ${authorization}`}})
       return request;
     } else{
       const cleanForm = formatForm(body)
-      fetchConfig.params = cleanForm;
+      config = {
+        ...config,
+        'Authorization': `token ${authorization}`
+      }
+      const fetchConfig = {
+        method: method,
+        url: apiUrl,
+        params: cleanForm,
+        headers: {
+          ...(config || {}),
+        },
+      };
       const request = axios(fetchConfig).then((data) => {
         // console.log('result data', data)
          return data.data;

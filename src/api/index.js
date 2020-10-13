@@ -31,10 +31,8 @@ export const saveItem = (section, id, data) => {
   } : {
     ...data
   }
-  const config = {
-    'cotent-Type': 'application/x-www-form-urlencoded'
-  }
-  return Api.save(`/${section}/${id}`, form, config);
+
+  return Api.save(`/${section}/${id}`, form);
 }
 
 export const addItem = (section, data) => {
@@ -49,9 +47,5 @@ export const addItem = (section, data) => {
     ...data
   }
 
-  const config = {
-    'Content-Type': 'application/json',
-    'Content-Length': Object.keys(data).length
-  }
-  return Api.post(`/${section}`, form, config);
+  return Api.post(`/${section}`, form);
 }

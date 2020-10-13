@@ -13,6 +13,7 @@ import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTe
 import Form from '../../../components/common/Form';
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import { FORM_SCHEMA } from '../../../config';
+import { verifyAuth } from '../../../api/auth';
 
 const styles = (theme) => ({
   root: {
@@ -155,6 +156,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
   }
 
   useEffect(() => {
+    verifyAuth();
     let newErrors = {}
     Object.keys(form).map((field, index) => {
       newErrors[field] = {

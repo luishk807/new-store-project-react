@@ -33,14 +33,7 @@ export default class Api {
 
     if(method === "POST") {
       const cleanForm = formatFormData(body)
-      const config = {}
-      if (authorization) {
-        config = {
-          ...config,
-          headers: {'Authorization': `Basic ${authorization}` }
-        }
-      }
-      const request = post(apiUrl, cleanForm, config)
+      const request = post(apiUrl, cleanForm, { headers: {'Authorization': `Basic ${authorization}`}})
       return request;
     } else if(method === "PUT") {
       const cleanForm = formatFormData(body)

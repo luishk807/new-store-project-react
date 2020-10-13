@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as T from 'prop-types';
 import Link from 'next/link'
 import { 
@@ -7,10 +7,16 @@ import {
   Button,
 } from '@material-ui/core';
 import AdminLayoutTemplate from '../../components/common/Layout/AdminLayoutTemplate';
+import { verifyAuth } from '../../api/auth';
 
 const styles = (theme) => ({});
 
 const Home = ({classes}) => {
+
+  useEffect(() => {
+    verifyAuth();
+  }, [])
+
   return (
     <AdminLayoutTemplate>
       <Grid container>

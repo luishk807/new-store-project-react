@@ -18,9 +18,10 @@ import {
   ListItemText,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Icon from '../../../components/common/Icons';
 import Modal from '../Modal';
-import { verifyCookie } from '../../../utils/cookie';
+import { logout } from '../../../api/auth';
 
 
 const styles = (theme) => ({
@@ -115,11 +116,6 @@ const Header = ({classes, data}) => {
     setOpenMobile(!openMobile);
   }
 
-  const logout = () => {
-    cookieCutter.set('authorization', '', { expires: new Date(0) })
-
-    console.log("cookie", cookieCutter.get('authorization'))
-  }
   const renderSideMenu = (
     <SwipeableDrawer
       anchor={'left'}
@@ -163,6 +159,11 @@ const Header = ({classes, data}) => {
           </Grid>
           <Grid item lg={6} xs={2}>
             <Grid container className={`${classes.headerContainerRight}`}>
+              <Grid item>
+                <Button onClick={logout} color="inherit">
+                  <ExitToAppIcon style={{ fontSize: 40 }} />
+                </Button>
+              </Grid>
               <Grid item>
                 <Button onClick={logout} color="inherit">
                   <PermIdentityOutlinedIcon style={{ fontSize: 40 }} />

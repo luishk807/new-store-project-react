@@ -9,6 +9,7 @@ import {
 
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import { deleteItem, getItems } from '../../../api';
+import { verifyAuth } from '../../../api/auth';
 import Icons from '../../../components/common/Icons';
 import Snackbar from '../../../components/common/Snackbar';
 
@@ -82,6 +83,7 @@ const Index = ({classes, adminSection, fields}) => {
   }
   
   useEffect(() => {
+    verifyAuth();
     loadItems();
   }, [])
 

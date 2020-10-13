@@ -38,7 +38,7 @@ const Settings = ({classes}) => {
           SettingButtonsSample.map((button, index) => {
             return (
               <Grid key={index} item lg={3}>
-                <CardIcon title={button.label} classes={{link: `cardLink`, img: `cardMediaCont`, root: `cardRoot`}}>
+                <CardIcon title={button.label}>
                   <Icons name={button.name} />
                 </CardIcon>
               </Grid>

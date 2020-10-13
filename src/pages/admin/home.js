@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
 import Link from 'next/link'
 import { 
@@ -8,13 +8,30 @@ import {
 } from '@material-ui/core';
 import AdminLayoutTemplate from '../../components/common/Layout/AdminLayoutTemplate';
 import { verifyAuth } from '../../api/auth';
+import CardIcon from '../../components/common/CardIcon';
+import Icons from '../../components/common/Icons';
+import { ADMIN_SECTIONS } from '../../constants/admin';
 
 const styles = (theme) => ({});
 
 const Home = ({classes}) => {
-
+  const [cards, setCards] = useState([])
+  const sections = ['user','store','vendor','category','brand','product']
+  const loadSeactions = () => {
+    const getSection = sections.map((section) => {
+      return (
+        <Grid item>
+          <CardIcon link={ADMIN_SECTIONS[section].url} title={ADMIN_SECTIONS[section].names}>
+            <Icons name={ADMIN_SECTIONS[section].key} />
+          </CardIcon>
+        </Grid>
+      )
+    })
+    setCards(getSection);
+  }
   useEffect(() => {
     verifyAuth();
+    loadSeactions();
   }, [])
 
   return (
@@ -25,36 +42,9 @@ const Home = ({classes}) => {
         </Grid>
       </Grid>
       <Grid container>
-        <Grid item lg={12} xs={12}>
-          <Link href="products">
-            Products
-          </Link>
-        </Grid>
-        <Grid item lg={12} xs={12}>
-          <Link href="brands">
-            Brands
-          </Link>
-        </Grid>
-        <Grid item lg={12} xs={12}>
-          <Link href="stores">
-            Stores
-          </Link>
-        </Grid>
-        <Grid item lg={12} xs={12}>
-          <Link href="categories">
-            Categories
-          </Link>
-        </Grid>
-        <Grid item lg={12} xs={12}>
-          <Link href="vendors">
-            Vendors
-          </Link>
-        </Grid>
-        <Grid item lg={12} xs={12}>
-          <Link href="users">
-            Users
-          </Link>
-        </Grid>
+        {
+          cards && cards
+        }
       </Grid>
     </AdminLayoutTemplate>
   );

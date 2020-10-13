@@ -44,6 +44,8 @@ import Broken from '../../../public/images/svg/categories/broken.svg';
 import Jewerly from '../../../public/images/svg/categories/jewerly.svg';
 import LogoIcon from '../../../public/images/logoIcon.svg';
 import LogoIconWhite from '../../../public/images/logoIconWhite.svg';
+import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
+import StoreMallDirectoryOutlinedIcon from '@material-ui/icons/StoreMallDirectoryOutlined';
 
 import Typography from './Typography';
 
@@ -60,6 +62,24 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'logo':
         return <LogoIcon className={classes.icon}/>
+      break;
+      case 'user':
+        return <PersonAddOutlinedIcon className={classes.icon}/>
+      break;
+      case 'store':
+        return <StoreMallDirectoryOutlinedIcon className={classes.icon}/>
+      break;
+      case 'category':
+        return <PersonAddOutlinedIcon className={classes.icon}/>
+      break;
+      case 'vendor':
+        return <PersonAddOutlinedIcon className={classes.icon}/>
+      break;
+      case 'brand':
+        return <PersonAddOutlinedIcon className={classes.icon}/>
+      break;
+      case 'product':
+        return <Order className={classes.icon}/>
       break;
       case 'logoWhite':
         return <LogoIconWhite className={classes.icon}/>

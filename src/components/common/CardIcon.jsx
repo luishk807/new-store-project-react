@@ -27,10 +27,10 @@ const styles = (theme) => ({
 
 const CardIcon = ({classes, title, children, link="/"}) => {
     return (
-      <Card className={classes.root} variant="outlined">
+      <Card className={`${classes.root} cardRoot`} variant="outlined">
         <CardActionArea>
-          <Link href={link} className={classes.link}>
-            <CardMedia className={classes.img}>
+          <Link href={link} className={`${classes.link} cardLink`}>
+            <CardMedia className={`${classes.img} cardMediaCont`}>
               {children}
             </CardMedia>
             <CardContent>

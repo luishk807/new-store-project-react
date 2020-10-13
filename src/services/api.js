@@ -1,5 +1,5 @@
 import axios, { post, put} from 'axios';
-import cookieCutter from 'cookie-cutter';
+import { getCookie } from '../utils/cookie';
 
 import { formatForm, formatFormData } from '../utils/products';
 const API_HOST_URL = process.env.BACKEND_URL;
@@ -29,9 +29,20 @@ export default class Api {
     if (apiUrl.indexOf('http') !== 0) {
       apiUrl = `${config.baseUrl || Api.baseUrl || ''}${apiUrl}`;
     }
-    const authorization = cookieCutter.get('authorization')
+    const authorization = getCookie()
 
-    if(method === "POST" || method === "PUT") {
+    if(method === "POST") {
+      const cleanForm = formatFormData(body)
+      const config = {}
+      if (authorization) {
+        config = {
+          ...config,
+          headers: {'Authorization': `Basic ${authorization}` }
+        }
+      }
+      const request = post(apiUrl, cleanForm, config)
+      return request;
+    } else if(method === "PUT") {
       const cleanForm = formatFormData(body)
       const request = put(apiUrl, cleanForm, { headers: {'Authorization': `Basic ${authorization}`}})
       return request;

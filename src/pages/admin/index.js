@@ -10,7 +10,7 @@ import {
   TextField,
   Button,  
 } from '@material-ui/core';
-import cookieCutter from 'cookie-cutter';
+import { setCookie } from '../../utils/cookie';
 
 import { validateForm } from '../../utils/form';
 import Snackbar from '../../components/common/Snackbar';
@@ -81,6 +81,7 @@ const Index = ({classes}) => {
     } else {
       console.log(form,'form')
       const resp = await login(form);
+      console.log(resp)
       if (resp.data) {
         console.log(resp.data)
         setSnack({
@@ -88,7 +89,7 @@ const Index = ({classes}) => {
           open: true,
           text: `Login success`,
         })
-        cookieCutter.set('authorization', resp.data.authorization)
+        setCookie()
         handleCancel();
       } else {
         setSnack({

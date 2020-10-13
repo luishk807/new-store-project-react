@@ -20,7 +20,8 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import Icon from '../../../components/common/Icons';
 import Modal from '../Modal';
-import cookieCutter from 'cookie-cutter';
+import { verifyCookie } from '../../../utils/cookie';
+
 
 const styles = (theme) => ({
   root: {

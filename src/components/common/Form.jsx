@@ -134,12 +134,30 @@ const Form = ({
   const formFields = Object.keys(fields).map((field, index) => {
     switch(FORM_SCHEMA[field]) {
       case "textfield":
-      case "email":
+      case "email": {
+        return (
+          <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <TextField 
+                error={errors[field].error}
+                helperText={errors[field].text} 
+                variant="outlined" 
+                name={field} 
+                defaultValue={fields[field]}
+                onChange={formOnChange}
+                label={removeCharacter(field)} 
+              />
+            </FormControl>
+          </Grid>
+        )
+        break
+      }
       case "number": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
             <FormControl fullWidth className={classes.margin} variant="outlined">
               <TextField 
+                type="number"
                 error={errors[field].error}
                 helperText={errors[field].text} 
                 variant="outlined" 

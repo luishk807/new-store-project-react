@@ -35,8 +35,10 @@ const Add = ({classes}) => {
     }
   }
   
+  const ignoreEntry=['image']
+
   return (
-    <AddForm name={ADMIN_SECTIONS.product.key} entryForm={form} />
+    <AddForm name={ADMIN_SECTIONS.product.key} ignoreForm={ignoreEntry} entryForm={form} />
   );
 }
 

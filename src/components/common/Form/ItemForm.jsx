@@ -125,7 +125,7 @@ const Index = ({classes, adminSection, fields}) => {
             )
           case 'product_images':
             if (imageFields.indexOf(field) !== -1 && obj) {
-              let src = value ? `${process.env.IMAGE_URL}/${value[0].img_url}` : `/images/no-image.jpg`;
+              let src = value && value.length > 0 ? `${process.env.IMAGE_URL}/${value[0].img_url}` : `/images/no-image.jpg`;
               main_image = <img className={classes.mainImage} src={src} />
             }
             return (

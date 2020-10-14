@@ -10,6 +10,7 @@ import { validateForm, loadMainOptions } from '../../../utils/form';
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import Form from '../../../components/common/Form';
+import PrivatePage from '../../../components/common/Form/PrivatePage';
 import { FORM_SCHEMA } from '../../../config';
 import { verifyAuth } from '../../../api/auth';
 
@@ -78,6 +79,7 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
             open: true,
             text: `${section.name} Added`,
           })
+          handleCancel();
         } else {
           setSnack({
             severity: 'error',
@@ -85,7 +87,12 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
             text: `${section.name} error! ${res.message}`,
           })
         }
-        handleCancel();
+      }).catch((err) => {
+        setSnack({
+          severity: 'error',
+          open: true,
+          text: `${section.name} error! ${err.response.data.message}`,
+        })
       })
     }
   }
@@ -114,23 +121,23 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
   }
 
   const loadFormOption = async() => {
-    const options = await loadMainOptions();
+    try {
+      const options = await loadMainOptions();
 
-    Object.keys(entryForm).forEach(field => {
-      if (FORM_SCHEMA[field] == "dropdown" ) {
-        setForm({
-          ...form,
-          [field]:options[field][0]
-        })
-      }
-    })
-
-    setShowForm(true);
+      Object.keys(entryForm).forEach(field => {
+        if (FORM_SCHEMA[field] == "dropdown" ) {
+          setForm({
+            ...form,
+            [field]:options[field][0]
+          })
+        }
+      })
+  
+      setShowForm(true);
+    } catch(err) {}
   }
 
   useEffect(() => {
-    verifyAuth()
-    
     let newErrors = {}
 
     Object.keys(form).map((field, index) => {
@@ -144,23 +151,25 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
   }, [])
   
   return showForm && (
-    <AdminLayoutTemplate>
-      <div className={classes.root}>
-        <Form 
-          title={section.name} 
-          fileOnSave={handleSave} 
-          fields={form} 
-          errors={errors} 
-          onChange={formOnChange} 
-          onSubmit={handleSubmit} 
-          formSubmit={handleSubmit}
-          formCancel={handleCancel}
-          type="submit"
-          snack={snack}
-          onCloseSnack={onCloseSnack}
-        />
-      </div>
-    </AdminLayoutTemplate>
+    <PrivatePage>
+      <AdminLayoutTemplate>
+        <div className={classes.root}>
+          <Form 
+            title={section.name} 
+            fileOnSave={handleSave} 
+            fields={form} 
+            errors={errors} 
+            onChange={formOnChange} 
+            onSubmit={handleSubmit} 
+            formSubmit={handleSubmit}
+            formCancel={handleCancel}
+            type="submit"
+            snack={snack}
+            onCloseSnack={onCloseSnack}
+          />
+        </div>
+      </AdminLayoutTemplate>
+    </PrivatePage>
   );
 }
 

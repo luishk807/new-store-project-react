@@ -1,6 +1,7 @@
 import React, { useState} from 'react';
 // import Link from 'next/link'
 import * as T from 'prop-types';
+import { useRouter } from 'next/router'
 import { fade } from '@material-ui/core/styles';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
@@ -111,7 +112,7 @@ const styles = (theme) => ({
 const Header = ({classes, data}) => {
   const [openMobile, setOpenMobile] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
-
+  const router = useRouter();
   const handleMobileMenu = () => {
     setOpenMobile(!openMobile);
   }
@@ -165,7 +166,7 @@ const Header = ({classes, data}) => {
                 </Button>
               </Grid>
               <Grid item>
-                <Button onClick={logout} color="inherit">
+                <Button onClick={() => router.push('settings')} color="inherit">
                   <PermIdentityOutlinedIcon style={{ fontSize: 40 }} />
                 </Button>
               </Grid>

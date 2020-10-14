@@ -7,20 +7,21 @@ import {
   Button,
 } from '@material-ui/core';
 import AdminLayoutTemplate from '../../components/common/Layout/AdminLayoutTemplate';
-import { verifyAuth } from '../../api/auth';
 import CardIcon from '../../components/common/CardIcon';
 import Icons from '../../components/common/Icons';
 import { ADMIN_SECTIONS } from '../../constants/admin';
+import PrivatePage from '../../components/common/Form/PrivatePage';
 
 const styles = (theme) => ({});
 
 const Home = ({classes}) => {
   const [cards, setCards] = useState([])
+  const [hasAccess, setHasAccess] = useState([])
   const sections = ['user','store','vendor','category','brand','product']
   const loadSeactions = () => {
-    const getSection = sections.map((section) => {
+    const getSection = sections.map((section, index) => {
       return (
-        <Grid item>
+        <Grid item key={index}>
           <CardIcon link={ADMIN_SECTIONS[section].url} title={ADMIN_SECTIONS[section].names}>
             <Icons name={ADMIN_SECTIONS[section].key} />
           </CardIcon>
@@ -30,24 +31,25 @@ const Home = ({classes}) => {
     setCards(getSection);
   }
   useEffect(() => {
-    verifyAuth();
     loadSeactions();
   }, [])
 
   return (
-    <AdminLayoutTemplate>
-      <Grid container>
-        <Grid item lg={1} xs={12}>
-         <h1>Home</h1>
+    <PrivatePage>
+      <AdminLayoutTemplate>
+        <Grid container>
+          <Grid item lg={1} xs={12}>
+          <h1>Home</h1>
+          </Grid>
         </Grid>
-      </Grid>
-      <Grid container>
-        {
-          cards && cards
-        }
-      </Grid>
-    </AdminLayoutTemplate>
-  );
+        <Grid container>
+          {
+            cards && cards
+          }
+        </Grid>
+      </AdminLayoutTemplate>
+    </PrivatePage>
+  )
 }
 
 Home.protoTypes = {

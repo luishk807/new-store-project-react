@@ -11,6 +11,7 @@ import Api from '../../../services/api';
 import { validateForm, loadMainOptions } from '../../../utils/form';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import Form from '../../../components/common/Form';
+import PrivatePage from '../../../components/common/Form/PrivatePage';
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import { FORM_SCHEMA } from '../../../config';
 import { verifyAuth } from '../../../api/auth';
@@ -77,13 +78,21 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
         formSubmit['saved'] = imageDelete;
         delete formSubmit.image.saved
       }
-      const confirm = await saveItem(ADMIN_SECTIONS[name].url, id, formSubmit)
-      setSnack({
-        severity: confirm.data.data ? 'success' : 'error',
-        open: true,
-        text: confirm.data.message,
-      })
-      handleCancel()
+      try{
+        const confirm = await saveItem(ADMIN_SECTIONS[name].url, id, formSubmit)
+        setSnack({
+          severity: confirm.data.data ? 'success' : 'error',
+          open: true,
+          text: confirm.data.message,
+        })
+        handleCancel() 
+      } catch(err) {
+        setSnack({
+          severity: 'error',
+          open: true,
+          text: err.response.data.message,
+        })
+      }
     }
   }
   const saveErrors = async (key, err = false, str = '') => {
@@ -156,7 +165,6 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
   }
 
   useEffect(() => {
-    verifyAuth();
     let newErrors = {}
     Object.keys(form).map((field, index) => {
       newErrors[field] = {
@@ -171,24 +179,26 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
   }, [id, showForm])
   
   return showForm && (
-    <AdminLayoutTemplate>
-      <div className={classes.root}>
-        <Form 
-          title={ADMIN_SECTIONS[name].name} 
-          fileOnSave={handleSave} 
-          fields={form} 
-          errors={errors} 
-          onChange={formOnChange} 
-          onSubmit={handleSubmit} 
-          formSubmit={handleSubmit}
-          formCancel={handleCancel}
-          onImageDelete={markUserImageDelete}
-          type="edit"
-          snack={snack}
-          onCloseSnack={onCloseSnack}
-        />
-      </div>
-    </AdminLayoutTemplate>
+    <PrivatePage>
+      <AdminLayoutTemplate>
+        <div className={classes.root}>
+          <Form 
+            title={ADMIN_SECTIONS[name].name} 
+            fileOnSave={handleSave} 
+            fields={form} 
+            errors={errors} 
+            onChange={formOnChange} 
+            onSubmit={handleSubmit} 
+            formSubmit={handleSubmit}
+            formCancel={handleCancel}
+            onImageDelete={markUserImageDelete}
+            type="edit"
+            snack={snack}
+            onCloseSnack={onCloseSnack}
+          />
+        </div>
+      </AdminLayoutTemplate>
+    </PrivatePage>
   );
 }
 

@@ -1,5 +1,6 @@
 import Api from '../services/api';
 import { removeCookie, setCookie, getCookie } from '../utils/cookie';
+import Snackbar from '../components/common/Snackbar';
 
 export const login = async(data) => {
   if (!Object.keys(data).length) {
@@ -23,8 +24,6 @@ export const logout = () => {
 
 export const verifyAuth = () => {
   const cookie = getCookie();
-
-  if (!cookie) {
-    window.location.href="/admin"
-  }
+  console.log('cookie',cookie)
+  return !!cookie;
 }

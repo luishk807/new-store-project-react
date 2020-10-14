@@ -11,6 +11,7 @@ export const getItemById = (section, id) => {
   const data = {
     id: id
   }
+  
   return Api.get(`/${section}`, data);
 }
 

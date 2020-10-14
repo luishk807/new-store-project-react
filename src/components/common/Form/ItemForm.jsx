@@ -9,8 +9,8 @@ import {
 
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import { deleteItem, getItems } from '../../../api';
-import { verifyAuth } from '../../../api/auth';
 import Icons from '../../../components/common/Icons';
+import PrivatePage from '../../../components/common/Form/PrivatePage';
 import Snackbar from '../../../components/common/Snackbar';
 
 const styles = (theme) => ({
@@ -56,39 +56,39 @@ const Index = ({classes, adminSection, fields}) => {
   }
 
   const loadItems = async() => {
-    const getItemResult = await getItems(adminSection.url);
-    const itemHtml = getItemResult.map((item, index) => {
-
-      return (
-        <Grid item key={index} lg={12} sm={12} className={classes.item}>
-          <Grid container>
-            <Grid item lg={1} sm={12}>
-             {index + 1}
-            </Grid>
-            {
-              setChildTitle(item)
-            }
-            <Grid item lg={3} sm={12}>
-              [
-                <Button onClick={()=> { delItem(item.id) }}>
-                  delete
-                </Button>
-              ]
+    try {
+      const getItemResult = await getItems(adminSection.url);
+      const itemHtml = getItemResult.map((item, index) => {
+  
+        return (
+          <Grid item key={index} lg={12} sm={12} className={classes.item}>
+            <Grid container>
+              <Grid item lg={1} sm={12}>
+               {index + 1}
+              </Grid>
+              {
+                setChildTitle(item)
+              }
+              <Grid item lg={3} sm={12}>
+                [
+                  <Button onClick={()=> { delItem(item.id) }}>
+                    delete
+                  </Button>
+                ]
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      )
-    })
-    setItems(itemHtml);
+        )
+      })
+      setItems(itemHtml);
+    } catch(err) {}
   }
   
   useEffect(() => {
-    verifyAuth();
     loadItems();
   }, [])
 
   const setChildTitle = (obj) => {
-    console.log("hey",obj)
     return fields.map((field, index) => {
         if (index > 4) {
            return;
@@ -172,41 +172,43 @@ const Index = ({classes, adminSection, fields}) => {
   }
 
   return (
-    <AdminLayoutTemplate>
-      <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
-      <Grid container className={classes.root}>
-        <Grid item xs={12} lg={12}>
-          <h1>{adminSection.names}</h1>
-        </Grid>
-        <Grid item lg={12}>
-          <Grid container>
-              <Grid item lg={12} xs={12}>
-                  [
-                    <Link href={`${adminSection.url}/add`}>
-                      <a>Add {adminSection.names}</a>
-                    </Link>
-                  ]
-              </Grid>
+    <PrivatePage>
+      <AdminLayoutTemplate>
+        <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
+        <Grid container className={classes.root}>
+          <Grid item xs={12} lg={12}>
+            <h1>{adminSection.names}</h1>
           </Grid>
-        </Grid>
-        <Grid item lg={12} sm={12}>
-          <Grid container>
-            <Grid item lg={1} xs={12}>&nbsp;</Grid>
-            {
-              setChildTitle()
-            }
-            <Grid item lg={3} xs={12}>
-              action
+          <Grid item lg={12}>
+            <Grid container>
+                <Grid item lg={12} xs={12}>
+                    [
+                      <Link href={`${adminSection.url}/add`}>
+                        <a>Add {adminSection.names}</a>
+                      </Link>
+                    ]
+                </Grid>
             </Grid>
           </Grid>
-          <Grid container>
-            {
-              items && items
-            }
+          <Grid item lg={12} sm={12}>
+            <Grid container>
+              <Grid item lg={1} xs={12}>&nbsp;</Grid>
+              {
+                setChildTitle()
+              }
+              <Grid item lg={3} xs={12}>
+                action
+              </Grid>
+            </Grid>
+            <Grid container>
+              {
+                items && items
+              }
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </AdminLayoutTemplate>
+      </AdminLayoutTemplate>
+    </PrivatePage>
   );
 }
 

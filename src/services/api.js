@@ -26,7 +26,7 @@ export default class Api {
     let apiUrl = url; 
 
     if (apiUrl.indexOf('http') !== 0) {
-      console.log(config.baseUrl, ' and ', Api.baseUrl)
+      console.log(config.baseUrl, ' and ', Api.baseUrl, " and ", process.env.BACKEND_URL)
       apiUrl = `${config.baseUrl || Api.baseUrl || ''}${apiUrl}`;
     }
     const authorization = getCookie()

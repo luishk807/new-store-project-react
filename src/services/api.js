@@ -2,10 +2,9 @@ import axios, { post, put} from 'axios';
 import { getCookie } from '../utils/cookie';
 
 import { formatForm, formatFormData } from '../utils/products';
-const API_HOST_URL = process.env.BACKEND_URL;
 
 export default class Api {
-  static baseUrl = API_HOST_URL+'/api';
+  static baseUrl = process.env.BACKEND_URL+'/api';
 
   static get(url, param, config, format = "json") {
     return Api.request("GET", url, param, config, format);

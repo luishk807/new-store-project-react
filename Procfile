@@ -1,1 +1,1 @@
-web:next build && next start
+web:next start -p $PORT

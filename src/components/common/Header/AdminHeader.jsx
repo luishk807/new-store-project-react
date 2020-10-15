@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 // import Link from 'next/link'
 import * as T from 'prop-types';
 import { useRouter } from 'next/router'
@@ -6,6 +6,8 @@ import { fade } from '@material-ui/core/styles';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import MenuIcon from '@material-ui/icons/Menu';
+import { connect } from 'react-redux';
+import { loadUsers } from '../../../redux/reducers/user'
 import { 
   withStyles, 
   Link,
@@ -109,13 +111,17 @@ const styles = (theme) => ({
   },
 })
 
-const Header = ({classes, data}) => {
+const Header = ({classes, data, loadUsers}) => {
   const [openMobile, setOpenMobile] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
   const router = useRouter();
   const handleMobileMenu = () => {
     setOpenMobile(!openMobile);
   }
+
+  useEffect(() => {
+    loadUsers()
+  }, [])
   const logoutAdmin = () => {
     const resp = logout();
     if (resp) {
@@ -198,4 +204,11 @@ Header.protoTypes = {
   classes: T.object,
   data: T.object,
 }
-export default withStyles(styles)(Header);
+
+const mapStateToProps = state => ({
+  userInfo: state.user
+}) // add reducer access to props
+const mapDispatchToProps = {
+  loadUsers: loadUsers,
+} // add redux action to props
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));

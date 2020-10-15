@@ -80,7 +80,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
       try{
         const confirm = await saveItem(ADMIN_SECTIONS[name].url, id, formSubmit)
         setSnack({
-          severity: confirm.data.data ? 'success' : 'error',
+          severity: confirm.data.status ? 'success' : 'error',
           open: true,
           text: confirm.data.message,
         })

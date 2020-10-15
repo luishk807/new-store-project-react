@@ -11,7 +11,10 @@ import { validateForm } from '../../../../utils/form';
 import Snackbar from '../../../../components/common/Snackbar';
 import Typography from '../../../../components/common/Typography';
 import { adminLogin } from '../../../../api/auth'
+// import { connect } from 'react-redux';
+// import { setUser } from '../../../../redux/actions/main';
 
+// import { saveUsers, loadUsers } from '../../../../redux/reducers/user'
 
 const styles = (theme) => ({
   root: {
@@ -34,7 +37,7 @@ const styles = (theme) => ({
   },
 });
 
-const Login = ({classes, inStatus}) => {
+const Login = ({classes, inStatus, setUser}) => {
   const [errors, setErrors] = useState(null);
   const [hasAccess, setHasAccess] = useState(true)
   const [snack, setSnack] = useState({
@@ -80,12 +83,13 @@ const Login = ({classes, inStatus}) => {
       try{
         const resp = await adminLogin(form);
         if (resp.data) {
-          handleCancel();
+          // const test = setUser(resp.data.user) // dispatch to redux
           setSnack({
             severity: 'success',
             open: true,
             text: `Login success`,
           })
+          handleCancel()
         } else {
           setSnack({
             severity: 'error',
@@ -192,4 +196,13 @@ Login.protoTypes = {
   inStatus: T.object,
 }
 
-export default withStyles(styles)(Login) ;
+// const mapStateToProps = state => ({
+//   userInfo: state.user
+// }) // add reducer access to props
+// const mapDispatchToProps = {
+//   setUser: setUser,
+// } // add redux action to props
+
+// export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login));
+
+export default withStyles(styles)(Login);

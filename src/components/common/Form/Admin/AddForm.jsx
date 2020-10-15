@@ -72,7 +72,7 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
       addItem(ADMIN_SECTIONS[name].url, form).then((resp) => {
         let saveResult = null;
         const res = resp.data;
-        if (res.data) {
+        if (res.status) {
           setSnack({
             severity: 'success',
             open: true,

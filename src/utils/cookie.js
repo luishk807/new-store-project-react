@@ -2,7 +2,7 @@ import Cookies from 'js-cookie';
 import jwt from 'jwt-decode' // import dependency
 
 export const setCookie = (data) => {
-  Cookies.set('authorization', data.data.authorization)
+  Cookies.set('authorization', data.data.authorization, { expires: 1 })
 }
 
 export const getCookie = () => {

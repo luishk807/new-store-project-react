@@ -10,16 +10,16 @@ import {
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
 import { typography } from '@material-ui/system';
-import LoginPanel  from '../components/LoginPanel';
+import Login from '../components/common/Form/Users/Login';
 
 const styles = (theme) => ({});
 
-const Login = ({classes, data}) => {
+const LoginSection = ({classes, data}) => {
   return (
     <LayoutTemplate>
-      <LoginPanel showRegister={true} />
+      <Login showRegister={true} />
     </LayoutTemplate>
   );
 }
  
-export default withStyles(styles)(Login);
+export default withStyles(styles)(LoginSection);

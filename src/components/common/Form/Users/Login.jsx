@@ -10,31 +10,41 @@ import {
 import { validateForm } from '../../../../utils/form';
 import Snackbar from '../../../../components/common/Snackbar';
 import Typography from '../../../../components/common/Typography';
-import { adminLogin } from '../../../../api/auth'
+import { login } from '../../../../api/auth'
 
 
 const styles = (theme) => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    padding: 20,
+  },
+  formRoot: {
+    padding: 5
+  },
+  formTextField: {
+    padding: '10px 0px',
     width: '100%',
-    textAlign: 'center',
-    height: '100%',
-    padding: 5,
   },
-  formItems: {
-    marginTop: 50,
-    display: 'flex',
-    justifyContent: 'center',
-    width: '50%%',
-    '& div': {
-      width: '100%',
-    }
-  },
+  // root: {
+  //   display: 'flex',
+  //   justifyContent: 'center',
+  //   alignItems: 'center',
+  //   width: '100%',
+  //   textAlign: 'center',
+  //   height: '100%',
+  //   padding: 5,
+  // },
+  // formItems: {
+  //   marginTop: 50,
+  //   display: 'flex',
+  //   justifyContent: 'center',
+  //   width: '50%%',
+  //   '& div': {
+  //     width: '100%',
+  //   }
+  // },
 });
 
-const Login = ({classes, inStatus}) => {
+const Login = ({classes, inStatus, showRegister}) => {
   const [errors, setErrors] = useState(null);
   const [hasAccess, setHasAccess] = useState(true)
   const [snack, setSnack] = useState({
@@ -78,7 +88,7 @@ const Login = ({classes, inStatus}) => {
     } else {
       console.log(form,'form')
       try{
-        const resp = await adminLogin(form);
+        const resp = await login(form);
         if (resp.data) {
           handleCancel();
           setSnack({
@@ -150,44 +160,69 @@ const Login = ({classes, inStatus}) => {
 
   return errors && (
     <div className={classes.root}>
-      <form noValidate autoComplete="off">
-      <Grid container spacing={2} className={classes.formItems}>
-        <Grid item lg={12} xs={9}>
-          <img src={`/images/logo.svg`} className='img-fluid' />
-        </Grid>
-        <Grid item lg={12} xs={12}>
-            <Typography align="center" variant="h4" component="h4">Admin Login</Typography>
-        </Grid>
-        <Grid item lg={12} xs={12} item>
-           <TextField
-              error={errors.email.error}
-              name="email"
-              onChange={formOnChange}
-              id="filled-error"
-              label="Email"
-            />
-        </Grid>
-        <Grid item lg={12} xs={12} item>
-           <TextField
-           error={errors.password.error}
-            name="password"
-            onChange={formOnChange}
-            type="password"
-            id="filled-error"
-            label="Password"
-          />
-        </Grid>
-        <Grid item lg={12} xs={12} item>
-          <Button onClick={handleSubmit} className={`mainButton`}>Login</Button>
+      <Grid container spacing={2} alignItems="center" justify="center" direction="row">
+        <Grid item lg={4}  xs={12}>
+          <Grid container spacing={2} alignItems="center" justify="center" direction="row">
+            <Grid item lg={12} xs={12}>
+              <Typography align="center" variant="h6" component="p">Sign in to your account</Typography>
+            </Grid>
+            <Grid item lg={12} xs={12}>
+              <form className={classes.formFoot} noValidate autoComplete="off">
+                <Grid container spacing={2}>
+                  <Grid item lg={12} xs={12}>
+                    <TextField
+                      error={errors.email.error}
+                      name="email"
+                      onChange={formOnChange}
+                      id="filled-error"
+                      label="Email"
+                      className={classes.formTextField}
+                    />
+                  </Grid>
+                  <Grid item lg={12} xs={12}>
+                    <TextField
+                      error={errors.password.error}
+                        name="password"
+                        onChange={formOnChange}
+                        type="password"
+                        id="filled-error"
+                        className={classes.formTextField}
+                        label="Password"
+                      />
+                  </Grid>
+                  <Grid item lg={12} xs={12}>
+                    <Typography align="right" variant="subtitle1" component="p">Forgot password?</Typography>
+                  </Grid>
+                  <Grid item lg={12} xs={12} className={classes.formTextField}>
+                    <Button className={`mainButton`} onClick={handleSubmit}>Login</Button>
+                  </Grid>
+                </Grid>
+              </form>
+            </Grid>
+            {
+              showRegister && (
+                <Grid item lg={12} xs={12}>
+                  <Grid container spacing={2}>
+                    <Grid item lg={12} xs={12} className={`mt-5`}>
+                      <Typography align="center" variant="h6" component="p">Don't have an account?</Typography>
+                    </Grid>
+                    <Grid item lg={12} xs={12}>
+                      <Button className={`secondButton`} href="/register">Create Account</Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              )
+            }
+          </Grid>
         </Grid>
       </Grid>
-      </form>
       <Snackbar open={snack.open} severity={snack.severity} onClose={()=>setSnack({...snack,'open':false})} content={snack.text} />
     </div>
   );
 }
 
 Login.protoTypes = {
+  showRegister: T.bool,
   classes: T.object,
   inStatus: T.object,
 }

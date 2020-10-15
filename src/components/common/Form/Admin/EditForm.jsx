@@ -6,15 +6,14 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import { saveItem } from '../../../api';
-import Api from '../../../services/api';
-import { validateForm, loadMainOptions } from '../../../utils/form';
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import Form from '../../../components/common/Form';
-import PrivatePage from '../../../components/common/Form/PrivatePage';
-import { ADMIN_SECTIONS } from '../../../constants/admin';
-import { FORM_SCHEMA } from '../../../config';
-import { verifyAuth } from '../../../api/auth';
+import { saveItem } from '../../../../api';
+import Api from '../../../../services/api';
+import { validateForm, loadMainOptions } from '../../../../utils/form';
+import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
+import Form from '../../../../components/common/Form/Admin/Form';
+import PrivatePage from '../../../../components/common/Form/Admin/PrivatePage';
+import { ADMIN_SECTIONS } from '../../../../constants/admin';
+import { FORM_SCHEMA } from '../../../../config';
 
 const styles = (theme) => ({
   root: {

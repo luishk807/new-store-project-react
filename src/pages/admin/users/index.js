@@ -4,7 +4,7 @@ import * as T from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 
-import ItemForm from '../../../components/common/Form/ItemForm';
+import ItemForm from '../../../components/common/Form/Admin/ItemForm';
 
 
 const styles = (theme) => ({

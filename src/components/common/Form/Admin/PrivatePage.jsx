@@ -7,7 +7,7 @@ import {
   Button,  
 } from '@material-ui/core';
 
-import { verifyAuth } from '../../../api/auth'
+import { verifyAuth } from '../../../../api/auth'
 
 import Login from './Login';
 
@@ -33,7 +33,6 @@ const styles = (theme) => ({
 });
 
 const PrivatePage = ({classes, children}) => {
-  console.log(children)
   const [hasAccess, setHasAccess] = useState(true);
   const [status, setStatus] = useState({
     severity: '',

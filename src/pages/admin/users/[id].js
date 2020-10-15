@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-import EditForm from '../../../components/common/Form/EditForm';
+import EditForm from '../../../components/common/Form/Admin/EditForm';
 
 const styles = (theme) => ({
   root: {

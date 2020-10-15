@@ -18,14 +18,14 @@ import {
 } from '@material-ui/lab';
 import moment from 'moment'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import { loadMainOptions } from '../../utils/form';
-import FileUploader from './FileUploader';
-import { FORM_SCHEMA, CATEGORY_ICONS } from '../../config';
-import Typography from './Typography';
-import Snackbar from './Snackbar';
-import { ADMIN_SECTIONS } from '../../constants/admin';
-import { getImageUrlByType } from '../../utils/form';
-import { removeCharacter } from '../../utils';
+import { loadMainOptions } from '../../../../utils/form';
+import FileUploader from '../../FileUploader';
+import { FORM_SCHEMA, CATEGORY_ICONS } from '../../../../config';
+import Typography from '../../Typography';
+import Snackbar from '../../Snackbar';
+import { ADMIN_SECTIONS } from '../../../../constants/admin';
+import { getImageUrlByType } from '../../../../utils/form';
+import { removeCharacter } from '../../../../utils';
 
 const styles = (theme) => ({
   root: {

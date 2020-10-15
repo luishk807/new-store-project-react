@@ -7,11 +7,11 @@ import {
   Button,
 } from '@material-ui/core';
 
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteItem, getItems } from '../../../api';
-import Icons from '../../../components/common/Icons';
-import PrivatePage from '../../../components/common/Form/PrivatePage';
-import Snackbar from '../../../components/common/Snackbar';
+import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
+import { deleteItem, getItems } from '../../../../api';
+import Icons from '../../../../components/common/Icons';
+import PrivatePage from '../../../../components/common/Form/Admin/PrivatePage';
+import Snackbar from '../../../../components/common/Snackbar';
 
 const styles = (theme) => ({
   root: {

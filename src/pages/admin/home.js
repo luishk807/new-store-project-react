@@ -10,7 +10,7 @@ import AdminLayoutTemplate from '../../components/common/Layout/AdminLayoutTempl
 import CardIcon from '../../components/common/CardIcon';
 import Icons from '../../components/common/Icons';
 import { ADMIN_SECTIONS } from '../../constants/admin';
-import PrivatePage from '../../components/common/Form/PrivatePage';
+import PrivatePage from '../../components/common/Form/Admin/PrivatePage';
 
 const styles = (theme) => ({});
 

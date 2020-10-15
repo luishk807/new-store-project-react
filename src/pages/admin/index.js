@@ -4,7 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-import Login from '../../components/common/Form/Login';
+import Login from '../../components/common/Form/Admin/Login';
 
 const styles = (theme) => ({});
 

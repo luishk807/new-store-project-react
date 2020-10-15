@@ -10,7 +10,7 @@ import {
 import { validateForm } from '../../../utils/form';
 import Snackbar from '../../../components/common/Snackbar';
 import Typography from '../../../components/common/Typography';
-import { login } from '../../../api/auth'
+import { adminLogin } from '../../../api/auth'
 
 const styles = (theme) => ({
   root: {
@@ -77,7 +77,7 @@ const Login = ({classes, inStatus}) => {
     } else {
       console.log(form,'form')
       try{
-        const resp = await login(form);
+        const resp = await adminLogin(form);
         if (resp.data) {
           handleCancel();
           setSnack({

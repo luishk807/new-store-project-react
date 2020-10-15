@@ -116,7 +116,12 @@ const Header = ({classes, data}) => {
   const handleMobileMenu = () => {
     setOpenMobile(!openMobile);
   }
-
+  const logoutAdmin = () => {
+    const resp = logout();
+    if (resp) {
+      window.location.href="/admin"
+    }
+  }
   const renderSideMenu = (
     <SwipeableDrawer
       anchor={'left'}
@@ -161,7 +166,7 @@ const Header = ({classes, data}) => {
           <Grid item lg={6} xs={2}>
             <Grid container className={`${classes.headerContainerRight}`}>
               <Grid item>
-                <Button onClick={logout} color="inherit">
+                <Button onClick={logoutAdmin} color="inherit">
                   <ExitToAppIcon style={{ fontSize: 40 }} />
                 </Button>
               </Grid>

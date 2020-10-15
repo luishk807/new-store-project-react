@@ -64,7 +64,7 @@ const Login = ({classes, inStatus, showRegister}) => {
   }
 
   const handleCancel = () => {
-    window.location.href=`/admin/home`
+    window.location.href=`/settings`
   }
   const handleSubmit = async (e) => {
     let errorFound = false;

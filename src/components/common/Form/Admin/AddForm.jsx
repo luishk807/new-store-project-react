@@ -10,7 +10,7 @@ import { validateForm, loadMainOptions } from '../../../../utils/form';
 import { ADMIN_SECTIONS } from '../../../../constants/admin';
 import AdminLayoutTemplate from '../../Layout/AdminLayoutTemplate';
 import Form from './Form';
-import PrivatePage from '../../../components/common/Form/PrivatePage';
+import PrivatePage from '../../../../components/common/Form/Admin/PrivatePage';
 import { FORM_SCHEMA } from '../../../../config';
 
 const styles = (theme) => ({

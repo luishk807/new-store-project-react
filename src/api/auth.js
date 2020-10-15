@@ -33,7 +33,13 @@ export const adminLogin = async(data) => {
 
 export const logout = () => {
   removeCookie();
-  window.location.href="/admin"
+  return true
+}
+
+export const verifyAdmin = () => {
+  const cookie = getCookie();
+  console.log('cookie',cookie)
+  return !!cookie;
 }
 
 export const verifyAuth = () => {

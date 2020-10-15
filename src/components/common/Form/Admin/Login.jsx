@@ -11,7 +11,8 @@ import { validateForm } from '../../../../utils/form';
 import Snackbar from '../../../../components/common/Snackbar';
 import Typography from '../../../../components/common/Typography';
 import { adminLogin } from '../../../../api/auth'
-
+import { connect } from 'react-redux';
+import { setUser } from '../../../../redux/actions/main';
 
 const styles = (theme) => ({
   root: {
@@ -34,7 +35,7 @@ const styles = (theme) => ({
   },
 });
 
-const Login = ({classes, inStatus}) => {
+const Login = ({classes, inStatus, userInfo, setUser}) => {
   const [errors, setErrors] = useState(null);
   const [hasAccess, setHasAccess] = useState(true)
   const [snack, setSnack] = useState({
@@ -80,6 +81,7 @@ const Login = ({classes, inStatus}) => {
       try{
         const resp = await adminLogin(form);
         if (resp.data) {
+          setUser(resp.data.user) // dispatch to redux
           handleCancel();
           setSnack({
             severity: 'success',
@@ -156,7 +158,7 @@ const Login = ({classes, inStatus}) => {
           <img src={`/images/logo.svg`} className='img-fluid' />
         </Grid>
         <Grid item lg={12} xs={12}>
-            <Typography align="center" variant="h4" component="h4">Admin Login</Typography>
+            <Typography align="center" variant="h4" component="h4">Admin Login {userInfo.first_name}</Typography>
         </Grid>
         <Grid item lg={12} xs={12} item>
            <TextField
@@ -192,4 +194,11 @@ Login.protoTypes = {
   inStatus: T.object,
 }
 
-export default withStyles(styles)(Login) ;
+const mapStateToProps = state => ({
+  userInfo: state.user
+}) // add reducer access to props
+const mapDispatchToProps = {
+  setUser: setUser 
+} // add redux action to props
+
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login));

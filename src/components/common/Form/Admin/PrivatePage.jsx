@@ -9,7 +9,6 @@ import {
 import { connect } from 'react-redux';
 
 import { verifyAuth } from '../../../../api/auth'
-import { getUser } from '../../../../redux/actions/main';
 import Login from './Login';
 
 const styles = (theme) => ({
@@ -41,7 +40,6 @@ const PrivatePage = ({classes, children, userInfo}) => {
     text: ``,
   })
   useEffect(() => {
-    console.log("yhi",userInfo)
     setHasAccess(verifyAuth());
   }, [userInfo])
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import { useRouter } from 'next/router';
+import { connect } from 'react-redux';
 import { 
   withStyles,
 } from '@material-ui/core';
@@ -8,7 +9,6 @@ import {
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import EditForm from '../../components/common/Form/Admin/EditForm';
 import { decodeCookie } from '../../utils/cookie';
-
 
 const styles = (theme) => ({
   root: {
@@ -21,7 +21,7 @@ const styles = (theme) => ({
   },
 });
 
-const Settings = ({classes}) => {
+const Settings = ({classes, userInfo}) => {
   const [user, setUser] = useState(null)
    const router = useRouter()
    const id = router.query.id;
@@ -52,7 +52,7 @@ const Settings = ({classes}) => {
     }
   }, [])
   return (
-    <EditForm ignoreForm={ignoreEntry} name={ADMIN_SECTIONS.user.key} id={user} entryForm={form} />
+    <EditForm showTitle={false} ignoreForm={ignoreEntry} name={ADMIN_SECTIONS.user.key} id={user} entryForm={form} />
   );
 }
 
@@ -60,4 +60,8 @@ Settings.protoTypes = {
   classes: T.object
 }
 
-export default withStyles(styles)(Settings);
+const mapStateToProps = state => ({
+  userInfo: state.user
+}) // add reducer access to props
+
+export default connect(mapStateToProps)(withStyles(styles)(Settings));

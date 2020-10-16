@@ -26,7 +26,7 @@ const styles = (theme) => ({
   },
 });
 
-const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
+const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle}) => {
   const router = useRouter()
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
@@ -185,6 +185,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
             title={ADMIN_SECTIONS[name].name} 
             fileOnSave={handleSave} 
             fields={form} 
+            showTitle={showTitle}
             errors={errors} 
             onChange={formOnChange} 
             onSubmit={handleSubmit} 
@@ -204,6 +205,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
 EditForm.protoTypes = {
   classes: T.object,
   id: T.number,
+  showTitle: T.bool,
   name: T.string,
   entryForm: T.object,
   ignoreForm: T.array,

@@ -7,7 +7,7 @@ import {
 
 import { addItem } from '../../../../api';
 import { validateForm, loadMainOptions } from '../../../../utils/form';
-import { ADMIN_SECTIONS } from '../../../../constants/admin';
+import { ADMIN_SECTIONS, ADMIN_URL } from '../../../../constants/admin';
 import AdminLayoutTemplate from '../../Layout/AdminLayoutTemplate';
 import Form from './Form';
 import PrivatePage from '../../../../components/common/Form/Admin/PrivatePage';
@@ -46,7 +46,7 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
   }
 
   const handleCancel = () => {
-    window.location.href=`/admin/${section.url}`
+    window.location.href=`/${ADMIN_URL.index}/${section.url}`
   }
 
   const handleSubmit = async (e) => {

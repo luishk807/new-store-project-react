@@ -6,8 +6,9 @@ import {
   TextField,
   Button,  
 } from '@material-ui/core';
+import { connect } from 'react-redux';
 
-import { verifyAuth } from '../../../../api/auth'
+import { verifyUser } from '../../../../api/auth'
 
 import Login from './Login';
 
@@ -32,7 +33,7 @@ const styles = (theme) => ({
   },
 });
 
-const PrivatePage = ({classes, children}) => {
+const PrivatePage = ({classes, children, userInfo}) => {
   const [hasAccess, setHasAccess] = useState(true);
   const [status, setStatus] = useState({
     severity: '',
@@ -40,7 +41,7 @@ const PrivatePage = ({classes, children}) => {
     text: ``,
   })
   useEffect(() => {
-    setHasAccess(verifyAuth());
+    setHasAccess(verifyUser());
   }, [])
 
 
@@ -52,4 +53,8 @@ PrivatePage.protoTypes = {
   children: T.node,
 }
 
-export default withStyles(styles)(PrivatePage) ;
+const mapStateToProps = state => ({
+  userInfo: state.user
+}) // add reducer access to props
+
+export default connect(mapStateToProps)(withStyles(styles)(PrivatePage));

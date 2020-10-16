@@ -1,10 +1,5 @@
 import * as t from '../types';
 import HYDRATE from 'next-redux-wrapper';
-import { decodeCookie } from '../../utils/cookie';
-import { verifyAut } from '../../utils/cookie';
-import { getItemById } from '../../api';
-import { ADMIN_SECTIONS } from '../../constants/admin';
-import { setUser } from '../actions/main';
 // reducers are your storages
 // const main = (state, action) { }
 const user = (state = {
@@ -51,27 +46,5 @@ const user = (state = {
       return {...state}
   }
 };
-
-// for thunk usage
-export const saveUsers = () => async(dispatch, getState) => {
-  const users = getState().user;
-  await fetch("http://localhost:8080/user",{
-    method: "POST",
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(users),
-  })
-  console.log("success")
-}
-
-export const loadUsers = () => async(dispatch, getState) => {
-  const cookie = decodeCookie();
-  if (cookie && !getState().user.id) {
-    const users = await getItemById(ADMIN_SECTIONS.user.url, cookie.id);
-    dispatch(setUser(users[0]))
-  }
-}
 
 export default user;

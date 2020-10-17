@@ -46,6 +46,7 @@ import LogoIcon from '../../../public/images/logoIcon.svg';
 import LogoIconWhite from '../../../public/images/logoIconWhite.svg';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import StoreMallDirectoryOutlinedIcon from '@material-ui/icons/StoreMallDirectoryOutlined';
+import AvenidazWhite from '../../../public/images/avenidazWhite.svg';
 
 import Typography from './Typography';
 
@@ -62,6 +63,9 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'logo':
         return <LogoIcon className={classes.icon}/>
+      break;
+      case 'logoWhite':
+        return <AvenidazWhite className={classes.icon}/>
       break;
       case 'user':
         return <PersonAddOutlinedIcon className={classes.icon}/>
@@ -81,7 +85,7 @@ const Icons = ({classes, name}) => {
       case 'product':
         return <Order className={classes.icon}/>
       break;
-      case 'logoWhite':
+      case 'logoIconWhite':
         return <LogoIconWhite className={classes.icon}/>
       break;
       case 'order':

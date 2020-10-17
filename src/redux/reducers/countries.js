@@ -2,13 +2,7 @@ import * as t from '../types';
 import HYDRATE from 'next-redux-wrapper';
 // reducers are your storages
 // const main = (state, action) { }
-const category = (state = {
-    // default value
-    id: null,
-    name: null,
-    icon: null,
-    status: null,
-}, action) => {
+const countries = (state = [], action) => {
   // check type of action
   switch(action.type){
     case HYDRATE:
@@ -16,13 +10,11 @@ const category = (state = {
         ...state,
         ...action.payload
       }
-    case t.SET_CATEGORY:
+    case t.SET_COUNTRIES:
       return {
         ...state,
           // payload is the values
-          id: action.payload.id,
-          name: action.payload.name,
-          status: action.payload.status,
+          'data':action.payload,
       };
     default:
       // nothin happens, return same
@@ -30,4 +22,4 @@ const category = (state = {
   }
 };
 
-export default category;
+export default countries;

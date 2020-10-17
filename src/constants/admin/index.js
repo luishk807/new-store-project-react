@@ -62,4 +62,24 @@ export const ADMIN_SECTIONS = {
     url: 'useraddresses',
     option: 'useraddress'
   },
+  'country': {
+    name: 'Country',
+    names: 'Countries',
+    key: 'country',
+    url: 'countries',
+    option: 'country'
+  },
+  'gender': {
+    name: 'Gender',
+    names: 'Genders',
+    key: 'gender',
+    url: 'genders',
+    option: 'gender'
+  },
+}
+
+export const ADMIN_URL = {
+  account: 'settings',
+  home: 'home',
+  index: 'admin',
 }

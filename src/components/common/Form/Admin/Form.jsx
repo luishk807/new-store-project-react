@@ -90,6 +90,7 @@ const Form = ({
   formCancel: handleCancel,
   onCloseSnack,
   onImageDelete,
+  showTitle = true,
   fileLimit,
 }) => {
   const [formOptions, setFormOptions] = useState({
@@ -315,9 +316,13 @@ const Form = ({
     <div className={classes.root}>
       <form>
         <Grid container spacing={2} className={classes.formItems}>
-          <Grid item lg={12} xs={12}>
-            <Typography className={classes.typography} align="center" variant="h4" component="h4">{formTitle}</Typography>
-          </Grid>
+          {
+            showTitle && (
+              <Grid item lg={12} xs={12}>
+                <Typography className={classes.typography} align="center" variant="h4" component="h4">{formTitle}</Typography>
+              </Grid>
+            )
+          }
           {
             useFormOption && formFields
           }
@@ -348,6 +353,7 @@ Form.protoTypes = {
   title: T.string,
   errors: T.object,
   fields: T.object,
+  showTitle: T.bool,
   onChange: T.func,
   fileOnSave: T.func,
   fileLimit: T.bool,

@@ -26,24 +26,25 @@ export default class Api {
     let apiUrl = url; 
 
     if (apiUrl.indexOf('http') !== 0) {
-      console.log(config.baseUrl, ' and ', Api.baseUrl, " and ", process.env.BACKEND_URL)
       apiUrl = `${config.baseUrl || Api.baseUrl || ''}${apiUrl}`;
     }
-    const authorization = getCookie()
 
+    console.log("shmitig", apiUrl, ' and ', body)
+    const { token } = getCookie()
     if(method === "POST") {
+      console.log('post')
       const cleanForm = formatFormData(body)
-      const request = post(apiUrl, cleanForm, { headers: {'Authorization': `Basic ${authorization}`}})
+      const request = post(apiUrl, cleanForm, { headers: {'Authorization': `Basic ${token}`}})
       return request;
     } else if(method === "PUT") {
       const cleanForm = formatFormData(body)
-      const request = put(apiUrl, cleanForm, { headers: {'Authorization': `Basic ${authorization}`}})
+      const request = put(apiUrl, cleanForm, { headers: {'Authorization': `Basic ${token}`}})
       return request;
     } else{
       const cleanForm = formatForm(body)
       config = {
         ...config,
-        'Authorization': `token ${authorization}`
+        'Authorization': `token ${token}`
       }
       const fetchConfig = {
         method: method,

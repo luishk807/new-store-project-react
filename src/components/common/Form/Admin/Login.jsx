@@ -6,13 +6,13 @@ import {
   TextField,
   Button,  
 } from '@material-ui/core';
+import { useRouter } from 'next/router';
 
+import { ADMIN_URL } from '../../../../constants/admin';
 import { validateForm } from '../../../../utils/form';
 import Snackbar from '../../../../components/common/Snackbar';
 import Typography from '../../../../components/common/Typography';
 import { adminLogin } from '../../../../api/auth'
-import { connect } from 'react-redux';
-import { setUser } from '../../../../redux/actions/main';
 
 const styles = (theme) => ({
   root: {
@@ -35,9 +35,10 @@ const styles = (theme) => ({
   },
 });
 
-const Login = ({classes, inStatus, userInfo, setUser}) => {
+const Login = ({classes, inStatus}) => {
   const [errors, setErrors] = useState(null);
   const [hasAccess, setHasAccess] = useState(true)
+  const router = useRouter();
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -55,7 +56,7 @@ const Login = ({classes, inStatus, userInfo, setUser}) => {
   }
 
   const handleCancel = () => {
-    window.location.href=`/admin/home`
+    router.push(`/${ADMIN_URL.index}/${ADMIN_URL.home}`)
   }
   const handleSubmit = async (e) => {
     let errorFound = false;
@@ -77,17 +78,16 @@ const Login = ({classes, inStatus, userInfo, setUser}) => {
         text: `Unable to login, ${i} is required`
       })
     } else {
-      console.log(form,'form')
       try{
         const resp = await adminLogin(form);
         if (resp.data) {
-          setUser(resp.data.user) // dispatch to redux
-          handleCancel();
+          // const test = setUser(resp.data.user) // dispatch to redux
           setSnack({
             severity: 'success',
             open: true,
             text: `Login success`,
           })
+          handleCancel()
         } else {
           setSnack({
             severity: 'error',
@@ -96,6 +96,7 @@ const Login = ({classes, inStatus, userInfo, setUser}) => {
           })
         }
       }catch(err) {
+        console.log(err.response)
         const errSnack = err ? {
           severity: 'error',
           open: true,
@@ -158,7 +159,7 @@ const Login = ({classes, inStatus, userInfo, setUser}) => {
           <img src={`/images/logo.svg`} className='img-fluid' />
         </Grid>
         <Grid item lg={12} xs={12}>
-            <Typography align="center" variant="h4" component="h4">Admin Login {userInfo.first_name}</Typography>
+            <Typography align="center" variant="h4" component="h4">Admin Login</Typography>
         </Grid>
         <Grid item lg={12} xs={12} item>
            <TextField
@@ -194,11 +195,4 @@ Login.protoTypes = {
   inStatus: T.object,
 }
 
-const mapStateToProps = state => ({
-  userInfo: state.user
-}) // add reducer access to props
-const mapDispatchToProps = {
-  setUser: setUser 
-} // add redux action to props
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Login));
+export default withStyles(styles)(Login);

@@ -19,6 +19,8 @@ import {
 } from '../constants/samples/SettingSample';
 import CardIcon from '../components/common/CardIcon';
 import Icons from '../components/common/Icons';
+import PrivatePage from '../components/common/Form/Users/PrivatePage';
+
 
 const styles = (theme) => ({
   root: {
@@ -30,24 +32,26 @@ const Settings = ({classes}) => {
   const data = SettingSample;
 
   return (
-    <LayoutTemplate>
-      <div className={classes.root}>
-        <Typography align="left" variant="h4" component="h3">Welcome {data.name}</Typography>
-        <Grid container spacing={2}>
-        {
-          SettingButtonsSample.map((button, index) => {
-            return (
-              <Grid key={index} item lg={3}>
-                <CardIcon title={button.label}>
-                  <Icons name={button.name} />
-                </CardIcon>
-              </Grid>
-            )
-          })
-        }
-        </Grid>
-      </div>
-    </LayoutTemplate>
+    <PrivatePage>
+      <LayoutTemplate>
+        <div className={classes.root}>
+          <Typography align="left" variant="h4" component="h3">Welcome {data.name}</Typography>
+          <Grid container spacing={2}>
+          {
+            SettingButtonsSample.map((button, index) => {
+              return (
+                <Grid key={index} item lg={3}>
+                  <CardIcon title={button.label}>
+                    <Icons name={button.name} />
+                  </CardIcon>
+                </Grid>
+              )
+            })
+          }
+          </Grid>
+        </div>
+      </LayoutTemplate>
+    </PrivatePage>
   );
 }
  

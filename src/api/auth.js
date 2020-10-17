@@ -24,7 +24,9 @@ export const adminLogin = async(data) => {
   const config = {
     'Content-Type': 'application/json',
   }
+
   const result = await Api.post(`/adminlogin`, data, config);
+
   if (result) {
     setCookie(result)
   }
@@ -33,11 +35,15 @@ export const adminLogin = async(data) => {
 
 export const logout = () => {
   removeCookie();
-  window.location.href="/admin"
+  return true
 }
 
 export const verifyAuth = () => {
-  const cookie = getCookie();
-  console.log('cookie',cookie)
-  return !!cookie;
+  let {token, userRole} = getCookie();
+  return !!token && userRole == 1;
+}
+
+export const verifyUser = () => {
+  let {token, userRole} = getCookie();
+  return !!token;
 }

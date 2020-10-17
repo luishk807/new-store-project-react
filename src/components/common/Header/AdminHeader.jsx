@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 // import Link from 'next/link'
 import * as T from 'prop-types';
 import { useRouter } from 'next/router'
@@ -6,6 +6,7 @@ import { fade } from '@material-ui/core/styles';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import MenuIcon from '@material-ui/icons/Menu';
+import { connect } from 'react-redux';
 import { 
   withStyles, 
   Link,
@@ -17,12 +18,15 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import Icon from '../../../components/common/Icons';
-import Modal from '../Modal';
+
+import { ADMIN_URL } from '../../../constants/admin';
+import loadMain from '../../../redux/reducers'
 import { logout } from '../../../api/auth';
+import Modal from '../Modal';
 
 
 const styles = (theme) => ({
@@ -38,6 +42,10 @@ const styles = (theme) => ({
     '& svg': {
       fontSize: '1.5em'
     },
+  },
+  adminTitle: {
+    color: 'white',
+    fontWeight: 'bold'
   },
   title: {
     verticalAlign: 'middle',
@@ -109,7 +117,7 @@ const styles = (theme) => ({
   },
 })
 
-const Header = ({classes, data}) => {
+const Header = ({classes, data, loadMain, userInfo}) => {
   const [openMobile, setOpenMobile] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
   const router = useRouter();
@@ -117,6 +125,15 @@ const Header = ({classes, data}) => {
     setOpenMobile(!openMobile);
   }
 
+  useEffect(() => {
+     loadMain()
+  }, [])
+  const logoutAdmin = () => {
+    const resp = logout();
+    if (resp) {
+      router.push(`/${ADMIN_URL.index}`)
+    }
+  }
   const renderSideMenu = (
     <SwipeableDrawer
       anchor={'left'}
@@ -152,7 +169,7 @@ const Header = ({classes, data}) => {
               </IconButton>
               </Grid>
               <Grid item lg={2} xs={6}>
-                <Link href="/admin/home">
+                <Link href={`/${ADMIN_URL.index}/${ADMIN_URL.home}`}>
                   <img className={classes.logo} src="/images/logo-white.svg" alt="" />
                 </Link>
               </Grid>
@@ -161,13 +178,14 @@ const Header = ({classes, data}) => {
           <Grid item lg={6} xs={2}>
             <Grid container className={`${classes.headerContainerRight}`}>
               <Grid item>
-                <Button onClick={logout} color="inherit">
+                <Button onClick={logoutAdmin} color="inherit">
                   <ExitToAppIcon style={{ fontSize: 40 }} />
                 </Button>
               </Grid>
               <Grid item>
-                <Button onClick={() => router.push('settings')} color="inherit">
+                <Button onClick={() => router.push(`/${ADMIN_URL.index}/${ADMIN_URL.account}`)} color="inherit">
                   <PermIdentityOutlinedIcon style={{ fontSize: 40 }} />
+                  <Typography variant="body2" className={classes.adminTitle} color="textSecondary" component="span">{userInfo.first_name}</Typography>
                 </Button>
               </Grid>
             </Grid>
@@ -193,4 +211,11 @@ Header.protoTypes = {
   classes: T.object,
   data: T.object,
 }
-export default withStyles(styles)(Header);
+
+const mapStateToProps = state => ({
+  userInfo: state.user
+}) // add reducer access to props
+const mapDispatchToProps = {
+  loadMain: loadMain,
+} // add redux action to props
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));

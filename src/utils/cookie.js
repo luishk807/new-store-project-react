@@ -2,11 +2,21 @@ import Cookies from 'js-cookie';
 import jwt from 'jwt-decode' // import dependency
 
 export const setCookie = (data) => {
-  Cookies.set('authorization', data.data.authorization)
+  Cookies.set('authorization', { 
+    token: data.data.authorization, 
+    userRole: data.data.user.userRole }
+  , { expires: 1 })
 }
 
 export const getCookie = () => {
-  return Cookies.get('authorization');
+  let cookie = { token: null, userRole: null }
+  try {
+    cookie = JSON.parse(Cookies.get('authorization'));
+    if (cookie && cookie.token) {
+      cookie = JSON.parse(cookie);
+    }
+  } catch(err) {}
+  return cookie;
 }
 
 export const removeCookie = () => {
@@ -19,6 +29,6 @@ export const decodeCookie = () => {
 }
 
 export const verifyCookie = () => {
-  const cookie = getCookie();
+  const { token } = getCookie();
   return !!cookie;
 }

@@ -24,24 +24,6 @@ const styles = (theme) => ({
     padding: '10px 0px',
     width: '100%',
   },
-  // root: {
-  //   display: 'flex',
-  //   justifyContent: 'center',
-  //   alignItems: 'center',
-  //   width: '100%',
-  //   textAlign: 'center',
-  //   height: '100%',
-  //   padding: 5,
-  // },
-  // formItems: {
-  //   marginTop: 50,
-  //   display: 'flex',
-  //   justifyContent: 'center',
-  //   width: '50%%',
-  //   '& div': {
-  //     width: '100%',
-  //   }
-  // },
 });
 
 const Login = ({classes, inStatus, showRegister}) => {
@@ -64,7 +46,7 @@ const Login = ({classes, inStatus, showRegister}) => {
   }
 
   const handleCancel = () => {
-    window.location.href=`/settings`
+    window.location.href=`/account`
   }
   const handleSubmit = async (e) => {
     let errorFound = false;

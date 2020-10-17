@@ -9,9 +9,9 @@ import {
 import { saveItem } from '../../../../api';
 import Api from '../../../../services/api';
 import { validateForm, loadMainOptions } from '../../../../utils/form';
-import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
-import Form from '../../../../components/common/Form/Admin/Form';
-import PrivatePage from '../../../../components/common/Form/Admin/PrivatePage';
+import LayoutTemplate from '../../../../components/common/Layout/LayoutTemplate';
+import Form from '../Form';
+import PrivatePage from './PrivatePage';
 import { ADMIN_SECTIONS } from '../../../../constants/admin';
 import { FORM_SCHEMA } from '../../../../config';
 
@@ -26,7 +26,7 @@ const styles = (theme) => ({
   },
 });
 
-const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
+const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle}) => {
   const router = useRouter()
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
@@ -49,7 +49,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
   }
 
   const handleCancel = () => {
-    window.location.href=`/admin/${ADMIN_SECTIONS[name].url}`;
+    router.push(`/account`);
   }
 
   const handleSubmit = async (e) => {
@@ -179,12 +179,13 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
   
   return showForm && (
     <PrivatePage>
-      <AdminLayoutTemplate>
+      <LayoutTemplate>
         <div className={classes.root}>
           <Form 
             title={ADMIN_SECTIONS[name].name} 
             fileOnSave={handleSave} 
             fields={form} 
+            showTitle={showTitle}
             errors={errors} 
             onChange={formOnChange} 
             onSubmit={handleSubmit} 
@@ -196,7 +197,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm}) => {
             onCloseSnack={onCloseSnack}
           />
         </div>
-      </AdminLayoutTemplate>
+      </LayoutTemplate>
     </PrivatePage>
   );
 }
@@ -205,6 +206,7 @@ EditForm.protoTypes = {
   classes: T.object,
   id: T.number,
   name: T.string,
+  showTitle: T.bool,
   entryForm: T.object,
   ignoreForm: T.array,
 }

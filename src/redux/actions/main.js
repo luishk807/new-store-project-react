@@ -6,6 +6,11 @@ export const setCategories = (data) => ({
   payload: data
 })
 
+export const resetUser = (data) => ({
+  type: t.RESET_USER,
+  payload: data,
+})
+
 export const setBrands = (data) => ({
   type: t.SET_BRANDS,
   payload: data

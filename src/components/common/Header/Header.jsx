@@ -1,6 +1,7 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect } from 'react';
 // import Link from 'next/link'
 import * as T from 'prop-types';
+import { connect } from 'react-redux';
 import { fade } from '@material-ui/core/styles';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
@@ -18,7 +19,7 @@ import {
 } from '@material-ui/core';
 import Icon from '../../../components/common/Icons';
 import Typography from '../Typography';
-
+import loadMain from '../../../redux/reducers'
 import SearchBar from '../SearchBar';
 import Modal from '../Modal';
 
@@ -59,6 +60,11 @@ const styles = (theme) => ({
   headerContainerMiddle: {
     display: 'flex',
     alignItems: 'center',
+  },
+  userName: {
+    verticaAlign: 'middle',
+    padding: 5,
+    display: 'inline'
   },
   headerContainerMiddleSub: {
     justifyContent: 'center'
@@ -109,7 +115,7 @@ const styles = (theme) => ({
   },
 })
 
-const Header = ({classes, data}) => {
+const Header = ({classes, data, userInfo, loadMain}) => {
   const [openMobile, setOpenMobile] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
 
@@ -138,7 +144,10 @@ const Header = ({classes, data}) => {
       </div>
     </SwipeableDrawer>
   );
-
+  useEffect(() => {
+    loadMain()
+    console.log("hey")
+  }, [userInfo])
   return (
     <>
     <div className={classes.root}>
@@ -179,8 +188,13 @@ const Header = ({classes, data}) => {
                 </Button>
               </Grid>
               <Grid item>
-                <Button href="/login" color="inherit" className='d-none d-sm-block'>
+                <Button href="/account" color="inherit" className='d-none d-sm-block'>
                   <PermIdentityOutlinedIcon style={{ fontSize: 40 }} />
+                  {
+                    userInfo.first_name && (
+                      <Typography className={classes.userName} variant="subtitle2">{userInfo.first_name}</Typography>
+                    )
+                  }
                 </Button>
               </Grid>
             </Grid>
@@ -206,4 +220,12 @@ Header.protoTypes = {
   classes: T.object,
   data: T.object,
 }
-export default withStyles(styles)(Header);
+const mapStateToProps = (state, ownProps) => {
+  return {
+    userInfo: state.user
+  }
+}
+const mapDispatchToProps = {
+  loadMain: loadMain,
+} // add redux action to props
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));

@@ -9,8 +9,8 @@ import { addItem } from '../../../../../api';
 import { validateForm, loadMainOptions } from '../../../../../utils/form';
 import { ADMIN_SECTIONS } from '../../../../../constants/admin';
 import AdminLayoutTemplate from '../../../Layout/AdminLayoutTemplate';
-import Form from '../../Form';
-import PrivatePage from '../../../../components/common/Form/Admin/PrivatePage';
+import Form from '../Form';
+import PrivatePage from './PrivatePage';
 import { FORM_SCHEMA } from '../../../../../config';
 
 const styles = (theme) => ({

@@ -9,7 +9,7 @@ import {
 import { connect } from 'react-redux';
 
 import { verifyUser } from '../../../../api/auth'
-
+import LayoutTemplate from '../../Layout/LayoutTemplate';
 import Login from './Login';
 
 const styles = (theme) => ({
@@ -45,7 +45,11 @@ const PrivatePage = ({classes, children, userInfo}) => {
   }, [])
 
 
-  return !hasAccess ? (<Login inStatus={hasAccess}/>) : children
+  return !hasAccess ? (
+  <LayoutTemplate>
+    <Login inStatus={hasAccess}/>
+  </LayoutTemplate>
+  ) : children
 }
 
 PrivatePage.protoTypes = {

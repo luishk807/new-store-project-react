@@ -18,14 +18,14 @@ import {
 } from '@material-ui/lab';
 import moment from 'moment'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
-import { loadMainOptions } from '../../../../utils/form';
-import FileUploader from '../../FileUploader';
-import { FORM_SCHEMA, CATEGORY_ICONS } from '../../../../config';
-import Typography from '../../Typography';
-import Snackbar from '../../Snackbar';
-import { ADMIN_SECTIONS } from '../../../../constants/admin';
-import { getImageUrlByType } from '../../../../utils/form';
-import { removeCharacter } from '../../../../utils';
+import { loadMainOptions } from '../../../utils/form';
+import FileUploader from '../FileUploader';
+import { FORM_SCHEMA, CATEGORY_ICONS } from '../../../config';
+import Typography from '../Typography';
+import Snackbar from '../Snackbar';
+import { ADMIN_SECTIONS } from '../../../constants/admin';
+import { getImageUrlByType } from '../../../utils/form';
+import { removeCharacter } from '../../../utils';
 
 const styles = (theme) => ({
   root: {
@@ -90,6 +90,7 @@ const Form = ({
   formCancel: handleCancel,
   onCloseSnack,
   onImageDelete,
+  showTitle = true,
   fileLimit,
 }) => {
   const [formOptions, setFormOptions] = useState({
@@ -299,8 +300,9 @@ const Form = ({
         break
       }
       case "edit": {
-        setFormTitle(`Edit ${title}`);
-        setFormBtnTitle(`Update ${title}`);
+        const buttonName = showTitle ? `&nbsp;${title}`:'';
+        setFormTitle(`Edit${buttonName}`);
+        setFormBtnTitle(`Update${buttonName}`);
         break;
       }
       case "delete": {
@@ -315,9 +317,13 @@ const Form = ({
     <div className={classes.root}>
       <form>
         <Grid container spacing={2} className={classes.formItems}>
-          <Grid item lg={12} xs={12}>
-            <Typography className={classes.typography} align="center" variant="h4" component="h4">{formTitle}</Typography>
-          </Grid>
+          {
+            showTitle && (
+              <Grid item lg={12} xs={12}>
+                <Typography className={classes.typography} align="center" variant="h4" component="h4">{formTitle}</Typography>
+              </Grid>
+            )
+          }
           {
             useFormOption && formFields
           }

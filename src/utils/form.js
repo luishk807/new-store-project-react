@@ -3,6 +3,10 @@ import { ADMIN_SECTIONS } from '../constants/admin';
 import Api from '../services/api';
 
 export const getImageUrlByType = (type) => {
+  if (!type) {
+    return process.env.IMAGE_URL;
+  }
+
   const testType = type.toLowerCase();
 
   switch(testType){

@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import { useRouter } from 'next/router';
+import { connect } from 'react-redux';
+import { updateCart, deleteCart } from '../redux/actions/main'
 
 import {
   Grid,
@@ -20,6 +22,7 @@ import Typography from '../components/common/Typography';
 import QuanitySelector from '../components/common/QuanitySelector';
 import { CartSample } from '../constants/samples/CartSample';
 import { makeStyles } from '@material-ui/core/styles';
+import { getImageUrlByType } from '../utils/form';
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -98,16 +101,29 @@ const styles = makeStyles((theme) => ({
   }
 }));
 
-const Cart = (props) => {
+const Cart = ({cart, updateCart, deleteCart}) => {
   const classes = styles();
   const router = useRouter();
-  const data = CartSample;
-
+  const imageUrl = getImageUrlByType();
+  const [cartItems, setCartItems] = useState({})
   const handleSelectChange = (event) => {
     const value = event.target.value;
     console.log("hey hey", value)
   }
 
+  useEffect(() => {
+    if (cart) {
+      Object.keys(cart).map((key, index) => {
+        if (cart[key].amount) {
+          let test = cart[key].amount;
+          console.log(parseFloat(test.replace(/\$/g, '')))
+        }
+        console.log('hi', key, ':', cart[key].amount)
+        
+      })
+      //console.log("hey", data)
+    }
+  }, [])
   return (
     <LayoutTemplate>
       <div className={classes.root}>
@@ -120,29 +136,30 @@ const Cart = (props) => {
                 </Typography>
               </Grid>
               {
-                data.map((item, index) => {
+                Object.keys(cart).map((key, index) => {
+                  const item = cart[key];
                   return (
-                    <Grid item lg={12} xs={12}>
+                    <Grid key={index} item lg={12} xs={12}>
                       <Grid container>
                         <Grid item lg={12} xs={12}>
                           <Divider />
                         </Grid>
                         <Grid item lg={2} xs={4}  className={classes.cartImage}>
                           <Link href='/product'>
-                            <img src={`/images/products/${item.image}`} className="img-fluid" />
+                            <img src={`${imageUrl}/${item.product_images[0].img_url}`} className="img-fluid" />
                           </Link>
                         </Grid>
                         <Grid item lg={6} xs={8} className={classes.cartDescCont}>
                           <Grid container>
                             <Grid item lg={12} xs={12}>
                               <Typography align="left" variant="body1" component="p">
-                                {item.desc}
+                                {item.description}
                               </Typography>
                             </Grid>
                             <Hidden lgDown>
                               <Grid item lg={12} xs={12}>
                                 <Typography align="left" variant="body1" component="p">
-                                  ${item.total}
+                                  {item.amount}
                                 </Typography>
                               </Grid>
                             </Hidden>
@@ -154,7 +171,7 @@ const Cart = (props) => {
                         <Hidden xsDown>
                           <Grid item lg={2} xs={12} >
                             <Typography align="right" className={classes.cartItemTotal} variant="body1" component="p">
-                              ${item.total}
+                              {item.amount}
                             </Typography>
                           </Grid>
                         </Hidden>
@@ -252,4 +269,11 @@ const Cart = (props) => {
   );
 }
 
-export default withWidth()(Cart);
+const mapStateToProps = state => ({
+  cart: state.cart
+}) // add reducer access to props
+const mapDispatchToProps = {
+  updateCart: updateCart,
+  deleteCart: deleteCart
+}
+export default connect(mapStateToProps,mapDispatchToProps)(withWidth()(Cart));

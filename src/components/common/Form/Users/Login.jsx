@@ -11,7 +11,7 @@ import { validateForm } from '../../../../utils/form';
 import Snackbar from '../../../../components/common/Snackbar';
 import Typography from '../../../../components/common/Typography';
 import { login } from '../../../../api/auth'
-
+import LayoutTemplate from '../../Layout/LayoutTemplate';
 
 const styles = (theme) => ({
   root: {
@@ -141,65 +141,67 @@ const Login = ({classes, inStatus, showRegister}) => {
 
 
   return errors && (
-    <div className={classes.root}>
-      <Grid container spacing={2} alignItems="center" justify="center" direction="row">
-        <Grid item lg={4}  xs={12}>
-          <Grid container spacing={2} alignItems="center" justify="center" direction="row">
-            <Grid item lg={12} xs={12}>
-              <Typography align="center" variant="h6" component="p">Sign in to your account</Typography>
-            </Grid>
-            <Grid item lg={12} xs={12}>
-              <form className={classes.formFoot} noValidate autoComplete="off">
-                <Grid container spacing={2}>
-                  <Grid item lg={12} xs={12}>
-                    <TextField
-                      error={errors.email.error}
-                      name="email"
-                      onChange={formOnChange}
-                      id="filled-error"
-                      label="Email"
-                      className={classes.formTextField}
-                    />
-                  </Grid>
-                  <Grid item lg={12} xs={12}>
-                    <TextField
-                      error={errors.password.error}
-                        name="password"
-                        onChange={formOnChange}
-                        type="password"
-                        id="filled-error"
-                        className={classes.formTextField}
-                        label="Password"
-                      />
-                  </Grid>
-                  <Grid item lg={12} xs={12}>
-                    <Typography align="right" variant="subtitle1" component="p">Forgot password?</Typography>
-                  </Grid>
-                  <Grid item lg={12} xs={12} className={classes.formTextField}>
-                    <Button className={`mainButton`} onClick={handleSubmit}>Login</Button>
-                  </Grid>
-                </Grid>
-              </form>
-            </Grid>
-            {
-              showRegister && (
-                <Grid item lg={12} xs={12}>
+    <LayoutTemplate>
+      <div className={classes.root}>
+        <Grid container spacing={2} alignItems="center" justify="center" direction="row">
+          <Grid item lg={4}  xs={12}>
+            <Grid container spacing={2} alignItems="center" justify="center" direction="row">
+              <Grid item lg={12} xs={12}>
+                <Typography align="center" variant="h6" component="p">Sign in to your account</Typography>
+              </Grid>
+              <Grid item lg={12} xs={12}>
+                <form className={classes.formFoot} noValidate autoComplete="off">
                   <Grid container spacing={2}>
-                    <Grid item lg={12} xs={12} className={`mt-5`}>
-                      <Typography align="center" variant="h6" component="p">Don't have an account?</Typography>
+                    <Grid item lg={12} xs={12}>
+                      <TextField
+                        error={errors.email.error}
+                        name="email"
+                        onChange={formOnChange}
+                        id="filled-error"
+                        label="Email"
+                        className={classes.formTextField}
+                      />
                     </Grid>
                     <Grid item lg={12} xs={12}>
-                      <Button className={`secondButton`} href="/register">Create Account</Button>
+                      <TextField
+                        error={errors.password.error}
+                          name="password"
+                          onChange={formOnChange}
+                          type="password"
+                          id="filled-error"
+                          className={classes.formTextField}
+                          label="Password"
+                        />
+                    </Grid>
+                    <Grid item lg={12} xs={12}>
+                      <Typography align="right" variant="subtitle1" component="p">Forgot password?</Typography>
+                    </Grid>
+                    <Grid item lg={12} xs={12} className={classes.formTextField}>
+                      <Button className={`mainButton`} onClick={handleSubmit}>Login</Button>
                     </Grid>
                   </Grid>
-                </Grid>
-              )
-            }
+                </form>
+              </Grid>
+              {
+                showRegister && (
+                  <Grid item lg={12} xs={12}>
+                    <Grid container spacing={2}>
+                      <Grid item lg={12} xs={12} className={`mt-5`}>
+                        <Typography align="center" variant="h6" component="p">Don't have an account?</Typography>
+                      </Grid>
+                      <Grid item lg={12} xs={12}>
+                        <Button className={`secondButton`} href="/register">Create Account</Button>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                )
+              }
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-      <Snackbar open={snack.open} severity={snack.severity} onClose={()=>setSnack({...snack,'open':false})} content={snack.text} />
-    </div>
+        <Snackbar open={snack.open} severity={snack.severity} onClose={()=>setSnack({...snack,'open':false})} content={snack.text} />
+      </div>
+    </LayoutTemplate>
   );
 }
 

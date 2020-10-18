@@ -23,7 +23,6 @@ const loadMain = () => async(dispatch, getState) => {
   let cookie = null;
   try{
     cookie = decodeCookie();
-    console.log("cookie", cookie)
     if (cookie && !getState().user.id) {
       const users = await getItemById(ADMIN_SECTIONS.user.url, cookie.id);
       if (users[0]) {
@@ -77,6 +76,7 @@ const loadMain = () => async(dispatch, getState) => {
       
     }
   } catch (err){
+    console.log("ejjj")
     dispatch(resetUser());
   }
 }

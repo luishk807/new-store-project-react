@@ -45,11 +45,7 @@ const PrivatePage = ({classes, children, userInfo}) => {
   }, [])
 
 
-  return !hasAccess ? (
-  <LayoutTemplate>
-    <Login inStatus={hasAccess}/>
-  </LayoutTemplate>
-  ) : children
+  return !hasAccess ? (<Login inStatus={hasAccess}/>) : children
 }
 
 PrivatePage.protoTypes = {

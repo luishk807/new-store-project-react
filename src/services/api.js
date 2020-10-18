@@ -30,7 +30,8 @@ export default class Api {
     }
 
     console.log("shmitig", apiUrl, ' and ', body)
-    const { token } = getCookie()
+    const cookie = getCookie();
+    const token = cookie && cookie.token ? cookie.token : null;
     if(method === "POST") {
       console.log('post')
       const cleanForm = formatFormData(body)

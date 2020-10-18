@@ -9,6 +9,7 @@ import {
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import EditForm from '../../components/common/Form/Users/EditForm';
 import { decodeCookie } from '../../utils/cookie';
+import PrivatePage from '../../components/common/Form/Users/PrivatePage';
 
 const styles = (theme) => ({
   root: {
@@ -52,7 +53,9 @@ const Settings = ({classes, userInfo}) => {
     }
   }, [])
   return (
-    <EditForm showTitle={false} ignoreForm={ignoreEntry} name={ADMIN_SECTIONS.user.key} id={user} entryForm={form} />
+    <PrivatePage>
+      <EditForm showTitle={false} ignoreForm={ignoreEntry} name={ADMIN_SECTIONS.user.key} id={user} entryForm={form} />
+    </PrivatePage>
   );
 }
 

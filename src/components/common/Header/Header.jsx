@@ -91,6 +91,26 @@ const styles = (theme) => ({
       width: 'auto',
     },
   },
+  cartBtn: {
+    position: 'relative'
+  },
+  cartTotal: {
+    position: 'absolute',
+    backgroundColor: 'red',
+    borderRadius: '30px',
+    top: 2,
+    right: 7,
+    border: '.2em solid white',
+    minHeight: 10,
+    minWidth: 20,
+    textAlign: 'center',
+  },
+  cartTotalNumber: {
+    fontFamily: 'Arial',
+    fontSize: '0.6em',
+    color: 'white',
+    textAlign: 'center',
+  },
   searchIcon: {
     padding: theme.spacing(0, 2),
     height: '100%',
@@ -183,8 +203,13 @@ const Header = ({classes, data, userInfo, loadMain}) => {
           <Grid item lg={3} xs={2}>
             <Grid container className={`${classes.headerContainerRight}`}>
               <Grid item>
-                <Button href="/cart" color="inherit">
+                <Button href="/cart" color="inherit" className={classes.cartBtn}>
                   <ShoppingCartOutlinedIcon style={{ fontSize: 40 }} />
+                  <div className={classes.cartTotal}>
+                  <Typography className={classes.cartTotalNumber} variant="subtitle1">
+                    90
+                  </Typography>
+                  </div>
                 </Button>
               </Grid>
               <Grid item>

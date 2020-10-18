@@ -1,5 +1,7 @@
 import React from 'react';
 import * as T from 'prop-types';
+import { useRouter } from 'next/router';
+
 import {
   Grid,
   withStyles,
@@ -15,7 +17,7 @@ import {
 } from '@material-ui/core';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
-import Select from '../components/common/Select';
+import QuanitySelector from '../components/common/QuanitySelector';
 import { CartSample } from '../constants/samples/CartSample';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -26,14 +28,20 @@ const styles = makeStyles((theme) => ({
       padding: 5,
     }
   },
+  firstSubTotal: {
+    fontWeight: 'bold',
+    padding: 5
+  },
   cartTitleCont: {
     padding: 10,
     [theme.breakpoints.down('sm')]: {
       padding: 0,
     }
   },
-  cartItemCont: {
-    borderRight: '1px solid #ccc',
+  cartItemTotal: {
+    // borderRight: '1px solid #ccc',
+    fontWeight: 'bold',
+    padding: 9,
   },
   cartDescCont: {
     padding: 10,
@@ -69,11 +77,18 @@ const styles = makeStyles((theme) => ({
   cartDropDown: {
     fontSize: '1em',
   },
-  cartTotalCont: {
+  cartTotalItems: {
     padding: '2px 0px;',
     [theme.breakpoints.down('sm')]: {
       padding: 0,
     }
+  },
+  cartTotalCont: {
+    background: '#F8F8F8',
+    padding: 8,
+  },
+  cartImage: {
+    padding: 10
   },
   cartGrandCont: {
     padding: '10px 0px',
@@ -85,6 +100,7 @@ const styles = makeStyles((theme) => ({
 
 const Cart = (props) => {
   const classes = styles();
+  const router = useRouter();
   const data = CartSample;
 
   const handleSelectChange = (event) => {
@@ -111,7 +127,7 @@ const Cart = (props) => {
                         <Grid item lg={12} xs={12}>
                           <Divider />
                         </Grid>
-                        <Grid item lg={2} xs={4}>
+                        <Grid item lg={2} xs={4}  className={classes.cartImage}>
                           <Link href='/product'>
                             <img src={`/images/products/${item.image}`} className="img-fluid" />
                           </Link>
@@ -133,11 +149,11 @@ const Cart = (props) => {
                           </Grid>
                         </Grid>
                         <Grid item lg={2} xs={4} className={classes.cartSelectCont}>
-                          <Select data={item.quantity} classes={{ productSelectDrop: classes.cartDropDown}} onChange={handleSelectChange} title="quant" id="quant-select" />
+                          <QuanitySelector data={item.quantity} classes={{ productSelectDrop: classes.cartDropDown}} onChange={handleSelectChange} title="quantity" id="quant-select" />
                         </Grid>
                         <Hidden xsDown>
-                          <Grid item lg={2} xs={12} className={classes.cartItemCont}>
-                            <Typography align="right" variant="body1" component="p">
+                          <Grid item lg={2} xs={12} >
+                            <Typography align="right" className={classes.cartItemTotal} variant="body1" component="p">
                               ${item.total}
                             </Typography>
                           </Grid>
@@ -152,16 +168,21 @@ const Cart = (props) => {
                   );
                 })
               }
+              <Hidden lgDown>
+                <Grid item lg={12} xs={12}>
+                  <Divider />
+                </Grid>
+                <Grid item lg={12} xs={12}>
+                    <Typography variant="body1" align="right" component="p"  className={classes.firstSubTotal}>
+                       Subtotal $9.00
+                    </Typography>
+                </Grid>
+              </Hidden>
             </Grid>
           </Grid>
-          <Hidden lgDown>
-            <Grid item lg={12} xs={12}>
-              <Divider />
-            </Grid>
-          </Hidden>
-          <Grid item xs={12} xs={12} lg={2} className={classes.cartSubtotalCont}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} lg={12} xs={12} className={classes.cartTotalCont}>
+          <Grid item xs={12} lg={2} className={classes.cartSubtotalCont}>
+            <Grid container spacing={2} className={classes.cartTotalCont}>
+              <Grid item xs={12} lg={12} xs={12} className={classes.cartTotalItems}>
                 <Grid container>
                   <Grid item xs={10} lg={10}>
                     <Typography variant="body1" component="p">
@@ -175,7 +196,7 @@ const Cart = (props) => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item lg={12} xs={12} className={classes.cartTotalCont}>
+              <Grid item lg={12} xs={12} className={classes.cartTotalItems}>
                 <Grid container>
                   <Grid item lg={10} xs={10}>
                     <Typography variant="body1" component="p">
@@ -189,7 +210,7 @@ const Cart = (props) => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item lg={12} xs={12} className={classes.cartTotalCont}>
+              <Grid item lg={12} xs={12} className={classes.cartTotalItems}>
                 <Grid container>
                   <Grid item lg={10} xs={10}>
                     <Typography variant="body1" component="p">

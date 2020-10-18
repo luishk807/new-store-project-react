@@ -73,3 +73,18 @@ export const saveUsers = (data) => ({
   type: t.SAVE_USER,
   payload: data
 })
+
+export const addCart = (data) => ({
+  type: t.ADD_CART,
+  payload: data
+})
+
+export const deleteCart = (data) => ({
+  type: t.DELETE_CART,
+  payload: data
+})
+
+export const updateCart = (data) => ({
+  type: t.UPDATE_CART,
+  payload: data
+})

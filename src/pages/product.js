@@ -21,7 +21,7 @@ import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../constants/samples/ProductSample';
 import Rate from '../components/common/Rate';
 import RateBox from '../components/common/RateBox';
-import Select from '../components/common/Select';
+import Select from '../components/common/QuanitySelector';
 import Icons from '../components/common/Icons';
 
 const styles = (theme) => ({

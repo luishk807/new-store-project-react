@@ -15,6 +15,9 @@ import {
   setVendors,
   setCountries,
   setWorkRoles,
+  addCart,
+  deleteCart,
+  updateCart
 } from '../actions/main';
 
 // for thunk usage

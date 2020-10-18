@@ -12,3 +12,6 @@ export const SET_STATUSES = 'SET_STATUSES';
 export const SET_WORK_ROLES = 'SET_WORK_ROLES';
 export const SET_ICONS = 'SET_ICONS';
 export const RESET_USER = 'RESET_USER';
+export const ADD_CART = 'ADD_CART';
+export const DELETE_CART = 'DELETE_CART';
+export const UPDATE_CART = 'UPDATE_CART';

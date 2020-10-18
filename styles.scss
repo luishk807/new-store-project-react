@@ -1,6 +1,12 @@
 /*-------------------------------------------------- */
 $main_color: rgb(248,190,21);
 $stickyFooterLimit: 260px;
+$screen-sm-min: 768px;
+$screen-xs-max: ($screen-sm-min - 1);
+$screen-md-min: 992px;
+$screen-sm-max: ($screen-md-min - 1);
+$screen-lg-min: 1200px;
+$screen-md-max: ($screen-lg-min - 1);
 
 html {
   position: relative;
@@ -36,6 +42,12 @@ a:hover {
 .main-nav-panel {
   background-color: $main_color;
   color: white;
+}
+// TODO :fix mobile for delete button
+@media (max-width: $screen-xs-max) {
+  .smallMainButton{
+    padding: 20px 40px !important;
+  }
 }
 .smallMainButton{
   border: 1px solid $main_color !important;

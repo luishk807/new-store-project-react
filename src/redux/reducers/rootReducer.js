@@ -10,11 +10,13 @@ import countries from './countries';
 import icons from './icons';
 import statuses from './statuses';
 import loadMain  from './';
+import cart  from './cart';
 
 // to combine all reducers 
 const rootReducer = combineReducers({
   // add all the reducers here
   user: user,
+  cart: cart,
   // categories: categories,
   // loadMain: loadMain,
   // brands: brands,

@@ -24,14 +24,14 @@ import {
 
 const loadMain = () => async(dispatch, getState) => {
   let cookie = null;
-  const local = await localStorage.getItem('user')
+  const userLocal = await localStorage.getItem('user')
   if (getState().user.id) {
     return;
   }
 
-  if (local) {
-    const localJson =  JSON.parse(local);
-    dispatch(setUser(localJson))
+  if (userLocal) {
+    const userJson =  JSON.parse(userLocal);
+    dispatch(setUser(userJson))
   } else {
     try{
       cookie = decodeCookie();
@@ -48,6 +48,11 @@ const loadMain = () => async(dispatch, getState) => {
     }
   }
 
+  let cartLocal = await localStorage.getItem('cart')
+  if (!Object.keys(getState().cart) && !Object.keys(getState().cart).length) {
+    const cartJson =  JSON.parse(cartLocal);
+    dispatch(updateCart(cartJson))
+  }
 }
 
 export default loadMain;

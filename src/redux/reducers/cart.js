@@ -54,9 +54,11 @@ const initialValue = [
     amount: '343.00',
   }
 ]
-const cart = (state = initialValue, action) => {
+
+const cart = (state = [], action) => {
   // check type of action
   let indexFound = null;
+  let newState = {}
   const length = Object.keys(state).length;
   switch(action.type){
     case HYDRATE:
@@ -81,6 +83,7 @@ const cart = (state = initialValue, action) => {
           }
           counter++
         })
+        saveCartLocal(temp);
         return temp
       } else {
         return {
@@ -94,20 +97,28 @@ const cart = (state = initialValue, action) => {
         }
       })
       if (indexFound) {
-        return {
+        newState = {
           ...state,
-            [indexFound] : action.payload
+          [indexFound] : action.payload
         }
+        saveCartLocal(newState);
+        return newState
       } else {
-        return {
+        newState = {
           ...state,
            [length++]:action.payload,
         };
+        saveCartLocal(newState);
+        return newState
       }
     default:
       // nothin happens, return same
       return {...state}
   }
 };
+
+const saveCartLocal = (state) => {
+  localStorage.setItem('cart', JSON.stringify(state))
+}
 
 export default cart;

@@ -35,6 +35,7 @@ export const adminLogin = async(data) => {
 
 export const logout = () => {
   removeCookie();
+  localStorage.clear();
   return true
 }
 

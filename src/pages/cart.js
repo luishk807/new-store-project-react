@@ -29,7 +29,7 @@ import { getImageUrlByType } from '../utils/form';
 
 const styles = makeStyles((theme) => ({
   root: {
-    padding: 30,
+    padding: 15,
     [theme.breakpoints.down('sm')]: {
       padding: 5,
     }
@@ -114,7 +114,6 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     delivery: 0,
     grandTotal: 0,
   })
-  const [cartItems, setCartItems] = useState({})
   const [showCart, setShowCart] = useState(false);
 
   const handleSelectChange = async(resp) => {
@@ -215,7 +214,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
               </Hidden>
             </Grid>
           </Grid>
-          <Grid item xs={12} lg={2} className={classes.cartSubtotalCont}>
+          <Grid lg={2} item xs={12} className={classes.cartSubtotalCont}>
             <Grid container spacing={2} className={classes.cartTotalCont}>
               <Grid item xs={12} lg={12} xs={12} className={classes.cartTotalItems}>
                 <Grid container>
@@ -287,7 +286,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
           <Grid item lg={10} xs={12} className={classes.cartItemCont}>
             <Grid container>
               <Grid item lg={12} xs={12} className={classes.cartTitleCont}>
-                <Typography variant="h5" component="p">
+                <Typography variant="h5" align="center" component="p">
                   Your Cart is Empty
                 </Typography>
               </Grid>

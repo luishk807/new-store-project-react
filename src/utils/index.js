@@ -17,7 +17,7 @@ export const getCartTotal = (cart) => {
     //console.log("hey", data)
   }
 
-  taxes = (subtotal * 0.08) + subtotal;
+  taxes = subtotal * 0.08;
 
   grandTotal = taxes + subtotal;
 

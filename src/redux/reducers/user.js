@@ -27,6 +27,7 @@ const user = (state = initialUser, action) => {
         ...action.payload
       }
     case t.SET_USER:
+      console.log('paypload', action.payload)
       return {
         ...state,
           // payload is the values

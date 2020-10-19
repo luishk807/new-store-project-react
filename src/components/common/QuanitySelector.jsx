@@ -31,19 +31,22 @@ const styles = (theme) => ({
 const QuanitySelector = ({classes, data, title, id, onChange}) => {
   const items = [];
   const [total, setTotal] = useState(0);
-  const length = 10; 
-  // for(var i = 0; i < length; i++){
-  //   items.push(<option key={i} value={i}>{i + 1}</option>)
-  // }
-
-  console.log("title",id)
+  const length = 10;
   for(var i = 0; i < length; i++){
-    items.push(<option key={i} value={i}>{i + 1}</option>)
+    const value = i + 1;
+    items.push(<option key={i} value={value}>{value}</option>)
   }
   const onHandleDropDown = (event) => {
     setTotal(event.target.value);
-    console.log("hey hey", total)
+    onChange({
+      id: id,
+      value:event.target.value 
+    })
   }
+
+  useEffect(()=> {
+    setTotal(data)
+  }, [])
   return ( 
     <div className={classes.root}>
       <FormControl variant="outlined" className={classes.productSelectDrop}>

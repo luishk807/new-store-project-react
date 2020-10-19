@@ -26,7 +26,7 @@ const initialValue = [
     stock: 2,
     vendor: 10,
     quantity: 2,
-    amount: '$33.00',
+    amount: '33.00',
   },
   {
     id: 154,
@@ -51,35 +51,59 @@ const initialValue = [
     ],
     vendor: 10,
     quantity: 2,
-    amount: '$343.00',
+    amount: '343.00',
   }
 ]
 const cart = (state = initialValue, action) => {
   // check type of action
+  let indexFound = null;
+  const length = Object.keys(state).length;
   switch(action.type){
     case HYDRATE:
       return {
         ...state,
         ...action.payload
       }
-    case t.ADD_CART:
-      return {
-        ...state,
-          // payload is the values
-          'data':action.payload,
-      };
     case t.DELETE_CART:
-      return {
-        ...state,
-          // payload is the values
-          'data':action.payload,
-      };
+      Object.keys(state).map((index) => {
+        if (state[index].id == action.payload.id && !indexFound) {
+          indexFound = index
+        }
+      })
+      if (indexFound) {
+        delete state[indexFound]
+        let temp = {}
+        let counter = 0;
+        Object.keys(state).map((index) => {
+          temp = {
+            ...temp,
+            [counter]: state[index]
+          }
+          counter++
+        })
+        return temp
+      } else {
+        return {
+          ...state
+        };
+      }
     case t.UPDATE_CART:
-      return {
-        ...state,
-          // payload is the values
-          'data':action.payload,
-      };
+      Object.keys(state).map((index) => {
+        if (state[index].id == action.payload.id && !indexFound) {
+          indexFound = index
+        }
+      })
+      if (indexFound) {
+        return {
+          ...state,
+            [indexFound] : action.payload
+        }
+      } else {
+        return {
+          ...state,
+           [length++]:action.payload,
+        };
+      }
     default:
       // nothin happens, return same
       return {...state}

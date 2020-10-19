@@ -17,6 +17,9 @@ import {
   CardActions,
   withWidth,
 } from '@material-ui/core';
+import NumberFormat from 'react-number-format';
+
+import { formatNumber, getCartTotal } from '../utils';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
 import QuanitySelector from '../components/common/QuanitySelector';
@@ -105,29 +108,38 @@ const Cart = ({cart, updateCart, deleteCart}) => {
   const classes = styles();
   const router = useRouter();
   const imageUrl = getImageUrlByType();
+  const [total, setTotals] = useState({
+    subtotal: 0,
+    taxes: 0,
+    delivery: 0,
+    grandTotal: 0,
+  })
   const [cartItems, setCartItems] = useState({})
-  const handleSelectChange = (event) => {
-    const value = event.target.value;
-    console.log("hey hey", value)
+  const [showCart, setShowCart] = useState(false);
+
+  const handleSelectChange = async(resp) => {
+    // console.log("hey hey", resp)
+    const index = resp.id.split("-")[1]
+    cart[index]['quantity'] = resp.value;
+    await updateCart(cart[index])
+  
+  }
+
+  const handleDelete = (index) => {
+    deleteCart(cart[index])
   }
 
   useEffect(() => {
-    if (cart) {
-      Object.keys(cart).map((key, index) => {
-        if (cart[key].amount) {
-          let test = cart[key].amount;
-          console.log(parseFloat(test.replace(/\$/g, '')))
-        }
-        console.log('hi', key, ':', cart[key].amount)
-        
-      })
-      //console.log("hey", data)
-    }
-  }, [])
+    const total = getCartTotal(cart);
+    setShowCart(!!Object.keys(cart).length)
+    setTotals(total)
+  }, [cart])
   return (
     <LayoutTemplate>
       <div className={classes.root}>
-        <Grid container spacing={2}>
+      {
+        showCart ? (
+          <Grid container spacing={2}>
           <Grid item lg={10} xs={12} className={classes.cartItemCont}>
             <Grid container>
               <Grid item lg={12} xs={12} className={classes.cartTitleCont}>
@@ -152,6 +164,11 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                         <Grid item lg={6} xs={8} className={classes.cartDescCont}>
                           <Grid container>
                             <Grid item lg={12} xs={12}>
+                              <Typography align="left" component="h4">
+                                <Link href="/">{item.name}</Link>
+                              </Typography>
+                            </Grid>
+                            <Grid item lg={12} xs={12}>
                               <Typography align="left" variant="body1" component="p">
                                 {item.description}
                               </Typography>
@@ -159,25 +176,26 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                             <Hidden lgDown>
                               <Grid item lg={12} xs={12}>
                                 <Typography align="left" variant="body1" component="p">
-                                  {item.amount}
+                                  {formatNumber(item.amount)}
+                                  
                                 </Typography>
                               </Grid>
                             </Hidden>
                           </Grid>
                         </Grid>
                         <Grid item lg={2} xs={4} className={classes.cartSelectCont}>
-                          <QuanitySelector data={item.quantity} classes={{ productSelectDrop: classes.cartDropDown}} onChange={handleSelectChange} title="quantity" id="quant-select" />
+                          <QuanitySelector data={item.quantity} classes={{ productSelectDrop: classes.cartDropDown}} onChange={handleSelectChange} title="quantity" id={`select-${key}`} />
                         </Grid>
                         <Hidden xsDown>
                           <Grid item lg={2} xs={12} >
                             <Typography align="right" className={classes.cartItemTotal} variant="body1" component="p">
-                              {item.amount}
+                              ${formatNumber(item.amount * parseInt(item.quantity))}
                             </Typography>
                           </Grid>
                         </Hidden>
                         <Grid item lg={12} xs={8} className={classes.cartActionCont}>
                           <Typography align="right" variant="body1" component="p">
-                            <Button className={`smallMainButton my-2`}>Delete</Button>
+                            <Button onClick={ () => handleDelete(index)} className={`smallMainButton my-2`}>Delete</Button>
                           </Typography>
                         </Grid>
                       </Grid>
@@ -191,7 +209,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                 </Grid>
                 <Grid item lg={12} xs={12}>
                     <Typography variant="body1" align="right" component="p"  className={classes.firstSubTotal}>
-                       Subtotal $9.00
+                       Subtotal ${total.subtotal}
                     </Typography>
                 </Grid>
               </Hidden>
@@ -201,42 +219,42 @@ const Cart = ({cart, updateCart, deleteCart}) => {
             <Grid container spacing={2} className={classes.cartTotalCont}>
               <Grid item xs={12} lg={12} xs={12} className={classes.cartTotalItems}>
                 <Grid container>
-                  <Grid item xs={10} lg={10}>
+                  <Grid item xs={8} lg={8}>
                     <Typography variant="body1" component="p">
                       Subtotal
                     </Typography>
                   </Grid>
-                  <Grid item xs={2} lg={2}>
-                    <Typography variant="body1" component="p">
-                       $9.00
+                  <Grid item xs={4} lg={4}>
+                    <Typography align="right" variant="body1" component="p">
+                       ${total.subtotal}
                     </Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item lg={12} xs={12} className={classes.cartTotalItems}>
                 <Grid container>
-                  <Grid item lg={10} xs={10}>
+                  <Grid item lg={8} xs={8}>
                     <Typography variant="body1" component="p">
                       Delivery
                     </Typography>
                   </Grid>
-                  <Grid item lg={2} xs={2}>
-                    <Typography variant="body1" component="p">
-                       $9.00
+                  <Grid item lg={4} xs={4}>
+                    <Typography align="right" variant="body1" component="p">
+                       ${total.delivery}
                     </Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item lg={12} xs={12} className={classes.cartTotalItems}>
                 <Grid container>
-                  <Grid item lg={10} xs={10}>
+                  <Grid item lg={8} xs={8}>
                     <Typography variant="body1" component="p">
                       Taxes
                     </Typography>
                   </Grid>
-                  <Grid item lg={2} xs={2}>
-                    <Typography variant="body1" component="p">
-                       $9.00
+                  <Grid item lg={4} xs={4}>
+                    <Typography align="right" variant="body1" component="p">
+                       ${total.taxes}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -246,14 +264,14 @@ const Cart = ({cart, updateCart, deleteCart}) => {
               </Grid>
               <Grid item lg={12} xs={12} className={classes.cartGrandCont}>
                 <Grid container>
-                  <Grid item lg={10} xs={10}>
+                  <Grid item lg={8} xs={8}>
                     <Typography variant="body1" component="p">
                       Grand Total
                     </Typography>
                   </Grid>
-                  <Grid item lg={2} xs={2}>
-                    <Typography variant="body1" component="p">
-                       $9.00
+                  <Grid item lg={4} xs={4}>
+                    <Typography align="right" variant="body1" component="p">
+                       ${total.grandTotal}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -264,6 +282,20 @@ const Cart = ({cart, updateCart, deleteCart}) => {
             </Grid>
           </Grid>
         </Grid>
+        ) : (
+          <Grid container spacing={2}>
+          <Grid item lg={10} xs={12} className={classes.cartItemCont}>
+            <Grid container>
+              <Grid item lg={12} xs={12} className={classes.cartTitleCont}>
+                <Typography variant="h5" component="p">
+                  Your Cart is Empty
+                </Typography>
+              </Grid>
+            </Grid>
+          </Grid>
+          </Grid>
+        )
+      }
       </div>
     </LayoutTemplate>
   );

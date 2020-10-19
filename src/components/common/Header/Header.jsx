@@ -135,7 +135,7 @@ const styles = (theme) => ({
   },
 })
 
-const Header = ({classes, data, userInfo, loadMain}) => {
+const Header = ({classes, data, userInfo, loadMain, cart}) => {
   const [openMobile, setOpenMobile] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
 
@@ -205,11 +205,15 @@ const Header = ({classes, data, userInfo, loadMain}) => {
               <Grid item>
                 <Button href="/cart" color="inherit" className={classes.cartBtn}>
                   <ShoppingCartOutlinedIcon style={{ fontSize: 40 }} />
-                  <div className={classes.cartTotal}>
-                  <Typography className={classes.cartTotalNumber} variant="subtitle1">
-                    90
-                  </Typography>
-                  </div>
+                  {
+                    Object.keys(cart).length > 0 && (
+                      <div className={classes.cartTotal}>
+                        <Typography className={classes.cartTotalNumber} variant="subtitle1">
+                          {Object.keys(cart).length}
+                        </Typography>
+                      </div>
+                    )
+                  }
                 </Button>
               </Grid>
               <Grid item>
@@ -247,7 +251,8 @@ Header.protoTypes = {
 }
 const mapStateToProps = (state, ownProps) => {
   return {
-    userInfo: state.user
+    userInfo: state.user,
+    cart: state.cart
   }
 }
 const mapDispatchToProps = {

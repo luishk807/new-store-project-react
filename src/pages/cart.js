@@ -121,7 +121,6 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     const index = resp.id.split("-")[1]
     cart[index]['quantity'] = resp.value;
     await updateCart(cart[index])
-  
   }
 
   const handleDelete = (index) => {

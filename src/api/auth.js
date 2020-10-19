@@ -40,11 +40,11 @@ export const logout = () => {
 }
 
 export const verifyAuth = () => {
-  let {token, userRole} = getCookie();
-  return !!token && userRole == 1;
+  let {token, userRoleId} = getCookie();
+  return !!token && userRoleId == 1;
 }
 
 export const verifyUser = () => {
-  let {token, userRole} = getCookie();
+  let {token, userRoleId} = getCookie();
   return !!token;
 }

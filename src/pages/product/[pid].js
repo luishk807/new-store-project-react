@@ -18,12 +18,17 @@ import MessageOutlinedIcon from '@material-ui/icons/MessageOutlined';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 
 //import Typography from '../components/common/Typography';
+import { getImageUrlByType } from '../../utils/form';
+import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../../constants/samples/ProductSample';
 import Rate from '../../components/common/Rate';
 import RateBox from '../../components/common/RateBox';
 import Select from '../../components/common/QuanitySelector';
 import Icons from '../../components/common/Icons';
+
+import { getItemById } from '../../api';
+import { setProducts } from '../../redux/actions/main';
 
 const styles = (theme) => ({
   root: {
@@ -68,26 +73,42 @@ const styles = (theme) => ({
 const Index = ({classes, data = ProductSample}) => {
   const router = useRouter()
   const id = router.query.pid;
-  const [currImage, setCurrImage] = useState(data.images[0]);
-  const [value, setValue] = React.useState(2);
+  const [images, setImages] = useState({});
+  const [rate, setRate] = React.useState(2);
+  const [productInfo, setProductInfo] = useState({});
   const [hover, setHover] = React.useState(-1);
-  
-  const images = data.images.map((img) => {
-      return {
-        original: `/images/products/${img}`,
-        thumbnail: `/images/products/${img}`,
-      }
-  });
+  const [showData, setShowData] = useState(false);
 
-  const handleSelectChange = (event) => {
-    const value = event.target.value;
-    console.log("hey hey", value)
+  const handleSelectChange = async(resp) => {
+    const index = resp.id.split("-")[1]
+    cart[index]['quantity'] = resp.value;
+    await updateCart(cart[index])
   };
+  
+  const loadImages = (data) => {
+    const imageUrl = getImageUrlByType('product');
+    const imgs = data.product_images.map((img) => {
+        return {
+          original: `${imageUrl}/${img.img_url}`,
+          thumbnail: `${imageUrl}/${img.img_url}`,
+        }
+    });
+    console.log('image', imgs)
+    setImages(imgs);
+  }
 
   useEffect(()=>{
-    console.log(id, 'id')
+    const loadProductInfo = async() => {
+      const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
+      console.log('product', getProductInfo)
+      loadImages(getProductInfo)
+      setProductInfo(getProductInfo);
+      setShowData(true);
+    }
+    loadProductInfo();
   }, [])
-  return (
+
+  return showData && (
     <LayoutTemplate>
       <div className={classes.root}>
         <Grid container>
@@ -101,10 +122,10 @@ const Index = ({classes, data = ProductSample}) => {
                 </Grid>
               </Grid>
               <Grid item lg={4} sm={12}>
-                <Typography align="center" variant="h4" component="h3">{data.name}</Typography>
-                <Typography align="center" variant="h1" component="h2">US ${data.total}</Typography>
+                <Typography align="center" variant="h4" component="h3">{productInfo.name}</Typography>
+                <Typography align="center" variant="h1" component="h2">US ${productInfo.amount}</Typography>
                 <Select onChange={handleSelectChange} title="quant" id="quant-select" />
-                <Typography align="left" variant="h5" component="h5">Disponibilidad {data.stock}</Typography>
+                <Typography align="left" variant="h5" component="h5">Disponibilidad {productInfo.stock}</Typography>
                 <Typography className={classes.deliveryText} align="left" variant="body1" component="p">
                   <Icons name="delivery" classes={{icon: classes.deliveryIcon}}  />&nbsp;Entrega a todo Panama
                 </Typography>
@@ -116,12 +137,12 @@ const Index = ({classes, data = ProductSample}) => {
               <Grid item lg={12} sm={12}>
                 <Typography align="center" variant="h4" component="h3">Opiniones del Cliente</Typography>
               </Grid>
-              <Grid item lg={12} sm={12} align="center">
-                <Rate data={value} onChange={(event, newValue)=>setValue(newValue)} onChangeActive={(event, newHover)=>setHover(newHover)} />
+              {/* <Grid item lg={12} sm={12} align="center">
+                <Rate data={rate} onChange={(event, newValue)=>setRate(newValue)} onChangeActive={(event, newHover)=>setHover(newHover)} />
               </Grid>
               <Grid item lg={12} sm={12}>
-                <RateBox data={data} />
-              </Grid>
+                <RateBox data={rate} />
+              </Grid> */}
             </Grid>
           </Grid>
         </Grid>
@@ -129,15 +150,15 @@ const Index = ({classes, data = ProductSample}) => {
         <Grid container spacing={2}>
           <Grid item lg={8} sm={12}>
             <Typography align="left" variant="h4" component="h4">Description</Typography>
-            <Typography align="left" variant="body1" component="p">{data.desc}</Typography>
+            <Typography align="left" variant="body1" component="p">{productInfo.description}</Typography>
           </Grid>
           <Grid item lg={4} sm={12}>
             <Typography align="left" variant="h4" component="h4">Acerca del Vendedor</Typography>
-            <Typography align="left" variant="body1" component="p">{data.seller.name} [<Link href="#">Ver Mas</Link>]</Typography>
+            <Typography align="left" variant="body1" component="p">seller[<Link href="#">Ver Mas</Link>]</Typography>
             <Typography align="left" variant="body1" component="div">
-                <Rate data={data.seller.rate} disabled={true} />
+                {/* <Rate data={productInfo.seller.rate} disabled={true} /> */}
             </Typography>
-            <Typography align="left" variant="body1" component="p">{data.seller.desc}</Typography>
+            {/* <Typography align="left" variant="body1" component="p">{productInfo.seller.desc}</Typography> */}
           </Grid>
         </Grid>
         {/* Q&A section */}
@@ -165,8 +186,8 @@ const Index = ({classes, data = ProductSample}) => {
           </Grid>
           <Grid item lg={12}>
             <Grid container spacing={2}>
-            {
-              data.qa.map((question, index) => {
+            {/* {
+              productInfo.qa.map((question, index) => {
                 return (index % 2 !== 0) ? (
                   <Grid key={index} item lg={12}>
                     <Grid container>
@@ -193,7 +214,7 @@ const Index = ({classes, data = ProductSample}) => {
                   </Grid>
                 )
               })
-            }
+            } */}
             </Grid>
           </Grid>
         </Grid>

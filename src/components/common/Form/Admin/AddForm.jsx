@@ -9,7 +9,7 @@ import { addItem } from '../../../../api';
 import { validateForm, loadMainOptions } from '../../../../utils/form';
 import { ADMIN_SECTIONS, ADMIN_URL } from '../../../../constants/admin';
 import AdminLayoutTemplate from '../../Layout/AdminLayoutTemplate';
-import Form from './Form';
+import Form from '../Form';
 import PrivatePage from '../../../../components/common/Form/Admin/PrivatePage';
 import { FORM_SCHEMA } from '../../../../config';
 

@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import * as T from 'prop-types';
 import ImageGallery from 'react-image-gallery';
 import classNames from 'classnames';
+import { connect } from 'react-redux';
+import { updateCart,addCart } from '../../redux/actions/main';
 import { useRouter } from 'next/router';
 import {
   Grid,
@@ -26,7 +28,7 @@ import Rate from '../../components/common/Rate';
 import RateBox from '../../components/common/RateBox';
 import Select from '../../components/common/QuanitySelector';
 import Icons from '../../components/common/Icons';
-
+import Snackbar from '../../components/common/Snackbar';
 import { getItemById } from '../../api';
 import { setProducts } from '../../redux/actions/main';
 
@@ -38,6 +40,9 @@ const styles = (theme) => ({
     color: '#51DC55',
     margin: '10px 0px',
   },
+  infoRowContent: {
+    margin: '20px 0px',
+  },
   deliveryIcon: {
     width: 80,
     height: 80,
@@ -48,6 +53,13 @@ const styles = (theme) => ({
   },
   qaItem: {
     display: 'flex',
+  },
+  dropDown: {
+    width: '100%'
+  },
+  addCartBtn: {
+    width: '100%',
+    height: '100%',
   },
   qaTitleContainer: {
     margin: '20px 0px',
@@ -70,7 +82,7 @@ const styles = (theme) => ({
   }
 });
 
-const Index = ({classes, data = ProductSample}) => {
+const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const router = useRouter()
   const id = router.query.pid;
   const [images, setImages] = useState({});
@@ -78,11 +90,16 @@ const Index = ({classes, data = ProductSample}) => {
   const [productInfo, setProductInfo] = useState({});
   const [hover, setHover] = React.useState(-1);
   const [showData, setShowData] = useState(false);
+  const [snack, setSnack] = useState({
+    severity: 'success',
+    open: false,
+    text: '',
+  });
 
   const handleSelectChange = async(resp) => {
     const index = resp.id.split("-")[1]
-    cart[index]['quantity'] = resp.value;
-    await updateCart(cart[index])
+    productInfo['quantity'] = resp.value;
+    // await updateCart(cart[index])
   };
   
   const loadImages = (data) => {
@@ -95,6 +112,19 @@ const Index = ({classes, data = ProductSample}) => {
     });
     console.log('image', imgs)
     setImages(imgs);
+  }
+
+  const onAddCart = async() => {
+    console.log(productInfo)
+    if (!productInfo.quantity) {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: 'Please choose quantity',
+      })
+    } else {
+      await addCart(productInfo)
+    }
   }
 
   useEffect(()=>{
@@ -122,13 +152,28 @@ const Index = ({classes, data = ProductSample}) => {
                 </Grid>
               </Grid>
               <Grid item lg={4} sm={12}>
-                <Typography align="center" variant="h4" component="h3">{productInfo.name}</Typography>
-                <Typography align="center" variant="h1" component="h2">US ${productInfo.amount}</Typography>
-                <Select onChange={handleSelectChange} title="quant" id="quant-select" />
-                <Typography align="left" variant="h5" component="h5">Disponibilidad {productInfo.stock}</Typography>
-                <Typography className={classes.deliveryText} align="left" variant="body1" component="p">
-                  <Icons name="delivery" classes={{icon: classes.deliveryIcon}}  />&nbsp;Entrega a todo Panama
-                </Typography>
+                <Grid container>
+                  <Grid item>
+                   <Typography align="center" variant="h4" component="h3">{productInfo.name}</Typography>
+                  </Grid>
+                  <Grid item lg={12}>
+                    <Typography align="center" variant="h1" component="h2">US ${productInfo.amount}</Typography>
+                  </Grid>
+                  <Grid item lg={12}>
+                    <Select onChange={handleSelectChange} className={classes.dropDown} title="quant" id="quant-select" />
+                  </Grid>
+                  <Grid item lg={12} className={classes.infoRowContent}>
+                    <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>
+                  </Grid>
+                  <Grid item lg={12} className={classes.infoRowContent}>
+                    <Typography align="left" variant="h5" component="h5">Disponibilidad: {productInfo.stock}</Typography>
+                  </Grid>
+                  <Grid item lg={12}>
+                    <Typography className={classes.deliveryText} align="left" variant="body1" component="p">
+                      <Icons name="delivery" classes={{icon: classes.deliveryIcon}}  />&nbsp;Entrega a todo Panama
+                    </Typography>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
           </Grid>
@@ -222,6 +267,7 @@ const Index = ({classes, data = ProductSample}) => {
         <Grid container>
           <Grid item></Grid>
         </Grid>
+        <Snackbar open={snack.open} severity={snack.severity} onClose={()=>{setSnack({...snack,open:false})}} content={snack.text} />
       </div>
 
     </LayoutTemplate>
@@ -232,5 +278,12 @@ Index.protoTypes = {
   classes: T.object,
   data: T.object,
 }
+const mapStateToProps = state => ({
+  cart: state.cart
+}) // add reducer access to props
+const mapDispatchToProps = {
+  updateCart: updateCart,
+  addCart: addCart
+}
 
-export default withStyles(styles)(Index);
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Index));

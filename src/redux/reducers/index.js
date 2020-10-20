@@ -37,9 +37,9 @@ const loadMain = () => async(dispatch, getState) => {
       cookie = decodeCookie();
       if (cookie && !getState().user.id) {
         const users = await getItemById(ADMIN_SECTIONS.user.url, cookie.id);
-        if (users[0]) {
-          localStorage.setItem('user',  JSON.stringify(users[0]))
-          dispatch(setUser(users[0]))
+        if (users) {
+          localStorage.setItem('user',  JSON.stringify(users))
+          dispatch(setUser(users))
         }
       }
     } catch (err){
@@ -47,9 +47,9 @@ const loadMain = () => async(dispatch, getState) => {
       localStorage.removeItem('user');
     }
   }
-
-  let cartLocal = await localStorage.getItem('cart')
-  if (!Object.keys(getState().cart) && !Object.keys(getState().cart).length) {
+  //localStorage.removeItem('cart')
+  let cartLocal = await localStorage.getItem('cart');
+  if (cartLocal && !Object.keys(getState().cart).length) {
     const cartJson =  JSON.parse(cartLocal);
     dispatch(updateCart(cartJson))
   }

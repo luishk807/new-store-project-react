@@ -300,7 +300,7 @@ const Form = ({
         break
       }
       case "edit": {
-        const buttonName = showTitle ? `&nbsp;${title}`:'';
+        const buttonName = showTitle ? ` ${title}`:'';
         setFormTitle(`Edit${buttonName}`);
         setFormBtnTitle(`Update${buttonName}`);
         break;

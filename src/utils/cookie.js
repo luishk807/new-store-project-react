@@ -4,7 +4,7 @@ import jwt from 'jwt-decode' // import dependency
 export const setCookie = (data) => {
   Cookies.set('authorization', { 
     token: data.data.authorization, 
-    userRoleId: data.data.user.userRoleId }
+    userRole: data.data.user.userRole }
   , { expires: 1 })
 }
 

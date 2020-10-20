@@ -28,8 +28,6 @@ export default class Api {
     if (apiUrl.indexOf('http') !== 0) {
       apiUrl = `${config.baseUrl || Api.baseUrl || ''}${apiUrl}`;
     }
-
-    console.log("shmitig", apiUrl, ' and ', body)
     const cookie = getCookie();
     const token = cookie && cookie.token ? cookie.token : null;
     if(method === "POST") {

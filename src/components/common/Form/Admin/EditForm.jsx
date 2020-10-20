@@ -10,7 +10,8 @@ import { saveItem } from '../../../../api';
 import Api from '../../../../services/api';
 import { validateForm, loadMainOptions } from '../../../../utils/form';
 import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
-import Form from '../../../../components/common/Form/Admin/Form';
+// import Form from '../../../../components/common/Form/Admin/Form';
+import Form from '../Form';
 import PrivatePage from '../../../../components/common/Form/Admin/PrivatePage';
 import { ADMIN_SECTIONS } from '../../../../constants/admin';
 import { FORM_SCHEMA } from '../../../../config';
@@ -135,6 +136,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle}) => {
       Api.get(`/${ADMIN_SECTIONS[name].url}`,{
         id: id
       }).then((res) => {
+        console.log("info", res)
         let info = res;
         for(var field in form){
           let value = info[field];

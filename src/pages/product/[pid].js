@@ -154,7 +154,7 @@ const Index = ({classes, data = ProductSample}) => {
           </Grid>
           <Grid item lg={4} sm={12}>
             <Typography align="left" variant="h4" component="h4">Acerca del Vendedor</Typography>
-            <Typography align="left" variant="body1" component="p">seller[<Link href="#">Ver Mas</Link>]</Typography>
+            <Typography align="left" variant="body1" component="p">{`${productInfo.vendors.first_name} ${productInfo.vendors.last_name}`}[<Link href="#">Ver Mas</Link>]</Typography>
             <Typography align="left" variant="body1" component="div">
                 {/* <Rate data={productInfo.seller.rate} disabled={true} /> */}
             </Typography>

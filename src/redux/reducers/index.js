@@ -51,7 +51,11 @@ const loadMain = () => async(dispatch, getState) => {
   let cartLocal = await localStorage.getItem('cart');
   if (cartLocal && !Object.keys(getState().cart).length) {
     const cartJson =  JSON.parse(cartLocal);
-    dispatch(updateCart(cartJson))
+    if (!Object.keys(cartJson).length || !cartJson) {
+      localStorage.removeItem('cart');
+    } else {
+      dispatch(updateCart(cartJson))
+    }
   }
 }
 

@@ -166,7 +166,6 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
   );
   useEffect(() => {
     loadMain()
-    console.log("hey")
   }, [userInfo])
   return (
     <>

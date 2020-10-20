@@ -34,6 +34,10 @@ const styles = (theme) => ({
   icon: {
     width: 70,
     height: 70,
+  },
+  listItemMainCont: {
+    display: 'flex',
+    justifyContent: 'space-around'
   }
 });
 
@@ -42,7 +46,6 @@ const ProductCategoryIcons = ({classes, data}) => {
 
   const getCategories = async() => {
     const categories = await getItems(`/${ADMIN_SECTIONS.category.url}`);
-    console.log(categories)
     setCategories(categories);
   }
 
@@ -54,7 +57,7 @@ const ProductCategoryIcons = ({classes, data}) => {
     <div className={classes.root}>
       <Grid container>
         <Grid item lg={12}>
-          <List component="nav" aria-label="main mailbox folders">
+          <List component="nav" className={classes.listItemMainCont} aria-label="main mailbox folders">
             {
               categories && categories.map((data, index) => {
                 return (

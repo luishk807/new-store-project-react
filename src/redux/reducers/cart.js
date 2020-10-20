@@ -34,7 +34,6 @@ const cart = (state = [], action) => {
   // check type of action
   let indexFound = null;
   let newState = {}
-  let length = Object.keys(state).length;
   switch(action.type){
     case HYDRATE:
       return {
@@ -42,26 +41,7 @@ const cart = (state = [], action) => {
         ...action.payload
       }
     case t.ADD_CART:
-      Object.keys(state).map((index) => {
-        if (state[index].id == action.payload.id && !indexFound) {
-          indexFound = index
-        }
-      })
-      if (indexFound) {
-        newState = {
-          ...state,
-          [indexFound] : action.payload
-        }
-        saveCartLocal(newState);
-        return newState
-      } else {
-        newState = {
-          ...state,
-            [length++]:action.payload,
-        };
-        saveCartLocal(newState);
-        return newState
-      }
+      return updateCurrentCart(state, action)
     case t.DELETE_CART:
       Object.keys(state).map((index) => {
         if (state[index].id == action.payload.id && !indexFound) {
@@ -99,27 +79,7 @@ const cart = (state = [], action) => {
         saveCartLocal(newState);
         return newState
       } else {
-        Object.keys(state).map((index) => {
-          if (state[index].id == action.payload.id && !indexFound) {
-            indexFound = index
-          }
-        })
-        if (indexFound) {
-          newState = {
-            ...state,
-            [indexFound] : action.payload
-          }
-          saveCartLocal(newState);
-          return newState
-        } else {
-          newState = {
-            ...state,
-             [length]:action.payload,
-          };
-          length++;
-          saveCartLocal(newState);
-          return newState
-        }
+        return updateCurrentCart(state, action)
       }
     default:
       // nothin happens, return same
@@ -127,8 +87,36 @@ const cart = (state = [], action) => {
   }
 };
 
+const updateCurrentCart = (state, action) => {
+  let newState = {}
+  let indexFound = null;
+  let length = Object.keys(state).length;
+  Object.keys(state).map((index) => {
+    if (state[index].id == action.payload.id && !indexFound) {
+      indexFound = index
+    }
+  })
+  if (indexFound) {
+    newState = {
+      ...state,
+      [indexFound] : action.payload
+    }
+  } else {
+    newState = {
+      ...state,
+        [length++]:action.payload,
+    };
+  }
+  saveCartLocal(newState);
+  return newState
+}
+
 const saveCartLocal = (state) => {
-  localStorage.setItem('cart', JSON.stringify(state))
+  if (!Object.keys(state).length) {
+    localStorage.removeItem('cart');
+  } else {
+    localStorage.setItem('cart', JSON.stringify(state))
+  }
 }
 
 export default cart;

@@ -31,7 +31,7 @@ const styles = (theme) => ({
   },
 }); 
 
-const RateBox = ({classes, data}) => {
+const RateList = ({classes, data}) => {
 
   const rates = data.rates.map((rate, index) => {
     return (
@@ -67,9 +67,9 @@ const RateBox = ({classes, data}) => {
   );
 }
 
-RateBox.protoTypes = {
+RateList.protoTypes = {
   classes: T.object,
   data: T.object,
 }; 
 
-export default withStyles(styles)(RateBox);
+export default withStyles(styles)(RateList);

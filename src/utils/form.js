@@ -1,4 +1,4 @@
-import { FORM_SCHEMA, CATEGORY_ICONS } from '../config';
+import { FORM_SCHEMA, CATEGORY_ICONS } from '../../config';
 import { ADMIN_SECTIONS } from '../constants/admin';
 import Api from '../services/api';
 
@@ -25,6 +25,29 @@ export const getImageUrlByType = (type) => {
   }
 }
 
+export const handleFormResponse = (resp) => {
+  console.log('res', resp)
+  if (!resp) {
+    return {
+      severity: 'success',
+      open: false,
+      text: '',
+    }
+  }
+  if (resp.status) {
+    return {
+      severity: 'success',
+      open: true,
+      text: 'Thank you! question sent',
+    }
+  } else {    
+    return {
+      severity: 'error',
+      open: true,
+      text: `ERROR: ${resp.message}`,
+    }
+  }
+}
 export const validateForm = async(name = null, value = null, ignore = []) => {
   ignore.push('saved');
   if (ignore.indexOf(name) !== -1) {

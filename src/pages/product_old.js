@@ -20,7 +20,7 @@ import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../constants/samples/ProductSample';
 import Rate from '../components/common/Rate';
-import RateBox from '../components/common/RateBox';
+import RateList from '../components/common/RateList';
 import Select from '../components/common/QuanitySelector';
 import Icons from '../components/common/Icons';
 
@@ -114,7 +114,7 @@ const Product = ({classes, data = ProductSample}) => {
                 <Rate data={value} onChange={(event, newValue)=>setValue(newValue)} onChangeActive={(event, newHover)=>setHover(newHover)} />
               </Grid>
               <Grid item lg={12} sm={12}>
-                <RateBox data={data} />
+                <RateList data={data} />
               </Grid>
             </Grid>
           </Grid>

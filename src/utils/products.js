@@ -1,4 +1,4 @@
-import { FORM_SCHEMA } from '../config';
+import { FORM_SCHEMA } from '../../config';
 
 export const formatForm = (form) => {
   const currentForm = form;

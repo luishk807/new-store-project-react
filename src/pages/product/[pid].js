@@ -1,7 +1,6 @@
 import React, {useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import ImageGallery from 'react-image-gallery';
-import classNames from 'classnames';
 import { connect } from 'react-redux';
 import { updateCart,addCart } from '../../redux/actions/main';
 import { useRouter } from 'next/router';
@@ -9,30 +8,23 @@ import {
   Grid,
   withStyles,
   Link,
-  FormControl,
   Button,
-  TextField,
-  Typography,
-  Divider,
+  Typography
 } from '@material-ui/core';
-import LocalShippingOutlinedIcon from '@material-ui/icons/LocalShippingOutlined';
-import MessageOutlinedIcon from '@material-ui/icons/MessageOutlined';
-import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 
 //import Typography from '../components/common/Typography';
 import { getImageUrlByType } from '../../utils/form';
-import { calculateRate } from '../../utils';
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../../constants/samples/ProductSample';
 import Rate from '../../components/common/Rate';
-import RateBox from '../../components/common/RateBox';
 import Select from '../../components/common/QuanitySelector';
 import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
 import { getItemById } from '../../api';
-import { sendQuestion } from '../../api/product';
 import { setProducts } from '../../redux/actions/main';
+import RateBox from '../../components/RateBoxSimple';
+import QuestionsAnswers from '../../components/QuestionsAswers';
 
 const styles = (theme) => ({
   root: {
@@ -53,9 +45,6 @@ const styles = (theme) => ({
   productBottomSec: {
     padding: 10,
   },
-  qaItem: {
-    display: 'flex',
-  },
   dropDown: {
     width: '100%'
   },
@@ -66,36 +55,19 @@ const styles = (theme) => ({
   qaTitleContainer: {
     margin: '20px 0px',
   },
-  qaDivider: {
-    margin: '5px 0px',
-  },
-  textContainer: {
-    width: '100%',
-    margin: '20px 0px',
-  },
   textInput: {
-    // flexGrow: 2,
     width: '100%',
-
   },
-  textButton: {
-    width: '100%',
-    height: '100%'
-  }
+
 });
 
 const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const router = useRouter()
   const id = router.query.pid;
   const [images, setImages] = useState({});
-  const [rate, setRate] = useState(2);
   const [productInfo, setProductInfo] = useState({});
-  const [hover, setHover] = useState(-1);
   const [showData, setShowData] = useState(false);
-  const [form, setForm] = useState({
-    question: null,
-    product: id
-  })
+
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -104,17 +76,11 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
   const handleSelectChange = async(resp) => {
     const index = resp.id.split("-")[1]
-    productInfo['quantity'] = resp.value;
-    // await updateCart(cart[index])
-  };
-  
-  const handleOnChange = (e) => {
-    const { name, value } = e.target;
-    setForm({
-      ...form,
-      'question': value
+    setProductInfo({
+      ...productInfo,
+      'quantity': resp.value
     })
-  }
+  };
 
   const loadImages = (data) => {
     const imageUrl = getImageUrlByType('product');
@@ -126,23 +92,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     });
     console.log('image', imgs)
     setImages(imgs);
-  }
-
-  const submitQuestion = async(e) => {
-    if (!form.question) {
-      setSnack({
-        severity: 'error',
-        open: true,
-        text: 'Please enter a question',
-      })
-    } else {
-      const resp = await sendQuestion(form)
-      setSnack({
-        severity: 'success',
-        open: true,
-        text: 'Thank you! question sent',
-      })
-    }
   }
 
   const onAddCart = async() => {
@@ -164,8 +113,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       console.log('product', getProductInfo)
       loadImages(getProductInfo)
       setProductInfo(getProductInfo);
-      const rate = calculateRate(getProductInfo);
-      setRate(rate);
       setShowData(true);
     }
     loadProductInfo();
@@ -211,17 +158,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
             </Grid>
           </Grid>
           <Grid item lg={3} sm={12}>
-            <Grid container>
-              <Grid item lg={12} sm={12}>
-                <Typography align="center" variant="h4" component="h3">Opiniones del Cliente</Typography>
-              </Grid>
-              <Grid item lg={12} sm={12} align="center">
-                <Rate data={rate} onChange={(event, newValue)=>setRate(newValue)} onChangeActive={(event, newHover)=>setHover(newHover)} />
-              </Grid>
-              <Grid item lg={12} sm={12}>
-                <RateBox data={productInfo} />
-              </Grid>
-            </Grid>
+            <RateBox data={productInfo} />
           </Grid>
         </Grid>
         {/* Review and Seller */}
@@ -240,62 +177,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           </Grid>
         </Grid>
         {/* Q&A section */}
-        <Grid container>
-          <Grid item lg={12}>
-            <Typography align="left" variant="h4" component="h4">Preguntas y respuestas</Typography>
-          </Grid>
-          <Grid item lg={12}>
-            <FormControl className={classes.textContainer}>
-              <Grid container spacing={2}>
-                <Grid item lg={10} sm={12}>
-                  <TextField onChange={handleOnChange} className={classNames(classes.textInput)} id="outlined-basic" label="Tu pregunta" variant="outlined" />
-                </Grid>
-                <Grid item lg={2} sm={12}>
-                  <Button className={classNames(classes.textButton)} variant="contained" color="primary" onClick={submitQuestion} component="span">
-                    Preguntar
-                  </Button>
-                </Grid>
-              </Grid>
-            </FormControl>
-          </Grid>
-          <Grid item lg={12} sm={12} className={classes.qaTitleContainer}>
-            <Typography align="left" variant="h5" component="h5">Ultima Preguntas</Typography>
-            <Divider className={classes.qaDivider} />
-          </Grid>
-          <Grid item lg={12}>
-            <Grid container spacing={2}>
-            {
-              productInfo.product_questions.map((question, index) => {
-                return (index % 2 !== 0) ? (
-                  <Grid key={index} item lg={12}>
-                    <Grid container>
-                      <Grid item lg={12} className={classes.qaItem}>
-                        <MessageOutlinedIcon width="20" height="20"/>
-                         &nbsp;&nbsp;<Typography align="left" variant="body1" component="div">{question.question}</Typography>
-                      </Grid>
-                      <Grid item lg={12}>
-                        <Typography align="left" variant="caption" component="legend">{question.name}</Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                ) : (
-                  <Grid key={index} item lg={12}>
-                    <Grid container>
-                      <Grid item lg={12} className={classes.qaItem}>
-                        <CommentOutlinedIcon width="20" height="20"/>
-                         &nbsp;&nbsp;<Typography align="left" variant="body1" component="div">{question.question}</Typography>
-                      </Grid>
-                      <Grid item lg={12}>
-                        <Typography align="left" variant="caption" component="legend">{question.name}</Typography>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                )
-              })
-            }
-            </Grid>
-          </Grid>
-        </Grid>
+        <QuestionsAnswers data={productInfo}/>
         {/* Gallery thumb */}
         <Grid container>
           <Grid item></Grid>

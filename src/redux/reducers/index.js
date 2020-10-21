@@ -2,7 +2,7 @@ import * as t from '../types';
 import { decodeCookie } from '../../utils/cookie';
 import { getItemById, getItems } from '../../api';
 import { ADMIN_SECTIONS } from '../../constants/admin';
-import { CATEGORY_ICONS } from '../../config';
+import { CATEGORY_ICONS } from '../../../config';
 import { 
   setUser,
   resetUser,

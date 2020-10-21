@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import ImageGallery from 'react-image-gallery';
 import classNames from 'classnames';
@@ -31,6 +31,7 @@ import Select from '../../components/common/QuanitySelector';
 import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
 import { getItemById } from '../../api';
+import { sendQuestion } from '../../api/product';
 import { setProducts } from '../../redux/actions/main';
 
 const styles = (theme) => ({
@@ -91,6 +92,10 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [productInfo, setProductInfo] = useState({});
   const [hover, setHover] = useState(-1);
   const [showData, setShowData] = useState(false);
+  const [form, setForm] = useState({
+    question: null,
+    product: id
+  })
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -103,6 +108,14 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     // await updateCart(cart[index])
   };
   
+  const handleOnChange = (e) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      'question': value
+    })
+  }
+
   const loadImages = (data) => {
     const imageUrl = getImageUrlByType('product');
     const imgs = data.product_images.map((img) => {
@@ -113,6 +126,23 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     });
     console.log('image', imgs)
     setImages(imgs);
+  }
+
+  const submitQuestion = async(e) => {
+    if (!form.question) {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: 'Please enter a question',
+      })
+    } else {
+      const resp = await sendQuestion(form)
+      setSnack({
+        severity: 'success',
+        open: true,
+        text: 'Thank you! question sent',
+      })
+    }
   }
 
   const onAddCart = async() => {
@@ -204,9 +234,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
             <Typography align="left" variant="h4" component="h4">Acerca del Vendedor</Typography>
             <Typography align="left" variant="body1" component="p">{`${productInfo.vendors.first_name} ${productInfo.vendors.last_name}`}[<Link href="#">Ver Mas</Link>]</Typography>
             <Typography align="left" variant="body1" component="div">
-                {/* <Rate data={productInfo.seller.rate} disabled={true} /> */}
+                <Rate data={4} disabled={true} />
             </Typography>
-            {/* <Typography align="left" variant="body1" component="p">{productInfo.seller.desc}</Typography> */}
+            <Typography align="left" variant="body1" component="p">{productInfo.vendors.description}</Typography>
           </Grid>
         </Grid>
         {/* Q&A section */}
@@ -218,10 +248,10 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
             <FormControl className={classes.textContainer}>
               <Grid container spacing={2}>
                 <Grid item lg={10} sm={12}>
-                  <TextField className={classNames(classes.textInput)} id="outlined-basic" label="Tu pregunta" variant="outlined" />
+                  <TextField onChange={handleOnChange} className={classNames(classes.textInput)} id="outlined-basic" label="Tu pregunta" variant="outlined" />
                 </Grid>
                 <Grid item lg={2} sm={12}>
-                  <Button className={classNames(classes.textButton)} variant="contained" color="primary" component="span">
+                  <Button className={classNames(classes.textButton)} variant="contained" color="primary" onClick={submitQuestion} component="span">
                     Preguntar
                   </Button>
                 </Grid>

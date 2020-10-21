@@ -8,6 +8,7 @@ import Rating from '@material-ui/lab/Rating';
 import Typography from './Typography';
 
 import { RateLabels } from '../../../config.js';
+import { useEffect, useState } from 'react';
 
 const styles = (theme) => ({
   ratingStyle: {
@@ -19,7 +20,14 @@ const styles = (theme) => ({
   },
 });
 
-const Rate = ({classes, data: rate, onChange, onChangeActive, disabled = false}) => {
+const Rate = ({classes, data, onChange, onChangeActive, disabled = false}) => {
+  const [rate, setRate] = useState(0)
+
+  useEffect(() => {
+    if (data) {
+      setRate(parseFloat(data));
+    }
+  }, [])
   return (
     <div>
       <Rating
@@ -38,7 +46,7 @@ const Rate = ({classes, data: rate, onChange, onChangeActive, disabled = false})
 
 Rate.protoTypes = {
   classes: T.object,
-  data: T.object,
+  data: T.float,
   onChange: T.func,
   onChangeActive: T.func,
   disabled: T.bool,

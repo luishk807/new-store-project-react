@@ -28,3 +28,13 @@ export const getCartTotal = (cart) => {
     'grandTotal': formatNumber(grandTotal)
   }
 }
+
+export const calculateRate = (data) => {
+  let total = 0;
+  data.rates.forEach((data) => {
+    total += parseFloat(data.rate);
+  })
+  total = total / data.rates.length;
+  
+  return parseFloat(total);
+}

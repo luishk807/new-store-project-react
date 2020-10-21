@@ -21,6 +21,7 @@ import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 
 //import Typography from '../components/common/Typography';
 import { getImageUrlByType } from '../../utils/form';
+import { calculateRate } from '../../utils';
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../../constants/samples/ProductSample';
@@ -86,9 +87,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const router = useRouter()
   const id = router.query.pid;
   const [images, setImages] = useState({});
-  const [rate, setRate] = React.useState(2);
+  const [rate, setRate] = useState(2);
   const [productInfo, setProductInfo] = useState({});
-  const [hover, setHover] = React.useState(-1);
+  const [hover, setHover] = useState(-1);
   const [showData, setShowData] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -133,6 +134,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       console.log('product', getProductInfo)
       loadImages(getProductInfo)
       setProductInfo(getProductInfo);
+      const rate = calculateRate(getProductInfo);
+      setRate(rate);
       setShowData(true);
     }
     loadProductInfo();
@@ -182,12 +185,12 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
               <Grid item lg={12} sm={12}>
                 <Typography align="center" variant="h4" component="h3">Opiniones del Cliente</Typography>
               </Grid>
-              {/* <Grid item lg={12} sm={12} align="center">
+              <Grid item lg={12} sm={12} align="center">
                 <Rate data={rate} onChange={(event, newValue)=>setRate(newValue)} onChangeActive={(event, newHover)=>setHover(newHover)} />
               </Grid>
               <Grid item lg={12} sm={12}>
-                <RateBox data={rate} />
-              </Grid> */}
+                <RateBox data={productInfo} />
+              </Grid>
             </Grid>
           </Grid>
         </Grid>
@@ -231,8 +234,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           </Grid>
           <Grid item lg={12}>
             <Grid container spacing={2}>
-            {/* {
-              productInfo.qa.map((question, index) => {
+            {
+              productInfo.product_questions.map((question, index) => {
                 return (index % 2 !== 0) ? (
                   <Grid key={index} item lg={12}>
                     <Grid container>
@@ -259,7 +262,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   </Grid>
                 )
               })
-            } */}
+            }
             </Grid>
           </Grid>
         </Grid>

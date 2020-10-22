@@ -77,7 +77,24 @@ const QuestionsAnswers = ({classes, data}) => {
     });
   }
   
-  
+  const loadAnswer = (answers) => {
+    const answersGrid = answers.map((answer, index) => {
+      return (
+        <Grid item key={index} lg={12}>
+          <Grid container>
+            <Grid item lg={12} className={classes.qaItem}>
+              <CommentOutlinedIcon width="20" height="20"/>
+                  &nbsp;&nbsp;<Typography align="left" className={`${classes.questionAnswer}`} variant="body1" component="div">{answer.answer}</Typography>
+              </Grid>
+              <Grid item lg={12}>
+                <Typography align="left" variant="caption" component="legend">By: {answer.user}</Typography>
+              </Grid>
+          </Grid>
+        </Grid>
+      )
+    })
+    return answersGrid;
+  }
   const submitQuestion = (e) => {
     if (!form.question) {
       setSnack({
@@ -168,10 +185,17 @@ const QuestionsAnswers = ({classes, data}) => {
                   <Grid container>
                     <Grid item lg={12} className={classes.qaItem}>
                       <MessageOutlinedIcon width="20" height="20"/>
-                        &nbsp;&nbsp;<Typography align="left" className={`${classes.questionTitle} textColor`} variant="body1" component="div">{question.question}</Typography>
+                        &nbsp;&nbsp;<Typography align="left" className={`${classes.questionTitle}`} variant="body1" component="div">{question.question}</Typography>
                     </Grid>
                     <Grid item lg={12}>
                       <Typography align="left" variant="caption" component="legend">{question.name}</Typography>
+                    </Grid>
+                    <Grid item>
+                      <Grid container>
+                          {
+                            loadAnswer(question.product_answers)
+                          }
+                      </Grid>
                     </Grid>
                   </Grid>
                 </Grid>

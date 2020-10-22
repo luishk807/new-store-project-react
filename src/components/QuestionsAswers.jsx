@@ -9,12 +9,13 @@ import {
   TextField,
   Divider,
   Button,
+  Link
 } from '@material-ui/core';
 import MessageOutlinedIcon from '@material-ui/icons/MessageOutlined';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 
+import { sendQuestion, getQuestions } from '../api/product';
 import { handleFormResponse } from '../utils/form';
-import { sendQuestionm, getQuestions } from '../api/product';
 import Snackbar from './common/Snackbar';
 import Typography from './common/Typography';
 
@@ -32,6 +33,10 @@ const styles = (theme) => ({
   qaTitleContainer: {
     margin: '20px 0px',
   },
+  qaLink: {
+    display: 'inherit',
+    color: '#3366BB',
+  },
   qaDivider: {
     margin: '5px 0px',
   },
@@ -43,9 +48,16 @@ const styles = (theme) => ({
     // flexGrow: 2,
     width: '100%',
   },
+  qaItemTitle1: {
+    fontWeight: 'bold',
+  },
   questionBtnContainer: {
     display: 'flex',
     alignItems: 'center',
+  },
+  qaAnswersContainer: {
+    alignItems: 'start',
+    padding: '5px 0px'
   },
   textButton: {
     // width: '100%',
@@ -76,25 +88,7 @@ const QuestionsAnswers = ({classes, data}) => {
       'question': value
     });
   }
-  
-  const loadAnswer = (answers) => {
-    const answersGrid = answers.map((answer, index) => {
-      return (
-        <Grid item key={index} lg={12}>
-          <Grid container>
-            <Grid item lg={12} className={classes.qaItem}>
-              <CommentOutlinedIcon width="20" height="20"/>
-                  &nbsp;&nbsp;<Typography align="left" className={`${classes.questionAnswer}`} variant="body1" component="div">{answer.answer}</Typography>
-              </Grid>
-              <Grid item lg={12}>
-                <Typography align="left" variant="caption" component="legend">By: {answer.user}</Typography>
-              </Grid>
-          </Grid>
-        </Grid>
-      )
-    })
-    return answersGrid;
-  }
+
   const submitQuestion = (e) => {
     if (!form.question) {
       setSnack({
@@ -152,51 +146,37 @@ const QuestionsAnswers = ({classes, data}) => {
         <Grid item lg={12}>
           <Grid container spacing={2}>
           {
-            // questions.map((question, index) => {
-            //   return (index % 2 !== 0) ? (
-            //     <Grid key={index} item lg={12}>
-            //       <Grid container>
-            //         <Grid item lg={12} className={classes.qaItem}>
-            //           <MessageOutlinedIcon width="20" height="20"/>
-            //             &nbsp;&nbsp;<Typography align="left" variant="body1" component="div">{question.question}</Typography>
-            //         </Grid>
-            //         <Grid item lg={12}>
-            //           <Typography align="left" variant="caption" component="legend">{question.name}</Typography>
-            //         </Grid>
-            //       </Grid>
-            //     </Grid>
-            //   ) : (
-            //     <Grid key={index} item lg={12}>
-            //       <Grid container>
-            //         <Grid item lg={12} className={classes.qaItem}>
-            //           <CommentOutlinedIcon width="20" height="20"/>
-            //             &nbsp;&nbsp;<Typography align="left" variant="body1" component="div">{question.question}</Typography>
-            //         </Grid>
-            //         <Grid item lg={12}>
-            //           <Typography align="left" variant="caption" component="legend">{question.name}</Typography>
-            //         </Grid>
-            //       </Grid>
-            //     </Grid>
-            //   )
-            // })
             questions.map((question, index) => {
               return (
                 <Grid key={index} item lg={12}>
                   <Grid container>
                     <Grid item lg={12} className={classes.qaItem}>
-                      <MessageOutlinedIcon width="20" height="20"/>
-                        &nbsp;&nbsp;<Typography align="left" className={`${classes.questionTitle}`} variant="body1" component="div">{question.question}</Typography>
-                    </Grid>
-                    <Grid item lg={12}>
-                      <Typography align="left" variant="caption" component="legend">{question.name}</Typography>
-                    </Grid>
-                    <Grid item>
-                      <Grid container>
-                          {
-                            loadAnswer(question.product_answers)
-                          }
+                      <Grid container className={classes.qaAnswersContainer}>
+                        <Grid item lg={1} className={classes.qaItemTitle1}>
+                          <CommentOutlinedIcon width="20" height="20"/>&nbsp;&nbsp;Question: 
+                        </Grid>
+                        <Grid item lg={11} align="left">
+                          <Link href="/" className={classes.qaLink}>
+                            <Typography align="left" className={`${classes.questionTitle}`} variant="body1" component="div">{question.question}</Typography>
+                          </Link>                   
+                        </Grid>
                       </Grid>
                     </Grid>
+                    {
+                      question.product_answers && question.product_answers.length > 0 && (
+                        <Grid item lg={12}>
+                          <Grid container className={classes.qaAnswersContainer}>
+                              <Grid item lg={1} className={classes.qaItemTitle1}>
+                                  <CommentOutlinedIcon width="20" height="20"/>&nbsp;&nbsp;Answer: 
+                              </Grid>
+                              <Grid item lg={11} align="left">                          
+                                <Typography align="left" className={`${classes.questionAnswer}`} variant="body1" component="div">{question.product_answers[0].answer}</Typography>
+                                <Typography align="left" variant="caption" component="legend">By: {question.product_answers[0].user}test on July 24</Typography>
+                              </Grid>
+                          </Grid>
+                        </Grid>
+                      )
+                    }
                   </Grid>
                 </Grid>
               )

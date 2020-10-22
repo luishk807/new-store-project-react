@@ -32,7 +32,7 @@ const styles = (theme) => ({
 }); 
 
 const RateList = ({classes, data}) => {
-
+  console.log("rate",data)
   const rates = data.rates.map((rate, index) => {
     return (
       <Card key={index} className={classes.cardContainer}>
@@ -42,7 +42,8 @@ const RateList = ({classes, data}) => {
               <PersonRoundedIcon/>
             </Avatar>
           }
-          title={rate.name}
+          // title={rate.first_name}
+          title="Luis"
         />
         <CardContent className={classes.cardContentContainer}>
           <Typography variant="body2" color="textSecondary" component="span">

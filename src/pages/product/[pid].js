@@ -9,6 +9,7 @@ import {
   withStyles,
   Link,
   Button,
+  Divider,
   Typography
 } from '@material-ui/core';
 
@@ -178,6 +179,61 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         </Grid>
         {/* Q&A section */}
         <QuestionsAnswers data={productInfo}/>
+         {/* Rate section */}
+        <Grid container spacing={2}>
+          <Grid item lg={12}>Ratings & Reviews</Grid>
+          <Grid item lg={4} align="left">
+            <Grid container>
+              <Grid item lg={5}>
+                5.6
+              </Grid>
+              <Grid item lg={7}>
+                <Grid container>
+                  <Grid item lg={12}>
+                    ****
+                  </Grid>
+                  <Grid item lg={12}>
+                    444 reviews
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item lg={12}>
+                Rating breakdown
+              </Grid>
+              <Grid item lg={3}>
+                5 starts
+              </Grid>
+              <Grid item lg={8}>
+                line
+              </Grid>
+              <Grid item lg={1}>444</Grid>
+            </Grid>
+          </Grid>
+          <Grid item lg={8}>
+            <Grid container>
+              <Grid item lg={6}>
+                *******
+              </Grid>
+              <Grid item lg={6}>
+                oct 2, 2020
+              </Grid>
+              <Grid item lg={12}>
+                TITLE
+              </Grid>
+              <Grid item lg={12}>
+                comment
+              </Grid>
+              <Grid item lg={12}>
+                By Luis
+              </Grid>
+            </Grid>
+            <Grid item lg={12} sm={12} className={classes.qaTitleContainer}>
+              <Divider className={classes.qaDivider} />
+            </Grid>
+          </Grid>
+        </Grid>
         {/* Gallery thumb */}
         <Grid container>
           <Grid item></Grid>

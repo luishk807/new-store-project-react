@@ -20,7 +20,8 @@ const styles = (theme) => ({
   },
 });
 
-const Rate = ({classes, data, onChange, onChangeActive, disabled = false}) => {
+const Rate = ({className, classes, data, onChange, onChangeActive, disabled = false, showTitle = true}) => {
+  console.log("Class", className)
   const [rate, setRate] = useState(0)
 
   useEffect(() => {
@@ -34,21 +35,24 @@ const Rate = ({classes, data, onChange, onChangeActive, disabled = false}) => {
         name="user-feedback"
         value={rate}
         precision={0.5}
-        className={classes.ratingStyle}
+        className={className}
         disabled={disabled}
         onChange={onChange}
         onChangeActive={onChangeActive}
       />
-      <Typography component="div" className={classes.rateLabel}>{RateLabels[rate]}</Typography>
+      {
+        showTitle && (<Typography component="div" className={classes.rateLabel}>{RateLabels[rate]}</Typography>)
+      }
     </div>
   );
 }
 
 Rate.protoTypes = {
-  classes: T.object,
+  className: T.object,
   data: T.float,
   onChange: T.func,
   onChangeActive: T.func,
   disabled: T.bool,
+  showTitle: T.bool,
 }
 export default withStyles(styles)(Rate);

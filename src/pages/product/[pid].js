@@ -26,6 +26,7 @@ import { getItemById } from '../../api';
 import { setProducts } from '../../redux/actions/main';
 import RateBox from '../../components/RateBoxSimple';
 import QuestionsAnswers from '../../components/QuestionsAswers';
+import RateBoxBreakdown from '../../components/RateBoxBreakdown';
 
 const styles = (theme) => ({
   root: {
@@ -183,33 +184,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         <Grid container spacing={2}>
           <Grid item lg={12}>Ratings & Reviews</Grid>
           <Grid item lg={4} align="left">
-            <Grid container>
-              <Grid item lg={5}>
-                5.6
-              </Grid>
-              <Grid item lg={7}>
-                <Grid container>
-                  <Grid item lg={12}>
-                    ****
-                  </Grid>
-                  <Grid item lg={12}>
-                    444 reviews
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item lg={12}>
-                Rating breakdown
-              </Grid>
-              <Grid item lg={3}>
-                5 starts
-              </Grid>
-              <Grid item lg={8}>
-                line
-              </Grid>
-              <Grid item lg={1}>444</Grid>
-            </Grid>
+            <RateBoxBreakdown data={productInfo} />
           </Grid>
           <Grid item lg={8}>
             <Grid container>

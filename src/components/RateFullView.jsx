@@ -5,10 +5,10 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import { getRates } from '../api/rate';
 import RateBoxBreakdown from './common/Rate/RateBoxBreakdown';
 import RateListDetails from './common/Rate/RateListDetails';
 import Typography from './common/Typography';
+import { getAllProductRatesById } from '../api/rate';
 
 const styles = (theme) => ({
   mainRateContainer: {
@@ -25,26 +25,30 @@ const styles = (theme) => ({
 
 const RateFullView = ({classes, data}) => {
   const [rates, setRates] = useState({});
+  const [showRate, setShowRate] = useState(false);
 
   const loadRates = async() => {
-    const rates = await getRates();
-    console.log('rate', rates)
+    console.log("dtaa", data)
+    const getRates = await getAllProductRatesById({id: data.id});
+    console.log('ratex', getRates)
+    setRates(getRates);
+    setShowRate(true);
   }
   useEffect(() => {
     loadRates();
   }, [])
 
-  return rates && (
+  return showRate && (
     <div className={classes.root}>
       <Grid container spacing={2} className={classes.mainRateContainer}>
         <Grid item lg={12}>
           <Typography align="left" variant="h4" component="h4">Preguntas y respuestas</Typography>
         </Grid>
         <Grid item lg={3} align="left">
-          <RateBoxBreakdown data={data} />
+          <RateBoxBreakdown data={rates} />
         </Grid>
         <Grid item lg={9} align="right">
-          <RateListDetails data={data} />
+          <RateListDetails data={rates} />
         </Grid>
       </Grid>
     </div>

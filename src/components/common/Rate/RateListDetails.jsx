@@ -72,7 +72,7 @@ const RateListDetails = ({classes, data}) => {
     <div className={classes.root}>
       <Grid container>
         {
-          data && data.rates.map((item, index) => {
+          data && data.map((item, index) => {
             return (
               <Grid item lg={12} key={index} className={classes.rateItems}>
                 <Grid container>
@@ -89,7 +89,7 @@ const RateListDetails = ({classes, data}) => {
                     {item.comment}
                   </Grid>
                   <Grid item lg={12} xs={12} align="left" className={classes.rateOwner}>
-                    <Typography variant="caption">By Luis</Typography>
+                    <Typography variant="caption">By {item.users.first_name}</Typography>
                   </Grid>
                   <Grid item lg={12} xs={12} className={classes.rateDivider}>
                     <Divider className={classes.qaDivider} />

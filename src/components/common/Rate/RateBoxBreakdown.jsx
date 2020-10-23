@@ -67,7 +67,7 @@ const styles = (theme) => ({
 });
 
 const RateBoxBreakdown = ({classes, data}) => {
-  const [totalRate, setTotalRate] = useState(data.rates.length);
+  const [totalRate, setTotalRate] = useState(data.length);
   const [totalAverage, setTotalAverage] = useState(0);
   const [breakdown, setBreakdown] = useState({});
   const [progress, setProgress] = useState(0);
@@ -81,7 +81,7 @@ const RateBoxBreakdown = ({classes, data}) => {
       1: 0
     }
     let total = 0;
-    data.rates.forEach((item, index) => {
+    data.forEach((item, index) => {
       const rate = parseInt(item.rate);
       total += item.rate * rate;
       rateFetch = {

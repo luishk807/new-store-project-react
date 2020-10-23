@@ -10,7 +10,7 @@ import {
   Link, 
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
-import Rate from '../components/common/Rate';
+import Rate from '../components/common/Rate/Rate';
 import Typography from '../components/common/Typography';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import ProductCategoryIcons from '../components/ProductCategoryIcons'

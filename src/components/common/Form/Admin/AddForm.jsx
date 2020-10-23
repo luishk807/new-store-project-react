@@ -11,7 +11,7 @@ import { ADMIN_SECTIONS, ADMIN_URL } from '../../../../constants/admin';
 import AdminLayoutTemplate from '../../Layout/AdminLayoutTemplate';
 import Form from '../Form';
 import PrivatePage from '../../../../components/common/Form/Admin/PrivatePage';
-import { FORM_SCHEMA } from '../../../../config';
+import { FORM_SCHEMA } from '../../../../../config';
 
 const styles = (theme) => ({
   root: {

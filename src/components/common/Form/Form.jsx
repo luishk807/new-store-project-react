@@ -113,7 +113,6 @@ const Form = ({
   
   const imgMainUrl = getImageUrlByType(title);
   const userImagesCont = userImages && typeof userImages == "object" ? userImages.map((data, index) => {
-    console.log("dazta",data)
     const imageSrc = typeof data === "object" && data ? data.img_url : data;
     return imageSrc ? (
       <GridListTile key={index} cols={1}>

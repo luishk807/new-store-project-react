@@ -6,8 +6,8 @@ import {
   Typography
 } from '@material-ui/core';
 
-import RateBar from './common/RateBar';
-import Rate from './common/Rate';
+import RateBar from './RateBar';
+import Rate from './Rate';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 const styles = (theme) => ({
@@ -97,15 +97,15 @@ const RateBoxBreakdown = ({classes, data}) => {
   return (
     <div className={classes.root}>
       <Grid container className={`${classes.mainRateContainer} AppBarBackColor`}>
-        <Grid item lg={5} className={classes.mainRate}>
+        <Grid item lg={5} xs={5} className={classes.mainRate}>
           {totalAverage}
         </Grid>
-        <Grid item lg={7} className={classes.mainRateSubMainItem}>
+        <Grid item lg={7} xs={7} className={classes.mainRateSubMainItem}>
           <Grid container>
-            <Grid item lg={12}>
-              <Rate className={classes.ratingStyle} data={4} disabled={true} showTitle={false}/>
+            <Grid item lg={12} xs={12}>
+              <Rate className={classes.ratingStyle} data={4} disabled={true} />
             </Grid>
-            <Grid item lg={12} className={classes.mainRateSubText}>
+            <Grid item lg={12} xs={12} className={classes.mainRateSubText}>
               <b>{totalRate}</b> Reviews
             </Grid>
           </Grid>
@@ -118,15 +118,15 @@ const RateBoxBreakdown = ({classes, data}) => {
         {
           breakdown && Object.keys(breakdown).map((item, index) => {
             return (
-              <Grid item lg={12}>
+              <Grid key={index} item lg={12} xs={12}>
                 <Grid container className={classes.rateBreakdownContainer}>
-                  <Grid item lg={2} align="left">
+                  <Grid item lg={2} xs={2} align="left">
                   {item} Stars
                   </Grid>
-                  <Grid item lg={8} align="center">
+                  <Grid item lg={8} xs={8}  align="center">
                     <LinearProgress classes={{colorPrimary: classes.colorPrimary, barColorPrimary: `AppBarBackColor`}} variant="determinate" value={breakdown[item]} />
                   </Grid>
-                  <Grid item lg={2} align="right">
+                  <Grid item lg={2} xs={2}  align="right">
                     {breakdown[item]}
                   </Grid>
                 </Grid>

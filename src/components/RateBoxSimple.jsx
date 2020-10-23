@@ -6,8 +6,8 @@ import {
   Typography
 } from '@material-ui/core';
 
-import Rate from './common/Rate';
-import RateList from './common/RateList';
+import Rate from './common/Rate/Rate';
+import RateList from './common/Rate/RateList';
 import { calculateRate } from '../utils';
 
 const styles = (theme) => ({});

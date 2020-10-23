@@ -5,9 +5,9 @@ import {
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 
-import Typography from './Typography';
+import Typography from '../Typography';
 
-import { RateLabels } from '../../../config.js';
+import { RateLabels } from '../../../../config';
 import { useEffect, useState } from 'react';
 
 const styles = (theme) => ({
@@ -20,8 +20,7 @@ const styles = (theme) => ({
   },
 });
 
-const Rate = ({className, classes, data, onChange, onChangeActive, disabled = false, showTitle = true}) => {
-  console.log("Class", className)
+const Rate = ({className, classes, data, onChange, onChangeActive, disabled = false, showTitle = false}) => {
   const [rate, setRate] = useState(0)
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const Rate = ({className, classes, data, onChange, onChangeActive, disabled = fa
       <Rating
         name="user-feedback"
         value={rate}
-        precision={0.5}
+        precision={1}
         className={className}
         disabled={disabled}
         onChange={onChange}

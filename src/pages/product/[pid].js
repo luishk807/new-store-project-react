@@ -18,15 +18,15 @@ import { getImageUrlByType } from '../../utils/form';
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../../constants/samples/ProductSample';
-import Rate from '../../components/common/Rate';
+import Rate from '../../components/common/Rate/Rate';
 import Select from '../../components/common/QuanitySelector';
 import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
 import { getItemById } from '../../api';
 import { setProducts } from '../../redux/actions/main';
-import RateBox from '../../components/RateBoxSimple';
 import QuestionsAnswers from '../../components/QuestionsAswers';
-import RateBoxBreakdown from '../../components/RateBoxBreakdown';
+import RateBox from '../../components/RateBoxSimple';
+import RateFullView from '../../components/RateFullView';
 
 const styles = (theme) => ({
   root: {
@@ -181,34 +181,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         {/* Q&A section */}
         <QuestionsAnswers data={productInfo}/>
          {/* Rate section */}
-        <Grid container spacing={2}>
-          <Grid item lg={12}>Ratings & Reviews</Grid>
-          <Grid item lg={4} align="left">
-            <RateBoxBreakdown data={productInfo} />
-          </Grid>
-          <Grid item lg={8}>
-            <Grid container>
-              <Grid item lg={6}>
-                *******
-              </Grid>
-              <Grid item lg={6}>
-                oct 2, 2020
-              </Grid>
-              <Grid item lg={12}>
-                TITLE
-              </Grid>
-              <Grid item lg={12}>
-                comment
-              </Grid>
-              <Grid item lg={12}>
-                By Luis
-              </Grid>
-            </Grid>
-            <Grid item lg={12} sm={12} className={classes.qaTitleContainer}>
-              <Divider className={classes.qaDivider} />
-            </Grid>
-          </Grid>
-        </Grid>
+        <RateFullView data={productInfo} />
         {/* Gallery thumb */}
         <Grid container>
           <Grid item></Grid>

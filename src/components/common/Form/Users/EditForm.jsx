@@ -13,7 +13,7 @@ import LayoutTemplate from '../../../../components/common/Layout/LayoutTemplate'
 import Form from '../Form';
 import PrivatePage from './PrivatePage';
 import { ADMIN_SECTIONS } from '../../../../constants/admin';
-import { FORM_SCHEMA } from '../../../../config';
+import { FORM_SCHEMA } from '../../../../../config';
 
 const styles = (theme) => ({
   root: {

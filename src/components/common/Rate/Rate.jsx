@@ -11,6 +11,11 @@ import { RateLabels } from '../../../../config';
 import { useEffect, useState } from 'react';
 
 const styles = (theme) => ({
+  root: {
+    display: 'inline-block',
+    verticalAlign: 'middle',
+    lineHeight: 0
+  },
   ratingStyle: {
     verticalAlign: 'middle',
   },
@@ -29,11 +34,11 @@ const Rate = ({className, classes, data, onChange, onChangeActive, disabled = fa
     }
   }, [])
   return (
-    <div>
+    <div className={classes.root}>
       <Rating
         name="user-feedback"
         value={rate}
-        precision={1}
+        precision={0.5}
         className={className}
         disabled={disabled}
         onChange={onChange}

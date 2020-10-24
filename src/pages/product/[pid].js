@@ -27,6 +27,7 @@ import { setProducts } from '../../redux/actions/main';
 import QuestionsAnswers from '../../components/QuestionsAswers';
 import RateBox from '../../components/RateBoxSimple';
 import RateFullView from '../../components/RateFullView';
+import VendorBox from '../../components/vendorBox';
 
 const styles = (theme) => ({
   root: {
@@ -171,11 +172,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           </Grid>
           <Grid item lg={4} sm={12}>
             <Typography align="left" variant="h4" component="h4">Acerca del Vendedor</Typography>
-            <Typography align="left" variant="body1" component="p">{`${productInfo.vendors.first_name} ${productInfo.vendors.last_name}`}[<Link href="#">Ver Mas</Link>]</Typography>
-            <Typography align="left" variant="body1" component="div">
-                <Rate data={4} disabled={true} />
-            </Typography>
-            <Typography align="left" variant="body1" component="p">{productInfo.vendors.description}</Typography>
+            <VendorBox id={productInfo.vendor} />
           </Grid>
         </Grid>
         {/* Q&A section */}

@@ -38,3 +38,19 @@ export const calculateRate = (data) => {
   
   return parseFloat(total);
 }
+
+export const getRatingAvg = (data) => {
+  if (!data || (typeof data === "object" && !Object.keys(data).length)) {
+    return 0;
+  }
+  let totalAvg = 0;
+  let length = 0;
+  data.forEach((item) => {
+    const rateFloat = parseFloat(item.rate);
+    if (rateFloat) {
+      length++;
+    }
+    totalAvg += rateFloat;
+  })
+  return totalAvg / length;
+}

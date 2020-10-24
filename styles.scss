@@ -1,5 +1,6 @@
 /*-------------------------------------------------- */
 $main_color: rgb(248,190,21);
+$main_hover_color: rgb(248,190,12);
 $stickyFooterLimit: 260px;
 $screen-sm-min: 768px;
 $screen-xs-max: ($screen-sm-min - 1);
@@ -7,6 +8,14 @@ $screen-md-min: 992px;
 $screen-sm-max: ($screen-md-min - 1);
 $screen-lg-min: 1200px;
 $screen-md-max: ($screen-lg-min - 1);
+
+@mixin transition($type) {
+  -webkit-transition: $type 1s;
+  -moz-transition: $type 1s;
+  -o-transition: $type 1s;
+  transition: $type 1s;
+  -ms-transition: $type 1s;
+}
 
 html {
   position: relative;
@@ -30,6 +39,27 @@ a:hover {
 }
 .textColor {
   color: $main_color !important;
+}
+.main_text_link {
+  cursor: pointer;
+  color: $main_color !important;
+  border-bottom: 1px solid $main_color !important;
+  text-decoration: none !important;
+  // @include transition(border-bottom);
+  &:hover {
+    color: $main_hover_color !important;
+    border-bottom: 1px solid transparent !important;
+  }
+}
+.main_text_link_normal {
+  cursor: pointer;
+  color: black;
+  border-bottom: 1px solid black !important;
+  text-decoration: none !important;
+  // @include transition(border-bottom);
+  &:hover {
+    border-bottom: 1px solid transparent !important;
+  }
 }
 .footerAdmin {
   position: absolute;

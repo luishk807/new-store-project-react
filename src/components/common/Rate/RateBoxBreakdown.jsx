@@ -3,12 +3,12 @@ import * as T from 'prop-types';
 import { 
   withStyles, 
   Grid,
-  Typography
+  Typography,
+  LinearProgress
 } from '@material-ui/core';
 
-import RateBar from './RateBar';
 import Rate from './Rate';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import { getRatingAvg } from '../../../utils';
 
 const styles = (theme) => ({
   root: {
@@ -62,7 +62,6 @@ const styles = (theme) => ({
   rateBreakdownContainer: {
     display: 'flex',
     alignItems: 'center',
-    // justifyContent: 'center'
   },
 });
 
@@ -71,6 +70,7 @@ const RateBoxBreakdown = ({classes, data}) => {
   const [totalAverage, setTotalAverage] = useState(0);
   const [breakdown, setBreakdown] = useState({});
   const [progress, setProgress] = useState(0);
+  const [showRates, setShowRates] = useState(false);
 
   useEffect(()=>{
     let rateFetch = {
@@ -81,28 +81,21 @@ const RateBoxBreakdown = ({classes, data}) => {
       1: 0
     }
     let total = 0;
-    let totalAvg = 0;
-    let length = 0;
     data.forEach((item, index) => {
       const rate = parseInt(item.rate);
-      const rateFloat = parseFloat(item.rate);
-      if (rateFloat) {
-        length++;
-      }
-      totalAvg += rateFloat;
       total += item.rate * rate;
       rateFetch = {
         ...rateFetch,
         [rate] : rateFetch[rate] + 1
       }
     })
-    let totalAvgTptal = totalAvg / length;
-    console.log("total avg",totalAvgTptal)
+    let totalAvgTptal = getRatingAvg(data)
     setTotalAverage(totalAvgTptal);
     setBreakdown(rateFetch);
-  }, [])
+    setShowRates(true);
+  }, [showRates])
 
-  return (
+  return showRates && (
     <div className={classes.root}>
       <Grid container className={`${classes.mainRateContainer} AppBarBackColor`}>
         <Grid item lg={5} xs={5} className={classes.mainRate}>
@@ -111,7 +104,7 @@ const RateBoxBreakdown = ({classes, data}) => {
         <Grid item lg={7} xs={7} className={classes.mainRateSubMainItem}>
           <Grid container>
             <Grid item lg={12} xs={12}>
-              <Rate className={classes.ratingStyle} data={4} disabled={true} />
+              <Rate className={classes.ratingStyle} data={totalAverage} disabled={true} />
             </Grid>
             <Grid item lg={12} xs={12} className={classes.mainRateSubText}>
               <b>{totalRate}</b> Reviews

@@ -135,7 +135,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle}) => {
       Api.get(`/${ADMIN_SECTIONS[name].url}`,{
         id: id
       }).then((res) => {
-        let info = res[0];
+        let info = res;
         for(var field in form){
           let value = info[field];
           if (FORM_SCHEMA[field] == "dropdown") {

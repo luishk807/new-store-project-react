@@ -37,7 +37,7 @@ const RateFullView = ({classes, data}) => {
   }, [])
 
   return showRate && (
-    <div className={classes.root}>
+    <div className={classes.root} id="rateSection">
       <Grid container spacing={2} className={classes.mainRateContainer}>
         <Grid item lg={12}>
           <Typography align="left" variant="h4" component="h4">Preguntas y respuestas</Typography>

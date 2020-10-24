@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
 import moment from 'moment'
 import {
@@ -11,6 +11,7 @@ import {
 import Typography from '../Typography';
 
 import Rate from './Rate';
+import { deepPurple } from '@material-ui/core/colors';
 
 const styles = (theme) => ({
   root: {
@@ -56,23 +57,37 @@ const styles = (theme) => ({
 }); 
 
 const RateListDetails = ({classes, data}) => {
-
-  const loadRates = async() => {
-    // let range = questions ? questions.length + 5 : 5;
-    // const fetchQuestions = await getQuestions({limit: range});
-    // setQuestions(fetchQuestions);
-    // console.log('questions', fetchQuestions)
+  const initialLimit = 5;
+  const [limit, setLimit] = useState(initialLimit);
+  const [rates, setRates] = useState([]);
+  const [showRates, setShowRates] = useState(false);
+  const loadRates = () => {
+    let temp = []
+    for(let i = 0; i < limit; i++) {
+        if (data[i]) {
+          temp.push(data[i]);
+        } else {
+          break;
+        }
+    }
+    setRates(temp);
+    setShowRates(true);
   }
 
+  const setRateLimit = () => {
+    if (data.length > rates.length) {
+      setLimit(rates.length + initialLimit);
+    }
+  }
   useEffect(() => {
     loadRates()
-  }, []);
+  }, [limit]);
 
   return (
     <div className={classes.root}>
       <Grid container>
         {
-          data && data.map((item, index) => {
+          showRates && rates.map((item, index) => {
             return (
               <Grid item lg={12} key={index} className={classes.rateItems}>
                 <Grid container>
@@ -102,7 +117,7 @@ const RateListDetails = ({classes, data}) => {
         <Grid item lg={12} xs={12}>
           <Grid container className={classes.rateBtnContainer}>
             <Grid item lg={5} xs={12} align="left">
-              <Button onClick={loadRates} className={`mainButton ${classes.rateBtn}`}>Ver mas</Button>
+              <Button onClick={setRateLimit} className={`mainButton ${classes.rateBtn}`}>Ver mas</Button>
             </Grid>
             <Grid item lg={5} xs={12} align="right">
               <Button onClick={loadRates} className={`mainButton ${classes.rateBtn}`}>Agregar rate</Button>

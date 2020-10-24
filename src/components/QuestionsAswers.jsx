@@ -61,7 +61,14 @@ const styles = (theme) => ({
   },
   textButton: {
     // width: '100%',
-//    height: '100%',
+  //  height: '100%',
+    boxShadow: 'none',
+    '&:hover': {
+      boxShadow: 'none',
+    }
+  },
+  textQuestioBtn: {
+    height: '100%',
     boxShadow: 'none',
     '&:hover': {
       boxShadow: 'none',
@@ -132,7 +139,7 @@ const QuestionsAnswers = ({classes, data}) => {
                 <TextField value={form.question} onChange={handleOnChange} className={classNames(classes.textInput)} id="outlined-basic" label="Tu pregunta" variant="outlined" />
               </Grid>
               <Grid item lg={2} sm={12} className={classes.questionBtnContainer}>
-                <Button className={`mainButton ${classes.textButton}`} variant="contained" color="primary" onClick={submitQuestion} component="span">
+                <Button className={`mainButton ${classes.textQuestioBtn}`} variant="contained" color="primary" onClick={submitQuestion} component="span">
                   Preguntar
                 </Button>
               </Grid>

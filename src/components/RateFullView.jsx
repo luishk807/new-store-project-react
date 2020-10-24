@@ -28,9 +28,7 @@ const RateFullView = ({classes, data}) => {
   const [showRate, setShowRate] = useState(false);
 
   const loadRates = async() => {
-    console.log("dtaa", data)
     const getRates = await getAllProductRatesById({id: data.id});
-    console.log('ratex', getRates)
     setRates(getRates);
     setShowRate(true);
   }

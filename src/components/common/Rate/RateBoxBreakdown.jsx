@@ -81,16 +81,24 @@ const RateBoxBreakdown = ({classes, data}) => {
       1: 0
     }
     let total = 0;
+    let totalAvg = 0;
+    let length = 0;
     data.forEach((item, index) => {
       const rate = parseInt(item.rate);
+      const rateFloat = parseFloat(item.rate);
+      if (rateFloat) {
+        length++;
+      }
+      totalAvg += rateFloat;
       total += item.rate * rate;
       rateFetch = {
         ...rateFetch,
         [rate] : rateFetch[rate] + 1
       }
     })
-    let totalg = (total / 5 ) * 5
-    setTotalAverage(totalg);
+    let totalAvgTptal = totalAvg / length;
+    console.log("total avg",totalAvgTptal)
+    setTotalAverage(totalAvgTptal);
     setBreakdown(rateFetch);
   }, [])
 
@@ -116,7 +124,7 @@ const RateBoxBreakdown = ({classes, data}) => {
           <Typography  className={classes.rateBreakDownTitle}>Rating breakdown</Typography>
         </Grid>
         {
-          breakdown && Object.keys(breakdown).map((item, index) => {
+          breakdown && Object.keys(breakdown).reverse().map((item, index) => {
             return (
               <Grid key={index} item lg={12} xs={12}>
                 <Grid container className={classes.rateBreakdownContainer}>

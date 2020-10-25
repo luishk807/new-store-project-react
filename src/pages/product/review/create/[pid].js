@@ -41,7 +41,6 @@ const Index = ({classes, data}) => {
           thumbnail: `${imageUrl}/${img.img_url}`,
         }
     });
-    console.log(imgs[0])
     setImages(imgs);
   }
 

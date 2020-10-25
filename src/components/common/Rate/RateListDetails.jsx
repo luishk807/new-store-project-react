@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
-import moment from 'moment'
+import moment from 'moment';
 import {
   withStyles,
   Button,

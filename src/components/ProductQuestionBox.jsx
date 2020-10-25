@@ -2,6 +2,7 @@ import React from 'react';
 import * as T from 'prop-types';
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
+import { useRouter } from 'next/router';
 import {
   withStyles,
   Grid,
@@ -18,6 +19,7 @@ import { sendQuestion, getQuestions } from '../api/product';
 import { handleFormResponse } from '../utils/form';
 import Snackbar from './common/Snackbar';
 import Typography from './common/Typography';
+import AskProductQuestionsForm from './common/AskProductQuestionsForm';
 
 const styles = (theme) => ({
   root: {
@@ -41,43 +43,23 @@ const styles = (theme) => ({
   qaDivider: {
     margin: '5px 0px',
   },
-  textContainer: {
-    width: '100%',
-    margin: '20px 0px',
-  },
-  textInput: {
-    // flexGrow: 2,
-    width: '100%',
-  },
   qaItemTitle1: {
     fontWeight: 'bold',
-  },
-  questionBtnContainer: {
-    display: 'flex',
-    alignItems: 'center',
   },
   qaAnswersContainer: {
     alignItems: 'start',
     padding: '5px 0px'
   },
   textButton: {
-    // width: '100%',
-  //  height: '100%',
     boxShadow: 'none',
     '&:hover': {
       boxShadow: 'none',
     }
   },
-  textQuestioBtn: {
-    height: '100%',
-    boxShadow: 'none',
-    '&:hover': {
-      boxShadow: 'none',
-    }
-  }
 });
 
-const QuestionsAnswers = ({classes, data}) => {
+const ProductQuestionBox = ({classes, data}) => {
+  const router = useRouter();
   const [questions, setQuestions] = useState([])
   const [form, setForm] = useState({
     product: data.id,
@@ -134,18 +116,7 @@ const QuestionsAnswers = ({classes, data}) => {
           <Typography align="left" variant="h4" component="h4">Preguntas y respuestas</Typography>
         </Grid>
         <Grid item lg={12}>
-          <FormControl className={classes.textContainer}>
-            <Grid container spacing={2}>
-              <Grid item lg={10} xs={12}>
-                <TextField value={form.question} onChange={handleOnChange} className={classNames(classes.textInput)} id="outlined-basic" label="Tu pregunta" variant="outlined" />
-              </Grid>
-              <Grid item lg={2} xs={12} className={classes.questionBtnContainer}>
-                <Button className={`mainButton ${classes.textQuestioBtn}`} variant="contained" color="primary" onClick={submitQuestion} component="span">
-                  Preguntar
-                </Button>
-              </Grid>
-            </Grid>
-          </FormControl>
+          <AskProductQuestionsForm data={data} />
         </Grid>
         <Grid item lg={12} sm={12} className={classes.qaTitleContainer}>
           <Typography align="left" variant="h5" component="h5">Ultima Preguntas</Typography>
@@ -165,7 +136,7 @@ const QuestionsAnswers = ({classes, data}) => {
                         </Grid>
                         <Grid item lg={11} align="left">
                           <Link href="/" className={classes.qaLink}>
-                            <Typography align="left" className={`${classes.questionTitle}`} variant="subtitle1" component="div">{question.question}</Typography>
+                            <Typography align="left" variant="subtitle1" component="div"><Link className={classes.questionTitle} href={`questions/${question.id}`}>{question.question}</Link></Typography>
                           </Link>                   
                         </Grid>
                       </Grid>
@@ -204,8 +175,8 @@ const QuestionsAnswers = ({classes, data}) => {
   );
 }
 
-QuestionsAnswers.protoTypes = {
+ProductQuestionBox.protoTypes = {
   classes: T.object,
   data: T.object,
 }
-export default withStyles(styles)(QuestionsAnswers);
+export default withStyles(styles)(ProductQuestionBox);

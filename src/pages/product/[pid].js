@@ -24,7 +24,7 @@ import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
 import { getItemById } from '../../api';
 import { setProducts } from '../../redux/actions/main';
-import QuestionsAnswers from '../../components/QuestionsAswers';
+import ProductQuestionBox from '../../components/ProductQuestionBox';
 import RateBox from '../../components/RateBoxSimple';
 import RateFullView from '../../components/RateFullView';
 import VendorBox from '../../components/vendorBox';
@@ -184,7 +184,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           </Grid>
         </Grid>
         {/* Q&A section */}
-        <QuestionsAnswers data={productInfo}/>
+        <ProductQuestionBox data={productInfo}/>
          {/* Rate section */}
         <RateFullView data={productInfo} />
         {/* Gallery thumb */}

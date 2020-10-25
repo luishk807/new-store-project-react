@@ -43,6 +43,7 @@ import Health from '../../../public/images/svg/categories/health.svg';
 import Broken from '../../../public/images/svg/categories/broken.svg';
 import Jewerly from '../../../public/images/svg/categories/jewerly.svg';
 import LogoIcon from '../../../public/images/logoIcon.svg';
+import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import LogoIconWhite from '../../../public/images/logoIconWhite.svg';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import StoreMallDirectoryOutlinedIcon from '@material-ui/icons/StoreMallDirectoryOutlined';
@@ -62,6 +63,9 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'logo':
         return <LogoIcon className={classes.icon}/>
+      break;
+      case 'heart1':
+        return <FavoriteBorderIcon className={classes.icon}/>
       break;
       case 'user':
         return <PersonAddOutlinedIcon className={classes.icon}/>

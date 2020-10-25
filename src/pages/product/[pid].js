@@ -156,6 +156,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>
                   </Grid>
+                  
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography align="left" variant="h5" component="h5">Disponibilidad: {productInfo.stock}</Typography>
                   </Grid>

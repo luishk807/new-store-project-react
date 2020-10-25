@@ -3,18 +3,16 @@ import * as T from 'prop-types';
 import { useRouter } from 'next/router';
 import {
   Grid,
+  Link,
   withStyles,
 } from '@material-ui/core';
 import moment from 'moment';
 import LayoutTemplate from '../../../components/common/Layout/LayoutTemplate';
-import Snackbar from '../../../components/common/Snackbar';
 import { getImageUrlByType } from '../../../utils/form';
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import { sendQuestion, getQuestionById } from '../../../api/product';
 import { getItemById } from '../../../api';
 import AnswerProductQuestionsForm from '../../../components/common/AnswerProductQuestionsForm';
-// import { ADMIN_SECTIONS } from '../../../../constants/admin'
-// import AddForm from '../../../../components/common/Form/Users/AddForm';
 
 const styles = (theme) => ({
   root: {
@@ -29,6 +27,8 @@ const styles = (theme) => ({
   name: {
     fontSize: '2rem',
     fontWeight: 'bold',
+    color: 'black',
+    cursor: 'pointer',
   },
   imageAnswersContent: {
     padding: 10
@@ -85,8 +85,8 @@ const Index = ({classes, data}) => {
           </Grid>
           <Grid item lg={10} className={classes.contentSection}>
             <Grid container>
-              <Grid item lg={12} className={classes.name}>
-                {productInfo.name}
+              <Grid item lg={12}>
+                <Link onClick={()=>router.back()} className={classes.name}>{productInfo.name}</Link>
               </Grid>
               <Grid item lg={12}>
                 Preguntando en {moment(productInfo.createdAt).format('MMMM D, YYYY')}

@@ -23,6 +23,7 @@ import FileUploader from '../FileUploader';
 import { FORM_SCHEMA, CATEGORY_ICONS } from '../../../../config';
 import Typography from '../Typography';
 import Snackbar from '../Snackbar';
+import Rate from '../../common/Rate/Rate';
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import { getImageUrlByType } from '../../../utils/form';
 import { removeCharacter } from '../../../utils';
@@ -101,6 +102,7 @@ const Form = ({
   console.log(fields)
   const [useFormOption, setUseFormOptions] = useState(false)
   const [formTitle, setFormTitle] = useState('');
+  // const [rate, setRate] = useState(0);
   const [formBtnTitle, setFormBtnTitle] = useState('');
   const userImages = fields['image'] && 'saved' in fields['image'] ? fields['image'].saved : null;
   
@@ -109,6 +111,10 @@ const Form = ({
     userImages.splice(e,1);
     userImagesCont.splice(e,1);
     onImageDelete(markDelete)
+  }
+
+  const handleRateOnChange = (value) => {
+    formOnChange({target:{name: 'rate', value: value}})
   }
   
   const imgMainUrl = getImageUrlByType(title);
@@ -166,6 +172,16 @@ const Form = ({
                 onChange={formOnChange}
                 label={removeCharacter(field)} 
               />
+            </FormControl>
+          </Grid>
+        )
+        break
+      }
+      case "rate": {
+        return (
+          <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
+            <FormControl fullWidth className={classes.margin}>
+              <Rate name={field}  onChange={handleRateOnChange} data={0} />
             </FormControl>
           </Grid>
         )

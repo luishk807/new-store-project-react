@@ -33,6 +33,16 @@ const styles = (theme) => ({
   root: {
     padding:10
   },
+  productName: {
+    fontSize: '4rem',
+    fontWeight: 'bold',
+  },
+  productPriceContainer: {
+    padding: '5px 0px'
+  },
+  productPrice: {
+    fontSize: '3.5rem',
+  },
   deliveryText: {
     color: '#51DC55',
     margin: '10px 0px',
@@ -134,24 +144,24 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item lg={4} sm={12}>
+              <Grid item lg={4} xs={12}>
                 <Grid container>
-                  <Grid item>
-                   <Typography align="center" variant="h4" component="h3">{productInfo.name}</Typography>
+                  <Grid item lg={12} xs={12}>
+                   <Typography className={classes.productName} align="center" variant="h4" component="h3">{productInfo.name}</Typography>
                   </Grid>
-                  <Grid item lg={12}>
-                    <Typography align="center" variant="h1" component="h2">US ${productInfo.amount}</Typography>
+                  <Grid item lg={12} xs={12} className={classes.productPriceContainer}>
+                    <Typography  className={classes.productPrice} align="center" variant="h1" component="h2">US ${productInfo.amount}</Typography>
                   </Grid>
-                  <Grid item lg={12}>
+                  <Grid item lg={12} xs={12}>
                     <Select onChange={handleSelectChange} className={classes.dropDown} title="quant" id="quant-select" />
                   </Grid>
-                  <Grid item lg={12} className={classes.infoRowContent}>
+                  <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>
                   </Grid>
-                  <Grid item lg={12} className={classes.infoRowContent}>
+                  <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography align="left" variant="h5" component="h5">Disponibilidad: {productInfo.stock}</Typography>
                   </Grid>
-                  <Grid item lg={12}>
+                  <Grid item lg={12}  xs={12}>
                     <Typography className={classes.deliveryText} align="left" variant="body1" component="p">
                       <Icons name="delivery" classes={{icon: classes.deliveryIcon}}  />&nbsp;Entrega a todo Panama
                     </Typography>

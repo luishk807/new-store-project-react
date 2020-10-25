@@ -46,7 +46,7 @@ const RateFullView = ({classes, data}) => {
           <RateBoxBreakdown data={rates} />
         </Grid>
         <Grid item lg={9} align="right">
-          <RateListDetails data={rates} />
+          <RateListDetails data={rates} id={data.id} />
         </Grid>
       </Grid>
     </div>

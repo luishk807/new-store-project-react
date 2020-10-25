@@ -33,6 +33,12 @@ const Rate = ({className, classes, data, onChange, onChangeActive, disabled = fa
       setRate(parseFloat(data));
     }
   }, [])
+
+  const handleOnChange = (e, value) => {
+    setRate(value)
+    onChange(value)
+  }
+
   return (
     <div className={classes.root}>
       <Rating
@@ -41,7 +47,7 @@ const Rate = ({className, classes, data, onChange, onChangeActive, disabled = fa
         precision={0.5}
         className={className}
         disabled={disabled}
-        onChange={onChange}
+        onChange={handleOnChange}
         onChangeActive={onChangeActive}
       />
       {

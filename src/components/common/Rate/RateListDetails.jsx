@@ -7,9 +7,9 @@ import {
   Divider,
   Grid,
 } from '@material-ui/core';
+import { useRouter } from 'next/router';
 
 import Typography from '../Typography';
-
 import Rate from './Rate';
 import { deepPurple } from '@material-ui/core/colors';
 
@@ -56,8 +56,9 @@ const styles = (theme) => ({
   }
 }); 
 
-const RateListDetails = ({classes, data}) => {
+const RateListDetails = ({classes, data, id}) => {
   const initialLimit = 5;
+  const router = useRouter();
   const [limit, setLimit] = useState(initialLimit);
   const [rates, setRates] = useState([]);
   const [showRates, setShowRates] = useState(false);
@@ -80,6 +81,7 @@ const RateListDetails = ({classes, data}) => {
     }
   }
   useEffect(() => {
+    console.log(data)
     loadRates()
   }, [limit]);
 
@@ -120,7 +122,7 @@ const RateListDetails = ({classes, data}) => {
               <Button onClick={setRateLimit} className={`mainButton ${classes.rateBtn}`}>Ver mas</Button>
             </Grid>
             <Grid item lg={5} xs={12} align="right">
-              <Button onClick={loadRates} className={`mainButton ${classes.rateBtn}`}>Agregar rate</Button>
+              <Button onClick={() => router.push(`review/create/${id}`)} className={`mainButton ${classes.rateBtn}`}>Agregar rate</Button>
             </Grid>
           </Grid>
         </Grid>
@@ -132,6 +134,7 @@ const RateListDetails = ({classes, data}) => {
 RateListDetails.protoTypes = {
   classes: T.object,
   data: T.object,
+  id: T.number
 }; 
 
 export default withStyles(styles)(RateListDetails);

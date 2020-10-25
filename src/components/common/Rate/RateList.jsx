@@ -27,44 +27,51 @@ const styles = (theme) => ({
   },
 }); 
 
-const RateList = ({classes, data}) => {
+const RateList = ({classes, data, limit}) => {
   const [showRates, setShowRates] = useState(false)
+  const [rates, setRates] = useState([]);
+
+  const createRatesHtml = () => {
+    const dataLength = limit ? limit : data.length;
+    let tempRate = [];
+    for(let i=0; i < dataLength; i++) {
+      tempRate.push(
+        <Card key={i} className={classes.cardContainer}>
+          <CardHeader 
+            avatar={
+              <Avatar aria-label="recipe" className={`AppBarBackColor`}>
+                <PersonRoundedIcon/>
+              </Avatar>
+            }
+            title={`${data[i].users.first_name} ${data[i].users.last_name}`}
+          />
+          <CardContent className={classes.cardContentContainer}>
+            <Typography variant="body2" color="textSecondary" component="span">
+              <Grid container>
+                <Grid item lg={12} sm={12}>
+                  <Rate data={data[i].rate} disabled={true} />
+                </Grid>
+                <Grid item lg={12} sm={12}>
+                  <Typography align="left" variant="body2" color="textSecondary" component="p">{data[i].comment}</Typography>
+                </Grid>
+              </Grid>
+            </Typography>
+          </CardContent>
+        </Card>
+      )
+    }
+    setRates(tempRate);
+    setShowRates(true)
+  }
 
   useEffect(() => {
-    if (data && data.length) {
-      setShowRates(true)
-    }
-  }, [data])
+    createRatesHtml();
+  }, [showRates])
 
   return (
     <div className={classes.root}>
       {
-        showRates && data.map((rate, index) => {
-          return (
-            <Card key={index} className={classes.cardContainer}>
-              <CardHeader 
-                avatar={
-                  <Avatar aria-label="recipe" className={`AppBarBackColor`}>
-                    <PersonRoundedIcon/>
-                  </Avatar>
-                }
-                title={`${rate.users.first_name} ${rate.users.last_name}`}
-              />
-              <CardContent className={classes.cardContentContainer}>
-                <Typography variant="body2" color="textSecondary" component="span">
-                  <Grid container>
-                    <Grid item lg={12} sm={12}>
-                      <Rate data={rate.rate} disabled={true} />
-                    </Grid>
-                    <Grid item lg={12} sm={12}>
-                      <Typography align="left" variant="body2" color="textSecondary" component="p">{rate.comment}</Typography>
-                    </Grid>
-                  </Grid>
-                </Typography>
-              </CardContent>
-            </Card>
-          )  
-        })
+        showRates && rates
       }
     </div>
   );
@@ -73,6 +80,7 @@ const RateList = ({classes, data}) => {
 RateList.protoTypes = {
   classes: T.object,
   data: T.object,
+  limit: T.number,
 }; 
 
 export default withStyles(styles)(RateList);

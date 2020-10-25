@@ -10,6 +10,7 @@ import { getAllProductRatesById } from '../api/rate';
 import Typography from './common/Typography';
 import Rate from './common/Rate/Rate';
 import { getItemById } from '../api';
+import { getRatingAvg } from '../utils';
 
 const styles = (theme) => ({
   nameSection: {
@@ -23,11 +24,13 @@ const styles = (theme) => ({
 const VendorBox = ({classes, id}) => {
   const [vendor, setVendor] = useState({});
   const [showVendor, setShowVendor] = useState(false);
+  const [rates, setRates] = useState(0);
 
   const loadRates = async() => {
     const getVendor = await getItemById('vendors',id);
     setVendor(getVendor);
-    console.log("vendor", getVendor)
+    const getAvg = getRatingAvg(getVendor.vendor_rates);
+    setRates(getAvg);
     setShowVendor(true);
   }
   useEffect(() => {
@@ -37,13 +40,13 @@ const VendorBox = ({classes, id}) => {
   return showVendor && (
     <div className={classes.root} id="vendorSection">
       <Grid container spacing={2}>
-        <Grid item lg={12} className={classes.nameSection}>
+        <Grid item lg={12} xs={12} className={classes.nameSection}>
           <Typography align="left" variant="body1" component="p">{`${vendor.first_name} ${vendor.last_name}`}  [<Link href="#">Ver Mas</Link>]</Typography>
         </Grid>
-        <Grid item lg={12} className={classes.rateSection}>
-          <Rate data={4} disabled={true} />
+        <Grid item lg={12} xs={12} className={classes.rateSection}>
+          <Rate data={rates} disabled={true} />
         </Grid>
-        <Grid item lg={12}>
+        <Grid item lg={12} xs={12} >
           <Typography align="left" variant="body1" component="p">{vendor.description}</Typography>
         </Grid>
       </Grid>

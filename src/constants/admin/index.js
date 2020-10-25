@@ -76,6 +76,13 @@ export const ADMIN_SECTIONS = {
     url: 'genders',
     option: 'gender'
   },
+  'rate': {
+    name: 'Rate',
+    names: 'rates',
+    key: 'rate',
+    url: 'productrates',
+    option: 'rate'
+  },
 }
 
 export const ADMIN_URL = {

@@ -4,14 +4,15 @@ import {
   withStyles,
   Grid,
 } from '@material-ui/core';
+import { useRouter } from 'next/router';
 
-import { addItem } from '../../../../../api';
-import { validateForm, loadMainOptions } from '../../../../../utils/form';
-import { ADMIN_SECTIONS } from '../../../../../constants/admin';
-import AdminLayoutTemplate from '../../../Layout/AdminLayoutTemplate';
+import { addItem } from '../../../../api';
+import { validateForm, loadMainOptions } from '../../../../utils/form';
+import { ADMIN_SECTIONS } from '../../../../constants/admin'; 
+import LayoutTemplate from '../../Layout/LayoutTemplate';
 import Form from '../Form';
-import PrivatePage from './PrivatePage';
 import { FORM_SCHEMA } from '../../../../../config';
+import PrivatePage from './PrivatePage';
 
 const styles = (theme) => ({
   root: {
@@ -24,8 +25,9 @@ const styles = (theme) => ({
   },
 });
 
-const AddForm = ({classes, name, entryForm, ignoreForm}) => {
+const AddForm = ({classes, name, entryForm, ignoreForm, customUrl = null}) => {
   const section = ADMIN_SECTIONS[name];
+  const router = useRouter()
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [snack, setSnack] = useState({
@@ -46,7 +48,10 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
   }
 
   const handleCancel = () => {
-    window.location.href=`/admin/${section.url}`
+    const url =customUrl ? customUrl : `/${section.url}`
+    setTimeout(()=>{
+      router.push(url);
+    }, 1000)
   }
 
   const handleSubmit = async (e) => {
@@ -151,7 +156,7 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
   
   return showForm && (
     <PrivatePage>
-      <AdminLayoutTemplate>
+      <LayoutTemplate>
         <div className={classes.root}>
           <Form 
             title={section.name} 
@@ -167,7 +172,7 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
             onCloseSnack={onCloseSnack}
           />
         </div>
-      </AdminLayoutTemplate>
+      </LayoutTemplate>
     </PrivatePage>
   );
 }
@@ -176,6 +181,7 @@ AddForm.protoTypes = {
   classes: T.object,
   name: T.string,
   entryForm: T.object,
+  customUrl: T.string,
   ignoreFrom: T.array,
 }
 

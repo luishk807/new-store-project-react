@@ -53,13 +53,14 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
   if (ignore.indexOf(name) !== -1) {
       return true
   }
-
+  console.log('validate', FORM_SCHEMA[name], value)
   switch(FORM_SCHEMA[name]){
     case "textfield":
     case "password":
     case "date":
     case "textarea": {
       if(value && value.length > 0){
+        console.log("it's good")
         return true
       }else{
         return false;
@@ -76,7 +77,8 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
       }
       break;
     }
-    case "number": {
+    case "number":
+    case "rate": {
       if(value){
         return true
       }else{

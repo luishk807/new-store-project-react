@@ -26,7 +26,7 @@ const styles = (theme) => ({
   },
 });
 
-const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle}) => {
+const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, customUrl = null}) => {
   const router = useRouter()
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
@@ -49,7 +49,8 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle}) => {
   }
 
   const handleCancel = () => {
-    router.push(`/account`);
+    const url =customUrl ? customUrl : `/account`;
+    router.push(url);
   }
 
   const handleSubmit = async (e) => {
@@ -206,6 +207,7 @@ EditForm.protoTypes = {
   classes: T.object,
   id: T.number,
   name: T.string,
+  customUrl: T.string,
   showTitle: T.bool,
   entryForm: T.object,
   ignoreForm: T.array,

@@ -28,7 +28,8 @@ const styles = (theme) => ({
     alignItems: 'center',
   },
   questionTitle: {
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    color: 'black',
   },
   qaTitleContainer: {
     margin: '20px 0px',
@@ -135,10 +136,10 @@ const QuestionsAnswers = ({classes, data}) => {
         <Grid item lg={12}>
           <FormControl className={classes.textContainer}>
             <Grid container spacing={2}>
-              <Grid item lg={10} sm={12}>
+              <Grid item lg={10} xs={12}>
                 <TextField value={form.question} onChange={handleOnChange} className={classNames(classes.textInput)} id="outlined-basic" label="Tu pregunta" variant="outlined" />
               </Grid>
-              <Grid item lg={2} sm={12} className={classes.questionBtnContainer}>
+              <Grid item lg={2} xs={12} className={classes.questionBtnContainer}>
                 <Button className={`mainButton ${classes.textQuestioBtn}`} variant="contained" color="primary" onClick={submitQuestion} component="span">
                   Preguntar
                 </Button>
@@ -164,7 +165,7 @@ const QuestionsAnswers = ({classes, data}) => {
                         </Grid>
                         <Grid item lg={11} align="left">
                           <Link href="/" className={classes.qaLink}>
-                            <Typography align="left" className={`${classes.questionTitle}`} variant="body1" component="div">{question.question}</Typography>
+                            <Typography align="left" className={`${classes.questionTitle}`} variant="subtitle1" component="div">{question.question}</Typography>
                           </Link>                   
                         </Grid>
                       </Grid>
@@ -174,7 +175,7 @@ const QuestionsAnswers = ({classes, data}) => {
                         <Grid item lg={12}>
                           <Grid container className={classes.qaAnswersContainer}>
                               <Grid item lg={1} className={classes.qaItemTitle1}>
-                                  <CommentOutlinedIcon width="20" height="20"/>&nbsp;&nbsp;Answer: 
+                                  <MessageOutlinedIcon width="20" height="20"/>&nbsp;&nbsp;Answer: 
                               </Grid>
                               <Grid item lg={11} align="left">                          
                                 <Typography align="left" className={`${classes.questionAnswer}`} variant="body1" component="div">{question.product_answers[0].answer}</Typography>

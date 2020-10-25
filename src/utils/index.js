@@ -52,5 +52,5 @@ export const getRatingAvg = (data) => {
     }
     totalAvg += rateFloat;
   })
-  return totalAvg / length;
+  return parseFloat(totalAvg / length).toFixed(1);
 }

@@ -7,6 +7,7 @@ export const FORM_TYPE = {
   email: 'email',
   pass: 'password',
   date: 'date',
+  rate: 'rate',
   textArea: 'textarea',
 }
 
@@ -80,6 +81,9 @@ export const RateLabels = {
 export const FORM_SCHEMA = {
   name: FORM_TYPE.text,
   status: FORM_TYPE.drop,
+  title: FORM_TYPE.text,
+  rate: FORM_TYPE.rate,
+  comment: FORM_TYPE.textArea,
   icon: FORM_TYPE.drop,
   password: FORM_TYPE.pass,
   email: FORM_TYPE.email,

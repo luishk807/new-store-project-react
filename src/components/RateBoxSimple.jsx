@@ -31,7 +31,7 @@ const RateBoxSimple = ({classes, data}) => {
   const [hover, setHover] = useState(-1);
 
   const getAllRates = async(id) => {
-    const resp = await getAllProductRatesById({id: id, limit: 5});
+    const resp = await getAllProductRatesById({id: id});
     const getAvg = getRatingAvg(resp)
     setRates(resp);
     setRate(getAvg);
@@ -51,7 +51,7 @@ const RateBoxSimple = ({classes, data}) => {
             <Link className={`${classes.linkClass} main_text_link`} activeClass="active" to="rateSection"  smooth={true}>{rates.length}</Link>
       </Grid>
       <Grid item lg={12} sm={12}>
-        <RateList data={rates} />
+        <RateList data={rates} limit={5} />
       </Grid>
     </Grid>
   );

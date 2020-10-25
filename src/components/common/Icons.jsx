@@ -47,6 +47,7 @@ import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import LogoIconWhite from '../../../public/images/logoIconWhite.svg';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import StoreMallDirectoryOutlinedIcon from '@material-ui/icons/StoreMallDirectoryOutlined';
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 import Typography from './Typography';
 
@@ -66,6 +67,9 @@ const Icons = ({classes, name}) => {
       break;
       case 'heart1':
         return <FavoriteBorderIcon className={classes.icon}/>
+      break;
+      case 'heart2':
+        return <FavoriteIcon className={classes.icon}/>
       break;
       case 'user':
         return <PersonAddOutlinedIcon className={classes.icon}/>

@@ -29,16 +29,13 @@ const styles = (theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
-  questionTitle: {
-    fontWeight: 'bold',
-    color: 'black',
-  },
   qaTitleContainer: {
     margin: '20px 0px',
   },
   qaLink: {
     display: 'inherit',
-    color: '#3366BB',
+    fontWeight: 'bold',
+    color: 'black',
   },
   qaDivider: {
     margin: '5px 0px',
@@ -135,8 +132,8 @@ const ProductQuestionBox = ({classes, data}) => {
                           <CommentOutlinedIcon width="20" height="20"/>&nbsp;&nbsp;Question: 
                         </Grid>
                         <Grid item lg={11} align="left">
-                          <Link href="/" className={classes.qaLink}>
-                            <Typography align="left" variant="subtitle1" component="div"><Link className={classes.questionTitle} href={`questions/${question.id}`}>{question.question}</Link></Typography>
+                          <Link href={`questions/${question.id}`} className={classes.qaLink}>
+                            {question.question}
                           </Link>                   
                         </Grid>
                       </Grid>

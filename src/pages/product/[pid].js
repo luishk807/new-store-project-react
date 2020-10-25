@@ -13,17 +13,15 @@ import {
   Typography
 } from '@material-ui/core';
 
-//import Typography from '../components/common/Typography';
 import { getImageUrlByType } from '../../utils/form';
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../../constants/samples/ProductSample';
-import Rate from '../../components/common/Rate/Rate';
 import Select from '../../components/common/QuanitySelector';
 import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
 import { getItemById } from '../../api';
-import { setProducts } from '../../redux/actions/main';
+import WishListIcon from '../../components/common/WishListIcon';
 import ProductQuestionBox from '../../components/ProductQuestionBox';
 import RateBox from '../../components/RateBoxSimple';
 import RateFullView from '../../components/RateFullView';
@@ -49,6 +47,8 @@ const styles = (theme) => ({
   },
   infoRowContent: {
     margin: '20px 0px',
+    display: 'flex',
+    alignItems: 'center',
   },
   deliveryIcon: {
     width: 80,
@@ -80,7 +80,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [images, setImages] = useState({});
   const [productInfo, setProductInfo] = useState({});
   const [showData, setShowData] = useState(false);
-
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -155,8 +154,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   </Grid>
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>
+                    <WishListIcon product={productInfo.id} />
                   </Grid>
-                  
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography align="left" variant="h5" component="h5">Disponibilidad: {productInfo.stock}</Typography>
                   </Grid>

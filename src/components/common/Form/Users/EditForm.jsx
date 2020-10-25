@@ -26,7 +26,7 @@ const styles = (theme) => ({
   },
 });
 
-const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, customUrl = null}) => {
+const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children, customUrl = null}) => {
   const router = useRouter()
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
@@ -182,6 +182,9 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, customUr
     <PrivatePage>
       <LayoutTemplate>
         <div className={classes.root}>
+          {
+            children && children
+          }
           <Form 
             title={ADMIN_SECTIONS[name].name} 
             fileOnSave={handleSave} 
@@ -211,6 +214,7 @@ EditForm.protoTypes = {
   showTitle: T.bool,
   entryForm: T.object,
   ignoreForm: T.array,
+  children: T.node
 }
 
 export default withStyles(styles)(EditForm);

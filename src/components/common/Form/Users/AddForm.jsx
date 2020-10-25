@@ -25,7 +25,7 @@ const styles = (theme) => ({
   },
 });
 
-const AddForm = ({classes, name, entryForm, ignoreForm, customUrl = null}) => {
+const AddForm = ({classes, name, entryForm, ignoreForm, children, customUrl = null}) => {
   const section = ADMIN_SECTIONS[name];
   const router = useRouter()
   const [errors, setErrors] = useState({});
@@ -168,6 +168,7 @@ const AddForm = ({classes, name, entryForm, ignoreForm, customUrl = null}) => {
             formSubmit={handleSubmit}
             formCancel={handleCancel}
             type="submit"
+            children={children}
             snack={snack}
             onCloseSnack={onCloseSnack}
           />
@@ -183,6 +184,7 @@ AddForm.protoTypes = {
   entryForm: T.object,
   customUrl: T.string,
   ignoreFrom: T.array,
+  children: T.node
 }
 
 export default withStyles(styles)(AddForm);

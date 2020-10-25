@@ -86,6 +86,7 @@ const Form = ({
   onChange: formOnChange, 
   fields,
   snack,
+  children,
   fileOnSave,
   formSubmit: handleSubmit,
   formCancel: handleCancel,
@@ -340,6 +341,13 @@ const Form = ({
             )
           }
           {
+            children && (
+              <Grid item lg={12} xs={12}>
+                {children}
+              </Grid>
+            )
+          }
+          {
             useFormOption && formFields
           }
           <Grid item lg={6} xs={12} className={classes.formItem}>
@@ -375,6 +383,7 @@ Form.protoTypes = {
   formSubmit: T.func,
   onImageDelete: T.func,
   formCancel: T.func,
+  children: T.node,
   snack: T.object,
   onCloseSnack: T.func,
 }

@@ -103,12 +103,10 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           thumbnail: `${imageUrl}/${img.img_url}`,
         }
     });
-    console.log('image', imgs)
     setImages(imgs);
   }
 
   const onAddCart = async() => {
-    console.log(productInfo)
     if (!productInfo.quantity) {
       setSnack({
         severity: 'error',

@@ -5,9 +5,12 @@ import {
   withStyles,
   Button
 } from '@material-ui/core';
+
 import Icons from './Icons';
-import { saveWishlist } from '../../api/wishlist';
 import Snackbar from './Snackbar';
+import { saveWishlist } from '../../api/wishlist';
+import { handleFormResponse } from '../../utils/form';
+import { verifyCookie } from '../../utils/cookie';
 
 const styles = (theme) => ({
   wishlistIcon: {
@@ -25,6 +28,7 @@ const WishListIcon = ({classes, product, onMouseOver, onClick}) => {
   const router = useRouter();
   const [wishlistIcon, setWishlistIcon] = useState('heart1');
   const pid = product;
+  const cookie = verifyCookie();
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -32,31 +36,14 @@ const WishListIcon = ({classes, product, onMouseOver, onClick}) => {
   });
 
   const onWishlistClick = async() => {
-    const icon = wishlistIcon == "heart1" ? "heart2" : "heart1";
-    saveWishlist({product: pid}).then((resp) => {
-      let saveResult = null;
-      const res = resp.data;
-      if (res.data) {
-        setSnack({
-          severity: 'success',
-          open: true,
-          text: `Wishlist Added`,
-        })
-        setWishlistIcon(icon);
-      } else {
-        setSnack({
-          severity: 'error',
-          open: true,
-          text: `Wishlist error! ${res.message}`,
-        })
-      }
-    }).catch((err) => {
-      setSnack({
-        severity: 'error',
-        open: true,
-        text: `Wishlist error! ${err.response.data.message}`,
-      })
-    })
+    const cookie = verifyCookie();
+    if (!cookie) {
+      router.push("/login")
+    }  else {
+      const icon = wishlistIcon == "heart1" ? "heart2" : "heart1";
+      const resp = await saveWishlist({product: pid});
+      handleFormResponse(resp.data)
+    }
   }
 
   return (

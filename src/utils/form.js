@@ -38,7 +38,7 @@ export const handleFormResponse = (resp) => {
     return {
       severity: 'success',
       open: true,
-      text: 'Thank you! question sent',
+      text: resp.message,
     }
   } else {    
     return {

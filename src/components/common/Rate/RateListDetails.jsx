@@ -81,7 +81,6 @@ const RateListDetails = ({classes, data, id}) => {
     }
   }
   useEffect(() => {
-    console.log(data)
     loadRates()
   }, [limit]);
 

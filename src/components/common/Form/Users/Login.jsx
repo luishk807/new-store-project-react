@@ -26,7 +26,7 @@ const styles = (theme) => ({
   },
 });
 
-const Login = ({classes, inStatus, showRegister}) => {
+const Login = ({classes, inStatus, showRegister, onCancel}) => {
   const [errors, setErrors] = useState(null);
   const [hasAccess, setHasAccess] = useState(true)
   const [snack, setSnack] = useState({
@@ -46,7 +46,11 @@ const Login = ({classes, inStatus, showRegister}) => {
   }
 
   const handleCancel = () => {
-    window.location.href=`/account`
+    if (onCancel) {
+      onCancel();
+    } else {
+      window.location.href=`/account`
+    }
   }
   const handleSubmit = async (e) => {
     let errorFound = false;
@@ -209,6 +213,7 @@ Login.protoTypes = {
   showRegister: T.bool,
   classes: T.object,
   inStatus: T.object,
+  onCancel: T.func
 }
 
 export default withStyles(styles)(Login) ;

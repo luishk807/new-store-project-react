@@ -99,7 +99,6 @@ const ProductQuestionBox = ({classes, data}) => {
     let range = questions ? questions.length + 5 : 5;
     const fetchQuestions = await getQuestions({limit: range});
     setQuestions(fetchQuestions);
-    console.log('questions', fetchQuestions)
   }
 
   useEffect(() => {

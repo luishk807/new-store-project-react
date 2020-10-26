@@ -26,6 +26,11 @@ const loadMain = () => async(dispatch, getState) => {
   let cookie = null;
   const userLocal = await localStorage.getItem('user')
   if (getState().user.id) {
+    cookie = decodeCookie();
+    if (!cookie) {
+      dispatch(resetUser());
+      localStorage.removeItem('user');
+    }
     return;
   }
 

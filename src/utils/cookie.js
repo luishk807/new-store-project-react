@@ -35,5 +35,5 @@ export const decodeCookie = () => {
 
 export const verifyCookie = () => {
   const { token } = getCookie();
-  return !!cookie;
+  return !!token;
 }

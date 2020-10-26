@@ -3,14 +3,16 @@ import * as T from 'prop-types';
 import { useRouter } from 'next/router';
 import {
   withStyles,
-  Button
+  Button,
+  requirePropFactory
 } from '@material-ui/core';
 
 import Icons from './Icons';
 import Snackbar from './Snackbar';
-import { saveWishlist } from '../../api/wishlist';
+import { saveWishlist, getWishlistByUserId, deleteWishlistByUserId } from '../../api/wishlist';
 import { handleFormResponse } from '../../utils/form';
 import { verifyCookie } from '../../utils/cookie';
+import { WISHLIST_ICON  } from '../../constants/product';
 
 const styles = (theme) => ({
   wishlistIcon: {
@@ -26,8 +28,9 @@ const styles = (theme) => ({
 
 const WishListIcon = ({classes, product, onMouseOver, onClick}) => {
   const router = useRouter();
-  const [wishlistIcon, setWishlistIcon] = useState('heart1');
-  const pid = product;
+  const [pid, setPid] = useState(null);
+  const [wishlistIcon, setWishlistIcon] = useState(WISHLIST_ICON.not_saved);
+  const [isSaved, setIsSaved] = useState(false);
   const cookie = verifyCookie();
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -35,16 +38,53 @@ const WishListIcon = ({classes, product, onMouseOver, onClick}) => {
     text: '',
   });
 
+  const returnIcon = () => {
+    return wishlistIcon == WISHLIST_ICON.not_saved ? WISHLIST_ICON.saved : WISHLIST_ICON.not_saved;
+  }
   const onWishlistClick = async() => {
+    // if (isSaved) {
+    //   return;
+    // }
     const cookie = verifyCookie();
+    let snackRep = null;
     if (!cookie) {
       router.push("/login")
     }  else {
-      const icon = wishlistIcon == "heart1" ? "heart2" : "heart1";
-      const resp = await saveWishlist({product: pid});
-      handleFormResponse(resp.data)
+      const icon = returnIcon();
+      let resp = null;
+      if (wishlistIcon == WISHLIST_ICON.saved) {
+        resp = await deleteWishlistByUserId({product: pid});
+        if (resp.status) {
+          setIsSaved(false)
+          setWishlistIcon(icon)
+        }
+        snackRep = handleFormResponse(resp);
+      } else {
+        resp = await saveWishlist({product: pid});
+        if (resp.data.status) {
+          setIsSaved(true)
+          setWishlistIcon(icon)
+        }
+        snackRep = handleFormResponse(resp.data);
+      }
+      setSnack(snackRep);
     }
   }
+
+  const checkWishlist = async() => {
+    const resp = await getWishlistByUserId({ product: product})
+    if (resp) {
+      setIsSaved(true);
+      const icon = returnIcon();
+      setWishlistIcon(WISHLIST_ICON.saved)
+    }
+  }
+
+  useEffect(() => {
+    setPid(product)
+    checkWishlist()
+    console.log('product', product)
+  }, [wishlistIcon])
 
   return (
     <>

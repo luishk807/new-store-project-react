@@ -35,6 +35,9 @@ const RateList = ({classes, data, limit}) => {
     const dataLength = limit ? limit : data.length;
     let tempRate = [];
     for(let i=0; i < dataLength; i++) {
+      if (!data[i]) {
+        break;
+      }
       tempRate.push(
         <Card key={i} className={classes.cardContainer}>
           <CardHeader 
@@ -65,7 +68,9 @@ const RateList = ({classes, data, limit}) => {
   }
 
   useEffect(() => {
-    createRatesHtml();
+    if (data && data.length) {
+      createRatesHtml();
+    }
   }, [showRates])
 
   return (

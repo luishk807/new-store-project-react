@@ -4,24 +4,15 @@ import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 import {
   withStyles,
-  Card,
-  CardMedia,
-  CardContent,
-  CardActionArea,
   Link,
   Grid,
-  makeStyles,
 } from '@material-ui/core';
 
 import Typography from '../../components/common/Typography';
-import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
-import { 
-  SettingSample,
-} from '../../constants/samples/SettingSample';
 import { USER_ACCOUNT_SECTIONS } from '../../constants/user'
 import CardIcon from '../../components/common/CardIcon';
 import Icons from '../../components/common/Icons';
-import PrivatePage from '../../components/common/Form/Users/PrivatePage';
+import UserLayoutTemplate from '../../components/common/Layout/UserLayoutTemplate';
 import { logout } from '../../api/auth';
 
 const styles = (theme) => ({
@@ -42,26 +33,24 @@ const Settings = ({classes, userInfo}) => {
     }
   }
   return (
-    <PrivatePage>
-      <LayoutTemplate>
-        <div className={classes.root}>
-          <Typography align="left" variant="h4" component="h3">Your Account <Link onClick={onLogOut} href="#" className={classes.smallLink}>[Log out]</Link></Typography>
-          <Grid container spacing={2}>
-          {
-            USER_ACCOUNT_SECTIONS.map((button, index) => {
-              return (
-                <Grid key={index} item lg={3}>
-                  <CardIcon link={`/account/${button.url}`} title={button.label}>
-                    <Icons name={button.name} />
-                  </CardIcon>
-                </Grid>
-              )
-            })
-          }
-          </Grid>
-        </div>
-      </LayoutTemplate>
-    </PrivatePage>
+    <UserLayoutTemplate>
+      <div className={classes.root}>
+        <Typography align="left" variant="h4" component="h3">Your Account <Link onClick={onLogOut} href="#" className={classes.smallLink}>[Log out]</Link></Typography>
+        <Grid container spacing={2}>
+        {
+          USER_ACCOUNT_SECTIONS.map((button, index) => {
+            return (
+              <Grid key={index} item lg={3}>
+                <CardIcon link={`/account/${button.url}`} title={button.label}>
+                  <Icons name={button.name} />
+                </CardIcon>
+              </Grid>
+            )
+          })
+        }
+        </Grid>
+      </div>
+    </UserLayoutTemplate>
   );
 }
  

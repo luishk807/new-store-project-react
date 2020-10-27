@@ -9,9 +9,7 @@ import {
 import { saveItem } from '../../../../api';
 import Api from '../../../../services/api';
 import { validateForm, loadMainOptions } from '../../../../utils/form';
-import LayoutTemplate from '../../../../components/common/Layout/LayoutTemplate';
 import Form from '../Form';
-import PrivatePage from './PrivatePage';
 import { ADMIN_SECTIONS } from '../../../../constants/admin';
 import { FORM_SCHEMA } from '../../../../../config';
 
@@ -179,30 +177,26 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children
   }, [id, showForm])
   
   return showForm && (
-    <PrivatePage>
-      <LayoutTemplate>
-        <div className={classes.root}>
-          {
-            children && children
-          }
-          <Form 
-            title={ADMIN_SECTIONS[name].name} 
-            fileOnSave={handleSave} 
-            fields={form} 
-            showTitle={showTitle}
-            errors={errors} 
-            onChange={formOnChange} 
-            onSubmit={handleSubmit} 
-            formSubmit={handleSubmit}
-            formCancel={handleCancel}
-            onImageDelete={markUserImageDelete}
-            type="edit"
-            snack={snack}
-            onCloseSnack={onCloseSnack}
-          />
-        </div>
-      </LayoutTemplate>
-    </PrivatePage>
+    <div className={classes.root}>
+      {
+        children && children
+      }
+      <Form 
+        title={ADMIN_SECTIONS[name].name} 
+        fileOnSave={handleSave} 
+        fields={form} 
+        showTitle={showTitle}
+        errors={errors} 
+        onChange={formOnChange} 
+        onSubmit={handleSubmit} 
+        formSubmit={handleSubmit}
+        formCancel={handleCancel}
+        onImageDelete={markUserImageDelete}
+        type="edit"
+        snack={snack}
+        onCloseSnack={onCloseSnack}
+      />
+    </div>
   );
 }
 

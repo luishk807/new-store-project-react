@@ -45,7 +45,7 @@ const ProductCategoryIcons = ({classes, data}) => {
   const [categories, setCategories] = useState([]);
 
   const getCategories = async() => {
-    const categories = await getItems(`/${ADMIN_SECTIONS.category.url}`);
+    const categories = await getItems(`${ADMIN_SECTIONS.category.url}`);
     setCategories(categories);
   }
 

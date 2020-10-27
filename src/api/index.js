@@ -1,7 +1,7 @@
 import Api from '../services/api';
 
 export const getItems = (section) => {
-  return Api.get(`/${section}`);
+  return Api.get(`${section}`);
 }
 
 export const getItemById = (section, id) => {
@@ -12,14 +12,14 @@ export const getItemById = (section, id) => {
     id: id
   }
   
-  return Api.get(`/${section}`, data);
+  return Api.get(`${section}`, data);
 }
 
 export const deleteItem = (section, id) => {
   const config = {
     'cotent-Type': 'application/x-www-form-urlencoded'
   }
-  return Api.delete(`/${section}/${id}`, {}, config);
+  return Api.delete(`${section}/${id}`, {}, config);
 }
 
 export const saveItem = (section, id, data) => {
@@ -33,7 +33,7 @@ export const saveItem = (section, id, data) => {
     ...data
   }
 
-  return Api.save(`/${section}/${id}`, form);
+  return Api.save(`${section}/${id}`, form);
 }
 
 export const addItem = (section, data) => {
@@ -48,5 +48,5 @@ export const addItem = (section, data) => {
     ...data
   }
 
-  return Api.post(`/${section}`, form);
+  return Api.post(`${section}`, form);
 }

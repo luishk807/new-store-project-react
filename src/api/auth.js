@@ -9,7 +9,7 @@ export const login = async(data) => {
   const config = {
     'Content-Type': 'application/json',
   }
-  const result = await Api.post(`/login`, data, config);
+  const result = await Api.post(`login`, data, config);
   if (result) {
     setCookie(result)
   }
@@ -25,7 +25,7 @@ export const adminLogin = async(data) => {
     'Content-Type': 'application/json',
   }
 
-  const result = await Api.post(`/adminlogin`, data, config);
+  const result = await Api.post(`adminlogin`, data, config);
 
   if (result) {
     setCookie(result)

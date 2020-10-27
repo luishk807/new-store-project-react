@@ -4,7 +4,7 @@ import { getCookie } from '../utils/cookie';
 import { formatForm, formatFormData } from '../utils/products';
 
 export default class Api {
-  static baseUrl = process.env.BACKEND_URL;
+  static baseUrl = process.env.BACKEND_URL+"/";
 
   static get(url, param, config, format = "json") {
     return Api.request("GET", url, param, config, format);

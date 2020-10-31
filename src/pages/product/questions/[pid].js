@@ -54,7 +54,7 @@ const Index = ({classes, data}) => {
 
   const loadImages = (data) => {
     const imageUrl = getImageUrlByType('product');
-    const imgs = data.product_images.map((img) => {
+    const imgs = data.productImages.map((img) => {
         return {
           original: `${imageUrl}/${img.img_url}`,
           thumbnail: `${imageUrl}/${img.img_url}`,
@@ -98,7 +98,7 @@ const Index = ({classes, data}) => {
           </Grid>
           <Grid item lg={12} className={classes.imageAnswersContent}>
           {
-            questions && questions.product_answers.map((item, index) => {
+            questions && questions.questionAnswers.map((item, index) => {
               return (
                 <Grid key={index} container className={classes.answerItemsContainer}>
                     <Grid item lg={12}>{item.answer}</Grid>

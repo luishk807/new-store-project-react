@@ -32,10 +32,12 @@ const RateBoxSimple = ({classes, data}) => {
 
   const getAllRates = async(id) => {
     const resp = await getAllProductRatesById({id: id});
-    const getAvg = getRatingAvg(resp)
-    setRates(resp);
-    setRate(getAvg);
-    setShowRates(true);
+    if (resp) {
+      const getAvg = getRatingAvg(resp)
+      setRates(resp);
+      setRate(getAvg);
+      setShowRates(true);
+    }
   }
   useEffect(()=>{
     getAllRates(data.id);

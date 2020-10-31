@@ -35,7 +35,7 @@ const Index = ({classes, data}) => {
   
   const loadImages = (data) => {
     const imageUrl = getImageUrlByType('product');
-    const imgs = data.product_images.map((img) => {
+    const imgs = data.productImages.map((img) => {
         return {
           original: `${imageUrl}/${img.img_url}`,
           thumbnail: `${imageUrl}/${img.img_url}`,
@@ -46,7 +46,6 @@ const Index = ({classes, data}) => {
 
   const loadProductInfo = async() => {
     const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
-    console.log('product', getProductInfo)
     loadImages(getProductInfo)
     setProductInfo(getProductInfo);
     setShowData(true);

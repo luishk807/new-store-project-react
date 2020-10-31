@@ -46,7 +46,7 @@ const RateList = ({classes, data, limit}) => {
                 <PersonRoundedIcon/>
               </Avatar>
             }
-            title={`${data[i].users.first_name} ${data[i].users.last_name}`}
+            title={`${data[i].rateUsers.first_name} ${data[i].rateUsers.last_name}`}
           />
           <CardContent className={classes.cardContentContainer}>
             <Typography variant="body2" color="textSecondary" component="span">

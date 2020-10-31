@@ -105,7 +105,7 @@ const RateListDetails = ({classes, data, id}) => {
                     {item.comment}
                   </Grid>
                   <Grid item lg={12} xs={12} align="left" className={classes.rateOwner}>
-                    <Typography variant="caption">By {item.users.first_name}</Typography>
+                    <Typography variant="caption">By {item.rateUsers.first_name}</Typography>
                   </Grid>
                   <Grid item lg={12} xs={12} className={classes.rateDivider}>
                     <Divider className={classes.qaDivider} />

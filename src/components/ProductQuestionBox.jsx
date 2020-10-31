@@ -58,6 +58,7 @@ const styles = (theme) => ({
 const ProductQuestionBox = ({classes, data}) => {
   const router = useRouter();
   const [questions, setQuestions] = useState([])
+  const [showQuestions, setShowQuestions] = useState(false);
   const [form, setForm] = useState({
     product: data.id,
     question: '',
@@ -99,13 +100,15 @@ const ProductQuestionBox = ({classes, data}) => {
     let range = questions ? questions.length + 5 : 5;
     const fetchQuestions = await getQuestions({limit: range});
     setQuestions(fetchQuestions);
+    console.log("questions", fetchQuestions)
+    setShowQuestions(true)
   }
 
   useEffect(() => {
     loadQuestions()
   }, []);
 
-  return (
+  return showQuestions && (
     <div className={classes.root}>
       <Grid container>
         <Grid item lg={12}>

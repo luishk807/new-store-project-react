@@ -131,7 +131,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children
     let inputs = {}
     const mainOptions = await loadMainOptions();
     if (id) {
-      Api.get(`/${ADMIN_SECTIONS[name].url}`,{
+      Api.get(`${ADMIN_SECTIONS[name].url}`,{
         id: id
       }).then((res) => {
         let info = res;

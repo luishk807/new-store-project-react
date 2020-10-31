@@ -34,7 +34,7 @@ const Wishlists = ({classes, userInfo}) => {
 
   const loadWishlist = async() => {
     const getWishlist = await getWishlistByUserId();
-    console.log("hey hey ", getWishlist)
+    console.log("wishlist ", getWishlist)
     setWishlists(getWishlist);
     setShowData(true);
   }
@@ -57,7 +57,7 @@ const Wishlists = ({classes, userInfo}) => {
                 </Grid>
                 <Grid item>
                   {
-                    wishlist.products.name
+                    wishlist.wishlistProduct.name
                   }
                 </Grid>
               </Grid>

@@ -13,6 +13,7 @@ import Icons from './common/Icons';
 
 import { ADMIN_SECTIONS } from '../constants/admin';
 import { getItems } from '../api';
+import { getCategories } from '../api/categories';
 
 const styles = (theme) => ({
   root: {

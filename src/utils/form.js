@@ -34,11 +34,11 @@ export const handleFormResponse = (resp) => {
       text: '',
     }
   }
-  if (resp.status) {
+  if (resp) {
     return {
       severity: 'success',
       open: true,
-      text: resp.message,
+      text: 'Answer submitted',
     }
   } else {    
     return {
@@ -108,17 +108,17 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
 
 export const loadMainOptions = async(option = null) => {
   if (option) {
-      return await Api.get('/'+option.option);
+      return await Api.get(option.option);
   } else {
-    const category = await Api.get(`/${ADMIN_SECTIONS.category.url}`);
-    const position = await Api.get(`/${ADMIN_SECTIONS.workRole.url}`);
-    const vendor = await Api.get(`/${ADMIN_SECTIONS.vendor.url}`);
-    const brand = await Api.get(`/${ADMIN_SECTIONS.brand.url}`);
-    const status = await Api.get(`/${ADMIN_SECTIONS.status.url}`);
+    const category = await Api.get(`${ADMIN_SECTIONS.category.url}`);
+    const position = await Api.get(`${ADMIN_SECTIONS.workRole.url}`);
+    const vendor = await Api.get(`${ADMIN_SECTIONS.vendor.url}`);
+    const brand = await Api.get(`${ADMIN_SECTIONS.brand.url}`);
+    const status = await Api.get(`${ADMIN_SECTIONS.status.url}`);
     
-    const gender = await Api.get(`/genders`);
-    const country = await Api.get(`/countries`);
-    const userRole = await Api.get(`/userroles`);
+    const gender = await Api.get(`genders`);
+    const country = await Api.get(`countries`);
+    const userRole = await Api.get(`userroles`);
     const icon = await CATEGORY_ICONS;
     return {
       category,

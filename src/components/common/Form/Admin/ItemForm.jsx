@@ -57,7 +57,9 @@ const Index = ({classes, adminSection, fields}) => {
 
   const loadItems = async() => {
     try {
+      console.log("section: ",adminSection)
       const getItemResult = await getItems(adminSection.url);
+      console.log("item", getItemResult)
       const itemHtml = getItemResult.map((item, index) => {
   
         return (

@@ -35,7 +35,7 @@ const Index = ({classes, data}) => {
   
   const loadImages = (data) => {
     const imageUrl = getImageUrlByType('product');
-    const imgs = data.productImages.map((img) => {
+    const imgs = data.product_images.map((img) => {
         return {
           original: `${imageUrl}/${img.img_url}`,
           thumbnail: `${imageUrl}/${img.img_url}`,

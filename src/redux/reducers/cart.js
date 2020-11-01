@@ -14,7 +14,7 @@ const initialValue = [
     brand: 16,
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis sed nunc a turpis imperdiet placerat',
     stock: 3,
-    product_images: [
+    productImages: [
       {
         createdAt: "2020-10-15T17:59:14.997Z",
         id: "89",

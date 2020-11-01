@@ -156,7 +156,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                         </Grid>
                         <Grid item lg={2} xs={4}  className={classes.cartImage}>
                           <Link href='/product'>
-                            <img src={`${imageUrl}/${item.product_images[0].img_url}`} className="img-fluid" />
+                            <img src={`${imageUrl}/${item.productImages[0].img_url}`} className="img-fluid" />
                           </Link>
                         </Grid>
                         <Grid item lg={6} xs={8} className={classes.cartDescCont}>

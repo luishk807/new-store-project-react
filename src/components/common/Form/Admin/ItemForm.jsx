@@ -96,7 +96,7 @@ const Index = ({classes, adminSection, fields}) => {
            return;
         }
         
-        const imageFields = ["img","product_images"];
+        const imageFields = ["img","productImages"];
 
         const value = obj ? obj[field] : null;
         let main_image = field;
@@ -125,7 +125,7 @@ const Index = ({classes, adminSection, fields}) => {
                 }
               </Grid>
             )
-          case 'product_images':
+          case 'productImages':
             if (imageFields.indexOf(field) !== -1 && obj) {
               let src = value && value.length > 0 ? `${process.env.IMAGE_URL}/${value[0].img_url}` : `/images/no-image.jpg`;
               main_image = <img className={classes.mainImage} src={src} />

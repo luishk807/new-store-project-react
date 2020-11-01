@@ -48,6 +48,7 @@ import LogoIconWhite from '../../../public/images/logoIconWhite.svg';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import StoreMallDirectoryOutlinedIcon from '@material-ui/icons/StoreMallDirectoryOutlined';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import CloseIcon from '@material-ui/icons/Close';
 
 import Typography from './Typography';
 
@@ -97,6 +98,9 @@ const Icons = ({classes, name}) => {
       break;
       case 'wishlist':
         return <Wishlist className={classes.icon}/>
+      break;
+      case 'close':
+        return <CloseIcon className={classes.icon}/>
       break;
       case 'address':
         return <AddressBook className={classes.icon}/>

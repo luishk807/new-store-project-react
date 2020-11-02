@@ -83,6 +83,13 @@ export const ADMIN_SECTIONS = {
     url: 'productrates',
     option: 'rate'
   },
+  'address': {
+    name: 'Address',
+    names: 'address',
+    key: 'address',
+    url: 'useraddresses',
+    option: 'address'
+  },
 }
 
 export const ADMIN_URL = {

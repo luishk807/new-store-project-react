@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
 import { useRouter } from 'next/router';
-import { connect } from 'react-redux';
 import {
   withStyles,
   Link,
@@ -13,6 +12,7 @@ import CardIcon from '../../../components/common/CardIcon';
 import Icons from '../../../components/common/Icons';
 import AddForm from '../../../components/common/Form/Users/AddForm';
 import { getAddresses } from '../../../api/addresses';
+import { defaultCountry } from '../../../../config';
 import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
 
 const styles = (theme) => ({
@@ -24,25 +24,21 @@ const styles = (theme) => ({
   },
 });
 
-const Add = ({classes, userInfo}) => {
+const Add = ({classes}) => {
   const form = {
     address: null,
     province: null,
     township: null,
     city: null,
-    state: null,
-    countryId: null,
+    country: defaultCountry,
     phone: null,
     mobile: null,
     zip: null,
-    userId: userInfo.id,
   }
-
-  const ignoreEntry=['userId']
 
   return (
     <UserLayoutTemplate>
-      <AddForm ignoreForm={ignoreEntry} name="address" entryForm={form} />
+      <AddForm name="address" customUrl={`/account/addresses`} entryForm={form} />
     </UserLayoutTemplate>
   );
 }
@@ -50,9 +46,4 @@ const Add = ({classes, userInfo}) => {
 Add.protoTypes = {
   classes: T.object,
 }
-
-const mapStateToProps = state => ({
-  userInfo: state.user
-}) // add reducer access to props
-
-export default connect(mapStateToProps)(withStyles(styles)(Add));
+export default withStyles(styles)(Add);

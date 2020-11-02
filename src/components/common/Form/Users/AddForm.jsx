@@ -130,9 +130,17 @@ const AddForm = ({classes, name, entryForm, ignoreForm, children, customUrl = nu
 
       Object.keys(entryForm).forEach(field => {
         if (FORM_SCHEMA[field] == "dropdown" ) {
+          let dropValue = 0;
+          if (field == "country") {
+            options[field].forEach((item, key) => {
+              if (item.name === entryForm[field].name) {
+                dropValue = key;
+              }
+            });
+          }
           setForm({
             ...form,
-            [field]:options[field][0]
+            [field]:options[field][dropValue]
           })
         }
       })

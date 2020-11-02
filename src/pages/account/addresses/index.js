@@ -38,12 +38,30 @@ const Index = ({classes, userInfo}) => {
     <UserLayoutTemplate>
       <div className={classes.root}>
         <Typography align="left" variant="h4" component="h3">My Addresses [<Link href="addresses/add">Add</Link>]</Typography>
-        <Grid container spacing={2}>
-            {
-              showData && (
-                <Grid item>Test</Grid>
+        <Grid container>
+          <Grid item lg={12}>
+          {
+            showData && addresses ? addresses.map((address, key) => {
+              return (
+                <Grid container spacing={2}>
+                  <Grid item>{address.name}</Grid>
+                  <Grid item>{address.address}</Grid>
+                  <Grid item>{address.provice}</Grid>
+                  <Grid item>{address.township}</Grid>
+                  <Grid item>{address.city}</Grid>
+                  <Grid item>{address.addressCountry.iso}</Grid>
+                  <Grid item>{address.zip}</Grid>
+                </Grid>
               )
-            }
+            }) : (
+              <Grid container>
+                <Grid item>
+                    No Address Saved
+                </Grid>
+              </Grid>
+            )
+          }
+          </Grid>
         </Grid>
       </div>
     </UserLayoutTemplate>

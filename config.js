@@ -65,6 +65,11 @@ export const CATEGORY_ICONS = [
   }
 ]
 
+export const defaultCountry = {
+  id: 165,
+  name: 'Panama'
+}
+
 export const RateLabels = {
   0.5: 'Useless',
   1: 'Useless+',
@@ -89,11 +94,14 @@ export const FORM_SCHEMA = {
   email: FORM_TYPE.email,
   first_name: FORM_TYPE.text,
   position: FORM_TYPE.drop,
+  state: FORM_TYPE.text,
   last_name: FORM_TYPE.text,
   stock: FORM_TYPE.number,
   amount: FORM_TYPE.number,
   category: FORM_TYPE.drop,
   brand: FORM_TYPE.drop,
+  zip: FORM_TYPE.text,
+  city: FORM_TYPE.text,
   date_of_birth: FORM_TYPE.date,
   model: FORM_TYPE.text,
   gender: FORM_TYPE.drop,

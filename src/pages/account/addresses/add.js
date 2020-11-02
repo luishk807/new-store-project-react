@@ -26,10 +26,10 @@ const styles = (theme) => ({
 
 const Add = ({classes}) => {
   const form = {
+    name: null,
     address: null,
     province: null,
     township: null,
-    city: null,
     country: defaultCountry,
     phone: null,
     mobile: null,

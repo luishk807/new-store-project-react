@@ -13,11 +13,15 @@ import CardIcon from '../../../components/common/CardIcon';
 import Icons from '../../../components/common/Icons';
 import { getAddresses } from '../../../api/addresses';
 import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
+import AddressBox from '../../../components/common/AddressBox';
 
 const styles = (theme) => ({
   root: {
     padding: 5,
   },
+  addressItem: {
+    width: '20%'
+  }
 });
 
 const Index = ({classes, userInfo}) => {
@@ -41,17 +45,9 @@ const Index = ({classes, userInfo}) => {
         <Grid container>
           <Grid item lg={12}>
           {
-            showData && addresses ? addresses.map((address, key) => {
+            showData && addresses ? addresses.map((address, index) => {
               return (
-                <Grid container spacing={2}>
-                  <Grid item>{address.name}</Grid>
-                  <Grid item>{address.address}</Grid>
-                  <Grid item>{address.provice}</Grid>
-                  <Grid item>{address.township}</Grid>
-                  <Grid item>{address.city}</Grid>
-                  <Grid item>{address.addressCountry.iso}</Grid>
-                  <Grid item>{address.zip}</Grid>
-                </Grid>
+                <AddressBox key={index} classes={{root: classes.addressItem}} data={address} />
               )
             }) : (
               <Grid container>

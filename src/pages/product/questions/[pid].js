@@ -10,7 +10,7 @@ import moment from 'moment';
 import LayoutTemplate from '../../../components/common/Layout/LayoutTemplate';
 import { getImageUrlByType } from '../../../utils/form';
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-import { sendQuestion, getQuestionById } from '../../../api/product';
+import { sendQuestion, getQuestionById } from '../../../api/questions';
 import { getItemById } from '../../../api';
 import AnswerProductQuestionsForm from '../../../components/common/AnswerProductQuestionsForm';
 

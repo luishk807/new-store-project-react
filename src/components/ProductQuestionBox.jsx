@@ -15,7 +15,7 @@ import {
 import MessageOutlinedIcon from '@material-ui/icons/MessageOutlined';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 
-import { sendQuestion, getQuestions } from '../api/product';
+import { sendQuestion, getQuestions } from '../api/questions';
 import { handleFormResponse } from '../utils/form';
 import Snackbar from './common/Snackbar';
 import Typography from './common/Typography';

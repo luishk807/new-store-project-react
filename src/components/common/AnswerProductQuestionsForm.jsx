@@ -11,7 +11,8 @@ import {
 import classNames from 'classnames';
 import Typography from './Typography';
 import Snackbar from './Snackbar';
-import { sendAnswer, getQuestions } from '../../api/product';
+import { getQuestions } from '../../api/questions';
+import { sendAnswer } from '../../api/answers';
 import { handleFormResponse } from '../../utils/form';
 
 const styles = (theme) => ({

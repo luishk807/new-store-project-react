@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
-import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { 
   withStyles,
   Grid,
-  Button,
-  Link,
 } from '@material-ui/core';
 
-import { decodeCookie } from '../../utils/cookie';
 import UserLayoutTemplate from '../../components/common/Layout/UserLayoutTemplate';
-import { getImageUrlByType } from '../../utils/form';
+import { deleteWishlistByUserId } from '../../api/wishlist';
+import { updateCart,addCart } from '../../redux/actions/main';
 import { getWishlistByUserId } from '../../api/wishlist';
-import CardIcon from '../../components/common/CardIcon';
-import Icons from '../../components/common/Icons';
+import { handleFormResponse } from '../../utils/form';
+import Snackbar from '../../components/common/Snackbar';
+import WishlistBox from '../../components/WishlistBox';
 
 const styles = (theme) => ({
   root: {
@@ -25,42 +23,49 @@ const styles = (theme) => ({
     width: '100%',
     textAlign: 'center',
   },
-  closeButton: {
-    padding: 0,
-    // textAlign: 'right',
-    '& span': {
-      display: 'inline-block'
-    }
-  },
-  closeIcon: {
-    width: 25,
-    height: 25,
-    fill: '#ccc',
-  },
-  itemContainer: {
-    border: '1px solid #ccc',
-    margin: 10,
-    [theme.breakpoints.down('sm')]: {
-      margin: 0,
-    },
-  },
-  itemContentContainer: {
-    padding: 20,
+  wishCard: {
+    width: '25%',
+    display: 'inline-block'
   }
 });
 
-const Wishlists = ({classes, userInfo}) => {
-  const [user, setUser] = useState(null)
-  const router = useRouter()
+const Wishlists = ({classes, userInfo, cart, addCart}) => {
   const [showData, setShowData] = useState(false);
   const [wishlists, setWishlists] = useState({});
-  const id = router.query.id;
-  const prodImage = getImageUrlByType();
+  const [snack, setSnack] = useState({
+    severity: 'success',
+    open: false,
+    text: '',
+  });
 
+  const deleteWishlist = async(pid) => {
+    const resp = await deleteWishlistByUserId({product: pid});
+    if (resp.status) {
+      const updateProduct = wishlists.filter(item => item.productId != pid)
+      setWishlists(updateProduct);
+      let snackRep = handleFormResponse(resp);
+      setSnack(snackRep)
+    }
+  }
+  
+  const onAddCart = async(product) => {
+    const foundIndex = Object.keys(cart).filter(item => cart[item].id == product.id)
+    let currQuant = cart[foundIndex] ? cart[foundIndex].quantity + 1 : 1;
+    const addProd = {
+      ...product,
+      'quantity': currQuant
+    }
+    await addCart(addProd)
+    setSnack({
+      severity: 'success',
+      open: true,
+      text: 'Item added to cart',
+    })
+  }
+  
   const loadWishlist = async() => {
     const getWishlist = await getWishlistByUserId();
-    console.log("wishlist ", getWishlist)
-    setWishlists(getWishlist);
+    setWishlists(getWishlist)
     setShowData(true);
   }
 
@@ -72,40 +77,23 @@ const Wishlists = ({classes, userInfo}) => {
     <UserLayoutTemplate>
       <div className={classes.root}>
         <Grid container>
-          <Grid item lg={8} align="center">
+          <Grid item lg={12} align="center">
             {
               showData && wishlists.map((wishlist, index) => {
                 return (
-                <Grid container key={index}>
-                  <Grid item lg={4}  className={classes.itemContainer}>
-                    <Grid container>
-                      <Grid item lg={12} align="right">
-                        <Link  href="/" className={classes.closeButton}>
-                          <Icons name="close" classes={{icon: classes.closeIcon}} />
-                        </Link>
-                      </Grid>
-                      <Grid item lg={12} className={classes.itemContentContainer}>
-                        <Grid container>
-                          <Grid item lg={12}>
-                            <img src={`${prodImage}/54682906-4470-4e37-b15c-0706b3605ebb.jpg`}  className={`img-fluid`} />
-                          </Grid>
-                          <Grid item lg={12}>
-                            {
-                              wishlist.wishlistProduct.name
-                            }
-                          </Grid>
-                          <Grid item lg={12}>
-                            <Button className={`mainButton`}>Add Cart</Button>
-                          </Grid>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Grid>   
-              )})
+                  <WishlistBox 
+                    key={index}
+                    classes={{root: classes.wishCard}}
+                    onAddCart={onAddCart} 
+                    id={wishlist.wishlistProduct.id} 
+                    onDeleteItem={deleteWishlist} 
+                  />
+                )
+              })
             }
           </Grid>
         </Grid>
+        <Snackbar open={snack.open} severity={snack.severity} onClose={()=>{setSnack({...snack,open:false})}} content={snack.text} />
       </div>
     </UserLayoutTemplate>
   );
@@ -116,7 +104,12 @@ Wishlists.protoTypes = {
 }
 
 const mapStateToProps = state => ({
-  userInfo: state.user
+  userInfo: state.user,
+  cart: state.cart
 }) // add reducer access to props
+const mapDispatchToProps = {
+  updateCart: updateCart,
+  addCart: addCart
+}
 
-export default connect(mapStateToProps)(withStyles(styles)(Wishlists));
+export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Wishlists));

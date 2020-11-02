@@ -132,6 +132,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     setShowCart(!!Object.keys(cart).length)
     setTotals(total)
   }, [cart])
+
   return (
     <LayoutTemplate>
       <div className={classes.root}>
@@ -148,6 +149,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
               {
                 Object.keys(cart).map((key, index) => {
                   const item = cart[key];
+                  const imgUrl = item.productImages ? item.productImages[0].img_url : '';
                   return (
                     <Grid key={index} item lg={12} xs={12}>
                       <Grid container>
@@ -156,7 +158,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                         </Grid>
                         <Grid item lg={2} xs={4}  className={classes.cartImage}>
                           <Link href='/product'>
-                            <img src={`${imageUrl}/${item.productImages[0].img_url}`} className="img-fluid" />
+                            <img src={`${imageUrl}/${imgUrl}`} className="img-fluid" />
                           </Link>
                         </Grid>
                         <Grid item lg={6} xs={8} className={classes.cartDescCont}>

@@ -37,6 +37,7 @@ import Computer from '../../../public/images/svg/categories/computer.svg';
 import Furniture from '../../../public/images/svg/categories/furniture.svg';
 import Sport from '../../../public/images/svg/categories/sport.svg';
 import Baby from '../../../public/images/svg/categories/baby.svg';
+import AddIcon from '@material-ui/icons/Add';
 import Car from '../../../public/images/svg/categories/car.svg';
 import Garden from '../../../public/images/svg/categories/garden.svg';
 import Health from '../../../public/images/svg/categories/health.svg';
@@ -65,6 +66,9 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'logo':
         return <LogoIcon className={classes.icon}/>
+      break;
+      case 'add':
+        return <AddIcon className={classes.icon}/>
       break;
       case 'heart1':
         return <FavoriteBorderIcon className={classes.icon}/>

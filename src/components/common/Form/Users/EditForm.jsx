@@ -47,7 +47,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children
   }
 
   const handleCancel = () => {
-    const url =customUrl ? customUrl : `/account`;
+    const url = customUrl ? customUrl : `/account`;
     router.push(url);
   }
 
@@ -130,6 +130,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children
   const loadFormOption = async() => {
     let inputs = {}
     const mainOptions = await loadMainOptions();
+    console.log('hey', id)
     if (id) {
       Api.get(`${ADMIN_SECTIONS[name].url}`,{
         id: id

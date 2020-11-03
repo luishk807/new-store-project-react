@@ -11,7 +11,7 @@ import {
 import Typography from '../../../components/common/Typography';
 import CardIcon from '../../../components/common/CardIcon';
 import Icons from '../../../components/common/Icons';
-import { getAddresses } from '../../../api/addresses';
+import { getAddresses, deleteAddress } from '../../../api/addresses';
 import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
 import AddressBox from '../../../components/common/AddressBox';
 import Snackbar from '../../../components/common/Snackbar';
@@ -23,10 +23,18 @@ const styles = (theme) => ({
   },
   addressItem: {
     width: '25%',
+    display: 'inline-block',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     }
-  }
+  },
+  icon: {
+    width: 120,
+    height: 120,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 const Index = ({classes, userInfo}) => {
@@ -47,19 +55,21 @@ const Index = ({classes, userInfo}) => {
   }
 
   const addressDelete = async(id) => {
-    console.log('delete', id)
+    let snackResp = null
     const res = await deleteAddress(id)
-    if (resp.status) {
-      
+    if (res.status) {
+      snackResp = handleFormResponse(res)
     } else {
-
+      snackResp = handleFormResponse(res)
     }
-    const snackResp = handleFormResponse(res.data)
+    console.log(addresses)
+    const fixAddress = addresses.filter((item) => item.id !== id);
+    setAddresses(fixAddress)
     setSnack(snackResp)
   }
 
   const addressUpdate = (id) => {
-    console.log('update', id)
+    router.push(`addresses/${id}`)
   }
 
   useEffect(() => {
@@ -69,28 +79,35 @@ const Index = ({classes, userInfo}) => {
   return (
     <UserLayoutTemplate>
       <div className={classes.root}>
-        <Typography align="left" variant="h4" component="h3">My Addresses [<Link href="addresses/add">Add</Link>]</Typography>
+        <Typography align="left" variant="h4" component="h3">My Addresses</Typography>
         <Grid container>
           <Grid item lg={12}>
-          {
-            showData && addresses ? addresses.map((address, index) => {
-              return (
-                <AddressBox 
-                  onClickEdit={addressUpdate}
-                  onClickRemove={addressDelete}
-                  key={index}
-                  classes={{root: classes.addressItem}}
-                  data={address} 
-                />
-              )
-            }) : (
-              <Grid container>
-                <Grid item>
-                    No Address Saved
-                </Grid>
+            <Grid container>
+              <Grid item lg={3}>
+                <CardIcon link={`addresses/add`} title="Add Address">
+                  <Icons name="add" classes={{icon: classes.icon}}/>
+                </CardIcon>
               </Grid>
-            )
-          }
+            </Grid>
+            {
+              showData && addresses ? addresses.map((address, index) => {
+                return (
+                  <AddressBox 
+                    onClickEdit={addressUpdate}
+                    onClickRemove={addressDelete}
+                    key={index}
+                    classes={{root: classes.addressItem}}
+                    data={address} 
+                  />
+                )
+              }) : (
+                <Grid container>
+                  <Grid item>
+                      No Address Saved
+                  </Grid>
+                </Grid>
+              )
+            }
           </Grid>
         </Grid>
         <Snackbar open={snack.open} severity={snack.severity} onClose={()=>{setSnack({...snack,open:false})}} content={snack.text} />

@@ -14,13 +14,18 @@ import Icons from '../../../components/common/Icons';
 import { getAddresses } from '../../../api/addresses';
 import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
 import AddressBox from '../../../components/common/AddressBox';
+import Snackbar from '../../../components/common/Snackbar';
+import { handleFormResponse } from '../../../utils/form';
 
 const styles = (theme) => ({
   root: {
     padding: 5,
   },
   addressItem: {
-    width: '20%'
+    width: '25%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    }
   }
 });
 
@@ -28,6 +33,12 @@ const Index = ({classes, userInfo}) => {
   const router = useRouter();
   const [addresses, setAddresses] = useState([])
   const [showData, setShowDate] = useState(false);
+  const [snack, setSnack] = useState({
+    severity: 'success',
+    open: false,
+    text: '',
+  });
+
 
   const loadAddresses = async() => {
     const getAddreseses = await getAddresses();
@@ -35,9 +46,26 @@ const Index = ({classes, userInfo}) => {
     setShowDate(true);
   }
 
+  const addressDelete = async(id) => {
+    console.log('delete', id)
+    const res = await deleteAddress(id)
+    if (resp.status) {
+      
+    } else {
+
+    }
+    const snackResp = handleFormResponse(res.data)
+    setSnack(snackResp)
+  }
+
+  const addressUpdate = (id) => {
+    console.log('update', id)
+  }
+
   useEffect(() => {
     loadAddresses();
   }, [])
+
   return (
     <UserLayoutTemplate>
       <div className={classes.root}>
@@ -47,7 +75,13 @@ const Index = ({classes, userInfo}) => {
           {
             showData && addresses ? addresses.map((address, index) => {
               return (
-                <AddressBox key={index} classes={{root: classes.addressItem}} data={address} />
+                <AddressBox 
+                  onClickEdit={addressUpdate}
+                  onClickRemove={addressDelete}
+                  key={index}
+                  classes={{root: classes.addressItem}}
+                  data={address} 
+                />
               )
             }) : (
               <Grid container>
@@ -59,6 +93,7 @@ const Index = ({classes, userInfo}) => {
           }
           </Grid>
         </Grid>
+        <Snackbar open={snack.open} severity={snack.severity} onClose={()=>{setSnack({...snack,open:false})}} content={snack.text} />
       </div>
     </UserLayoutTemplate>
   );

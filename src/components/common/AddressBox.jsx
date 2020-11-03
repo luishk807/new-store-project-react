@@ -12,6 +12,9 @@ const styles = (theme) => ({
     border: '1px solid #ccc',
     padding: 25,
     margin: 10,
+    [theme.breakpoints.down('sm')]: {
+      margin: '10px auto',
+    }
   },
   addressContainer: {
 
@@ -22,10 +25,13 @@ const styles = (theme) => ({
   },
   title: {
     fontWeight: 'bold'
+  },
+  btnCont: {
+    justifyContent: 'space-between'
   }
 });
 
-const AddressBox = ({classes, data}) => {
+const AddressBox = ({classes, data, onClickEdit, onClickRemove}) => {
     return (
       <div className={classes.root}>
         <Grid container className={classes.addressContainer} spacing={2}>
@@ -35,15 +41,19 @@ const AddressBox = ({classes, data}) => {
           <Grid item lg={12} className={classes.content}>{data.addressCountry.nicename}</Grid>
           <Grid item lg={12} className={classes.content}>Phone: {data.phone}</Grid>
           <Grid item lg={12} className={classes.content}>Mobile: {data.mobile}</Grid>
-          <Grid item lg={6}>
-            <Button className={`mainButton`}>
-                <Typography>Edit</Typography>
-            </Button>
-          </Grid>
-          <Grid item lg={6}>
-            <Button className={`mainButton`}>
-                <Typography>Remove</Typography>
-            </Button>
+          <Grid item lg={12} xs={12}>
+            <Grid container className={classes.btnCont}>
+             <Grid item lg={5} xs={5}>
+                <Button className={`mainButton`} onClick={ () => onClickEdit(data.id)}>
+                  <Typography>Edit</Typography>
+                </Button>
+              </Grid>
+              <Grid item lg={5} xs={5}>
+                <Button className={`mainButton`} onClick={ () => onClickRemove(data.id)}>
+                    <Typography>Remove</Typography>
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
         </Grid>
       </div>
@@ -51,6 +61,8 @@ const AddressBox = ({classes, data}) => {
 }
 AddressBox.protoTypes = {
   classes: T.object,
-  data: T.object
+  data: T.object,
+  onClickEdit: T.func,
+  onClickRemove: T.func,
 } 
 export default withStyles(styles)(AddressBox);

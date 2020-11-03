@@ -8,8 +8,11 @@ export const createAddress = async(data) => {
   return Api.post(`useraddresses`, data);
 }
 
-export const deleteAddress = async(data, id) => {
-  return Api.delete(`useraddresses/${id}`, data);
+export const deleteAddress = async(id) => {
+  const config = {
+    'cotent-Type': 'application/x-www-form-urlencoded'
+  }
+  return Api.delete(`useraddresses/${id}`, {}, config);
 }
 
 export const getAddresses = async(data) => {

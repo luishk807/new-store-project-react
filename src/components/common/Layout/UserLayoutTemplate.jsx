@@ -14,7 +14,7 @@ const styles = (theme) => ({
 
 const UserLayoutTemplate = ({classes, children}) => (
   <PrivatePage>
-    <LayoutTemplate>
+    <LayoutTemplate classes={{root: classes.root}}>
       {
         children
       }

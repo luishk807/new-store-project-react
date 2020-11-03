@@ -15,6 +15,23 @@ export const getItemById = (section, id) => {
   return Api.get(`${section}`, data);
 }
 
+export const getItemByFkId = (section, fk, id) => {
+  if (!id) {
+    return;
+  }
+  let data = {}
+  switch(fk){
+    case 'address':
+      data = {
+        'user': id
+      }
+    break;
+    default:
+    
+  }
+  return Api.get(`${section}`, data);
+}
+
 export const deleteItem = (section, id) => {
   const config = {
     'cotent-Type': 'application/x-www-form-urlencoded'

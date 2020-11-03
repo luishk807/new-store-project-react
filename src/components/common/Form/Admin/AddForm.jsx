@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
+import { useRouter } from 'next/router';
 import { 
   withStyles,
   Grid,
@@ -24,8 +25,10 @@ const styles = (theme) => ({
   },
 });
 
-const AddForm = ({classes, name, entryForm, ignoreForm}) => {
+const AddForm = ({classes, name, entryForm, ignoreForm, customUrl}) => {
   const section = ADMIN_SECTIONS[name];
+  const router = useRouter()
+  const id = router.query.id;
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [snack, setSnack] = useState({
@@ -46,7 +49,8 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
   }
 
   const handleCancel = () => {
-    window.location.href=`/${ADMIN_URL.index}/${section.url}`
+    const url = customUrl ? customUrl : `/${ADMIN_URL.index}/${section.url}`;
+    router.push(url);
   }
 
   const handleSubmit = async (e) => {
@@ -69,8 +73,14 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
         text: `Unable to Add ${section.name}, ${i} is required`
       })
     } else {
-      addItem(ADMIN_SECTIONS[name].url, form).then((resp) => {
-        let saveResult = null;
+      let sendForm = form;
+      if (id) {
+        sendForm = {
+          ...form,
+          'user': id
+        }
+      }
+      addItem(ADMIN_SECTIONS[name].url, sendForm).then((resp) => {
         const res = resp.data;
         if (res.status) {
           setSnack({
@@ -175,6 +185,7 @@ const AddForm = ({classes, name, entryForm, ignoreForm}) => {
 AddForm.protoTypes = {
   classes: T.object,
   name: T.string,
+  customUrl: T.string,
   entryForm: T.object,
   ignoreFrom: T.array,
 }

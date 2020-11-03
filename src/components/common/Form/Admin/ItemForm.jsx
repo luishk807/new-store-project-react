@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 
 import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteItem, getItems } from '../../../../api';
+import { deleteItem, getItems, getItemByFkId } from '../../../../api';
 import Icons from '../../../../components/common/Icons';
 import PrivatePage from '../../../../components/common/Form/Admin/PrivatePage';
 import Snackbar from '../../../../components/common/Snackbar';
@@ -30,7 +30,7 @@ const styles = (theme) => ({
   }
 });
 
-const Index = ({classes, adminSection, fields}) => {
+const Index = ({classes, adminSection, fields, id}) => {
   const [items, setItems] = useState(null);
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -57,8 +57,16 @@ const Index = ({classes, adminSection, fields}) => {
 
   const loadItems = async() => {
     try {
-      console.log("section: ",adminSection)
-      const getItemResult = await getItems(adminSection.url);
+      let getItemResult = null
+      console.log("section: ",adminSection, 'id', id)
+      switch(adminSection.key) {
+        case 'address':
+          getItemResult = await getItemByFkId(adminSection.url, adminSection.key, id);
+        break;
+        default:
+          getItemResult = await getItems(adminSection.url);
+      }
+
       console.log("item", getItemResult)
       const itemHtml = getItemResult.map((item, index) => {
   
@@ -163,6 +171,19 @@ const Index = ({classes, adminSection, fields}) => {
                 }
               </Grid>
             )
+          case 'address':
+            return (
+              <Grid key={index} item lg={2} sm={12}>
+                { 
+                  value ?
+                  (
+                    <Link href={`edit/[id]`} as={`edit/${obj.id}`}>
+                      <a>{ `${value}`}</a>
+                    </Link>
+                  ) : field
+                }
+              </Grid>
+            )
           default:
             return (
               <Grid item key={index} lg={2} sm={12}>
@@ -185,9 +206,17 @@ const Index = ({classes, adminSection, fields}) => {
             <Grid container>
                 <Grid item lg={12} xs={12}>
                     [
-                      <Link href={`${adminSection.url}/add`}>
-                        <a>Add {adminSection.names}</a>
-                      </Link>
+                      {
+                        id ? (
+                          <Link href={`add/${id}`}>
+                          <a>Add {adminSection.names}</a>
+                        </Link>
+                        ) : (
+                          <Link href={`${adminSection.url}/add`}>
+                            <a>Add {adminSection.names}</a>
+                          </Link>
+                        )
+                      }
                     ]
                 </Grid>
             </Grid>
@@ -218,6 +247,7 @@ Index.protoTypes = {
   classes: T.object,
   adminSection: T.object,
   fields: T.array,
+  id: T.number
 }
 
 export default withStyles(styles)(Index);

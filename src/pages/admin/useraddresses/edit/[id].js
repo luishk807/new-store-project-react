@@ -7,8 +7,9 @@ import {
   Button
 } from '@material-ui/core';
 
-import { ADMIN_SECTIONS } from '../../../constants/admin';
-import EditForm from '../../../components/common/Form/Admin/EditForm';
+import { ADMIN_SECTIONS } from '../../../../constants/admin';
+import EditForm from '../../../../components/common/Form/Admin/EditForm';
+import { defaultCountry } from '../../../../../config';
 
 const styles = (theme) => ({
   root: {
@@ -26,31 +27,20 @@ const Edit = ({classes}) => {
    const id = router.query.id;
 
   const form = {
-    first_name: null,
-    last_name: null,
-    email: null,
-    password: null,
+    name: null,
+    address: null,
+    province: null,
+    township: null,
+    country: defaultCountry,
     phone: null,
-    gender: null,
-    date_of_birth: null,
     mobile: null,
-    status: null,
-    userRole: null,
-    image: {
-      values: [],
-      open: false,
-    }
+    zip: null,
   }
-  
-  const ignoreEntry=['image', 'mobile', 'password']
 
   return (
     <Grid container>
       <Grid item lg={12}>
-      <EditForm ignoreForm={ignoreEntry} name={ADMIN_SECTIONS.user.key} id={id} entryForm={form} />
-      </Grid>
-      <Grid item lg={12}>
-        <Button className={`mainButton`} onClick={()=>router.push(`/admin/useraddresses/${id}`)}>Address</Button>
+        <EditForm customUrl={`/admin/useraddresses/${id}`} name={ADMIN_SECTIONS.address.key} id={id} entryForm={form} />
       </Grid>
     </Grid>
   );

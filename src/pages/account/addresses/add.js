@@ -19,8 +19,8 @@ const styles = (theme) => ({
   root: {
     padding: 5,
   },
-  layoutRoot: {
-    marginTop: 50,
+  templateRoot: {
+    marginTop: 100
   },
 });
 
@@ -37,7 +37,7 @@ const Add = ({classes}) => {
   }
 
   return (
-    <UserLayoutTemplate>
+    <UserLayoutTemplate classes={{root: classes.templateRoot}}>
       <AddForm name="address" customUrl={`/account/addresses`} entryForm={form} />
     </UserLayoutTemplate>
   );

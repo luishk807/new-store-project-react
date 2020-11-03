@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import { 
   withStyles,
   Grid,
+  Link,
 } from '@material-ui/core';
 
 import { saveItem } from '../../../../api';
@@ -27,7 +28,7 @@ const styles = (theme) => ({
   },
 });
 
-const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle}) => {
+const EditForm = ({classes, id, name, customUrl, entryForm, ignoreForm, showTitle}) => {
   const router = useRouter()
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
@@ -50,7 +51,8 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle}) => {
   }
 
   const handleCancel = () => {
-    window.location.href=`/admin/${ADMIN_SECTIONS[name].url}`;
+    const url = customUrl ? customUrl : `/admin/${ADMIN_SECTIONS[name].url}`;
+    router.push(url);
   }
 
   const handleSubmit = async (e) => {
@@ -208,6 +210,7 @@ EditForm.protoTypes = {
   classes: T.object,
   id: T.number,
   showTitle: T.bool,
+  customUrl: T.string,
   name: T.string,
   entryForm: T.object,
   ignoreForm: T.array,

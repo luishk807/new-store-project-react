@@ -163,8 +163,6 @@ const AddForm = ({classes, name, entryForm, ignoreForm, children, customUrl = nu
   }, [])
   
   return showForm && (
-    <PrivatePage>
-      <LayoutTemplate>
         <div className={classes.root}>
           <Form 
             title={section.name} 
@@ -181,8 +179,6 @@ const AddForm = ({classes, name, entryForm, ignoreForm, children, customUrl = nu
             onCloseSnack={onCloseSnack}
           />
         </div>
-      </LayoutTemplate>
-    </PrivatePage>
   );
 }
 

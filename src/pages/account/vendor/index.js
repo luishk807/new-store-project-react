@@ -8,12 +8,12 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import Typography from '../../components/common/Typography';
-import { USER_ACCOUNT_SECTIONS } from '../../constants/user'
-import CardIcon from '../../components/common/CardIcon';
-import Icons from '../../components/common/Icons';
-import UserLayoutTemplate from '../../components/common/Layout/UserLayoutTemplate';
-import { logout } from '../../api/auth';
+import Typography from '../../../components/common/Typography';
+import { VENDOR_SECTIONS } from '../../../constants/vendor'
+import CardIcon from '../../../components/common/CardIcon';
+import Icons from '../../../components/common/Icons';
+import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
+import { logout } from '../../../api/auth';
 
 const styles = (theme) => ({
   root: {
@@ -26,22 +26,22 @@ const styles = (theme) => ({
 
 const Settings = ({classes, userInfo}) => {
   const router = useRouter();
-  const data = userInfo;
   const onLogOut = () => {
     if (logout()) {
       router.push('/')
     }
   }
+
   return (
     <UserLayoutTemplate>
       <div className={classes.root}>
-        <Typography align="left" variant="h4" component="h3">Your Account <Link onClick={onLogOut} href="#" className={classes.smallLink}>[Log out]</Link></Typography>
+        <Typography align="left" variant="h4" component="h3">Vendor <Link onClick={onLogOut} href="#" className={classes.smallLink}>[Log out]</Link></Typography>
         <Grid container spacing={2}>
         {
-          USER_ACCOUNT_SECTIONS.map((button, index) => {
+          VENDOR_SECTIONS.map((button, index) => {
             return (
               <Grid key={index} item lg={3} xs={12}>
-                <CardIcon link={`/account/${button.url}`} title={button.label}>
+                <CardIcon link={`/account/vendor/${button.url}`} title={button.label}>
                   <Icons name={button.name} />
                 </CardIcon>
               </Grid>

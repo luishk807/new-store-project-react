@@ -5,28 +5,34 @@ export const USER_URL = {
   orders: 'orders',
   security: 'security',
   wishlists: 'wishlists',
-  addresses: 'addresses'
+  addresses: 'addresses',
+  vendor: 'vendor'
 }
 
 export const USER_ACCOUNT_SECTIONS = [
   {
     name: 'order',
     label: 'Your Orders',
-    url: USER_URL.orders,
+    url: 'orders',
   },
   {
     name: 'wishlist',
     label: 'Wish List',
-    url: USER_URL.wishlists,
+    url: 'wishlists',
   },
   {
     name: 'address',
     label: 'Address Book',
-    url: USER_URL.addresses,
+    url: 'addresses',
   },
   {
     name: 'security',
     label: 'Security and Login',
-    url: USER_URL.account,
+    url: 'account',
+  },
+  {
+    name: 'store',
+    label: 'Business Account',
+    url: 'vendor',
   }
 ]

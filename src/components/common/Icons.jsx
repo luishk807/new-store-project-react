@@ -44,12 +44,18 @@ import Health from '../../../public/images/svg/categories/health.svg';
 import Broken from '../../../public/images/svg/categories/broken.svg';
 import Jewerly from '../../../public/images/svg/categories/jewerly.svg';
 import LogoIcon from '../../../public/images/logoIcon.svg';
+import Products from '../../../public/images/svg/Products.svg';
+import Category from '../../../public/images/svg/Category.svg';
+import Vendor from '../../../public/images/svg/Vendor.svg';
+import Brand from '../../../public/images/svg/Brand.svg';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import LogoIconWhite from '../../../public/images/logoIconWhite.svg';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import StoreMallDirectoryOutlinedIcon from '@material-ui/icons/StoreMallDirectoryOutlined';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import CloseIcon from '@material-ui/icons/Close';
+import StorefrontIcon from '@material-ui/icons/Storefront';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
 import Typography from './Typography';
 
@@ -64,8 +70,17 @@ const Icons = ({classes, name}) => {
   
   const getIcon = () => {
     switch(name) {
+      case 'products':
+        return <Products className={classes.icon}/>
+      break;
       case 'logo':
         return <LogoIcon className={classes.icon}/>
+      break;
+      case 'logout':
+        return <ExitToAppIcon className={classes.icon}/>
+      break;
+      case 'store':
+        return <StorefrontIcon className={classes.icon}/>
       break;
       case 'add':
         return <AddIcon className={classes.icon}/>
@@ -83,13 +98,13 @@ const Icons = ({classes, name}) => {
         return <StoreMallDirectoryOutlinedIcon className={classes.icon}/>
       break;
       case 'category':
-        return <PersonAddOutlinedIcon className={classes.icon}/>
+        return <Category className={classes.icon}/>
       break;
       case 'vendor':
-        return <PersonAddOutlinedIcon className={classes.icon}/>
+        return <Vendor className={classes.icon}/>
       break;
       case 'brand':
-        return <PersonAddOutlinedIcon className={classes.icon}/>
+        return <Brand className={classes.icon}/>
       break;
       case 'product':
         return <Order className={classes.icon}/>

@@ -6,11 +6,13 @@ export const formatForm = (form) => {
     if (FORM_SCHEMA[i] == "file") {
       currentForm[i] = form[i].map((data) => data.name)
     } else if (FORM_SCHEMA[i] == "dropdown") {
-      currentForm[i] = form[i].id
+      const dropValue = form[i] && form[i].id ? form[i].id : form[i];
+      currentForm[i] = dropValue;
     } else {
       currentForm[i] = form[i]
     }
   }
+
   return currentForm;
 }
 

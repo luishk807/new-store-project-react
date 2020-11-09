@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import * as T from 'prop-types';
-import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 import {
   withStyles,
-  Link,
-  Grid,
-  Button
 } from '@material-ui/core';
 
-import Typography from '../../../components/common/Typography';
-import { VENDOR_SECTIONS } from '../../../constants/vendor'
-import CardIcon from '../../../components/common/CardIcon';
-import Icons from '../../../components/common/Icons';
 import VendorLayoutTemplate from '../../../components/common/Layout/VendorLayoutTemplate';
-import { getProductsByVendor } from '../../../api/products';
 import { USER_SECTIONS } from '../../../constants/user';
 import ItemForm from '../../../components/common/Form/ItemForm';
 
@@ -27,23 +18,8 @@ const styles = (theme) => ({
   },
 });
 
-const Products = ({classes, userInfo, info, vendorInfo}) => {
-  const router = useRouter();
-  const [products, setProducts] = useState(false);
-  const [showData, setShowData] = useState(false);
+const Products = ({classes, userInfo, vendorInfo}) => {
   const fields = ['productImages', 'name', 'amount']
-
-  const loadVendorProducts = async(vendor) => {
-  //  console.log("vendor", vendorInfo)
-    const fetchProduct = await getProductsByVendor(vendor);
-    setProducts(fetchProduct);
-    setShowData(true);
-  };
-
-  useEffect(() => {
-    console.log("vendor", vendorInfo)
-    loadVendorProducts(vendorInfo.id)
-  }, [vendorInfo]);
 
   return (
     <VendorLayoutTemplate>

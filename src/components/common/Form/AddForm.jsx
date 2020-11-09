@@ -8,7 +8,6 @@ import { useRouter } from 'next/router';
 
 import { addItem } from '../../../api';
 import { validateForm, loadMainOptions } from '../../../utils/form';
-import { ADMIN_SECTIONS } from '../../../constants/admin'; 
 import Form from './Form';
 import { FORM_SCHEMA } from '../../../../config';
 

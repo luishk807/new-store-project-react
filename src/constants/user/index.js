@@ -48,7 +48,7 @@ export const USER_SECTIONS = {
       name: 'Product',
       names: 'Products',
       key: 'productsvendor',
-      url: 'productsvendor',
+      url: 'products',
     }
   },
 }

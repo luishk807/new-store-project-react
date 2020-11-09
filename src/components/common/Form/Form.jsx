@@ -104,7 +104,6 @@ const Form = ({
   })
   const [useFormOption, setUseFormOptions] = useState(false)
   const [formTitle, setFormTitle] = useState('');
-  // const [rate, setRate] = useState(0);
   const [formBtnTitle, setFormBtnTitle] = useState('');
   const userImages = fields['image'] && 'saved' in fields['image'] ? fields['image'].saved : null;
   
@@ -314,21 +313,28 @@ const Form = ({
   }, [useFormOption])
 
   useEffect(() => {
+    let newTitle = title;
+    if (fields.first_name) {
+      newTitle = `${fields.first_name} ${fields.last_name}`;
+    } else if (fields.name) {
+      newTitle = `${fields.name}`;
+    }
+
     switch(type) {
       case "submit": {
-        setFormTitle(`Add ${title}`);
-        setFormBtnTitle(`Add ${title}`);
+        setFormTitle(`Add ${newTitle}`);
+        setFormBtnTitle(`Add ${newTitle}`);
         break
       }
       case "edit": {
-        const buttonName = showTitle ? ` ${title}`:'';
+        const buttonName = showTitle ? ` ${newTitle}`:'';
         setFormTitle(`Edit${buttonName}`);
         setFormBtnTitle(`Update${buttonName}`);
         break;
       }
       case "delete": {
-        setFormTitle(`Delete ${title}`);
-        setFormBtnTitle(`Delete ${title}`);
+        setFormTitle(`Delete ${newTitle}`);
+        setFormBtnTitle(`Delete ${newTitle}`);
         break;
       }
     }

@@ -10,7 +10,6 @@ import { saveItem } from '../../../api';
 import Api from '../../../services/api';
 import { validateForm, loadMainOptions } from '../../../utils/form';
 import Form from './Form';
-import { ADMIN_SECTIONS } from '../../../constants/admin';
 import { FORM_SCHEMA } from '../../../../config';
 
 const styles = (theme) => ({
@@ -24,9 +23,22 @@ const styles = (theme) => ({
   },
 });
 
-const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children, customUrl = null}) => {
+const EditForm = ({
+  classes, 
+  id, 
+  name, 
+  entryForm, 
+  ignoreForm, 
+  showTitle, 
+  adminSection, 
+  userSection, 
+  hideEntry,
+  children, 
+  customUrl = null
+}) => {
   const router = useRouter()
   const [errors, setErrors] = useState({});
+  const [section, setSection] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [imageDelete, setImageDelete] = useState({})
   const [snack, setSnack] = useState({
@@ -68,7 +80,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children
       setSnack({
         severity: 'error',
         open: true,
-        text: `Unable to Add ${ADMIN_SECTIONS[name].name}, ${i} is required`
+        text: `Unable to Add ${section.name}, ${i} is required`
       })
     } else {
       const formSubmit = form;
@@ -77,7 +89,7 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children
         delete formSubmit.image.saved
       }
       try{
-        const confirm = await saveItem(ADMIN_SECTIONS[name].url, id, formSubmit)
+        const confirm = await saveItem(section.url, id, formSubmit)
         setSnack({
           severity: confirm.data.data ? 'success' : 'error',
           open: true,
@@ -129,9 +141,19 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children
 
   const loadFormOption = async() => {
     let inputs = {}
+    let sect = null;
+    if (userSection) {
+      sect = userSection;
+      setSection(userSection);
+    } else if (adminSection) {
+      sect = adminSection;
+      setSection(adminSection);
+    } else {
+      return;
+    }
     const mainOptions = await loadMainOptions();
     if (id) {
-      Api.get(`${ADMIN_SECTIONS[name].url}`,{
+      Api.get(`${sect.url}`,{
         id: id
       }).then((res) => {
         let info = res;
@@ -179,11 +201,12 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children
         children && children
       }
       <Form 
-        title={ADMIN_SECTIONS[name].name} 
+        title={section.name} 
         fileOnSave={handleSave} 
         fields={form} 
         showTitle={showTitle}
         errors={errors} 
+        hideEntry={hideEntry}
         onChange={formOnChange} 
         onSubmit={handleSubmit} 
         formSubmit={handleSubmit}

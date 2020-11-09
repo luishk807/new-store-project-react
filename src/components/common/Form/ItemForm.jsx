@@ -39,18 +39,18 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
   });
 
   const delItem = async(id) => {
-    deleteItem(adminSection.url, id).then((data) => {
+    deleteItem(section.url, id).then((data) => {
       setSnack({
         severity: 'success',
         open: true,
-        text: `${adminSection.name} Deleted`,
+        text: `${section.name} Deleted`,
       })
       loadItems()
     }).catch((err) => {
       setSnack({
         severity: 'error',
         open: true,
-        text: `ERROR: ${adminSection.name} cannot be delete`,
+        text: `ERROR: ${section.name} cannot be delete`,
       })
     })
   }

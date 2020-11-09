@@ -40,7 +40,11 @@ const VendorLayoutTemplate = ({classes, userInfo, children, vendorInfo}) => {
   return (
     <UserLayoutTemplate>
       <div className={classes.root}>
-        <Typography align="left" variant="h4" component="h3">Welcome {vendor.name} <Button onClick={()=>router.back()} href="#" className={classes.smallLink}>[Back to vendor]</Button><Button onClick={()=>router.push('/account/vendor')} href="#" className={classes.smallLink}>[Back to user]</Button><Button onClick={onLogOut} href="#" className={classes.smallLink}>[Log out]</Button></Typography>
+        <Typography align="left" variant="h4" component="h3">Welcome {vendor.name} 
+          <Button onClick={()=>router.back()} href="#" className={classes.smallLink}>[Back to vendor]</Button>
+          <Button onClick={()=>router.push('/account/vendor')} href="#" className={classes.smallLink}>[Back to user]</Button>
+          <Button onClick={onLogOut} href="#" className={classes.smallLink}>[Log out]</Button>
+        </Typography>
         <Grid container spacing={2}>
           <Grid item lg={12}>
             {

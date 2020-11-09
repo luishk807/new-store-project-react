@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
+import { useRouter } from 'next/router';
 import { 
   withStyles,
   Grid,
 } from '@material-ui/core';
-import { useRouter } from 'next/router';
 
-import { addItem } from '../../../api';
+import { saveItem } from '../../../api';
+import Api from '../../../services/api';
 import { validateForm, loadMainOptions } from '../../../utils/form';
-import { ADMIN_SECTIONS } from '../../../constants/admin'; 
 import Form from './Form';
+import { ADMIN_SECTIONS } from '../../../constants/admin';
 import { FORM_SCHEMA } from '../../../../config';
 
 const styles = (theme) => ({
@@ -23,21 +24,11 @@ const styles = (theme) => ({
   },
 });
 
-const AddForm = ({
-  classes, 
-  name, 
-  adminSection, 
-  userSection, 
-  entryForm, 
-  hideEntry,
-  ignoreForm, 
-  children, 
-  customUrl = null
-}) => {
+const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children, customUrl = null}) => {
   const router = useRouter()
-  const [section, setSection] = useState({});
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
+  const [imageDelete, setImageDelete] = useState({})
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -56,10 +47,8 @@ const AddForm = ({
   }
 
   const handleCancel = () => {
-    const url =customUrl ? customUrl : `/${section.url}`
-    setTimeout(()=>{
-      router.push(url);
-    }, 1000)
+    const url = customUrl ? customUrl : `/account`;
+    router.push(url);
   }
 
   const handleSubmit = async (e) => {
@@ -79,33 +68,29 @@ const AddForm = ({
       setSnack({
         severity: 'error',
         open: true,
-        text: `Unable to Add ${section.name}, ${i} is required`
+        text: `Unable to Add ${ADMIN_SECTIONS[name].name}, ${i} is required`
       })
     } else {
-      addItem(section.url, form).then((resp) => {
-        let saveResult = null;
-        const res = resp.data;
-        if (res.data) {
-          setSnack({
-            severity: 'success',
-            open: true,
-            text: `${section.name} Added`,
-          })
-          handleCancel();
-        } else {
-          setSnack({
-            severity: 'error',
-            open: true,
-            text: `${section.name} error! ${res.message}`,
-          })
-        }
-      }).catch((err) => {
+      const formSubmit = form;
+      if ('image' in formSubmit) {
+        formSubmit['saved'] = imageDelete;
+        delete formSubmit.image.saved
+      }
+      try{
+        const confirm = await saveItem(ADMIN_SECTIONS[name].url, id, formSubmit)
+        setSnack({
+          severity: confirm.data.data ? 'success' : 'error',
+          open: true,
+          text: confirm.data.message,
+        })
+        handleCancel() 
+      } catch(err) {
         setSnack({
           severity: 'error',
           open: true,
-          text: `${section.name} error! ${err.response.data.message}`,
+          text: err.response.data.message,
         })
-      })
+      }
     }
   }
   const saveErrors = async (key, err = false, str = '') => {
@@ -126,58 +111,56 @@ const AddForm = ({
     setForm({
       ...form,
       image: {
+        ...form.image,
         open: false,
         files: files,
       }
     })
   }
+  
+  const markUserImageDelete = async(images) => {
+    const index = Object.keys(imageDelete).length;
+    setImageDelete(prevValue => ({
+      ...prevValue,
+      [index] : images
+    }))
+  }
+
 
   const loadFormOption = async() => {
-    let sect = null;
-    if (userSection) {
-      sect = userSection;
-      setSection(userSection);
-    } else if (adminSection) {
-      sect = adminSection;
-      setSection(adminSection);
-    } else {
-      return;
-    }
-
-    try {
-      const options = await loadMainOptions();
-
-      Object.keys(entryForm).forEach(field => {
-        if (FORM_SCHEMA[field] == "dropdown" ) {
-          let dropValue = 0;
-          if (field == "vendor" && entryForm[field]) {
-            options[field].forEach((item, key) => {
-              if(item.id == entryForm[field]) {
-                dropValue = key;
-              }
-            })
+    let inputs = {}
+    const mainOptions = await loadMainOptions();
+    if (id) {
+      Api.get(`${ADMIN_SECTIONS[name].url}`,{
+        id: id
+      }).then((res) => {
+        let info = res;
+        for(var field in form){
+          let value = info[field];
+          if (FORM_SCHEMA[field] == "dropdown") {
+            const value = mainOptions[field].filter((data) => 'id' in data ? data.id == info[field] : data.value == info[field])
+            inputs[field] = value[0]
+          } else if (FORM_SCHEMA[field] == "file") {
+            const images = 'productImages' in info ? info['productImages'] : [info['img']];
+            inputs['image'] = {
+              'saved': images
+            }
+          } else if (FORM_SCHEMA[field] == "password") {
+            inputs[field] = null
+          } else {
+            inputs[field] = value
           }
-          else if (field == "country") {
-            options[field].forEach((item, key) => {
-              if (item.name === entryForm[field].name) {
-                dropValue = key;
-              }
-            });
-          }
-          setForm({
-            ...form,
-            [field]:options[field][dropValue]
-          })
         }
+        return inputs;
+      }).then((res) => {
+        setForm(res)
+        setShowForm(true);
       })
-  
-      setShowForm(true);
-    } catch(err) {}
+    }
   }
 
   useEffect(() => {
     let newErrors = {}
-
     Object.keys(form).map((field, index) => {
       newErrors[field] = {
         error: false,
@@ -185,23 +168,28 @@ const AddForm = ({
       }
     })
     setErrors(newErrors);
+
    loadFormOption()
-  }, [entryForm])
+
+  }, [id, showForm])
   
   return showForm && (
     <div className={classes.root}>
+      {
+        children && children
+      }
       <Form 
-        title={section.name} 
+        title={ADMIN_SECTIONS[name].name} 
         fileOnSave={handleSave} 
         fields={form} 
-        hideEntry={hideEntry}
+        showTitle={showTitle}
         errors={errors} 
         onChange={formOnChange} 
         onSubmit={handleSubmit} 
         formSubmit={handleSubmit}
         formCancel={handleCancel}
-        type="submit"
-        children={children}
+        onImageDelete={markUserImageDelete}
+        type="edit"
         snack={snack}
         onCloseSnack={onCloseSnack}
       />
@@ -209,16 +197,15 @@ const AddForm = ({
   );
 }
 
-AddForm.protoTypes = {
+EditForm.protoTypes = {
   classes: T.object,
+  id: T.number,
   name: T.string,
-  adminSection: T.object,
-  userSection: T.object,
-  entryForm: T.object,
   customUrl: T.string,
-  ignoreFrom: T.array,
-  children: T.node,
-  hideEntry: T.object
+  showTitle: T.bool,
+  entryForm: T.object,
+  ignoreForm: T.array,
+  children: T.node
 }
 
-export default withStyles(styles)(AddForm);
+export default withStyles(styles)(EditForm);

@@ -24,7 +24,8 @@ const styles = (theme) => ({
 
 const Edit = ({classes, userInfo, vendorInfo}) => {
   const router = useRouter();
-  const pid = router.query.id;
+  const pid = router.query.pid;
+  console.log("jjk", pid)
   const id = vendorInfo.id;
   const form = {
     name: null,
@@ -52,6 +53,7 @@ const Edit = ({classes, userInfo, vendorInfo}) => {
         <EditForm 
           customUrl={`/account/vendor/products`} 
           ignoreFrom={ignoreEntry} 
+          name="product" 
           userSection={USER_SECTIONS.vendor.product} 
           entryForm={form} 
           id={pid}

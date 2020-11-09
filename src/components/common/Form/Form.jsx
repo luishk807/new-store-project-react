@@ -140,7 +140,7 @@ const Form = ({
   }) : [];
 
   const formFields = Object.keys(fields).map((field, index) => {
-    if (hideEntry.indexOf(field) !== -1) {
+    if (hideEntry && hideEntry.indexOf(field) !== -1) {
       return;
     }
     

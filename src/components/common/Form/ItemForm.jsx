@@ -31,6 +31,7 @@ const styles = (theme) => ({
 const Index = ({classes, adminSection, userSection,  fields, id, showTitle = true}) => {
   const [items, setItems] = useState(null);
   const [section, setSection] = useState({});
+  const [itemLink, setItemLink] = useState({})
   const [showData, setShowData] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -79,6 +80,8 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
 
   const loadItems = async() => {
     let sect = null;
+    let getItemResult = null;
+  
     if (userSection) {
       sect = userSection;
       setSection(userSection);
@@ -90,7 +93,6 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
     }
     
     try {
-      let getItemResult = null
       switch(sect.key) {
         case 'address':
         case 'productsvendor':
@@ -101,7 +103,17 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
       }
 
       const itemHtml = getItemResult.map((item, index) => {
-  
+        if (sect.key === "productsvendor") {
+          setItemLink({
+            url: "/account/vendor",
+            as: "/account/vendor",
+          })
+        } else {
+          setItemLink({
+            url: `${sect.url}/`,
+            as: `${sect.url}/`,
+          })
+        }
         return (
           <Grid item key={index} lg={12} sm={12} className={classes.item}>
             <Grid container>
@@ -184,7 +196,7 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
                 { 
                   value ?
                   (
-                    <Link href={`${section.url}/[id]`} as={`${section.url}/${obj.id}`}>
+                    <Link href={`${itemLink.url}/${obj.id}`}>
                       <a>{ `${value} ${obj.last_name}`}</a>
                     </Link>
                   ) : field
@@ -197,7 +209,7 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
                 { 
                   value ?
                   (
-                    <Link href={`${section.url}/[id]`} as={`${section.url}/${obj.id}`}>
+                    <Link href={`${itemLink.url}/${obj.id}`}>
                       <a>{ `${value}`}</a>
                     </Link>
                   ) : field
@@ -210,7 +222,7 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
                 { 
                   value ?
                   (
-                    <Link href={`edit/[id]`} as={`edit/${obj.id}`}>
+                    <Link href={`edit/${obj.id}`}>
                       <a>{ `${value}`}</a>
                     </Link>
                   ) : field

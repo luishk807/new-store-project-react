@@ -47,11 +47,6 @@ const loadMain = () => async(dispatch, getState) => {
     try{
       cookie = decodeCookie();
       if (cookie && !getState().user.id) {
-        const vendor = await getVendorByUserId(cookie.id);
-        if (vendor) {
-          console.log('vvv',vendor)
-          dispatch(setVendors(vendor))
-        }
         const users = await getItemById(ADMIN_SECTIONS.user.url, cookie.id);
         if (users) {
           localStorage.setItem('user',  JSON.stringify(users))

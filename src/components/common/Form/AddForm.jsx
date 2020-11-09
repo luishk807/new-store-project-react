@@ -142,31 +142,36 @@ const AddForm = ({
     } else {
       return;
     }
-
     try {
       const options = await loadMainOptions();
-
       Object.keys(entryForm).forEach(field => {
-        if (FORM_SCHEMA[field] == "dropdown" ) {
-          let dropValue = 0;
-          if (field == "vendor" && entryForm[field]) {
-            options[field].forEach((item, key) => {
-              if(item.id == entryForm[field]) {
-                dropValue = key;
-              }
+        if (FORM_SCHEMA[field] == "dropdown") {
+          if (hideEntry && hideEntry.indexOf(field) !== -1) {
+            setForm({
+              ...form,
+              [field]:entryForm[field]
             })
+          } else {
+            let dropValue = 0;
+            if (field == "vendor" && entryForm[field]) {
+              options[field].forEach((item, key) => {
+                if(item.id === entryForm[field]) {
+                  dropValue = key;
+                }
+              })
+            }
+            else if (field == "country") {
+              options[field].forEach((item, key) => {
+                if (item.name === entryForm[field].name) {
+                  dropValue = key;
+                }
+              });
+            }
+            setForm({
+              ...form,
+              [field]:options[field][dropValue]
+            }) 
           }
-          else if (field == "country") {
-            options[field].forEach((item, key) => {
-              if (item.name === entryForm[field].name) {
-                dropValue = key;
-              }
-            });
-          }
-          setForm({
-            ...form,
-            [field]:options[field][dropValue]
-          })
         }
       })
   
@@ -215,7 +220,7 @@ AddForm.protoTypes = {
   userSection: T.object,
   entryForm: T.object,
   customUrl: T.string,
-  ignoreFrom: T.array,
+  ignoreForm: T.array,
   children: T.node,
   hideEntry: T.object
 }

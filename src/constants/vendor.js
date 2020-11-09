@@ -7,7 +7,7 @@ export const VENDOR_SECTIONS = [
   {
     name: 'store',
     label: 'Edit',
-    url: 'edit',
+    url: 'settings',
   },
   {
     name: 'products',

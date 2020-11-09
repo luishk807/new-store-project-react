@@ -153,6 +153,7 @@ const EditForm = ({
     }
     const mainOptions = await loadMainOptions();
     if (id) {
+      console.log('id', id, 'section', sect)
       Api.get(`${sect.url}`,{
         id: id
       }).then((res) => {
@@ -225,6 +226,8 @@ EditForm.protoTypes = {
   id: T.number,
   name: T.string,
   customUrl: T.string,
+  adminSection: T.object, 
+  userSection: T.object, 
   showTitle: T.bool,
   entryForm: T.object,
   ignoreForm: T.array,

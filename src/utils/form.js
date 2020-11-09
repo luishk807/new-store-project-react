@@ -53,14 +53,12 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
   if (ignore.indexOf(name) !== -1) {
       return true
   }
-  console.log('validate', FORM_SCHEMA[name], value)
   switch(FORM_SCHEMA[name]){
     case "textfield":
     case "password":
     case "date":
     case "textarea": {
       if(value && value.length > 0){
-        console.log("it's good")
         return true
       }else{
         return false;
@@ -119,6 +117,7 @@ export const loadMainOptions = async(option = null) => {
     const gender = await Api.get(`genders`);
     const country = await Api.get(`countries`);
     const userRole = await Api.get(`userroles`);
+    const user = await Api.get(`users`);
     const icon = await CATEGORY_ICONS;
     return {
       category,
@@ -128,6 +127,7 @@ export const loadMainOptions = async(option = null) => {
       country,
       position,
       userRole,
+      user,
       icon,
       gender,
     }

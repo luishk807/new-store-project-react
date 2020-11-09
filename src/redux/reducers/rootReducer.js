@@ -20,7 +20,7 @@ const rootReducer = combineReducers({
   // categories: categories,
   // loadMain: loadMain,
   // brands: brands,
-  // vendors: vendors,
+  vendor: vendors,
   // stores: stores,
   // genders: genders,
   // statuses: statuses,

@@ -18,7 +18,7 @@ const styles = (theme) => ({
 });
 
 const Index = ({classes}) => {
-  const fields = ['img', 'first_name', 'email']
+  const fields = ['img', 'name', 'email']
   return (
     <ItemForm fields={fields} adminSection={ADMIN_SECTIONS.vendor} />
   );

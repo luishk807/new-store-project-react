@@ -94,6 +94,7 @@ const Form = ({
   onCloseSnack,
   onImageDelete,
   showTitle = true,
+  hideEntry,
   fileLimit,
 }) => {
   const [formOptions, setFormOptions] = useState({
@@ -101,7 +102,6 @@ const Form = ({
     brands: {},
     categorys: {}
   })
-  console.log(fields)
   const [useFormOption, setUseFormOptions] = useState(false)
   const [formTitle, setFormTitle] = useState('');
   // const [rate, setRate] = useState(0);
@@ -140,6 +140,10 @@ const Form = ({
   }) : [];
 
   const formFields = Object.keys(fields).map((field, index) => {
+    if (hideEntry.indexOf(field) !== -1) {
+      return;
+    }
+    
     switch(FORM_SCHEMA[field]) {
       case "textfield":
       case "email": {
@@ -385,6 +389,7 @@ Form.protoTypes = {
   onImageDelete: T.func,
   formCancel: T.func,
   children: T.node,
+  hideEntry: T.object,
   snack: T.object,
   onCloseSnack: T.func,
 }

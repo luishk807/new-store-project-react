@@ -25,6 +25,10 @@ export const getItemByFkId = (section, fk, id) => {
       data = {
         'user': id
       }
+    case 'productsvendor':
+      data = {
+        'id': id
+      }
     break;
     default:
     

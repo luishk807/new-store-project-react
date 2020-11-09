@@ -13,8 +13,17 @@ const vendors = (state = [], action) => {
     case t.SET_VENDORS:
       return {
         ...state,
-          // payload is the values
-          'data':action.payload,
+        id: action.payload.id,
+        name: action.payload.name,
+        description: action.payload.description,
+        email: action.payload.email,
+        mobile: action.payload.mobile,
+        img: action.payload.img,
+        phone: action.payload.phone,
+        status: action.payload.status,
+        position: action.payload.position,
+        userId: action.payload.userId,
+        user: action.payload.vendorUser,
       };
     default:
       // nothin happens, return same

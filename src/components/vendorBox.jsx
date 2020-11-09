@@ -41,7 +41,7 @@ const VendorBox = ({classes, id}) => {
     <div className={classes.root} id="vendorSection">
       <Grid container spacing={2}>
         <Grid item lg={12} xs={12} className={classes.nameSection}>
-          <Typography align="left" variant="body1" component="p">{`${vendor.first_name} ${vendor.last_name}`}  [<Link href="#">Ver Mas</Link>]</Typography>
+          <Typography align="left" variant="body1" component="p">{`${vendor.name}`}  [<Link href="#">Ver Mas</Link>]</Typography>
         </Grid>
         <Grid item lg={12} xs={12} className={classes.rateSection}>
           <Rate data={rates} disabled={true} />

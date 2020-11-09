@@ -24,11 +24,10 @@ const Edit = ({classes}) => {
    const id = router.query.id;
 
   const form = {
-    first_name: null,
-    last_name: null,
+    name: null,
     email: null,
     position: null,
-    password: null,
+    user: null,
     image: {
       values: [],
       open: false,

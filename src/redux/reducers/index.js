@@ -3,6 +3,8 @@ import { decodeCookie } from '../../utils/cookie';
 import { getItemById, getItems } from '../../api';
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import { CATEGORY_ICONS } from '../../../config';
+import { getVendorByUserId } from '../../api/vendor';
+
 import { 
   setUser,
   resetUser,
@@ -37,10 +39,19 @@ const loadMain = () => async(dispatch, getState) => {
   if (userLocal) {
     const userJson =  JSON.parse(userLocal);
     dispatch(setUser(userJson))
+    const vendor = await getVendorByUserId({id: userJson.id});
+    if (vendor) {
+      dispatch(setVendors(vendor))
+    }
   } else {
     try{
       cookie = decodeCookie();
       if (cookie && !getState().user.id) {
+        const vendor = await getVendorByUserId(cookie.id);
+        if (vendor) {
+          console.log('vvv',vendor)
+          dispatch(setVendors(vendor))
+        }
         const users = await getItemById(ADMIN_SECTIONS.user.url, cookie.id);
         if (users) {
           localStorage.setItem('user',  JSON.stringify(users))

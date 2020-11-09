@@ -130,7 +130,6 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children
   const loadFormOption = async() => {
     let inputs = {}
     const mainOptions = await loadMainOptions();
-    console.log('hey', id)
     if (id) {
       Api.get(`${ADMIN_SECTIONS[name].url}`,{
         id: id
@@ -140,9 +139,6 @@ const EditForm = ({classes, id, name, entryForm, ignoreForm, showTitle, children
           let value = info[field];
           if (FORM_SCHEMA[field] == "dropdown") {
             const value = mainOptions[field].filter((data) => 'id' in data ? data.id == info[field] : data.value == info[field])
-            if (field == 'country') {
-
-            }
             inputs[field] = value[0]
           } else if (FORM_SCHEMA[field] == "file") {
             const images = 'productImages' in info ? info['productImages'] : [info['img']];

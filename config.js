@@ -92,6 +92,7 @@ export const FORM_SCHEMA = {
   icon: FORM_TYPE.drop,
   password: FORM_TYPE.pass,
   email: FORM_TYPE.email,
+  user: FORM_TYPE.drop,
   first_name: FORM_TYPE.text,
   position: FORM_TYPE.drop,
   state: FORM_TYPE.text,

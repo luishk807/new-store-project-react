@@ -50,3 +50,14 @@ export const deleteProduct = async(id) => {
   }
   return Api.delete(`${section}/${id}`, {}, config);
 }
+
+export const getProductsByVendor = async(id) => {
+  if (!id) {
+    return;
+  }
+  const data = {
+    id: id
+  }
+  
+  return Api.get(`productsvendor`, data);
+}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
@@ -6,14 +6,16 @@ import {
   withStyles,
   Link,
   Grid,
+  Button
 } from '@material-ui/core';
 
 import Typography from '../../../components/common/Typography';
 import { VENDOR_SECTIONS } from '../../../constants/vendor'
 import CardIcon from '../../../components/common/CardIcon';
 import Icons from '../../../components/common/Icons';
-import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
+import VendorLayoutTemplate from '../../../components/common/Layout/VendorLayoutTemplate';
 import { logout } from '../../../api/auth';
+import { getVendorByUserId } from '../../../api/vendor';
 
 const styles = (theme) => ({
   root: {
@@ -24,18 +26,12 @@ const styles = (theme) => ({
   },
 });
 
-const Settings = ({classes, userInfo}) => {
+const Index = ({classes, userInfo}) => {
   const router = useRouter();
-  const onLogOut = () => {
-    if (logout()) {
-      router.push('/')
-    }
-  }
 
   return (
-    <UserLayoutTemplate>
+    <VendorLayoutTemplate>
       <div className={classes.root}>
-        <Typography align="left" variant="h4" component="h3">Vendor <Link onClick={onLogOut} href="#" className={classes.smallLink}>[Log out]</Link></Typography>
         <Grid container spacing={2}>
         {
           VENDOR_SECTIONS.map((button, index) => {
@@ -50,11 +46,11 @@ const Settings = ({classes, userInfo}) => {
         }
         </Grid>
       </div>
-    </UserLayoutTemplate>
+    </VendorLayoutTemplate>
   );
 }
  
-Settings.protoTypes = {
+Index.protoTypes = {
   classes: T.object,
 }
 
@@ -62,4 +58,4 @@ const mapStateToProps = state => ({
   userInfo: state.user
 }) // add reducer access to props
 
-export default connect(mapStateToProps)(withStyles(styles)(Settings));
+export default connect(mapStateToProps)(withStyles(styles)(Index));

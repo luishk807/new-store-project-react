@@ -138,15 +138,11 @@ const EditForm = ({classes, id, name, customUrl, entryForm, ignoreForm, showTitl
       Api.get(`${ADMIN_SECTIONS[name].url}`,{
         id: id
       }).then((res) => {
-        console.log("info", res)
         let info = res;
         for(var field in form){
           let value = info[field];
           if (FORM_SCHEMA[field] == "dropdown") {
             const value = mainOptions[field].filter((data) => 'id' in data ? data.id == info[field] : data.value == info[field])
-            if (field == 'country') {
-
-            }
             inputs[field] = value[0]
           } else if (FORM_SCHEMA[field] == "file") {
             const images = 'productImages' in info ? info['productImages'] : [info['img']];

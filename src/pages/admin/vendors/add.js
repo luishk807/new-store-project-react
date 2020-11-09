@@ -20,11 +20,10 @@ const styles = (theme) => ({
 
 const Add = ({classes}) => {
   const form = {
-    first_name: null,
-    last_name: null,
+    name: null,
+    user: null,
     email: null,
     position: null,
-    password: null,
     image: {
       values: [],
       open: false,

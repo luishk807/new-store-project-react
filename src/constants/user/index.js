@@ -1,13 +1,13 @@
-export const USER_URL = {
-  account: 'settings',
-  home: 'account',
-  index: '/',
-  orders: 'orders',
-  security: 'security',
-  wishlists: 'wishlists',
-  addresses: 'addresses',
-  vendor: 'vendor'
-}
+// export const USER_URL = {
+//   account: 'settings',
+//   home: 'account',
+//   index: '/',
+//   orders: 'orders',
+//   security: 'security',
+//   wishlists: 'wishlists',
+//   addresses: 'addresses',
+//   vendor: 'vendor'
+// }
 
 export const USER_ACCOUNT_SECTIONS = [
   {
@@ -28,7 +28,7 @@ export const USER_ACCOUNT_SECTIONS = [
   {
     name: 'security',
     label: 'Security and Login',
-    url: 'account',
+    url: 'settings',
   },
   {
     name: 'store',
@@ -36,3 +36,19 @@ export const USER_ACCOUNT_SECTIONS = [
     url: 'vendor',
   }
 ]
+
+export const USER_SECTIONS = {
+  'vendor': {
+    name: 'Vendor',
+    names: 'Vendors',
+    key: 'vendor',
+    url: 'vendors',
+    option: 'vendor',
+    product: {
+      name: 'Product',
+      names: 'Products',
+      key: 'productsvendor',
+      url: 'productsvendor',
+    }
+  },
+}

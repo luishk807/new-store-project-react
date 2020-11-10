@@ -232,7 +232,6 @@ const Form = ({
         break
       }
       case "dropdown": {
-        console.log("heee",formOptions)
         return (
           <Grid item key={index} lg={12} xs={12} className={classes.formItem}>
             <FormControl fullWidth className={classes.margin} variant="outlined">

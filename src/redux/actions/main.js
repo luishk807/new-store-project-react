@@ -21,11 +21,6 @@ export const setVendors = (data) => ({
   payload: data
 })
 
-export const setStores = (data) => ({
-  type: t.SET_STORES,
-  payload: data
-})
-
 export const setProducts = (data) => ({
   type: t.SET_PRODUCTS,
   payload: data
@@ -49,12 +44,6 @@ export const setUser = (data) => ({
 
 export const setCountries = (data) => ({
   type: t.SET_COUNTRIES,
-  payload: data
-})
-
-
-export const setStatuses = (data) => ({
-  type: t.SET_STATUSES,
   payload: data
 })
 

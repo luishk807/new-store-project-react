@@ -8,10 +8,8 @@ import { getVendorByUserId } from '../../api/vendor';
 import { 
   setUser,
   resetUser,
-  setStatuses,
   setCategories, 
   setBrands, 
-  setStores,
   setIcons,
   setGenders,
   setVendors,

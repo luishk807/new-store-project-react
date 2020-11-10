@@ -28,6 +28,13 @@ const Edit = ({classes}) => {
     email: null,
     position: null,
     user: null,
+    address: null,
+    email: null,
+    mobile: null,
+    phone: null,
+    province: null,
+    township: null,
+    country: null,
     image: {
       values: [],
       open: false,

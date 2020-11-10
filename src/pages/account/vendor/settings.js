@@ -29,6 +29,13 @@ const Settings = ({classes, vendorInfo}) => {
     position: null,
     description: null,
     status: null,
+    address: null,
+    email: null,
+    mobile: null,
+    phone: null,
+    province: null,
+    township: null,
+    country: null,
     image: {
       values: [],
       open: false,

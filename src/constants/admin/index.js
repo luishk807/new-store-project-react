@@ -34,13 +34,6 @@ export const ADMIN_SECTIONS = {
     url: 'statuses',
     option: 'status',
   },
-  'store': {
-    name: 'Store',
-    names: 'Stores',
-    key: 'store',
-    url: 'stores',
-    option: 'store',
-  },
   'workRole': {
     name: 'Work Position',
     names: 'Work Positions',

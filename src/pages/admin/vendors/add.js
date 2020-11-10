@@ -24,6 +24,13 @@ const Add = ({classes}) => {
     user: null,
     email: null,
     position: null,
+    address: null,
+    email: null,
+    mobile: null,
+    phone: null,
+    province: null,
+    township: null,
+    country: null,
     image: {
       values: [],
       open: false,

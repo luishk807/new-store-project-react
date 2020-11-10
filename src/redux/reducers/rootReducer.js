@@ -3,12 +3,10 @@ import user from './user';
 import categories from './categories';
 import brands from './brands';
 import vendors from './vendors';
-import stores from './stores';
 import genders from './genders';
 import workRoles from './workRoles';
 import countries from './countries';
 import icons from './icons';
-import statuses from './statuses';
 import loadMain  from './';
 import cart  from './cart';
 
@@ -21,9 +19,7 @@ const rootReducer = combineReducers({
   // loadMain: loadMain,
   // brands: brands,
   vendor: vendors,
-  // stores: stores,
   // genders: genders,
-  // statuses: statuses,
   // workRoles: workRoles, 
   // countries: countries, 
   // icons: icons,

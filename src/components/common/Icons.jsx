@@ -44,7 +44,7 @@ import Health from '../../../public/images/svg/categories/health.svg';
 import Broken from '../../../public/images/svg/categories/broken.svg';
 import Jewerly from '../../../public/images/svg/categories/jewerly.svg';
 import LogoIcon from '../../../public/images/logoIcon.svg';
-import Products from '../../../public/images/svg/Products.svg';
+// import Products from '../../../public/images/svg/Products.svg';
 import Category from '../../../public/images/svg/Category.svg';
 import Vendor from '../../../public/images/svg/Vendor.svg';
 import Brand from '../../../public/images/svg/Brand.svg';
@@ -71,7 +71,7 @@ const Icons = ({classes, name}) => {
   const getIcon = () => {
     switch(name) {
       case 'products':
-        return <Products className={classes.icon}/>
+        return <Order className={classes.icon}/>
       break;
       case 'logo':
         return <LogoIcon className={classes.icon}/>

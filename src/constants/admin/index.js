@@ -9,7 +9,7 @@ export const ADMIN_SECTIONS = {
   'product': {
     name: 'Product',
     names: 'Products',
-    key: 'product',
+    key: 'products',
     url: 'products',
     option: 'product'
   },

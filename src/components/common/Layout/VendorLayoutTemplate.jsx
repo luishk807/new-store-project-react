@@ -13,6 +13,7 @@ import Typography from '../../../components/common/Typography';
 import UserLayoutTemplate from './UserLayoutTemplate';
 import { USER_SECTIONS } from '../../../constants/user';
 import AddForm from '../../../components/common/Form/AddForm';
+import { defaultCountry } from '../../../../config';
 
 const styles = (theme) => ({
   root: {},
@@ -34,7 +35,7 @@ const VendorLayoutTemplate = ({classes, userInfo, children, vendorInfo}) => {
     phone: null,
     province: null,
     township: null,
-    country: null,
+    country: defaultCountry,
     image: {
       values: [],
       open: false,

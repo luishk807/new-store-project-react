@@ -6,7 +6,8 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-import EditForm from '../../../components/common/Form/Admin/EditForm';
+// import EditForm from '../../../components/common/Form/Admin/EditForm';
+import EditForm from '../../../components/common/Form/EditForm';
 
 const styles = (theme) => ({
   root: {
@@ -29,7 +30,6 @@ const Edit = ({classes}) => {
     position: null,
     user: null,
     address: null,
-    email: null,
     mobile: null,
     phone: null,
     province: null,
@@ -40,9 +40,15 @@ const Edit = ({classes}) => {
       open: false,
     }
   }
-  
+  const ignoreEntry=['image', 'email', 'mobile', 'phone', 'address', 'province', 'township', 'country']
   return (
-    <EditForm name={ADMIN_SECTIONS.vendor.key} id={id} entryForm={form} />
+    <EditForm 
+      ignoreForm={ignoreEntry} 
+      adminSection={ADMIN_SECTIONS.vendor} 
+      id={id} 
+      entryForm={form} 
+      customUrl={`/admin/vendors`}
+    />
   );
 }
 

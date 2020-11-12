@@ -162,7 +162,7 @@ const AddForm = ({
             }
             else if (field == "country") {
               options[field].forEach((item, key) => {
-                if (item.name === entryForm[field].name) {
+                if (entryForm[field] && item.name === entryForm[field].name) {
                   dropValue = key;
                 }
               });
@@ -174,7 +174,6 @@ const AddForm = ({
           }
         }
       })
-  
       setShowForm(true);
     } catch(err) {}
   }

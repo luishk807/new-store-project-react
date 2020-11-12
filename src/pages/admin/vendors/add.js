@@ -5,7 +5,9 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-import AddForm from '../../../components/common/Form/Admin/AddForm';
+// import AddForm from '../../../components/common/Form/Admin/AddForm';
+import AddForm from '../../../components/common/Form/AddForm';
+import { defaultCountry } from '../../../../config';
 
 const styles = (theme) => ({
   root: {
@@ -30,7 +32,7 @@ const Add = ({classes}) => {
     phone: null,
     province: null,
     township: null,
-    country: null,
+    country: defaultCountry,
     image: {
       values: [],
       open: false,
@@ -38,7 +40,11 @@ const Add = ({classes}) => {
   }
 
   return (
-    <AddForm name={ADMIN_SECTIONS.vendor.key} entryForm={form} />
+    <AddForm 
+      adminSection={ADMIN_SECTIONS.vendor} 
+      entryForm={form} 
+      customUrl={`/admin/vendors`}
+    />
   );
 }
 

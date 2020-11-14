@@ -10,7 +10,7 @@ import {
 import { ADMIN_SECTIONS } from '../../../../constants/admin';
 import AddForm from '../../../../components/common/Form/Admin/AddForm';
 import { defaultCountry } from '../../../../../config';
-
+import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
 const styles = (theme) => ({
   root: {
     display: 'flex',
@@ -38,11 +38,13 @@ const Add = ({classes}) => {
   }
 
   return (
-    <Grid container>
-      <Grid item lg={12}>
-        <AddForm customUrl={`/admin/useraddresses/${id}`} name={ADMIN_SECTIONS.address.key} id={id} entryForm={form} />
+    <AdminLayoutTemplate>
+      <Grid container>
+        <Grid item lg={12}>
+          <AddForm customUrl={`/admin/useraddresses/${id}`} name={ADMIN_SECTIONS.address.key} id={id} entryForm={form} />
+        </Grid>
       </Grid>
-    </Grid>
+    </AdminLayoutTemplate>
   );
 }
 

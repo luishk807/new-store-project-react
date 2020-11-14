@@ -7,7 +7,8 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../constants/admin';
-import EditForm from '../../components/common/Form/Admin/EditForm';
+import EditForm from '../../components/common/Form/EditForm';
+import AdminLayoutTemplate from '../../components/common/Layout/AdminLayoutTemplate';
 import { decodeCookie } from '../../utils/cookie';
 
 const styles = (theme) => ({
@@ -52,7 +53,9 @@ const Settings = ({classes, userInfo}) => {
     }
   }, [])
   return (
-    <EditForm showTitle={false} ignoreForm={ignoreEntry} name={ADMIN_SECTIONS.user.key} id={user} entryForm={form} />
+    <AdminLayoutTemplate>
+      <EditForm showTitle={false} adminSection={ADMIN_SECTIONS.user} ignoreForm={ignoreEntry} id={user} entryForm={form} />
+    </AdminLayoutTemplate>
   );
 }
 

@@ -8,8 +8,9 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../../constants/admin';
-import EditForm from '../../../../components/common/Form/Admin/EditForm';
+import EditForm from '../../../../components/common/Form/EditForm';
 import { defaultCountry } from '../../../../../config';
+import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {
@@ -38,11 +39,13 @@ const Edit = ({classes}) => {
   }
 
   return (
-    <Grid container>
-      <Grid item lg={12}>
-        <EditForm customUrl={`/admin/useraddresses/${id}`} name={ADMIN_SECTIONS.address.key} id={id} entryForm={form} />
+    <AdminLayoutTemplate>
+      <Grid container>
+        <Grid item lg={12}>
+          <EditForm customUrl={`/admin/useraddresses/${id}`} adminSection={ADMIN_SECTIONS.address} id={id} entryForm={form} />
+        </Grid>
       </Grid>
-    </Grid>
+    </AdminLayoutTemplate>
   );
 }
 

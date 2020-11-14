@@ -8,7 +8,8 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-import EditForm from '../../../components/common/Form/Admin/EditForm';
+import EditForm from '../../../components/common/Form/EditForm';
+import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {
@@ -45,14 +46,22 @@ const Edit = ({classes}) => {
   const ignoreEntry=['image', 'mobile', 'password']
 
   return (
-    <Grid container>
-      <Grid item lg={12}>
-      <EditForm ignoreForm={ignoreEntry} name={ADMIN_SECTIONS.user.key} id={id} entryForm={form} />
+    <AdminLayoutTemplate>
+      <Grid container>
+        <Grid item lg={12}>
+          <EditForm  
+            customUrl={`/admin/${ADMIN_SECTIONS.user.url}`} 
+            ignoreForm={ignoreEntry} 
+            adminSection={ADMIN_SECTIONS.user} 
+            id={id} 
+            entryForm={form} 
+          />
+        </Grid>
+        <Grid item lg={12}>
+          <Button className={`mainButton`} onClick={()=>router.push(`/admin/useraddresses/${id}`)}>Address</Button>
+        </Grid>
       </Grid>
-      <Grid item lg={12}>
-        <Button className={`mainButton`} onClick={()=>router.push(`/admin/useraddresses/${id}`)}>Address</Button>
-      </Grid>
-    </Grid>
+    </AdminLayoutTemplate>
   );
 }
 

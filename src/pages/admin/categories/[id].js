@@ -6,7 +6,8 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-import EditForm from '../../../components/common/Form/Admin/EditForm';
+import EditForm from '../../../components/common/Form/EditForm';
+import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {
@@ -29,7 +30,13 @@ const Edit = ({classes}) => {
   }
   
   return (
-    <EditForm name={ADMIN_SECTIONS.category.key} id={id} entryForm={form} />
+    <AdminLayoutTemplate>
+      <EditForm 
+        customUrl={`/admin/categories`} 
+        adminSection={ADMIN_SECTIONS.category} 
+        id={id} entryForm={form} 
+      />
+    </AdminLayoutTemplate>
   );
 }
 

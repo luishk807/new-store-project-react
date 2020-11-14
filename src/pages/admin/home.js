@@ -10,7 +10,6 @@ import AdminLayoutTemplate from '../../components/common/Layout/AdminLayoutTempl
 import CardIcon from '../../components/common/CardIcon';
 import Icons from '../../components/common/Icons';
 import { ADMIN_SECTIONS } from '../../constants/admin';
-import PrivatePage from '../../components/common/Form/Admin/PrivatePage';
 
 const styles = (theme) => ({});
 
@@ -35,20 +34,18 @@ const Home = ({classes}) => {
   }, [])
 
   return (
-    <PrivatePage>
-      <AdminLayoutTemplate>
-        <Grid container>
-          <Grid item lg={1} xs={12}>
-          <h1>Home</h1>
-          </Grid>
+    <AdminLayoutTemplate>
+      <Grid container>
+        <Grid item lg={1} xs={12}>
+        <h1>Home</h1>
         </Grid>
-        <Grid container>
-          {
-            cards && cards
-          }
-        </Grid>
-      </AdminLayoutTemplate>
-    </PrivatePage>
+      </Grid>
+      <Grid container>
+        {
+          cards && cards
+        }
+      </Grid>
+    </AdminLayoutTemplate>
   )
 }
 

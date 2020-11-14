@@ -5,7 +5,8 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-import AddForm from '../../../components/common/Form/Admin/AddForm';
+import AddForm from '../../../components/common/Form/AddForm';
+import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {
@@ -28,7 +29,13 @@ const Add = ({classes}) => {
   }
 
   return (
-    <AddForm name={ADMIN_SECTIONS.brand.key} entryForm={form} />
+    <AdminLayoutTemplate>
+      <AddForm 
+        adminSection={ADMIN_SECTIONS.brand} 
+        entryForm={form}
+        customUrl={`/admin/${ADMIN_SECTIONS.brand.url}`}  
+      />
+    </AdminLayoutTemplate>
   );
 }
 

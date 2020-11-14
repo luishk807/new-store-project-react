@@ -11,6 +11,7 @@ import Header from '../Header/AdminHeader';
 import Footer from '../Footer/AdminFooter';
 
 import Typography from '../Typography';
+import PrivatePage from '../Form/Admin/PrivatePage';
 
 const styles = (theme) => ({
   root: {
@@ -19,19 +20,21 @@ const styles = (theme) => ({
   },
 })
 const AdminLayoutTemplate = ({classes, children}) => (
-  <section>
-    <Head>
-      <title>AvenidaZ.com</title>
-      <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/>
-    </Head>
-    <Header />
-    <Grid container className={classes.root}>
-      <Grid item xs={12} lg={12}>
-        {children}
+  <PrivatePage>
+    <section>
+      <Head>
+        <title>AvenidaZ.com</title>
+        <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/>
+      </Head>
+      <Header />
+      <Grid container className={classes.root}>
+        <Grid item xs={12} lg={12}>
+          {children}
+        </Grid>
       </Grid>
-    </Grid>
-    <Footer />
-  </section>
+      <Footer />
+    </section>
+  </PrivatePage>
 );
 
 AdminLayoutTemplate.protoTypes = {

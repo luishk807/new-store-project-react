@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-// import AddForm from '../../../components/common/Form/Admin/AddForm';
+import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import AddForm from '../../../components/common/Form/AddForm';
 import { defaultCountry } from '../../../../config';
 
@@ -40,11 +40,13 @@ const Add = ({classes}) => {
   }
 
   return (
-    <AddForm 
-      adminSection={ADMIN_SECTIONS.vendor} 
-      entryForm={form} 
-      customUrl={`/admin/vendors`}
-    />
+    <AdminLayoutTemplate>
+      <AddForm 
+        adminSection={ADMIN_SECTIONS.vendor} 
+        entryForm={form} 
+        customUrl={`/admin/${ADMIN_SECTIONS.vendor.url}`} 
+      />
+    </AdminLayoutTemplate>
   );
 }
 

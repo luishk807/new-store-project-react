@@ -4,9 +4,8 @@ import { useRouter } from 'next/router';
 import { withStyles } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-
 import ItemForm from '../../../components/common/Form/Admin/ItemForm';
-
+import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {
@@ -25,7 +24,9 @@ const Index = ({classes}) => {
   const uid = router.query.uid;
   const fields = ['address', 'township', 'country']
   return (
-    <ItemForm fields={fields} id={uid} adminSection={ADMIN_SECTIONS.address} />
+    <AdminLayoutTemplate>
+      <ItemForm fields={fields} id={uid} adminSection={ADMIN_SECTIONS.address} />
+    </AdminLayoutTemplate>
   );
 }
 

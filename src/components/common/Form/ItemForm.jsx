@@ -110,8 +110,8 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
           })
         } else {
           setItemLink({
-            url: `${sect.url}/`,
-            as: `${sect.url}/`,
+            url: `${sect.url}`,
+            as: `${sect.url}`,
           })
         }
         return (

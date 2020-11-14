@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import ItemForm from '../../../components/common/Form/Admin/ItemForm';
+import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {
@@ -20,7 +21,9 @@ const styles = (theme) => ({
 const Index = ({classes}) => {
   const fields = ['productImages', 'name', 'amount','status']
   return (
-    <ItemForm fields={fields} adminSection={ADMIN_SECTIONS.product} />
+    <AdminLayoutTemplate>
+      <ItemForm fields={fields} adminSection={ADMIN_SECTIONS.product} />
+    </AdminLayoutTemplate>
   );
 }
 

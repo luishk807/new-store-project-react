@@ -6,6 +6,7 @@ import {
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import AddForm from '../../../components/common/Form/Admin/AddForm';
+import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {
@@ -38,7 +39,14 @@ const Add = ({classes}) => {
   const ignoreEntry=['image', 'mobile']
 
   return (
-    <AddForm name={ADMIN_SECTIONS.user.key} ignoreForm={ignoreEntry} entryForm={form} />
+    <AdminLayoutTemplate>
+      <AddForm 
+        name={ADMIN_SECTIONS.user.key} 
+        ignoreForm={ignoreEntry} 
+        entryForm={form} 
+        customUrl={`/admin/${ADMIN_SECTIONS.user.url}`} 
+      />
+    </AdminLayoutTemplate>
   );
 }
 

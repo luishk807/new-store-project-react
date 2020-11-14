@@ -6,8 +6,8 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-// import EditForm from '../../../components/common/Form/Admin/EditForm';
 import EditForm from '../../../components/common/Form/EditForm';
+import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {
@@ -42,13 +42,15 @@ const Edit = ({classes}) => {
   }
   const ignoreEntry=['image', 'email', 'mobile', 'phone', 'address', 'province', 'township', 'country']
   return (
-    <EditForm 
-      ignoreForm={ignoreEntry} 
-      adminSection={ADMIN_SECTIONS.vendor} 
-      id={id} 
-      entryForm={form} 
-      customUrl={`/admin/vendors`}
-    />
+    <AdminLayoutTemplate>
+      <EditForm 
+        ignoreForm={ignoreEntry} 
+        adminSection={ADMIN_SECTIONS.vendor} 
+        id={id} 
+        entryForm={form} 
+        customUrl={`/admin/${ADMIN_SECTIONS.vendor.url}`} 
+      />
+    </AdminLayoutTemplate>
   );
 }
 

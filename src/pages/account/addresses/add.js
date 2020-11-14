@@ -7,11 +7,8 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import Typography from '../../../components/common/Typography';
-import CardIcon from '../../../components/common/CardIcon';
-import Icons from '../../../components/common/Icons';
-import AddForm from '../../../components/common/Form/Users/AddForm';
-import { getAddresses } from '../../../api/addresses';
+import AddForm from '../../../components/common/Form/AddForm';
+import { USER_SECTIONS } from '../../../constants/user';
 import { defaultCountry } from '../../../../config';
 import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
 
@@ -38,7 +35,7 @@ const Add = ({classes}) => {
 
   return (
     <UserLayoutTemplate classes={{root: classes.templateRoot}}>
-      <AddForm name="address" customUrl={`/account/addresses`} entryForm={form} />
+      <AddForm userSection={USER_SECTIONS.userAddress} customUrl={`/account/addresses`} entryForm={form} />
     </UserLayoutTemplate>
   );
 }

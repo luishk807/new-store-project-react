@@ -7,11 +7,8 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import Typography from '../../../components/common/Typography';
-import CardIcon from '../../../components/common/CardIcon';
-import Icons from '../../../components/common/Icons';
-import EditForm from '../../../components/common/Form/Users/EditForm';
-import { getAddresses } from '../../../api/addresses';
+import EditForm from '../../../components/common/Form/EditForm';
+import { USER_SECTIONS } from '../../../constants/user';
 import { defaultCountry } from '../../../../config';
 import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
 
@@ -40,7 +37,7 @@ const Edit = ({classes}) => {
 
   return (
     <UserLayoutTemplate>
-      <EditForm name="address" id={id} customUrl={`/account/addresses`} entryForm={form} />
+      <EditForm userSection={USER_SECTIONS.userAddress} id={id} customUrl={`/account/addresses`} entryForm={form} />
     </UserLayoutTemplate>
   );
 }

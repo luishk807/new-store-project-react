@@ -7,7 +7,7 @@ import {
 import { useRouter } from 'next/router';
 
 import { addItem } from '../../../api';
-import { validateForm, loadMainOptions } from '../../../utils/form';
+import { validateForm, loadMainOptions, handleFormResponse } from '../../../utils/form';
 import Form from './Form';
 import { FORM_SCHEMA } from '../../../../config';
 
@@ -81,30 +81,36 @@ const AddForm = ({
         text: `Unable to Add ${section.name}, ${i} is required`
       })
     } else {
-      addItem(section.url, form).then((resp) => {
-        let saveResult = null;
-        const res = resp.data;
-        if (res.data) {
-          setSnack({
-            severity: 'success',
-            open: true,
-            text: `${section.name} Added`,
-          })
-          handleCancel();
-        } else {
-          setSnack({
-            severity: 'error',
-            open: true,
-            text: `${section.name} error! ${res.message}`,
-          })
-        }
-      }).catch((err) => {
-        setSnack({
-          severity: 'error',
-          open: true,
-          text: `${section.name} error! ${err.response.data.message}`,
-        })
-      })
+      const confirm = await addItem(section.url, form);
+      const resp = handleFormResponse(confirm);
+      setSnack(resp);
+      setTimeout(() => {
+        handleCancel() 
+      }, 1000)
+      // addItem(section.url, form).then((resp) => {
+      //   let saveResult = null;
+      //   const res = resp.data;
+      //   if (res.data) {
+      //     setSnack({
+      //       severity: 'success',
+      //       open: true,
+      //       text: `${section.name} Added`,
+      //     })
+      //     handleCancel();
+      //   } else {
+      //     setSnack({
+      //       severity: 'error',
+      //       open: true,
+      //       text: `${section.name} error! ${res.message}`,
+      //     })
+      //   }
+      // }).catch((err) => {
+      //   setSnack({
+      //     severity: 'error',
+      //     open: true,
+      //     text: `${section.name} error! ${err.response.data.message}`,
+      //   })
+      // })
     }
   }
   const saveErrors = async (key, err = false, str = '') => {

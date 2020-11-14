@@ -8,7 +8,7 @@ import {
 
 import { saveItem } from '../../../api';
 import Api from '../../../services/api';
-import { validateForm, loadMainOptions } from '../../../utils/form';
+import { validateForm, loadMainOptions, handleFormResponse } from '../../../utils/form';
 import Form from './Form';
 import { FORM_SCHEMA } from '../../../../config';
 
@@ -88,21 +88,12 @@ const EditForm = ({
         formSubmit['saved'] = imageDelete;
         delete formSubmit.image.saved
       }
-      try{
-        const confirm = await saveItem(section.url, id, formSubmit)
-        setSnack({
-          severity: confirm.data.data ? 'success' : 'error',
-          open: true,
-          text: confirm.data.message,
-        })
+      const confirm = await saveItem(section.url, id, formSubmit)
+      const resp = handleFormResponse(confirm);
+      setSnack(resp);
+      setTimeout(() => {
         handleCancel() 
-      } catch(err) {
-        setSnack({
-          severity: 'error',
-          open: true,
-          text: err.response.data.message,
-        })
-      }
+      }, 1000);
     }
   }
   const saveErrors = async (key, err = false, str = '') => {

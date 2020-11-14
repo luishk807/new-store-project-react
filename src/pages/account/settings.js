@@ -6,8 +6,8 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-import { ADMIN_SECTIONS } from '../../constants/admin';
-import EditForm from '../../components/common/Form/Users/EditForm';
+import { USER_SECTIONS } from '../../constants/user';
+import EditForm from '../../components/common/Form/EditForm';
 import { decodeCookie } from '../../utils/cookie';
 import UserLayoutTemplate from '../../components/common/Layout/UserLayoutTemplate';
 
@@ -54,7 +54,7 @@ const Settings = ({classes, userInfo}) => {
   }, [])
   return (
     <UserLayoutTemplate>
-        <EditForm showTitle={false} ignoreForm={ignoreEntry} name={ADMIN_SECTIONS.user.key} id={user} entryForm={form} />
+        <EditForm showTitle={false} userSection={USER_SECTIONS.user} ignoreForm={ignoreEntry} id={user} entryForm={form} />
     </UserLayoutTemplate>
   );
 }

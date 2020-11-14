@@ -123,3 +123,63 @@ export const MAIN_CONFIG = {
     },
   }
 }
+
+
+export const MAIN_SECTIONS = {
+  'vendor': {
+    name: 'Vendor',
+    names: 'Vendors',
+    key: 'vendor',
+    url: 'vendors',
+    option: 'vendor'
+  },
+  'product': {
+    name: 'Product',
+    names: 'Products',
+    key: 'products',
+    url: 'products',
+    option: 'product'
+  },
+  'brand': {
+    name: 'Brand',
+    names: 'Brands',
+    key: 'brand',
+    url: 'brands',
+    option: 'brand',
+  },
+  'category': {
+    name: 'Category',
+    names: 'Categories',
+    key: 'category',
+    url: 'categories',
+    option: 'category',
+  },
+  'status': {
+    name: 'Status',
+    names: 'Statuses',
+    key: 'status',
+    url: 'statuses',
+    option: 'status',
+  },
+  'country': {
+    name: 'Country',
+    names: 'Countries',
+    key: 'country',
+    url: 'countries',
+    option: 'country'
+  },
+  'gender': {
+    name: 'Gender',
+    names: 'Genders',
+    key: 'gender',
+    url: 'genders',
+    option: 'gender'
+  },
+  'rate': {
+    name: 'Rate',
+    names: 'rates',
+    key: 'rate',
+    url: 'productrates',
+    option: 'rate'
+  },
+}

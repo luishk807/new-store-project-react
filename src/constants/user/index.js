@@ -51,4 +51,18 @@ export const USER_SECTIONS = {
       url: 'products',
     }
   },
+  'user': {
+    name: 'User',
+    names: 'Users',
+    key: 'user',
+    url: 'users',
+    option: 'user',
+  },
+  'userAddress': {
+    name: 'User Address',
+    names: 'User Addresses',
+    key: 'userAddress',
+    url: 'useraddresses',
+    option: 'useraddress'
+  },
 }

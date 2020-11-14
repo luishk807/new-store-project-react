@@ -7,11 +7,9 @@ import {
 } from '@material-ui/core';
 
 import { getImageUrlByType } from '../../../../utils/form';
-import { ADMIN_SECTIONS } from '../../../../constants/admin'
-import AddForm from '../../../../components/common/Form/Users/AddForm';
+import AddForm from '../../../../components/common/Form/AddForm';
+import { MAIN_SECTIONS } from '../../../../constants';
 import { getItemById } from '../../../../api';
-import Rate from '../../../../components/common/Rate/Rate';
-import PrivatePage from '../../../../components/common/Form/Users/PrivatePage';
 
 const styles = (theme) => ({
   root: {
@@ -45,7 +43,7 @@ const Index = ({classes, data}) => {
   }
 
   const loadProductInfo = async() => {
-    const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
+    const getProductInfo = await getItemById(MAIN_SECTIONS.product.url, id)
     loadImages(getProductInfo)
     setProductInfo(getProductInfo);
     setShowData(true);
@@ -58,7 +56,7 @@ const Index = ({classes, data}) => {
   const ignoreEntry=['product'];
 
   return showData && (
-      <AddForm customUrl={`/product/${id}`} ignoreForm={ignoreEntry}  name={ADMIN_SECTIONS.rate.key} entryForm={form} >
+      <AddForm userSection={MAIN_SECTIONS.rate} customUrl={`/product/${id}`} ignoreForm={ignoreEntry} entryForm={form} >
         <Grid container>
           <Grid item lg={3} xs={12} align="center">
             <img src={`${images[0].original}`}  className={`img-fluid`} />

@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-import AddForm from '../../../components/common/Form/Admin/AddForm';
+import AddForm from '../../../components/common/Form/AddForm';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({

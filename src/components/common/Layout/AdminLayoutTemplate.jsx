@@ -11,7 +11,7 @@ import Header from '../Header/AdminHeader';
 import Footer from '../Footer/AdminFooter';
 
 import Typography from '../Typography';
-import PrivatePage from '../Form/Admin/PrivatePage';
+import PrivatePage from '../AdminPrivatePage';
 
 const styles = (theme) => ({
   root: {

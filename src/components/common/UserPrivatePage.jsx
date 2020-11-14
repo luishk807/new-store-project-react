@@ -8,9 +8,8 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 
-import { verifyUser } from '../../../../api/auth'
-import LayoutTemplate from '../../Layout/LayoutTemplate';
-import Login from './Login';
+import { verifyUser } from '../../api/auth';
+import Login from './Form/Users/Login';
 
 const styles = (theme) => ({
   root: {
@@ -33,7 +32,7 @@ const styles = (theme) => ({
   },
 });
 
-const PrivatePage = ({classes, children, userInfo}) => {
+const UserPrivatePage = ({classes, children, userInfo}) => {
   const [hasAccess, setHasAccess] = useState(true);
   const [status, setStatus] = useState({
     severity: '',
@@ -48,7 +47,7 @@ const PrivatePage = ({classes, children, userInfo}) => {
   return !hasAccess ? (<Login showRegister={true} inStatus={hasAccess}/>) : children
 }
 
-PrivatePage.protoTypes = {
+UserPrivatePage.protoTypes = {
   classes: T.object,
   children: T.node,
 }
@@ -57,4 +56,4 @@ const mapStateToProps = state => ({
   userInfo: state.user
 }) // add reducer access to props
 
-export default connect(mapStateToProps)(withStyles(styles)(PrivatePage));
+export default connect(mapStateToProps)(withStyles(styles)(UserPrivatePage));

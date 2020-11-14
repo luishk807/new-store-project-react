@@ -5,7 +5,7 @@ import {
   withStyles
 } from '@material-ui/core';
 
-import PrivatePage from '../Form/Users/PrivatePage';
+import PrivatePage from '../UserPrivatePage';
 import LayoutTemplate from './LayoutTemplate';
 
 const styles = (theme) => ({

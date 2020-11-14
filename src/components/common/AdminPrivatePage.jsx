@@ -8,8 +8,8 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 
-import { verifyAuth } from '../../../../api/auth'
-import Login from './Login';
+import { verifyAuth } from '../../api/auth'
+import Login from './Form/Admin/Login';
 
 const styles = (theme) => ({
   root: {

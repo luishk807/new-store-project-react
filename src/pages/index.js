@@ -27,12 +27,12 @@ export default class extends Component {
         <Grid container className="main-section">
           <Grid item>
             <BigCarrousel image={'main-banner.jpg'} />
-            <ProductCategoryIcons />
+            {/* <ProductCategoryIcons />
             <NewArrival title="Nuevas Llegadas" />
             <ProductGallery galleryType='store-list' title="Tiendas" />
             <ProductGallery galleryType='mini-banner'/>
             <ProductGallery galleryType='store-feature' title="Nuevas Llegadas" />
-            <ProductGallery galleryType='brand-list' title="Top Brands" />
+            <ProductGallery galleryType='brand-list' title="Top Brands" /> */}
           </Grid>
         </Grid>
       </LayoutTemplate>

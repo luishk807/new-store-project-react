@@ -21,16 +21,6 @@ const styles = (theme) => ({
 });
 
 class ClassComponent extends Component {
-  // static async getInitialProps() {
-  //   const res = await fetch("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY")
-  //   const data = await res.json()
-
-  //   return {
-  //     title: data.title,
-  //     imageUrl: data.url
-  //   }
-  // }
-
   render () {
     const { classes } = this.props;
     
@@ -39,9 +29,9 @@ class ClassComponent extends Component {
         <Grid container className="main-section">
           <Grid item>
             <BigCarrousel image={'main-banner.jpg'} />
-            {/* <ProductCategoryIcons />
+            <ProductCategoryIcons />
             <NewArrival title="Nuevas Llegadas" />
-            <ProductGallery galleryType='store-list' title="Tiendas" />
+            {/* <ProductGallery galleryType='store-list' title="Tiendas" />
             <ProductGallery galleryType='mini-banner'/>
             <ProductGallery galleryType='store-feature' title="Nuevas Llegadas" />
             <ProductGallery galleryType='brand-list' title="Top Brands" /> */}

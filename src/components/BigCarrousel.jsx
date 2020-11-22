@@ -28,20 +28,24 @@ const BigCarrousel = ({classes, image}) => {
     const data = await getMainSliders({
       type: 1
     });
+    if (data) {
+      const dataImage = data.productImages.map((dat, index) => {
+        return  {
+          url: `${imageUrl}/${dat.img_url}`,
+          description: `slideshow ${index}`
+        }
+      })
+      console.log("image", dataImage)
+      setImages(dataImage)
+      setShowData(true);
+    }
   }
 
   useEffect(() => {
     loadMainSlider();
-    const imgs = [
-      {
-        url: `${imageUrl}/banner1.jpg`,
-        description: "Probably the most random thing you have ever seen!"
-      },
-    ]
-    setImages(imgs)
-  }, []);
+  }, [showData]);
 
-  return (
+  return showData && (
     <div className={classes.root}>
       <Grid container>
         <Grid item lg={12}>

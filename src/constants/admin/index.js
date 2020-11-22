@@ -85,10 +85,17 @@ export const ADMIN_SECTIONS = {
   },
   'banner': {
     name: 'Banner',
-    names: 'banners',
+    names: 'Banners',
     key: 'banner',
-    url: 'imageboxes',
-    option: 'imageboxes'
+    url: 'banners',
+    option: 'banner'
+  },
+  'bannerType': {
+    name: 'Banner Type',
+    names: 'Banner Types',
+    key: 'bannertype',
+    url: 'bannertypes',
+    option: 'bannertype'
   },
 }
 

@@ -1,9 +1,5 @@
 import Api from '../services/api';
 
-export const getMainSliders = async(data) => {
-  return Api.get(`banners`, data);
-}
-
 export const getSections = async (section) => {
   const response = await Api.get(section);
   return response;

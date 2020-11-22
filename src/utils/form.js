@@ -20,6 +20,9 @@ export const getImageUrlByType = (type) => {
     case 'user':
       return `${process.env.IMAGE_URL}/users`;
       break;
+    case 'banner':
+        return `${process.env.IMAGE_URL}/slideImages`;
+        break;
     default:
       return process.env.IMAGE_URL;
       break;
@@ -120,6 +123,7 @@ export const loadMainOptions = async(option = null) => {
       status,
       gender,
       country,
+      bannerType,
       userRole,
       user
     ] = await Promise.all([
@@ -130,6 +134,7 @@ export const loadMainOptions = async(option = null) => {
       getSections(ADMIN_SECTIONS.status.url),
       getSections(ADMIN_SECTIONS.gender.url),
       getSections(ADMIN_SECTIONS.country.url),
+      getSections(ADMIN_SECTIONS.bannerType.url),
       getSections('userroles'),
       getSections('users'),
     ])
@@ -143,6 +148,7 @@ export const loadMainOptions = async(option = null) => {
       position,
       userRole,
       user,
+      bannerType,
       icon,
       gender,
     }

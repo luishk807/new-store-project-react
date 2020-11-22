@@ -144,7 +144,6 @@ const EditForm = ({
     }
     const mainOptions = await loadMainOptions();
     if (id) {
-      console.log('id', id, 'section', sect)
       Api.get(`${sect.url}`,{
         id: id
       }).then((res) => {

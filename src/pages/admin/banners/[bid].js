@@ -40,8 +40,8 @@ const Edit = ({classes}) => {
     <AdminLayoutTemplate>
       <EditForm 
         ignoreForm={ignoreEntry} 
-        adminSection={ADMIN_SECTIONS.brand} 
-        customUrl={`/admin/${ADMIN_SECTIONS.brand.url}`} 
+        adminSection={ADMIN_SECTIONS.banner} 
+        customUrl={`/admin/${ADMIN_SECTIONS.banner.url}`} 
         id={id} 
         entryForm={form} 
       />

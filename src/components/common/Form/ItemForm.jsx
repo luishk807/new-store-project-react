@@ -149,7 +149,7 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
            return;
         }
         
-        const imageFields = ["img","productImages"];
+        const imageFields = ['img', 'productImages'];
 
         const value = obj ? obj[field] : null;
         let main_image = field;
@@ -213,6 +213,14 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
                       <a>{ `${value}`}</a>
                     </Link>
                   ) : field
+                }
+              </Grid>
+            )
+          case 'status':
+            return (
+              <Grid key={index} item lg={2} sm={12}>
+                { 
+                  value ? value: field
                 }
               </Grid>
             )

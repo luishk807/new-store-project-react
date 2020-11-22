@@ -8,6 +8,8 @@ import {
   Button,
 } from '@material-ui/core';
 
+import { getMainSliders } from '../api/banners';
+
 const styles = (theme) => ({
   root: {
 
@@ -22,7 +24,14 @@ const BigCarrousel = ({classes, image}) => {
   const [images, setImages] = useState([]);
   const [showData, setShowData] = useState(false);
 
+  const loadMainSlider = async() => {
+    const data = await getMainSliders({
+      type: 1
+    });
+  }
+
   useEffect(() => {
+    loadMainSlider();
     const imgs = [
       {
         url: `${imageUrl}/banner1.jpg`,

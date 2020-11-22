@@ -22,7 +22,7 @@ const Index = ({classes}) => {
   const fields = ['bannerType', 'name', 'status']
   return (
     <AdminLayoutTemplate>
-      <ItemForm fields={fields} adminSection={ADMIN_SECTIONS.brand} />
+      <ItemForm fields={fields} adminSection={ADMIN_SECTIONS.banner} />
     </AdminLayoutTemplate>
   );
 }

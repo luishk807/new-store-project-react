@@ -232,6 +232,7 @@ const Form = ({
         break
       }
       case "dropdown": {
+        console.log("filed", field, 'options', formOptions)
         return (
           <Grid item key={index} lg={12} xs={12} className={classes.formItem}>
             <FormControl fullWidth className={classes.margin} variant="outlined">
@@ -295,18 +296,7 @@ const Form = ({
       const section = ADMIN_SECTIONS
       const options = await loadMainOptions();
       
-      setFormOptions({
-        [section.category.option]: options.category,
-        [section.vendor.option]: options.vendor,
-        [section.brand.option]: options.brand,
-        [section.status.option]: options.status,
-        [section.workRole.option]: options.position,
-        'country': options.country,
-        'icon': options.icon,
-        'gender': options.gender,
-        'user': options.user,
-        'userRole': options.userRole,
-      })
+      setFormOptions(options)
       setUseFormOptions(true)
     }
     

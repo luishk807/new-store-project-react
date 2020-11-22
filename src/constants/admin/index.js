@@ -83,6 +83,13 @@ export const ADMIN_SECTIONS = {
     url: 'useraddresses',
     option: 'address'
   },
+  'banner': {
+    name: 'Banner',
+    names: 'banners',
+    key: 'banner',
+    url: 'imageboxes',
+    option: 'imageboxes'
+  },
 }
 
 export const ADMIN_URL = {

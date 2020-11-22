@@ -13,7 +13,7 @@ const styles = (theme) => ({
 
   },
   carrouselContainer: {
-    width: '80%'
+    width: '100%'
   }
 });
 
@@ -25,13 +25,9 @@ const BigCarrousel = ({classes, image}) => {
   useEffect(() => {
     const imgs = [
       {
-        url: `${imageUrl}/sample.jpg`,
+        url: `${imageUrl}/banner1.jpg`,
         description: "Probably the most random thing you have ever seen!"
       },
-      // {
-      //   url: `${imageUrl}/sample.jpg`,
-      //   description: "Probably the most random thing you have ever seen!"
-      // }
     ]
     setImages(imgs)
   }, []);
@@ -42,12 +38,9 @@ const BigCarrousel = ({classes, image}) => {
         <Grid item lg={12}>
             <Carousel
               className={classes.carrouselContainer}
-              indicators={true}
+              indicators={false}
               animation="slide"
               autoPlay={true}
-              navButtonsAlwaysVisible={true}
-              next={ (next, active) => console.log(`we left ${active}, and are now at ${next}`) }
-              prev={ (prev, active) => console.log(`we left ${active}, and are now at ${prev}`) }
             >
               {
                 images.map( (item, i) => <img key={i} className='img-fluid' src={item.url} alt=""/> )

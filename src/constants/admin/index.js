@@ -97,6 +97,13 @@ export const ADMIN_SECTIONS = {
     url: 'bannertypes',
     option: 'bannertype'
   },
+  'sweetbox': {
+    name: 'Sweetbox',
+    names: 'Sweetboxes',
+    key: 'sweetbox',
+    url: 'sweetboxes',
+    option: 'sweetbox'
+  },
 }
 
 export const ADMIN_URL = {

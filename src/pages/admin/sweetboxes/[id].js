@@ -26,29 +26,17 @@ const Edit = ({classes}) => {
 
   const form = {
     name: null,
-    email: null,
-    position: null,
-    user: null,
-    address: null,
-    mobile: null,
-    phone: null,
-    province: null,
-    township: null,
-    country: null,
-    image: {
-      values: [],
-      open: false,
-    }
+    status: null,
   }
-  const ignoreEntry=['image', 'email', 'mobile', 'phone', 'address', 'province', 'township', 'country']
+  const ignoreEntry=[]
   return (
     <AdminLayoutTemplate>
       <EditForm 
         ignoreForm={ignoreEntry} 
-        adminSection={ADMIN_SECTIONS.vendor} 
+        adminSection={ADMIN_SECTIONS.sweetbox} 
         id={id} 
         entryForm={form} 
-        customUrl={`/admin/${ADMIN_SECTIONS.vendor.url}`} 
+        customUrl={`/admin/${ADMIN_SECTIONS.sweetbox.url}`} 
       />
     </AdminLayoutTemplate>
   );

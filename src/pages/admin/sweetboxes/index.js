@@ -19,10 +19,10 @@ const styles = (theme) => ({
 });
 
 const Index = ({classes}) => {
-  const fields = ['img', 'name', 'email']
+  const fields = ['name', 'status']
   return (
     <AdminLayoutTemplate>
-      <ItemForm fields={fields} adminSection={ADMIN_SECTIONS.vendor} />
+      <ItemForm fields={fields} adminSection={ADMIN_SECTIONS.sweetbox} />
     </AdminLayoutTemplate>
   );
 }

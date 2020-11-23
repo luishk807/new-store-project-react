@@ -23,28 +23,14 @@ const styles = (theme) => ({
 const Add = ({classes}) => {
   const form = {
     name: null,
-    user: null,
-    email: null,
-    position: null,
-    address: null,
-    email: null,
-    mobile: null,
-    phone: null,
-    province: null,
-    township: null,
-    country: defaultCountry,
-    image: {
-      values: [],
-      open: false,
-    }
   }
 
   return (
     <AdminLayoutTemplate>
       <AddForm 
-        adminSection={ADMIN_SECTIONS.vendor} 
+        adminSection={ADMIN_SECTIONS.sweetbox} 
         entryForm={form} 
-        customUrl={`/admin/${ADMIN_SECTIONS.vendor.url}`} 
+        customUrl={`/admin/${ADMIN_SECTIONS.sweetbox.url}`} 
       />
     </AdminLayoutTemplate>
   );

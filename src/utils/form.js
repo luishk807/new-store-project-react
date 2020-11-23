@@ -1,6 +1,7 @@
 import { FORM_SCHEMA, CATEGORY_ICONS } from '../../config';
 import { ADMIN_SECTIONS } from '../constants/admin';
 import Api from '../services/api';
+import { getSections } from '../api';
 
 export const getImageUrlByType = (type) => {
   if (!type) {
@@ -19,6 +20,9 @@ export const getImageUrlByType = (type) => {
     case 'user':
       return `${process.env.IMAGE_URL}/users`;
       break;
+    case 'banner':
+        return `${process.env.IMAGE_URL}/slideImages`;
+        break;
     default:
       return process.env.IMAGE_URL;
       break;
@@ -110,17 +114,31 @@ export const loadMainOptions = async(option = null) => {
   if (option) {
       return await Api.get(option.option);
   } else {
-    const category = await Api.get(`${ADMIN_SECTIONS.category.url}`);
-    const position = await Api.get(`${ADMIN_SECTIONS.workRole.url}`);
-    const vendor = await Api.get(`${ADMIN_SECTIONS.vendor.url}`);
-    const brand = await Api.get(`${ADMIN_SECTIONS.brand.url}`);
-    const status = await Api.get(`${ADMIN_SECTIONS.status.url}`);
-    
-    const gender = await Api.get(`genders`);
-    const country = await Api.get(`countries`);
-    const userRole = await Api.get(`userroles`);
-    const user = await Api.get(`users`);
     const icon = await CATEGORY_ICONS;
+    const [
+      category, 
+      position, 
+      vendor, 
+      brand, 
+      status,
+      gender,
+      country,
+      bannerType,
+      userRole,
+      user
+    ] = await Promise.all([
+      getSections(ADMIN_SECTIONS.category.url),
+      getSections(ADMIN_SECTIONS.workRole.url),
+      getSections(ADMIN_SECTIONS.vendor.url),
+      getSections(ADMIN_SECTIONS.brand.url),
+      getSections(ADMIN_SECTIONS.status.url),
+      getSections(ADMIN_SECTIONS.gender.url),
+      getSections(ADMIN_SECTIONS.country.url),
+      getSections(ADMIN_SECTIONS.bannerType.url),
+      getSections('userroles'),
+      getSections('users'),
+    ])
+
     return {
       category,
       brand,
@@ -130,6 +148,7 @@ export const loadMainOptions = async(option = null) => {
       position,
       userRole,
       user,
+      bannerType,
       icon,
       gender,
     }

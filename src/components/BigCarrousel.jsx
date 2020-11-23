@@ -1,19 +1,67 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import Carousel from 'react-material-ui-carousel'
 import * as T from 'prop-types';
 import { 
   withStyles, 
   Grid,
+  Paper,
+  Button,
 } from '@material-ui/core';
 
-const styles = (theme) => ({});
+import { getMainSliders } from '../api/banners';
+
+const styles = (theme) => ({
+  root: {
+
+  },
+  carrouselContainer: {
+    width: '100%'
+  }
+});
 
 const BigCarrousel = ({classes, image}) => {
-  return (
-    <Grid container>
-      <Grid item lg={12}>
-          <img className='img-fluid' src={`/images/banners/main/${image}`} alt=""/>
+  const imageUrl = `${process.env.IMAGE_URL}/slideImages`;
+  const [images, setImages] = useState([]);
+  const [showData, setShowData] = useState(false);
+
+  const loadMainSlider = async() => {
+    const data = await getMainSliders({
+      type: 1
+    });
+    if (data) {
+      const dataImage = data.productImages.map((dat, index) => {
+        return  {
+          url: `${imageUrl}/${dat.img_url}`,
+          description: `slideshow ${index}`
+        }
+      })
+      console.log("image", dataImage)
+      setImages(dataImage)
+      setShowData(true);
+    }
+  }
+
+  useEffect(() => {
+    loadMainSlider();
+  }, [showData]);
+
+  return showData && (
+    <div className={classes.root}>
+      <Grid container>
+        <Grid item lg={12}>
+            <Carousel
+              className={classes.carrouselContainer}
+              indicators={false}
+              animation="slide"
+              autoPlay={true}
+            >
+              {
+                images.map( (item, i) => <img key={i} className='img-fluid' src={item.url} alt=""/> )
+              }
+            </Carousel>
+        </Grid>
       </Grid>
-    </Grid>
+    </div>
   );
 }
 

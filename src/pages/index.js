@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import fetch from 'isomorphic-unfetch';
 import { 
   Grid,
+  withStyles,
 } from '@material-ui/core';
 
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
@@ -10,32 +11,35 @@ import ProductGallery from '../components/ProductGallery';
 import ProductCategoryIcons from '../components/ProductCategoryIcons'
 import NewArrival from '../components/NewArrival';
 
-export default class extends Component {
-  // static async getInitialProps() {
-  //   const res = await fetch("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY")
-  //   const data = await res.json()
+const styles = (theme) => ({
+  root: {
+    padding: 10,
+  },
+  layoutClass: {
+    marginTop: 80
+  }
+});
 
-  //   return {
-  //     title: data.title,
-  //     imageUrl: data.url
-  //   }
-  // }
-
+class ClassComponent extends Component {
   render () {
+    const { classes } = this.props;
+    
     return (
-      <LayoutTemplate>
+      <LayoutTemplate classes={{root: classes.layoutClass}}>
         <Grid container className="main-section">
           <Grid item>
             <BigCarrousel image={'main-banner.jpg'} />
             <ProductCategoryIcons />
             <NewArrival title="Nuevas Llegadas" />
-            <ProductGallery galleryType='store-list' title="Tiendas" />
+            {/* <ProductGallery galleryType='store-list' title="Tiendas" />
             <ProductGallery galleryType='mini-banner'/>
             <ProductGallery galleryType='store-feature' title="Nuevas Llegadas" />
-            <ProductGallery galleryType='brand-list' title="Top Brands" />
+            <ProductGallery galleryType='brand-list' title="Top Brands" /> */}
           </Grid>
         </Grid>
       </LayoutTemplate>
     )
   }
 }
+
+export default withStyles(styles, {withTheme: true})(ClassComponent);

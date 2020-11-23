@@ -117,4 +117,5 @@ export const FORM_SCHEMA = {
   country: FORM_TYPE.drop,
   township: FORM_TYPE.text,
   userRole: FORM_TYPE.drop,
+  bannerType: FORM_TYPE.drop,
 }

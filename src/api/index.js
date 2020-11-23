@@ -1,5 +1,10 @@
 import Api from '../services/api';
 
+export const getSections = async (section) => {
+  const response = await Api.get(section);
+  return response;
+};
+
 export const getItems = (section) => {
   return Api.get(`${section}`);
 }

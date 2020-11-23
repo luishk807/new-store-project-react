@@ -53,6 +53,7 @@ import LogoIconWhite from '../../../public/images/logoIconWhite.svg';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import StoreMallDirectoryOutlinedIcon from '@material-ui/icons/StoreMallDirectoryOutlined';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import ImageSearchIcon from '@material-ui/icons/ImageSearch';
 import CloseIcon from '@material-ui/icons/Close';
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
@@ -72,6 +73,9 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'products':
         return <Products className={classes.icon}/>
+      break;
+      case 'banner':
+        return <ImageSearchIcon className={classes.icon}/>
       break;
       case 'logo':
         return <LogoIcon className={classes.icon}/>

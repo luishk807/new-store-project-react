@@ -48,6 +48,7 @@ import Products from '../../../public/images/svg/products.svg';
 import Category from '../../../public/images/svg/category.svg';
 import Vendor from '../../../public/images/svg/vendor.svg';
 import Brand from '../../../public/images/svg/brand.svg';
+import Supplies from '../../../public/images/svg/supplies.svg';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import LogoIconWhite from '../../../public/images/logoIconWhite.svg';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
@@ -73,6 +74,9 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'products':
         return <Products className={classes.icon}/>
+      break;
+      case 'sweetbox':
+        return <Supplies className={classes.icon}/>
       break;
       case 'banner':
         return <ImageSearchIcon className={classes.icon}/>

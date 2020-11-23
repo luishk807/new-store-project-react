@@ -10,6 +10,7 @@ import BigCarrousel from '../components/BigCarrousel';
 import ProductGallery from '../components/ProductGallery';
 import ProductCategoryIcons from '../components/ProductCategoryIcons'
 import NewArrival from '../components/NewArrival';
+import SweetBox from '../components/SweetBox';
 
 const styles = (theme) => ({
   root: {
@@ -30,7 +31,8 @@ class ClassComponent extends Component {
           <Grid item>
             <BigCarrousel image={'main-banner.jpg'} />
             <ProductCategoryIcons />
-            <NewArrival title="Nuevas Llegadas" />
+            <SweetBox type={1} />
+            <SweetBox type={2} />
             {/* <ProductGallery galleryType='store-list' title="Tiendas" />
             <ProductGallery galleryType='mini-banner'/>
             <ProductGallery galleryType='store-feature' title="Nuevas Llegadas" />

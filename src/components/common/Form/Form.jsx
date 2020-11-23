@@ -87,6 +87,7 @@ const Form = ({
   onChange: formOnChange, 
   fields,
   snack,
+  id,
   children,
   fileOnSave,
   fileAcceptedMimeTypes=['image/jpeg', 'image/png'],
@@ -104,6 +105,7 @@ const Form = ({
     brands: {},
     categorys: {}
   })
+  console.log("form", fields)
   const [useFormOption, setUseFormOptions] = useState(false)
   const [formTitle, setFormTitle] = useState('');
   const [formBtnTitle, setFormBtnTitle] = useState('');
@@ -254,6 +256,16 @@ const Form = ({
         )
         break;
       }
+      case "linkitem": {
+        return (
+          <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <Button href={`${field}/${id}`} className={`mainButton`}>Edit {field}</Button>
+            </FormControl>
+          </Grid>
+        )
+        break;
+      }
       case "file": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
@@ -269,7 +281,7 @@ const Form = ({
               )
             }
 
-            <FileUploader fileLimit={fileLimit} onSave={fileOnSave} fileBtnText={fileBtnText} fileAcceptedMimeTypes={fileAcceptedMimeTypes}/>
+            <FileUploader fileLimit={fileLimit} onSave={fileOnSave}/>
           </Grid>
         )
         break;
@@ -383,6 +395,7 @@ Form.protoTypes = {
   showTitle: T.bool,
   fields: T.object,
   onChange: T.func,
+  id: T.number,
   fileOnSave: T.func,
   fileLimit: T.bool,
   formSubmit: T.func,

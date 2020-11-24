@@ -104,6 +104,13 @@ export const ADMIN_SECTIONS = {
     url: 'sweetboxes',
     option: 'sweetbox'
   },
+  'sweetboxProducts': {
+    name: 'Sweetbox',
+    names: 'Sweetboxes',
+    key: 'sweetboxproduct',
+    url: 'sweet-box-products',
+    option: 'sweetboxproduct'
+  },
 }
 
 export const ADMIN_URL = {

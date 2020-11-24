@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
 import { ADMIN_SECTIONS } from '../../../../constants/admin';
-import ItemForm from '../../../../components/common/Form/ItemForm';
+import ItemFormAdd from '../../../../components/common/Form/ItemFormAdd';
 import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
@@ -22,17 +22,16 @@ const styles = (theme) => ({
 const Index = ({classes}) => {
   const router = useRouter();
   const id = router.query.id;
-
   const fields = ['productImages', 'name', 'amount','status']
   return (
     <AdminLayoutTemplate>
-      <ItemForm fields={fields} id={id} adminSection={ADMIN_SECTIONS.product} />
+      <ItemFormAdd fields={fields} id={id} source={ADMIN_SECTIONS.product} adminSection={ADMIN_SECTIONS.sweetboxProducts} />
     </AdminLayoutTemplate>
   );
 }
 
 Index.protoTypes = {
-  classes: T.object
+  classes: T.object,
 }
 
 export default withStyles(styles)(Index);

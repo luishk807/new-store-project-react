@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core';
 import { 
   Grid,
   Button,
+  Checkbox,
 } from '@material-ui/core';
 
 import { deleteItem, getItems, getItemByFkId } from '../../../api';
@@ -25,11 +26,17 @@ const styles = (theme) => ({
   },
   mainImage: {
     width: 150,
+  },
+  mainBtnCont: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginBottom: 10,
   }
 });
 
-const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = true}) => {
+const ItemFormAdd = ({classes, adminSection, userSection, source, fields, id, showTitle = true}) => {
   const [items, setItems] = useState(null);
+  const [formItems, setFormItems] = useState([]);
   const [section, setSection] = useState({});
   const [itemLink, setItemLink] = useState({})
   const [showData, setShowData] = useState(false);
@@ -39,42 +46,35 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
     text: '',
   });
 
-  const delItem = async(id) => {
-    deleteItem(section.url, id).then((data) => {
-      setSnack({
-        severity: 'success',
-        open: true,
-        text: `${section.name} Deleted`,
-      })
-      loadItems()
-    }).catch((err) => {
+  const handleCheckbox = (evt) => {
+    const prodId = event.target.value;
+    let arry = formItems;
+    const find = arry.indexOf(prodId);
+    if (find === -1) {
+      arry.push(prodId);
+    } else {
+      arry.splice(find, 1);
+
+    }
+    setFormItems(arry);
+  }
+  const handleSubmit = async (e) => {
+    let errorFound = false;
+    
+    if (!formItems.length) {
       setSnack({
         severity: 'error',
         open: true,
-        text: `ERROR: ${section.name} cannot be delete`,
+        text: `no items`
       })
-    })
-  }
-
-  const loadAddBtn = () => {
-    switch(section.key) {
-      case "productsvendor":
-        return (
-          <Link href={`add`}>
-            <a>Add {section.names}</a>
-          </Link>
-        )
-      break;
-      default: 
-        return id ? (
-          <Link href={`add/${id}`}>
-            <a>Add {section.names}</a>
-          </Link>
-          ) : (
-            <Link href={`${section.url}/add`}>
-              <a>Add {section.names}</a>
-            </Link>
-          )
+    } else {
+      // const confirm = await addItem(section.url, form);
+      // const resp = handleFormResponse(confirm);
+      // setSnack(resp);
+      // setTimeout(() => {
+      //   handleCancel() 
+      // }, 1000)
+      console.log('goooooood')
     }
   }
 
@@ -82,12 +82,19 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
     let sect = null;
     let getItemResult = null;
   
-    if (userSection) {
-      sect = userSection;
-      setSection(userSection);
-    } else if (adminSection) {
-      sect = adminSection;
-      setSection(adminSection);
+    // if (userSection) {
+    //   sect = userSection;
+    //   setSection(userSection);
+    // } else if (adminSection) {
+    //   sect = adminSection;
+    //   setSection(adminSection);
+    // } else {
+    //   return;
+    // }
+
+    if (source) {
+      sect = source;
+      setSection(source);
     } else {
       return;
     }
@@ -101,41 +108,36 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
         default:
           getItemResult = await getItems(sect.url);
       }
-
-      const itemHtml = getItemResult.map((item, index) => {
-        if (sect.key === "productsvendor") {
-          setItemLink({
-            url: "/account/vendor",
-            as: "/account/vendor",
-          })
-        } else {
-          setItemLink({
-            url: `${sect.url}`,
-            as: `${sect.url}`,
-          })
-        }
-        return (
-          <Grid item key={index} lg={12} sm={12} className={classes.item}>
-            <Grid container>
-              <Grid item lg={1} sm={12}>
-               {index + 1}
-              </Grid>
-              {
-                setChildTitle(item)
-              }
-              <Grid item lg={3} sm={12}>
-                [
-                  <Button onClick={()=> { delItem(item.id) }}>
-                    delete
-                  </Button>
-                ]
-              </Grid>
-            </Grid>
-          </Grid>
-        )
-      })
+      if (sect.key === "productsvendor") {
+        setItemLink({
+          url: "/account/vendor",
+          as: "/account/vendor",
+        })
+      } else {
+        setItemLink({
+          url: `${sect.url}`,
+          as: `${sect.url}`,
+        })
+      }
+      // const itemHtml = getItemResult.map((item, index) => {
+      //   return (
+      //     <Grid item key={index} lg={12} sm={12} className={classes.item}>
+      //       <Grid container>
+      //         <Grid item lg={1} sm={12}>
+      //          {index + 1}
+      //         </Grid>
+      //         {
+      //           setChildTitle(item)
+      //         }
+      //         <Grid item lg={3} sm={12}>
+      //           <Checkbox onChange={handleCheckbox} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+      //         </Grid>
+      //       </Grid>
+      //     </Grid>
+      //   )
+      // })
       setShowData(true);
-      setItems(itemHtml);
+      setItems(getItemResult);
     } catch(err) {}
   }
   
@@ -191,48 +193,15 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
               </Grid>
             )
           case 'first_name':
-            return (
-              <Grid key={index} item lg={2} sm={12}>
-                { 
-                  value ?
-                  (
-                    <Link href={`${itemLink.url}/${obj.id}`}>
-                      <a>{ `${value} ${obj.last_name}`}</a>
-                    </Link>
-                  ) : field
-                }
-              </Grid>
-            )
           case 'name':
-            return (
-              <Grid key={index} item lg={2} sm={12}>
-                { 
-                  value ?
-                  (
-                    <Link href={`${itemLink.url}/${obj.id}`}>
-                      <a>{ `${value}`}</a>
-                    </Link>
-                  ) : field
-                }
-              </Grid>
-            )
           case 'status':
-            return (
-              <Grid key={index} item lg={2} sm={12}>
-                { 
-                  value ? value: field
-                }
-              </Grid>
-            )
           case 'address':
             return (
               <Grid key={index} item lg={2} sm={12}>
                 { 
                   value ?
                   (
-                    <Link href={`edit/${obj.id}`}>
-                      <a>{ `${value}`}</a>
-                    </Link>
+                    <a>{ `${value}`}</a>
                   ) : field
                 }
               </Grid>
@@ -259,13 +228,9 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
           )
         }
         <Grid item lg={12}>
-          <Grid container>
-              <Grid item lg={12} xs={12}>
-                  [
-                    {
-                      loadAddBtn()
-                    }
-                  ]
+          <Grid container className={classes.mainBtnCont}>
+              <Grid item lg={3} xs={12}>
+                  <Button onClick={handleSubmit} className={`mainButton`}>Add</Button>
               </Grid>
           </Grid>
         </Grid>
@@ -276,12 +241,28 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
               setChildTitle()
             }
             <Grid item lg={3} xs={12}>
-              action
+              select
             </Grid>
           </Grid>
           <Grid container>
             {
-              items && items
+              items && items.map((item, index) => {
+                return (
+                  <Grid item key={index} lg={12} sm={12} className={classes.item}>
+                    <Grid container>
+                      <Grid item lg={1} sm={12}>
+                       {index + 1}
+                      </Grid>
+                      {
+                        setChildTitle(item)
+                      }
+                      <Grid item lg={3} sm={12}>
+                        <Checkbox value={item.id} onChange={handleCheckbox} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                )
+              })
             }
           </Grid>
         </Grid>
@@ -290,13 +271,14 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
   );
 }
 
-ItemForm.protoTypes = {
+ItemFormAdd.protoTypes = {
   classes: T.object,
   adminSection: T.object,
   userSection: T.object,
+  source: T.object,
   fields: T.array,
   showTitle: T.bool,
   id: T.number
 }
 
-export default withStyles(styles)(ItemForm);
+export default withStyles(styles)(ItemFormAdd);

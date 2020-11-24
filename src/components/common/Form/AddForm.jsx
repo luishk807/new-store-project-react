@@ -87,31 +87,6 @@ const AddForm = ({
       setTimeout(() => {
         handleCancel() 
       }, 1000)
-      // addItem(section.url, form).then((resp) => {
-      //   let saveResult = null;
-      //   const res = resp.data;
-      //   if (res.data) {
-      //     setSnack({
-      //       severity: 'success',
-      //       open: true,
-      //       text: `${section.name} Added`,
-      //     })
-      //     handleCancel();
-      //   } else {
-      //     setSnack({
-      //       severity: 'error',
-      //       open: true,
-      //       text: `${section.name} error! ${res.message}`,
-      //     })
-      //   }
-      // }).catch((err) => {
-      //   setSnack({
-      //     severity: 'error',
-      //     open: true,
-      //     text: `${section.name} error! ${err.response.data.message}`,
-      //   })
-      // })
-    }
   }
   const saveErrors = async (key, err = false, str = '') => {
     await setErrors({

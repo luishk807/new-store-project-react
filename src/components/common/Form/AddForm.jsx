@@ -87,6 +87,7 @@ const AddForm = ({
       setTimeout(() => {
         handleCancel() 
       }, 1000)
+    }
   }
   const saveErrors = async (key, err = false, str = '') => {
     await setErrors({

@@ -7,10 +7,12 @@ import {
   Button,
   Checkbox,
 } from '@material-ui/core';
+import SearchBarSuggest from '../SearchBarSuggest';
 
-import { deleteItem, getItems, getItemByFkId } from '../../../api';
+import { addItem, getItems, getItemByFkId } from '../../../api';
 import Icons from '../../../components/common/Icons';
 import Snackbar from '../../../components/common/Snackbar';
+import { handleFormResponse } from '../../../utils/form';
 
 const styles = (theme) => ({
   root: {
@@ -34,11 +36,19 @@ const styles = (theme) => ({
   }
 });
 
-const ItemFormAdd = ({classes, adminSection, userSection, source, fields, id, showTitle = true}) => {
+const ItemFormAdd = ({
+  classes, 
+  customUrl, 
+  adminSection, 
+  userSection, 
+  source, 
+  fields, 
+  id, 
+  showTitle = true
+}) => {
   const [items, setItems] = useState(null);
   const [formItems, setFormItems] = useState([]);
   const [section, setSection] = useState({});
-  const [itemLink, setItemLink] = useState({})
   const [showData, setShowData] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -46,21 +56,41 @@ const ItemFormAdd = ({classes, adminSection, userSection, source, fields, id, sh
     text: '',
   });
 
-  const handleCheckbox = (evt) => {
-    const prodId = event.target.value;
-    let arry = formItems;
-    const find = arry.indexOf(prodId);
-    if (find === -1) {
-      arry.push(prodId);
-    } else {
-      arry.splice(find, 1);
+  // const handleCheckbox = (evt) => {
+  //   const prodId = event.target.value;
+  //   let arry = formItems;
+  //   const find = arry.indexOf(prodId);
+  //   if (find === -1) {
+  //     arry.push(prodId);
+  //   } else {
+  //     arry.splice(find, 1);
 
-    }
-    setFormItems(arry);
+  //   }
+  //   setFormItems(arry);
+  // }
+
+  const handleCheckbox = (evt) => {
+    // const prodId = event.target.value;
+    // let arry = formItems;
+    // const find = arry.indexOf(prodId);
+    // if (find === -1) {
+    //   arry.push(prodId);
+    // } else {
+    //   arry.splice(find, 1);
+
+    // }
+    // setFormItems(arry);
+    console.log('got here',evt)
   }
-  const handleSubmit = async (e) => {
-    let errorFound = false;
-    
+
+  const handleCancel = () => {
+    // const url =customUrl ? customUrl : `/${section.url}`
+    // setTimeout(()=>{
+    //   router.push(url);
+    // }, 1000)
+  }
+
+  const handleSubmit = async (e) => {    
     if (!formItems.length) {
       setSnack({
         severity: 'error',
@@ -68,33 +98,22 @@ const ItemFormAdd = ({classes, adminSection, userSection, source, fields, id, sh
         text: `no items`
       })
     } else {
-      // const confirm = await addItem(section.url, form);
-      // const resp = handleFormResponse(confirm);
-      // setSnack(resp);
-      // setTimeout(() => {
-      //   handleCancel() 
-      // }, 1000)
-      console.log('goooooood')
+      const confirm = await addItem(section.url, { id: id, items: formItems});
+      const resp = handleFormResponse(confirm);
+      setSnack(resp);
+      setTimeout(() => {
+        handleCancel() 
+      }, 1000)
     }
   }
 
   const loadItems = async() => {
     let sect = null;
     let getItemResult = null;
-  
-    // if (userSection) {
-    //   sect = userSection;
-    //   setSection(userSection);
-    // } else if (adminSection) {
-    //   sect = adminSection;
-    //   setSection(adminSection);
-    // } else {
-    //   return;
-    // }
 
     if (source) {
       sect = source;
-      setSection(source);
+      setSection(adminSection);
     } else {
       return;
     }
@@ -108,36 +127,9 @@ const ItemFormAdd = ({classes, adminSection, userSection, source, fields, id, sh
         default:
           getItemResult = await getItems(sect.url);
       }
-      if (sect.key === "productsvendor") {
-        setItemLink({
-          url: "/account/vendor",
-          as: "/account/vendor",
-        })
-      } else {
-        setItemLink({
-          url: `${sect.url}`,
-          as: `${sect.url}`,
-        })
-      }
-      // const itemHtml = getItemResult.map((item, index) => {
-      //   return (
-      //     <Grid item key={index} lg={12} sm={12} className={classes.item}>
-      //       <Grid container>
-      //         <Grid item lg={1} sm={12}>
-      //          {index + 1}
-      //         </Grid>
-      //         {
-      //           setChildTitle(item)
-      //         }
-      //         <Grid item lg={3} sm={12}>
-      //           <Checkbox onChange={handleCheckbox} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
-      //         </Grid>
-      //       </Grid>
-      //     </Grid>
-      //   )
-      // })
       setShowData(true);
-      setItems(getItemResult);
+      // setItems(getItemResult);
+      setItems([1,2,3,4]);
     } catch(err) {}
   }
   
@@ -170,7 +162,7 @@ const ItemFormAdd = ({classes, adminSection, userSection, source, fields, id, sh
             )
           case 'img':
             if (imageFields.indexOf(field) !== -1 && obj) {
-              let src = value ? `${process.env.IMAGE_URL}/${section.url}/${value}` : `/images/no-image.jpg`;
+              let src = value ? `${process.env.IMAGE_URL}/${source.url}/${value}` : `/images/no-image.jpg`;
               main_image = <img className={classes.mainImage} src={src} />
             }
             return (
@@ -230,11 +222,11 @@ const ItemFormAdd = ({classes, adminSection, userSection, source, fields, id, sh
         <Grid item lg={12}>
           <Grid container className={classes.mainBtnCont}>
               <Grid item lg={3} xs={12}>
-                  <Button onClick={handleSubmit} className={`mainButton`}>Add</Button>
+                  <Button onClick={handleSubmit} className={`mainButton`}>{`Add to ${section.name}`}</Button>
               </Grid>
           </Grid>
         </Grid>
-        <Grid item lg={12} sm={12}>
+        {/* <Grid item lg={12} sm={12}>
           <Grid container>
             <Grid item lg={1} xs={12}>&nbsp;</Grid>
             {
@@ -265,6 +257,9 @@ const ItemFormAdd = ({classes, adminSection, userSection, source, fields, id, sh
               })
             }
           </Grid>
+        </Grid> */}
+        <Grid item>
+          {/* <SearchBarSuggest /> */}
         </Grid>
       </Grid>
     </>
@@ -276,6 +271,7 @@ ItemFormAdd.protoTypes = {
   adminSection: T.object,
   userSection: T.object,
   source: T.object,
+  customUrl: T.string,
   fields: T.array,
   showTitle: T.bool,
   id: T.number

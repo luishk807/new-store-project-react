@@ -6,13 +6,23 @@ import {
   Grid,
   Button,
   Checkbox,
+  TextField,
+  GridList,
+  GridListTile,
+  GridListTileBar,
+  FormControl,
+  FormHelperText,
 } from '@material-ui/core';
+import { 
+  Autocomplete,
+} from '@material-ui/lab';
+
 import SearchBarSuggest from '../SearchBarSuggest';
 
 import { addItem, getItems, getItemByFkId } from '../../../api';
 import Icons from '../../../components/common/Icons';
 import Snackbar from '../../../components/common/Snackbar';
-import { handleFormResponse } from '../../../utils/form';
+import { handleFormResponse, getImageUrlByType } from '../../../utils/form';
 
 const styles = (theme) => ({
   root: {
@@ -42,7 +52,7 @@ const ItemFormAdd = ({
   adminSection, 
   userSection, 
   source, 
-  fields, 
+  title, 
   id, 
   showTitle = true
 }) => {
@@ -56,57 +66,67 @@ const ItemFormAdd = ({
     text: '',
   });
 
-  // const handleCheckbox = (evt) => {
-  //   const prodId = event.target.value;
-  //   let arry = formItems;
-  //   const find = arry.indexOf(prodId);
-  //   if (find === -1) {
-  //     arry.push(prodId);
-  //   } else {
-  //     arry.splice(find, 1);
-
-  //   }
-  //   setFormItems(arry);
-  // }
-
-  const handleCheckbox = (evt) => {
-    // const prodId = event.target.value;
-    // let arry = formItems;
-    // const find = arry.indexOf(prodId);
-    // if (find === -1) {
-    //   arry.push(prodId);
-    // } else {
-    //   arry.splice(find, 1);
-
-    // }
-    // setFormItems(arry);
-    console.log('got here',evt)
-  }
-
-  const handleCancel = () => {
-    // const url =customUrl ? customUrl : `/${section.url}`
-    // setTimeout(()=>{
-    //   router.push(url);
-    // }, 1000)
-  }
-
-  const handleSubmit = async (e) => {    
-    if (!formItems.length) {
-      setSnack({
-        severity: 'error',
-        open: true,
-        text: `no items`
-      })
-    } else {
-      const confirm = await addItem(section.url, { id: id, items: formItems});
-      const resp = handleFormResponse(confirm);
-      setSnack(resp);
-      setTimeout(() => {
-        handleCancel() 
-      }, 1000)
+  const formOnChange = ({value}) => {
+    let arry = formItems;
+    const find = arry.indexOf(value.id);
+    if (find === -1) {
+      arry.push(value);
+      setFormItems(arry);
+      console.log('got here',value)
     }
   }
 
+  const handleCancel = () => {
+    const url =customUrl ? customUrl : `/${section.url}`
+    setTimeout(()=>{
+      router.push(url);
+    }, 1000)
+  }
+
+  const handleSubmit = async (e) => {
+    console.log("sending",formItems)
+    // if (!formItems.length) {
+    //   setSnack({
+    //     severity: 'error',
+    //     open: true,
+    //     text: `no items`
+    //   })
+    // } else {
+    //   const confirm = await addItem(section.url, { id: id, items: formItems});
+    //   const resp = handleFormResponse(confirm);
+    //   setSnack(resp);
+    //   setTimeout(() => {
+    //     handleCancel() 
+    //   }, 1000)
+    // }
+  }
+
+  const imageClickHandle = (e) => {
+    formItems.splice(e,1);
+    formItemsCont.splice(e,1);
+  }
+
+  const imgMainUrl = getImageUrlByType(title);
+
+  const formItemsCont = formItems && typeof formItems == "object" ? formItems.map((data, index) => {
+    const imageSrc = typeof data === "object" && data ? data.img_url : data;
+    return imageSrc ? (
+      <GridListTile key={index} cols={1}>
+        <img src={`${imgMainUrl}/${imageSrc}`} />
+        <GridListTileBar
+          titlePosition="top"
+          actionIcon={
+            <IconButton className={classes.icon} onClick={()=>imageClickHandle(index)}>
+              <Icons name="delete" />
+            </IconButton>
+          }
+          actionPosition="right"
+          className={classes.titleBar}
+        />
+      </GridListTile>
+    ) : null
+  }) : [];
+  
   const loadItems = async() => {
     let sect = null;
     let getItemResult = null;
@@ -127,86 +147,14 @@ const ItemFormAdd = ({
         default:
           getItemResult = await getItems(sect.url);
       }
+      setItems(getItemResult);
       setShowData(true);
-      // setItems(getItemResult);
-      setItems([1,2,3,4]);
     } catch(err) {}
   }
   
   useEffect(() => {
     loadItems();
   }, [showData, id])
-
-  const setChildTitle = (obj) => {
-    return fields.map((field, index) => {
-        if (index > 4) {
-           return;
-        }
-        
-        const imageFields = ['img', 'productImages'];
-
-        const value = obj ? obj[field] : null;
-        let main_image = field;
-
-        switch(field){
-          case 'icon':
-            return (
-              <Grid item lg={3} xs={12}>
-                { 
-                  value ? 
-                  (
-                    <Icons name={obj[field]} classes={{icon: classes.icon}}/>
-                  ) : field
-                }
-              </Grid>
-            )
-          case 'img':
-            if (imageFields.indexOf(field) !== -1 && obj) {
-              let src = value ? `${process.env.IMAGE_URL}/${source.url}/${value}` : `/images/no-image.jpg`;
-              main_image = <img className={classes.mainImage} src={src} />
-            }
-            return (
-              <Grid key={index} item lg={4} sm={12}>
-                { 
-                  main_image
-                }
-              </Grid>
-            )
-          case 'productImages':
-            if (imageFields.indexOf(field) !== -1 && obj) {
-              let src = value && value.length > 0 ? `${process.env.IMAGE_URL}/${value[0].img_url}` : `/images/no-image.jpg`;
-              main_image = <img className={classes.mainImage} src={src} />
-            }
-            return (
-              <Grid key={index} item lg={2} sm={12}>
-                { 
-                   main_image
-                }
-              </Grid>
-            )
-          case 'first_name':
-          case 'name':
-          case 'status':
-          case 'address':
-            return (
-              <Grid key={index} item lg={2} sm={12}>
-                { 
-                  value ?
-                  (
-                    <a>{ `${value}`}</a>
-                  ) : field
-                }
-              </Grid>
-            )
-          default:
-            return (
-              <Grid item key={index} lg={2} sm={12}>
-                { value ? value : field }
-              </Grid>
-            )
-        }
-    })
-  }
 
   return showData && (
     <>
@@ -226,40 +174,37 @@ const ItemFormAdd = ({
               </Grid>
           </Grid>
         </Grid>
-        {/* <Grid item lg={12} sm={12}>
-          <Grid container>
-            <Grid item lg={1} xs={12}>&nbsp;</Grid>
-            {
-              setChildTitle()
-            }
-            <Grid item lg={3} xs={12}>
-              select
-            </Grid>
-          </Grid>
+        <Grid item>
           <Grid container>
             {
-              items && items.map((item, index) => {
+              formItems.map((item, key) => {
                 return (
-                  <Grid item key={index} lg={12} sm={12} className={classes.item}>
-                    <Grid container>
-                      <Grid item lg={1} sm={12}>
-                       {index + 1}
-                      </Grid>
-                      {
-                        setChildTitle(item)
-                      }
-                      <Grid item lg={3} sm={12}>
-                        <Checkbox value={item.id} onChange={handleCheckbox} inputProps={{ 'aria-label': 'uncontrolled-checkbox' }} />
-                      </Grid>
-                    </Grid>
-                  </Grid>
+                  <GridList cellHeight={160} className={classes.gridList} cols={2}>
+                  {
+                    formItemsCont
+                  }
+                  </GridList>
                 )
               })
             }
           </Grid>
-        </Grid> */}
-        <Grid item>
-          <SearchBarSuggest />
+        </Grid>
+        <Grid item lg={12} sm={12}>
+          <form>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <Autocomplete
+                name={title}
+                options={items}
+                onChange={(e, value) => {
+                  formOnChange({ name: title, value: value})
+                }}
+                getOptionLabel={(option) => 'name' in option ? option.name : option.first_name + " " + option.last_name}
+                defaultValue={items[0]}
+                renderInput={(params) => <TextField {...params} label={title} variant="outlined" />}
+              />
+              <FormHelperText name={title}>{`Select your ${title}`}</FormHelperText>
+            </FormControl>
+          </form>
         </Grid>
       </Grid>
     </>
@@ -272,7 +217,7 @@ ItemFormAdd.protoTypes = {
   userSection: T.object,
   source: T.object,
   customUrl: T.string,
-  fields: T.array,
+  title: T.string,
   showTitle: T.bool,
   id: T.number
 }

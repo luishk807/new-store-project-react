@@ -259,7 +259,7 @@ const ItemFormAdd = ({
           </Grid>
         </Grid> */}
         <Grid item>
-          {/* <SearchBarSuggest /> */}
+          <SearchBarSuggest />
         </Grid>
       </Grid>
     </>

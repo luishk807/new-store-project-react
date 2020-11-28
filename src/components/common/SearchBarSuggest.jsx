@@ -9,13 +9,11 @@ import Autosuggest from 'react-autosuggest';
 const styles = (theme) => ({});
 
 const SearchBarSuggest = ({classes}) => {
-  const [value, setValue] = useState(null);
-  const [suggestions, setSuggestions] = useState([]);
-  const inputProps = {
-    placeholder: "Type 'c'",
-    value,
-    onChange: onChange
-  };
+  const [suggestion, setSuggestion] = useState({
+    value: '',
+    suggestions: []
+  });
+  const [inputProps, setInputProps] = useState({});
 
   const [languages, setLanguages] = useState([
     {
@@ -34,87 +32,30 @@ const SearchBarSuggest = ({classes}) => {
       name: 'Clojure',
       year: 2007
     },
-    {
-      name: 'Elm',
-      year: 2012
-    },
-    {
-      name: 'Go',
-      year: 2009
-    },
-    {
-      name: 'Haskell',
-      year: 1990
-    },
-    {
-      name: 'Java',
-      year: 1995
-    },
-    {
-      name: 'Javascript',
-      year: 1995
-    },
-    {
-      name: 'Perl',
-      year: 1987
-    },
-    {
-      name: 'PHP',
-      year: 1995
-    },
-    {
-      name: 'Python',
-      year: 1991
-    },
-    {
-      name: 'Ruby',
-      year: 1995
-    },
-    {
-      name: 'Scala',
-      year: 2003
-    }
   ]);
   
   // https://developer.mozilla.org/en/docs/Web/JavaScript/Guide/Regular_Expressions#Using_Special_Characters
   const escapeRegexCharacters = str => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   
   const getSuggestions = value => {
-    if (!value) {
-      return;
-    } 
-
-    console.log(value,'ll')
-    const escapedValue = escapeRegexCharacters(value.trim());
-    
-    if (escapedValue === '') {
-      return [];
-    }
+    console.log("vakye", value)
+    const inputValue = value.trim().toLowerCase();
+    const inputLength = inputValue.length;
   
-    const regex = new RegExp('^' + escapedValue, 'i');
-    const suggestions = languages.filter(language => regex.test(language.name));
-    
-    // if (suggestions.length === 0) {
-    //   return [
-    //     { isAddNew: true }
-    //   ];
-    // }
-    
-    return suggestions;
+    return inputLength === 0 ? [] : languages.filter(lang =>
+      lang.name.toLowerCase().slice(0, inputLength) === inputValue
+    );
   }
 
 
   const onChange = (event, { newValue, method }) => {
-    setValue(newValue);
+    setSuggestion({
+      ...suggestion,
+      value: newValue,
+    });
   };
 
-  const getSuggestionValue = suggestion => {
-    if (suggestion.isAddNew) {
-      return value;
-    }
-    
-    return suggestion.name;
-  };
+  const getSuggestionValue = suggestion => suggestion.name;
 
   const renderSuggestion = suggestion => {
     // if (suggestion.isAddNew) {
@@ -128,8 +69,7 @@ const SearchBarSuggest = ({classes}) => {
     // return suggestion.name;
     return (
       <div>
-        {/* {suggestion.name} */}
-        hey
+        {suggestion.name}
       </div>
     )
   };
@@ -143,21 +83,22 @@ const SearchBarSuggest = ({classes}) => {
     setSuggestions([]);
   };
 
-  const onSuggestionSelected = (event, { suggestion }) => {
-    // if (suggestion.isAddNew) {
-    //   console.log('Add new:', value);
-    // }
-  };
+  useEffect(() => {
+    setInputProps({
+      placeholder: "Type 'c'",
+      value: suggestion.value,
+      onChange: onChange
+    });
+  }, []);
 
-  return (
+  return inputProps && (
     <Autosuggest 
-      suggestions={suggestions}
+      suggestions={suggestion.suggestions}
       onSuggestionsFetchRequested={onSuggestionsFetchRequested}
       onSuggestionsClearRequested={onSuggestionsClearRequested}
       getSuggestionValue={getSuggestionValue}
       renderSuggestion={renderSuggestion}
-      onSuggestionSelected={onSuggestionSelected}
-      inputProps={inputProps} 
+      inputProps={inputProps}
     />
   );
 }

@@ -17,8 +17,6 @@ import {
   Autocomplete,
 } from '@material-ui/lab';
 
-import SearchBarSuggest from '../SearchBarSuggest';
-
 import { addItem, getItems, getItemByFkId } from '../../../api';
 import Icons from '../../../components/common/Icons';
 import Snackbar from '../../../components/common/Snackbar';

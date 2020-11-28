@@ -34,7 +34,6 @@
     "next-redux-wrapper": "^6.0.2",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
-    "react-autosuggest": "^10.0.3",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
     "react-image-gallery": "^1.0.8",

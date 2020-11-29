@@ -38,6 +38,7 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
     open: false,
     text: '',
   });
+  const PRODUCTS_VENDOR = 'productsvendor';
 
   const delItem = async(id) => {
     deleteItem(section.url, id).then((data) => {
@@ -58,11 +59,11 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
 
   const loadAddBtn = () => {
     switch(section.key) {
-      case "productsvendor":
+      case PRODUCTS_VENDOR:
         return (
           <Link href={`add`}>
             <a>Add {section.names}</a>
-          </Link>
+          </Link>          
         )
       break;
       default: 
@@ -75,6 +76,17 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
               <a>Add {section.names}</a>
             </Link>
           )
+    }
+  }
+
+  const loadImportBtn = () => {
+    switch(section.key) {
+      case PRODUCTS_VENDOR:
+        return (
+          <Link href={`import`}>
+            <a>Import {section.names}</a>
+          </Link>
+        )
     }
   }
 
@@ -265,7 +277,8 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
                     {
                       loadAddBtn()
                     }
-                  ]
+                  ]&nbsp;
+                  [{ loadImportBtn() }]
               </Grid>
           </Grid>
         </Grid>

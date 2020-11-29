@@ -1,4 +1,5 @@
 import Api from '../services/api';
+import { verifyCookie } from '../utils/cookie';
 
 export const getProducts = async() => {
   return Api.get(`products`, data);
@@ -60,4 +61,17 @@ export const getProductsByVendor = async(id) => {
   }
   
   return Api.get(`productsvendor`, data);
+}
+
+export const importProducts = async (data) => {
+  if (!verifyCookie()) {
+    return;
+  }
+  if (!Object.keys(data).length) {
+    return;
+  }
+  console.log('importProducts');
+  console.log(data);
+
+  return Api.rawPost('products/import', data, {});
 }

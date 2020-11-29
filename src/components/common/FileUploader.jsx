@@ -25,7 +25,7 @@ const styles = (theme) => ({
   },
 });
 
-const FileUploader = ({classes={}, onSave, files, fileLimit}) => {
+const FileUploader = ({classes={}, onSave, files, fileLimit, buttonText='Upload Image', acceptedMimeTypes=['image/jpeg', 'image/png']}) => {
   const [open, setOpen] = useState(false);
   const handleClose = () => {
     setOpen(false)
@@ -43,13 +43,13 @@ const FileUploader = ({classes={}, onSave, files, fileLimit}) => {
   
   return (
     <FormControl fullWidth className={classes.root}>
-      <Button className={`secondButton`} onClick={handleOpen.bind(this)}>Upload Image</Button>
+      <Button className={`secondButton`} onClick={handleOpen.bind(this)}>{buttonText}</Button>
       { 
         fileLimit ? (
           <DropzoneDialog
             open={open}
             onSave={handleSave.bind(this)}
-            acceptedFiles={['image/jpeg', 'image/png']}
+            acceptedFiles={acceptedMimeTypes}
             showPreviews={true}
             filesLimit={1}
             maxFileSize={2000000}
@@ -60,7 +60,7 @@ const FileUploader = ({classes={}, onSave, files, fileLimit}) => {
           <DropzoneDialog
             open={open}
             onSave={handleSave.bind(this)}
-            acceptedFiles={['image/jpeg', 'image/png']}
+            acceptedFiles={acceptedMimeTypes}
             showPreviews={true}
             maxFileSize={2000000}
             files={files}
@@ -77,6 +77,8 @@ FileUploader.protoType = {
   fileLimit: T.bool,
   onSave: T.func,
   files: T.array,
+  fileBtnText: T.string,
+  fileAcceptedMimeTypes: T.array
 }
 
 export default withStyles(styles)(FileUploader);

@@ -30,8 +30,10 @@ const Edit = ({classes}) => {
   const form = {
     name: null,
     status: null,
+    products: null,
   }
-  const ignoreEntry=[]
+  const ignoreEntry=['products'];
+
   return (
     <AdminLayoutTemplate>
       <EditForm 
@@ -41,9 +43,9 @@ const Edit = ({classes}) => {
         entryForm={form} 
         customUrl={`/admin/${ADMIN_SECTIONS.sweetbox.url}`} 
       >
-        <Button href={`products/${id}`} className={`${classes.addButon} mainButton`}>
+        {/* <Button href={`products/${id}`} className={`${classes.addButon} mainButton`}>
           Add Product
-        </Button>
+        </Button> */}
       </EditForm>
     </AdminLayoutTemplate>
   );

@@ -252,7 +252,7 @@ const Form = ({
         )
         break;
       }
-      case "file": {
+      case "itemList": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
             {

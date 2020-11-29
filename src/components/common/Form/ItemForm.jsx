@@ -150,8 +150,15 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
         }
         
         const imageFields = ['img', 'productImages'];
+        
+        let value = null;
 
-        const value = obj ? obj[field] : null;
+        if (field === "sweetBoxSweetboxProduct") {
+          value = obj ? obj[field].length : 0;
+        } else {
+          value = obj ? obj[field] : null;
+        }
+        // const value = obj ? obj[field] : null;
         let main_image = field;
 
         switch(field){
@@ -200,6 +207,14 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
                       <a>{ `${value} ${obj.last_name}`}</a>
                     </Link>
                   ) : field
+                }
+              </Grid>
+            )
+          case 'sweetBoxSweetboxProduct':
+            return (
+              <Grid key={index} item lg={2} sm={12}>
+                { 
+                  obj ? value : "Products"
                 }
               </Grid>
             )

@@ -6,6 +6,7 @@ import {
   Grid,
   Button,
   Checkbox,
+  IconButton,
   TextField,
   GridList,
   GridListTile,
@@ -16,6 +17,7 @@ import {
 import { 
   Autocomplete,
 } from '@material-ui/lab';
+import { useRouter } from 'next/router';
 
 import { addItem, getItems, getItemByFkId } from '../../../api';
 import Icons from '../../../components/common/Icons';
@@ -41,6 +43,33 @@ const styles = (theme) => ({
     display: 'flex',
     justifyContent: 'flex-end',
     marginBottom: 10,
+  },
+  formItems: {
+    width: '50%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    margin: '20px auto 0px auto',
+  },
+  gridItemRoot: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'flex-start',
+    overflow: 'hidden',
+  },
+  icon: {
+    color: 'white',
+    width: '35%'
+  },
+  iconCont: {
+    top: 0,
+    position: 'absolute',
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  gridItemList: {
+    position: 'relative',
+    padding: 10,
   }
 });
 
@@ -54,10 +83,13 @@ const ItemFormAdd = ({
   id, 
   showTitle = true
 }) => {
+  const router = useRouter();
   const [items, setItems] = useState(null);
   const [formItems, setFormItems] = useState([]);
   const [section, setSection] = useState({});
+  const [formHtmlItems, setFormHtmlItems] = useState(null);
   const [showData, setShowData] = useState(false);
+  const imgMainUrl = getImageUrlByType(title);
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -65,13 +97,27 @@ const ItemFormAdd = ({
   });
 
   const formOnChange = ({value}) => {
-    let arry = formItems;
-    const find = arry.indexOf(value.id);
-    if (find === -1) {
-      arry.push(value);
-      setFormItems(arry);
-      console.log('got here',value)
+    let currFormItems = formItems;
+    if (currFormItems && currFormItems.length) {
+      const find = currFormItems.filter(item => item.id == value.id);
+      if (find && find.length) {
+        return;
+      }
     }
+    currFormItems.push(value);
+    setFormItems(currFormItems);
+    createHtmlItem();
+  }
+
+  const onClickItemDelete = (e) => {
+    let items = formItems;
+
+    if (items[e]) {
+      items.splice(e,1);
+      setFormItems(items);
+      createHtmlItem();
+    }
+    console.log(e)
   }
 
   const handleCancel = () => {
@@ -83,47 +129,26 @@ const ItemFormAdd = ({
 
   const handleSubmit = async (e) => {
     console.log("sending",formItems)
-    // if (!formItems.length) {
-    //   setSnack({
-    //     severity: 'error',
-    //     open: true,
-    //     text: `no items`
-    //   })
-    // } else {
-    //   const confirm = await addItem(section.url, { id: id, items: formItems});
-    //   const resp = handleFormResponse(confirm);
-    //   setSnack(resp);
-    //   setTimeout(() => {
-    //     handleCancel() 
-    //   }, 1000)
-    // }
+    if (!formItems.length) {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `no items`
+      })
+    } else {
+      let sendArray = [];
+      Object.keys(formItems).forEach((index) => {
+        sendArray.push(formItems[index].id)
+      })
+      
+      const confirm = await addItem(section.url, { id: id, items: sendArray});
+      const resp = handleFormResponse(confirm);
+      setSnack(resp);
+      setTimeout(() => {
+        handleCancel() 
+      }, 1000)
+    }
   }
-
-  const imageClickHandle = (e) => {
-    formItems.splice(e,1);
-    formItemsCont.splice(e,1);
-  }
-
-  const imgMainUrl = getImageUrlByType(title);
-
-  const formItemsCont = formItems && typeof formItems == "object" ? formItems.map((data, index) => {
-    const imageSrc = typeof data === "object" && data ? data.img_url : data;
-    return imageSrc ? (
-      <GridListTile key={index} cols={1}>
-        <img src={`${imgMainUrl}/${imageSrc}`} />
-        <GridListTileBar
-          titlePosition="top"
-          actionIcon={
-            <IconButton className={classes.icon} onClick={()=>imageClickHandle(index)}>
-              <Icons name="delete" />
-            </IconButton>
-          }
-          actionPosition="right"
-          className={classes.titleBar}
-        />
-      </GridListTile>
-    ) : null
-  }) : [];
   
   const loadItems = async() => {
     let sect = null;
@@ -146,10 +171,30 @@ const ItemFormAdd = ({
           getItemResult = await getItems(sect.url);
       }
       setItems(getItemResult);
+      console.log(getItemResult)
       setShowData(true);
     } catch(err) {}
   }
-  
+
+  const createHtmlItem = () => {
+    const htmlItem = formItems.map((item, index) => {
+      return (
+        <Grid item lg={2} key={index} className={classes.gridItemList}>
+          <img className="img-fluid" src={`${imgMainUrl}/${item.productImages[0].img_url}`} />
+          <div className={classes.iconCont}>
+            <IconButton className={classes.icon} onClick={()=>onClickItemDelete(index)}>
+              <Icons name="delete" />
+            </IconButton>
+          </div>
+        </Grid>
+      )
+    })
+    setFormHtmlItems(htmlItem);
+  }
+  useEffect(() => {
+    createHtmlItem();
+  }, [formItems]);
+
   useEffect(() => {
     loadItems();
   }, [showData, id])
@@ -173,17 +218,9 @@ const ItemFormAdd = ({
           </Grid>
         </Grid>
         <Grid item>
-          <Grid container>
+          <Grid container className={classes.gridItemRoot}>
             {
-              formItems.map((item, key) => {
-                return (
-                  <GridList cellHeight={160} className={classes.gridList} cols={2}>
-                  {
-                    formItemsCont
-                  }
-                  </GridList>
-                )
-              })
+              formHtmlItems
             }
           </Grid>
         </Grid>
@@ -197,7 +234,6 @@ const ItemFormAdd = ({
                   formOnChange({ name: title, value: value})
                 }}
                 getOptionLabel={(option) => 'name' in option ? option.name : option.first_name + " " + option.last_name}
-                defaultValue={items[0]}
                 renderInput={(params) => <TextField {...params} label={title} variant="outlined" />}
               />
               <FormHelperText name={title}>{`Select your ${title}`}</FormHelperText>

@@ -9,6 +9,7 @@ export const FORM_TYPE = {
   date: 'date',
   rate: 'rate',
   textArea: 'textarea',
+  linkItem: 'linkitem',
 }
 
 export const CATEGORY_ICONS = [
@@ -118,4 +119,5 @@ export const FORM_SCHEMA = {
   township: FORM_TYPE.text,
   userRole: FORM_TYPE.drop,
   bannerType: FORM_TYPE.drop,
+  products: FORM_TYPE.linkItem,
 }

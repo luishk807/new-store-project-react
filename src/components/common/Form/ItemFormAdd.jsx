@@ -20,8 +20,9 @@ import {
 import { useRouter } from 'next/router';
 
 import { addItem, getItems, getItemByFkId } from '../../../api';
-import Icons from '../../../components/common/Icons';
-import Snackbar from '../../../components/common/Snackbar';
+import Icons from '../Icons';
+import Typography from '../Typography'
+import Snackbar from '../Snackbar';
 import { handleFormResponse, getImageUrlByType } from '../../../utils/form';
 
 const styles = (theme) => ({
@@ -58,8 +59,8 @@ const styles = (theme) => ({
     overflow: 'hidden',
   },
   icon: {
-    color: 'white',
-    width: '35%'
+    color: 'black',
+    width: '30%'
   },
   iconCont: {
     top: 0,
@@ -183,8 +184,9 @@ const ItemFormAdd = ({
           <img className="img-fluid" src={`${imgMainUrl}/${item.productImages[0].img_url}`} />
           <div className={classes.iconCont}>
             <IconButton className={classes.icon} onClick={()=>onClickItemDelete(index)}>
-              <Icons name="delete" />
+              <Icons name="close" />
             </IconButton>
+            <Typography>Name</Typography>
           </div>
         </Grid>
       )

@@ -87,6 +87,7 @@ const Form = ({
   onChange: formOnChange, 
   fields,
   snack,
+  id,
   children,
   fileOnSave,
   formSubmit: handleSubmit,
@@ -252,22 +253,12 @@ const Form = ({
         )
         break;
       }
-      case "itemList": {
+      case "linkitem": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
-            {
-              userImagesCont && (
-                <Grid container justify="center">
-                  <GridList cellHeight={160} className={classes.gridList} cols={2}>
-                  {
-                    userImagesCont
-                  }
-                  </GridList>
-                </Grid>
-              )
-            }
-
-            <FileUploader fileLimit={fileLimit} onSave={fileOnSave}/>
+            <FormControl fullWidth className={classes.margin} variant="outlined">
+              <Button href={`${field}/${id}`} className={`mainButton`}>Edit {field}</Button>
+            </FormControl>
           </Grid>
         )
         break;
@@ -380,6 +371,7 @@ Form.protoTypes = {
   errors: T.object,
   fields: T.object,
   onChange: T.func,
+  id: T.number,
   fileOnSave: T.func,
   fileLimit: T.bool,
   formSubmit: T.func,

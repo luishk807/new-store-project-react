@@ -197,6 +197,7 @@ const EditForm = ({
         fields={form} 
         showTitle={showTitle}
         errors={errors} 
+        id={id}
         hideEntry={hideEntry}
         onChange={formOnChange} 
         onSubmit={handleSubmit} 

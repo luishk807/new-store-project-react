@@ -4,38 +4,52 @@ import {
   withStyles,
   Grid,
   MuiThemeProvider,
+  Button
 } from '@material-ui/core';
 import * as T from 'prop-types';
-
 import Header from '../Header/AdminHeader';
 import Footer from '../Footer/AdminFooter';
-
 import Typography from '../Typography';
 import PrivatePage from '../AdminPrivatePage';
+import { useRouter } from 'next/router';
+import { logout } from '../../../api/auth';
 
 const styles = (theme) => ({
   root: {
     marginTop: 80,
     flexGrow: 1,
   },
-})
-const AdminLayoutTemplate = ({classes, children}) => (
-  <PrivatePage>
-    <section>
-      <Head>
-        <title>AvenidaZ.com</title>
-        <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/>
-      </Head>
-      <Header />
-      <Grid container className={classes.root}>
-        <Grid item xs={12} lg={12}>
-          {children}
+});
+
+const AdminLayoutTemplate = ({classes, children}) => {
+  const router = useRouter();
+  const onLogOut = () => {
+    if (logout()) {
+      router.push('/')
+    }
+  }
+  return (
+    <PrivatePage>
+      <section>
+        <Head>
+          <title>AvenidaZ.com</title>
+          <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/>
+        </Head>
+        <Header />
+        <Grid container className={classes.root}>
+          <Typography align="left" variant="h4" component="h3">
+            <Button onClick={()=>router.push('/admin/home')} href="#" className={classes.smallLink}>[Back to admin Home]</Button>
+            <Button onClick={onLogOut} href="#" className={classes.smallLink}>[Log out]</Button>
+          </Typography>
+          <Grid item xs={12} lg={12}>
+            {children}
+          </Grid>
         </Grid>
-      </Grid>
-      <Footer />
-    </section>
-  </PrivatePage>
-);
+        <Footer />
+      </section>
+    </PrivatePage>
+  )
+}
 
 AdminLayoutTemplate.protoTypes = {
   classes: T.object,

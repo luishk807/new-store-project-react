@@ -110,7 +110,8 @@ export const ADMIN_SECTIONS = {
     names: 'Sweetboxes',
     key: 'sweetboxproduct',
     url: 'sweet-box-products',
-    option: 'sweetboxproduct'
+    option: 'sweetboxproduct',
+    parent: 'sweetbox'
   },
 }
 

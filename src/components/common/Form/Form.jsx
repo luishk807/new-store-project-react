@@ -103,6 +103,7 @@ const Form = ({
     brands: {},
     categorys: {}
   })
+  console.log("form", fields)
   const [useFormOption, setUseFormOptions] = useState(false)
   const [formTitle, setFormTitle] = useState('');
   const [formBtnTitle, setFormBtnTitle] = useState('');

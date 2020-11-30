@@ -25,7 +25,14 @@ const Index = ({classes}) => {
   const fields = ['productImages', 'name', 'amount','status']
   return (
     <AdminLayoutTemplate>
-      <ItemFormAdd customUrl={`/admin/sweetboxes/${id}`} title="product" fields={fields} id={id} source={ADMIN_SECTIONS.product} adminSection={ADMIN_SECTIONS.sweetboxProducts} />
+      <ItemFormAdd 
+        customUrl={`/admin/sweetboxes/${id}`} 
+        title="product" 
+        fields={fields} 
+        id={id} 
+        source={ADMIN_SECTIONS.product} 
+        adminSection={ADMIN_SECTIONS.sweetboxProducts} 
+      />
     </AdminLayoutTemplate>
   );
 }

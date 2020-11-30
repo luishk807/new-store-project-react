@@ -158,6 +158,11 @@ const EditForm = ({
             inputs['image'] = {
               'saved': images
             }
+          } else if (FORM_SCHEMA[field] == "linkitem") {
+            const items = info[sect.listItems] ? info[sect.listItems].map(item => item.product) : [];
+            inputs[field] = {
+              'saved': items
+            }
           } else if (FORM_SCHEMA[field] == "password") {
             inputs[field] = null
           } else {

@@ -19,11 +19,13 @@ import {
 } from '@material-ui/lab';
 import { useRouter } from 'next/router';
 
-import { addItem, getItems, getItemByFkId } from '../../../api';
+import { addItem, getItems, getItemById, getItemByFkId } from '../../../api';
+import { ADMIN_SECTIONS } from '../../../constants/admin';
+import { handleFormResponse, getImageUrlByType } from '../../../utils/form';
 import Icons from '../Icons';
+import ProductBox from '../ProductBox';
 import Typography from '../Typography'
 import Snackbar from '../Snackbar';
-import { handleFormResponse, getImageUrlByType } from '../../../utils/form';
 
 const styles = (theme) => ({
   root: {
@@ -42,7 +44,7 @@ const styles = (theme) => ({
   },
   mainBtnCont: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
     marginBottom: 10,
   },
   formItems: {
@@ -98,6 +100,7 @@ const ItemFormAdd = ({
   });
 
   const formOnChange = ({value}) => {
+    console.log('adding', value)
     let currFormItems = formItems;
     if (currFormItems && currFormItems.length) {
       const find = currFormItems.filter(item => item.id == value.id);
@@ -105,20 +108,26 @@ const ItemFormAdd = ({
         return;
       }
     }
-    currFormItems.push(value);
+    currFormItems.push(value.id);
     setFormItems(currFormItems);
     createHtmlItem();
   }
 
   const onClickItemDelete = (e) => {
     let items = formItems;
+    let id = null;
 
-    if (items[e]) {
-      items.splice(e,1);
+    items.forEach((item, key) => {
+      if (item === e) {
+        id = key;
+      }
+    })
+
+    if (items[id]) {
+      items.splice(id,1);
       setFormItems(items);
       createHtmlItem();
     }
-    console.log(e)
   }
 
   const handleCancel = () => {
@@ -139,7 +148,7 @@ const ItemFormAdd = ({
     } else {
       let sendArray = [];
       Object.keys(formItems).forEach((index) => {
-        sendArray.push(formItems[index].id)
+        sendArray.push(formItems[index])
       })
       
       const confirm = await addItem(section.url, { id: id, items: sendArray});
@@ -153,7 +162,11 @@ const ItemFormAdd = ({
   
   const loadItems = async() => {
     let sect = null;
+    let itemArray = [];
     let getItemResult = null;
+    let getParentResult = null;
+
+    let parent = ADMIN_SECTIONS[adminSection.parent];
 
     if (source) {
       sect = source;
@@ -163,38 +176,41 @@ const ItemFormAdd = ({
     }
     
     try {
-      switch(sect.key) {
-        case 'address':
-        case 'productsvendor':
-          getItemResult = await getItemByFkId(sect.url, sect.key, id);
-        break;
-        default:
-          getItemResult = await getItems(sect.url);
+      getItemResult = await getItems(sect.url);
+      getParentResult = await getItemByFkId(adminSection.url, adminSection.parent, id);
+      if (getParentResult) {
+        getParentResult.forEach((item) => {
+          if (item[title]) {
+            itemArray.push(item[title])
+          }
+        })
+        setFormItems(itemArray)
       }
       setItems(getItemResult);
-      console.log(getItemResult)
       setShowData(true);
-    } catch(err) {}
+    } catch(err) {
+      console.log(err)
+    }
   }
 
-  const createHtmlItem = () => {
+  const createHtmlItem = async() => {
     const htmlItem = formItems.map((item, index) => {
       return (
         <Grid item lg={2} key={index} className={classes.gridItemList}>
-          <img className="img-fluid" src={`${imgMainUrl}/${item.productImages[0].img_url}`} />
-          <div className={classes.iconCont}>
-            <IconButton className={classes.icon} onClick={()=>onClickItemDelete(index)}>
-              <Icons name="close" />
-            </IconButton>
-            <Typography>Name</Typography>
-          </div>
+          <ProductBox  key={index} id={item} onDelete={onClickItemDelete} />
         </Grid>
       )
     })
     setFormHtmlItems(htmlItem);
   }
-  useEffect(() => {
+
+  const loadInitialItems = async() => {
+    
     createHtmlItem();
+  }
+
+  useEffect(() => {
+    loadInitialItems()
   }, [formItems]);
 
   useEffect(() => {
@@ -215,7 +231,10 @@ const ItemFormAdd = ({
         <Grid item lg={12}>
           <Grid container className={classes.mainBtnCont}>
               <Grid item lg={3} xs={12}>
-                  <Button onClick={handleSubmit} className={`mainButton`}>{`Add to ${section.name}`}</Button>
+                <Button onClick={() => router.push(customUrl)} className={`mainButton`}>{`Back`}</Button>
+              </Grid>
+              <Grid item lg={3} xs={12}>
+                <Button onClick={handleSubmit} className={`mainButton`}>{`Add to ${section.name}`}</Button>
               </Grid>
           </Grid>
         </Grid>

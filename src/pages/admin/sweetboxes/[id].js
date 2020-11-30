@@ -3,13 +3,10 @@ import * as T from 'prop-types';
 import { useRouter } from 'next/router';
 import { 
   withStyles,
-  Button
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import EditForm from '../../../components/common/Form/EditForm';
-import Icons from '../../../components/common/Icons';
-import Typography from '../../../components/common/Typography';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
@@ -43,9 +40,6 @@ const Edit = ({classes}) => {
         entryForm={form} 
         customUrl={`/admin/${ADMIN_SECTIONS.sweetbox.url}`} 
       >
-        {/* <Button href={`products/${id}`} className={`${classes.addButon} mainButton`}>
-          Add Product
-        </Button> */}
       </EditForm>
     </AdminLayoutTemplate>
   );

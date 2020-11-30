@@ -34,6 +34,10 @@ export const getItemByFkId = (section, fk, id) => {
       data = {
         'vendor': id
       }
+    case 'sweetbox':
+      data = {
+        'sweetbox': id
+      }
     break;
     default:
     

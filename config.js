@@ -121,3 +121,5 @@ export const FORM_SCHEMA = {
   bannerType: FORM_TYPE.drop,
   products: FORM_TYPE.linkItem,
 }
+
+export const noImageUrl = '/images/no-image.jpg';

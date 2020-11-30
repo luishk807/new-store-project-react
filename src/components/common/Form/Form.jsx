@@ -89,6 +89,8 @@ const Form = ({
   snack,
   children,
   fileOnSave,
+  fileAcceptedMimeTypes=['image/jpeg', 'image/png'],
+  fileBtnText='Upload Image',
   formSubmit: handleSubmit,
   formCancel: handleCancel,
   onCloseSnack,
@@ -267,7 +269,7 @@ const Form = ({
               )
             }
 
-            <FileUploader fileLimit={fileLimit} onSave={fileOnSave}/>
+            <FileUploader fileLimit={fileLimit} onSave={fileOnSave} fileBtnText={fileBtnText} fileAcceptedMimeTypes={fileAcceptedMimeTypes}/>
           </Grid>
         )
         break;

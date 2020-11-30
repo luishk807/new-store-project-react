@@ -89,11 +89,11 @@ const Login = ({classes, inStatus, showRegister, onCancel}) => {
             text: `ERROR: ${resp.data.message}`,
           })
         }
-      }catch(err) {
+      } catch(err) {
         const errSnack = err ? {
           severity: 'error',
           open: true,
-          text: `ERROR: ${err.response.data.message}`,
+          text: `ERROR: ${(err.response) ? err.response.data.message : err}`,
         } : {}
         setSnack(errSnack)
       }

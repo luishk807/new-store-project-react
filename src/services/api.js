@@ -1,7 +1,12 @@
 import axios, { post, put} from 'axios';
 import { getCookie } from '../utils/cookie';
-
 import { formatForm, formatFormData } from '../utils/products';
+
+const getAuthorizationHeader = () => {
+  const cookie = getCookie();
+  const token = cookie && cookie.token ? cookie.token : null;
+  return {'Authorization': `Basic ${token}`}
+}
 
 export default class Api {
   static baseUrl = process.env.BACKEND_URL+"/";
@@ -22,28 +27,36 @@ export default class Api {
     return Api.request("PUT", url, param, config, format);
   }
 
+  static rawPost(url, payload, config = {}) {
+    let apiUrl = url; 
+
+    if (apiUrl.indexOf('http') !== 0) {
+      apiUrl = `${config.baseUrl || Api.baseUrl || ''}${apiUrl}`;
+    }
+    
+    return post(apiUrl, payload, { headers: getAuthorizationHeader() });
+  }
+
   static request(method, url, body, config = {}, format = "json") {
     let apiUrl = url; 
 
     if (apiUrl.indexOf('http') !== 0) {
       apiUrl = `${config.baseUrl || Api.baseUrl || ''}${apiUrl}`;
     }
-    const cookie = getCookie();
-    const token = cookie && cookie.token ? cookie.token : null;
+
     if(method === "POST") {
-      console.log('post')
       const cleanForm = formatFormData(body)
-      const request = post(apiUrl, cleanForm, { headers: {'Authorization': `Basic ${token}`}})
+      const request = post(apiUrl, cleanForm, { headers: getAuthorizationHeader() })
       return request;
     } else if(method === "PUT") {
       const cleanForm = formatFormData(body)
-      const request = put(apiUrl, cleanForm, { headers: {'Authorization': `Basic ${token}`}})
+      const request = put(apiUrl, cleanForm, { headers: getAuthorizationHeader() })
       return request;
     } else{
       const cleanForm = formatForm(body)
       config = {
         ...config,
-        'Authorization': `token ${token}`
+        ...getAuthorizationHeader()
       }
       const fetchConfig = {
         method: method,

@@ -10,6 +10,7 @@ import {
 import { deleteItem, getItems, getItemByFkId } from '../../../api';
 import Icons from '../../../components/common/Icons';
 import Snackbar from '../../../components/common/Snackbar';
+import { ADMIN_SECTIONS } from '../../../constants/admin';
 
 const styles = (theme) => ({
   root: {
@@ -81,6 +82,12 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
 
   const loadImportBtn = () => {
     switch(section.key) {
+      case ADMIN_SECTIONS.product.key:
+        return (
+          <Link href={`products/import`}>
+            <a>Import {section.names}</a>
+          </Link>
+        )
       case PRODUCTS_VENDOR:
         return (
           <Link href={`import`}>

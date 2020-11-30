@@ -14,6 +14,7 @@ import UserLayoutTemplate from './UserLayoutTemplate';
 import { USER_SECTIONS } from '../../../constants/user';
 import AddForm from '../../../components/common/Form/AddForm';
 import { defaultCountry } from '../../../../config';
+import { logout } from '../../../api/auth';
 
 const styles = (theme) => ({
   root: {},

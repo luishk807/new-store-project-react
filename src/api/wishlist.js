@@ -8,7 +8,7 @@ export const deleteWishlistByUserId = async(data) => {
   const config = {
     'cotent-Type': 'application/x-www-form-urlencoded'
   }
-  return Api.delete(`userwishlists/${data.product}`, {}, config);
+  return Api.delete(`wishlists/user/${data.product}`, {}, config);
 }
 
 export const getWishlistsByProductId = async(data) => {
@@ -16,5 +16,5 @@ export const getWishlistsByProductId = async(data) => {
 }
 
 export const getWishlistByUserId = async(data) => {
-  return Api.get(`userwishlists`, data);
+  return Api.get(`wishlists/user`, data);
 }

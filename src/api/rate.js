@@ -9,5 +9,5 @@ export const getProductRates = async(data) => {
 }
 
 export const getAllProductRatesById = async(data) => {
-  return Api.get(`productallrates`, data);
+  return Api.get(`productrates/all`, data);
 }

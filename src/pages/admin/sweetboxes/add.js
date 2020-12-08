@@ -23,6 +23,7 @@ const styles = (theme) => ({
 const Add = ({classes}) => {
   const form = {
     name: null,
+    sweetBoxType: null,
   }
 
   return (

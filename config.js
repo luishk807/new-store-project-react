@@ -120,6 +120,7 @@ export const FORM_SCHEMA = {
   userRole: FORM_TYPE.drop,
   bannerType: FORM_TYPE.drop,
   products: FORM_TYPE.linkItem,
+  sweetBoxType: FORM_TYPE.drop,
 }
 
 export const noImageUrl = '/images/no-image.jpg';

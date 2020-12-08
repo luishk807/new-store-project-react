@@ -105,6 +105,13 @@ export const ADMIN_SECTIONS = {
     option: 'sweetbox',
     listItems: 'sweetBoxSweetboxProduct',
   },
+  'sweetBoxType': {
+    name: 'Sweet Box Type',
+    names: 'Sweet Box Types',
+    key: 'sweetboxtype',
+    url: 'sweetboxtypes',
+    option: 'sweetboxtype'
+  },
   'sweetboxProducts': {
     name: 'Sweetbox',
     names: 'Sweetboxes',

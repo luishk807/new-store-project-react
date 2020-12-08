@@ -27,6 +27,7 @@ const Edit = ({classes}) => {
   const form = {
     name: null,
     status: null,
+    sweetBoxType: null,
     products: null,
   }
   const ignoreEntry=['products'];

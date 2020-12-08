@@ -124,6 +124,7 @@ export const loadMainOptions = async(option = null) => {
       gender,
       country,
       bannerType,
+      sweetBoxType,
       userRole,
       user
     ] = await Promise.all([
@@ -135,6 +136,7 @@ export const loadMainOptions = async(option = null) => {
       getSections(ADMIN_SECTIONS.gender.url),
       getSections(ADMIN_SECTIONS.country.url),
       getSections(ADMIN_SECTIONS.bannerType.url),
+      getSections(ADMIN_SECTIONS.sweetBoxType.url),
       getSections('userroles'),
       getSections('users'),
     ])
@@ -149,6 +151,7 @@ export const loadMainOptions = async(option = null) => {
       userRole,
       user,
       bannerType,
+      sweetBoxType,
       icon,
       gender,
     }

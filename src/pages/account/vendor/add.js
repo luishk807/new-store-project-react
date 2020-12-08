@@ -50,7 +50,7 @@ const Add = ({classes, userInfo, vendorInfo}) => {
       <div className={classes.root}>
         <AddForm 
           customUrl={`/account/vendor/products`} 
-          ignoreFrom={ignoreEntry} 
+          ignoreForm={ignoreEntry} 
           userSection={USER_SECTIONS.vendor.product} 
           entryForm={form} 
           hideEntry={hideEntry}

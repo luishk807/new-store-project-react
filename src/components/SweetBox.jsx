@@ -2,11 +2,9 @@ import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
+  Grid,
+  Button,
 } from '@material-ui/core';
-
-// import { 
-//   ProductGallerySample,
-//  } from '../constants/samples/ProductGallery';
 
 import SweetBoxProducts from './SweetBoxProducts';
 
@@ -17,77 +15,65 @@ import SweetBoxProducts from './SweetBoxProducts';
 import CardIcon from './common/CardIcon';
 
 const styles = (theme) => ({
-  cardFeature: {
-    width: '30%',
-    height: 400,
-  },
-  cardNonFeature: {
-    height: 300,
-    width: '15%',
-  },
-  sweetBoxMainImg: {
-    height: 197,
-    width: 236,
-  },
+  cardBtn: {
+    width: 'inherit'
+  }
 });
 
-const SweetBox = ({classes, type}) => {
-  const [sweetBoxes, setSweetBoxes] = useState({});
+const SweetBox = React.memo(({classes, type}) => {
+  const [sweetBoxes, setSweetBoxes] = useState([]);
   const [showData, setShowData] = useState(false);
 
   const getSweetBox = async() => {
     const fetchSweetBox = await getSweetBoxesByType(type);
-    console.log('feee',fetchSweetBox);
     setSweetBoxes(fetchSweetBox);
     setShowData(true);
   }
 
   useEffect(() => {
     getSweetBox();
-  }, [type])
+  }, [showData])
 
   return showData && sweetBoxes.map((sweetbox, index) => {
+    const featureSweetBox = sweetbox.sweetBoxSweetboxProduct[0];
+    const otherSweetBoxes = sweetbox.sweetBoxSweetboxProduct.filter((item, index) => index !== 0)
     return (
         <div key={index} className={`container-fluid`}>
         {
           sweetbox.name &&  (
-            <div className={`row`}>
-              <div className={`col`}>
+            <Grid container>
+              <Grid item lg={12}>
                 {sweetbox.name}
-              </div>
-            </div>
+              </Grid>
+            </Grid>
           )
         }
-        <div className={`row`}>
-          <div className={`col`}>
-              <div className={`container-fluid`}>
-                <div className={`row`}>
+        <Grid container>
+          <Grid item lg={12}>
+            <Grid container>
+              <Grid item lg={3} xs={3}>
+                <SweetBoxProducts key={index} isFeature={true} id={featureSweetBox.productId} />
+              </Grid>
+              <Grid item lg={9} xs={9}>
+                <Grid container>
                   {
-                  sweetbox.sweetBoxSweetboxProduct.map((product, index) => {
-                      <h1>Luis</h1>
-                      // if (!index) {
-                      //   return (
-                      //     <CardIcon key={index} title={info.name} classes={{ root: classes.cardFeature, img: classes.sweetBoxMainImg}}>
-                      //       <img src={`/images/products/${info.image}`} alt={info.name}/>
-                      //     </CardIcon>
-                      //   )
-                      // } else {
-                      //   return (
-                      //     <CardIcon key={index} title={info.name} classes={{ root: classes.cardNonFeature }}>
-                      //       <img src={`/images/products/${info.image}`} alt={info.name}/>
-                      //     </CardIcon>
-                      //   )
-                      // } 
+                    otherSweetBoxes.map((product, index) => {
+                      return (
+                        <Grid item lg={3} xs={3}>
+                          <SweetBoxProducts key={index} isFeature={false} id={product.productId} />
+                        </Grid>
+                      )
                     })
                   }
-                </div>
-              </div>
-          </div>
-        </div>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+        </Grid>
       </div>
     )
   })
-}
+});
 
 SweetBox.protoTypes = {
   classes: T.object,

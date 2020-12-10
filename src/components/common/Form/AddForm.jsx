@@ -29,6 +29,7 @@ const AddForm = ({
   userSection, 
   entryForm, 
   hideEntry,
+  showTitle,
   ignoreForm, 
   children, 
   customUrl = null
@@ -87,30 +88,6 @@ const AddForm = ({
       setTimeout(() => {
         handleCancel() 
       }, 1000)
-      // addItem(section.url, form).then((resp) => {
-      //   let saveResult = null;
-      //   const res = resp.data;
-      //   if (res.data) {
-      //     setSnack({
-      //       severity: 'success',
-      //       open: true,
-      //       text: `${section.name} Added`,
-      //     })
-      //     handleCancel();
-      //   } else {
-      //     setSnack({
-      //       severity: 'error',
-      //       open: true,
-      //       text: `${section.name} error! ${res.message}`,
-      //     })
-      //   }
-      // }).catch((err) => {
-      //   setSnack({
-      //     severity: 'error',
-      //     open: true,
-      //     text: `${section.name} error! ${err.response.data.message}`,
-      //   })
-      // })
     }
   }
   const saveErrors = async (key, err = false, str = '') => {
@@ -139,17 +116,19 @@ const AddForm = ({
 
   const loadFormOption = async() => {
     let sect = null;
+    let isAdmin = false;
     if (userSection) {
       sect = userSection;
       setSection(userSection);
     } else if (adminSection) {
       sect = adminSection;
+      isAdmin = true;
       setSection(adminSection);
     } else {
       return;
     }
     try {
-      const options = await loadMainOptions();
+      const options = await loadMainOptions(isAdmin);
       Object.keys(entryForm).forEach(field => {
         if (FORM_SCHEMA[field] == "dropdown") {
           if (hideEntry && hideEntry.indexOf(field) !== -1) {
@@ -205,6 +184,7 @@ const AddForm = ({
         fields={form} 
         hideEntry={hideEntry}
         errors={errors} 
+        showTitle={showTitle}
         onChange={formOnChange} 
         onSubmit={handleSubmit} 
         formSubmit={handleSubmit}
@@ -224,6 +204,7 @@ AddForm.protoTypes = {
   adminSection: T.object,
   userSection: T.object,
   entryForm: T.object,
+  showTitle: T.bool,
   customUrl: T.string,
   ignoreForm: T.array,
   children: T.node,

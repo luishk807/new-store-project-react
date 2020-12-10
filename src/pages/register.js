@@ -7,8 +7,10 @@ import {
   TextField,
 } from '@material-ui/core';
 
+import { USER_SECTIONS } from '../constants/user';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
+import AddForm from '../components/common/Form/AddForm';
 
 const styles = (theme) => ({
   root: {
@@ -24,35 +26,40 @@ const styles = (theme) => ({
 });
 
 const Register = ({classes, data, showRegister}) => {
+  const form = {
+    first_name: null,
+    last_name: null,
+    email: null,
+    password: null,
+    phone: null,
+    gender: null,
+    date_of_birth: null,
+    mobile: null,
+    image: {
+      values: [],
+      open: false,
+    }
+  }
+  
+  const ignoreEntry=['image', 'mobile']
+
   return (
     <LayoutTemplate>
-    ` <div className={classes.root}>
+      <div className={classes.root}>
         <Grid container spacing={2} alignItems="center" justify="center" direction="row">
-          <Grid item lg={4}  xs={12}>
+          <Grid item lg={5} xs={12}>
             <Grid container spacing={2} alignItems="center" justify="center" direction="row">
               <Grid item lg={12} xs={12}>
                 <Typography align="center" variant="h6" component="p">Register account</Typography>
               </Grid>
               <Grid item lg={12} xs={12}>
-                <form className={classes.formFoot} noValidate autoComplete="off">
-                  <Grid container spacing={2}>
-                    <Grid item lg={12} xs={12}>
-                      <TextField id="firstname" label="First Name" className={classes.formTextField} />
-                    </Grid>
-                    <Grid item lg={12} xs={12}>
-                      <TextField id="lastname" label="Password" className={classes.formTextField} />
-                    </Grid>
-                    <Grid item lg={12} xs={12}>
-                      <TextField id="email" label="Email" className={classes.formTextField} />
-                    </Grid>
-                    <Grid item lg={12} xs={12}>
-                      <TextField id="password" label="Create password" className={classes.formTextField} />
-                    </Grid>
-                    <Grid item lg={12} xs={12} className={classes.formTextField}>
-                      <Button className={`mainButton`} href="/settings">Register</Button>
-                    </Grid>
-                  </Grid>
-                </form>
+                <AddForm 
+                  customUrl={`/account`} 
+                  ignoreForm={ignoreEntry} 
+                  userSection={USER_SECTIONS.user} 
+                  entryForm={form}
+                  showTitle={false}
+                />
               </Grid>
               <Grid item lg={12} xs={12}>
                 <Grid container spacing={2}>
@@ -67,7 +74,7 @@ const Register = ({classes, data, showRegister}) => {
             </Grid>
           </Grid>
         </Grid>
-      </div>`
+      </div>
     </LayoutTemplate>
   );
 }

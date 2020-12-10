@@ -110,10 +110,8 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
   }
 }
 
-export const loadMainOptions = async(option = null) => {
-  if (option) {
-      return await Api.get(option.option);
-  } else {
+export const loadMainOptions = async(isAdmin = false) => {
+  if (isAdmin) {
     const icon = await CATEGORY_ICONS;
     const [
       category, 
@@ -135,8 +133,8 @@ export const loadMainOptions = async(option = null) => {
       getSections(ADMIN_SECTIONS.gender.url),
       getSections(ADMIN_SECTIONS.country.url),
       getSections(ADMIN_SECTIONS.bannerType.url),
-      getSections('userroles'),
-      getSections('users'),
+      getSections(ADMIN_SECTIONS.userRole.url),
+      getSections(ADMIN_SECTIONS.user.url),
     ])
 
     return {
@@ -148,6 +146,42 @@ export const loadMainOptions = async(option = null) => {
       position,
       userRole,
       user,
+      bannerType,
+      icon,
+      gender,
+    }
+  } else {
+    const icon = await CATEGORY_ICONS;
+    const [
+      category, 
+      position, 
+      vendor, 
+      brand, 
+      status,
+      gender,
+      country,
+      bannerType,
+      userRole,
+    ] = await Promise.all([
+      getSections(ADMIN_SECTIONS.category.url),
+      getSections(ADMIN_SECTIONS.workRole.url),
+      getSections(ADMIN_SECTIONS.vendor.url),
+      getSections(ADMIN_SECTIONS.brand.url),
+      getSections(ADMIN_SECTIONS.status.url),
+      getSections(ADMIN_SECTIONS.gender.url),
+      getSections(ADMIN_SECTIONS.country.url),
+      getSections(ADMIN_SECTIONS.bannerType.url),
+      getSections(ADMIN_SECTIONS.userRole.url),
+    ])
+
+    return {
+      category,
+      brand,
+      vendor,
+      status,
+      country,
+      position,
+      userRole,
       bannerType,
       icon,
       gender,

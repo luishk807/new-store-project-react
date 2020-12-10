@@ -48,6 +48,13 @@ export const ADMIN_SECTIONS = {
     url: 'users',
     option: 'user',
   },
+  'userRole': {
+    name: 'User Role',
+    names: 'User Roles',
+    key: 'userroles',
+    url: 'userroles',
+    option: 'userrole',
+  },
   'userAddress': {
     name: 'User Address',
     names: 'User Addresses',

@@ -48,7 +48,7 @@ const styles = (theme) => ({
     },
   },
   formItems: {
-    width: '50%',
+    width: '100%',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
@@ -380,6 +380,7 @@ Form.protoTypes = {
   classes: T.object,
   title: T.string,
   errors: T.object,
+  showTitle: T.bool,
   fields: T.object,
   onChange: T.func,
   fileOnSave: T.func,

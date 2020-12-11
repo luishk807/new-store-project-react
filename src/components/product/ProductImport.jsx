@@ -3,19 +3,25 @@ import * as T from 'prop-types';
 import TableData from '../common/TableData';
 import FileUploader from '../common/FileUploader';
 import { Button, FormControl, Snackbar } from '@material-ui/core';
-import { withStyles } from '@material-ui/core';
 import Papa from 'papaparse';
 import { importProducts } from '../../api/products';
 
 const styles = (theme) => ({
-    root: {
-      display: 'flex',
-      flexWrap: 'wrap',
-      justifyContent: 'center',
-      alignItems: 'center',
-      width: '100%',
-      textAlign: 'center',
+    wrapper: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        textAlign: 'center',
+        alignSelf: 'center',
+        padding: '5px',
     },
+    buttonsWrapper: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignSelf: 'center',
+        width: '100%',
+    }
 });
 
 const tableColumns = [
@@ -44,9 +50,7 @@ const transformData = (csvArrayData) => {
     return rowsData;
 }
 
-const ProductImport = ({
-    classes
-}) => {
+const ProductImport = ({ classes }) => {
     const [tableRows, setTableRows] = useState([]);
     const [snack, setSnack] = useState({
         severity: 'success',
@@ -62,7 +66,6 @@ const ProductImport = ({
         if (files.length === 1) {
             Papa.parse(files[0], {
                 complete: function(results) {
-                    console.log("Finished:", results.data);
                     const rowData = transformData(results.data);
                     setTableRows(rowData);
                 }
@@ -74,7 +77,6 @@ const ProductImport = ({
             importProducts(tableRows).then((result) => {
                 setSnack({ open: true, text: 'Products were imported successfully', severity: 'success'});
             }).catch((err) => {
-                console.log(err);
                 setSnack({ open: true, text: 'Errors on importing products, please check error on console', severity: 'error'});
             });
         }
@@ -84,21 +86,8 @@ const ProductImport = ({
     }
     return (
         <div style={{width: '100%'}}>
-            <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '100%',
-                textAlign: 'center',
-                alignSelf: 'center',
-                padding: '5px',
-            }}>
-                <div style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'space-around',
-                    alignSelf: 'center',
-                    width: '100%',
-                    }}>
+            <div style={classes.wrapper}>
+                <div style={classes.buttonsWrapper}>
                     <FileUploader onSave={onSave} buttonText="Import Products" acceptedMimeTypes={acceptedTypes} style={{width: '100px'}}></FileUploader>
                     <FormControl fullWidth className={classes.margin}>
                         <Button onClick={handleSubmit} className={'mainButton'}>Save Products</Button>
@@ -111,7 +100,7 @@ const ProductImport = ({
     );
 }
 
-ProductImport.protoTypes = {
+ProductImport.propTypes = {
     classes: T.object
 }
 

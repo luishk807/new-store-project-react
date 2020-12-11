@@ -264,6 +264,26 @@ const Form = ({
         )
         break;
       }
+      case "file": {
+        return (
+          <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
+            {
+              userImagesCont && (
+                <Grid container justify="center">
+                  <GridList cellHeight={160} className={classes.gridList} cols={2}>
+                  {
+                    userImagesCont
+                  }
+                  </GridList>
+                </Grid>
+              )
+            }
+
+            <FileUploader fileLimit={fileLimit} onSave={fileOnSave}/>
+          </Grid>
+        )
+        break;
+      }
       case "textarea": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>

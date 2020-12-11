@@ -10,6 +10,7 @@ import BigCarrousel from '../components/BigCarrousel';
 import ProductGallery from '../components/ProductGallery';
 import ProductCategoryIcons from '../components/ProductCategoryIcons'
 import NewArrival from '../components/NewArrival';
+import BannerBox from '../components/BannerBox';
 
 const styles = (theme) => ({
   root: {
@@ -31,6 +32,7 @@ class ClassComponent extends Component {
             <BigCarrousel image={'main-banner.jpg'} />
             <ProductCategoryIcons />
             <NewArrival title="Nuevas Llegadas" />
+            <BannerBox id={18} />
             {/* <ProductGallery galleryType='store-list' title="Tiendas" />
             <ProductGallery galleryType='mini-banner'/>
             <ProductGallery galleryType='store-feature' title="Nuevas Llegadas" />

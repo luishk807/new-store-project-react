@@ -32,6 +32,7 @@ class ClassComponent extends Component {
             <BigCarrousel image={'main-banner.jpg'} />
             <ProductCategoryIcons />
             <SweetBox type={1} />
+            <SweetBox type={2} />
             {/* <ProductGallery galleryType='store-list' title="Tiendas" />
             <ProductGallery galleryType='mini-banner'/>
             <ProductGallery galleryType='store-feature' title="Nuevas Llegadas" />

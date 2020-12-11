@@ -6,6 +6,7 @@ import {
   Button,
 } from '@material-ui/core';
 
+import Typography from './common/Typography';
 import SweetBoxProducts from './SweetBoxProducts';
 
  import {
@@ -15,8 +16,16 @@ import SweetBoxProducts from './SweetBoxProducts';
 import CardIcon from './common/CardIcon';
 
 const styles = (theme) => ({
+  root: {
+    margin: '50px 0px',
+  },
   cardBtn: {
     width: 'inherit'
+  },
+  title: {
+    fontWeight: 'bold',
+    margin: '10px 0px',
+    fontSize: '1.5em',
   }
 });
 
@@ -38,16 +47,12 @@ const SweetBox = React.memo(({classes, type}) => {
     const featureSweetBox = sweetbox.sweetBoxSweetboxProduct[0];
     const otherSweetBoxes = sweetbox.sweetBoxSweetboxProduct.filter((item, index) => index !== 0)
     return (
-        <div key={index} className={`container-fluid`}>
-        {
-          sweetbox.name &&  (
-            <Grid container>
-              <Grid item lg={12}>
-                {sweetbox.name}
-              </Grid>
-            </Grid>
-          )
-        }
+      <div key={index} className={`container-fluid`} className={classes.root}>
+        <Grid container>
+          <Grid item lg={12}>
+            <Typography className={classes.title}>{sweetbox.name}</Typography>
+          </Grid>
+        </Grid>
         <Grid container>
           <Grid item lg={12}>
             <Grid container>

@@ -56,10 +56,10 @@ const SweetBox = React.memo(({classes, type}) => {
         <Grid container>
           <Grid item lg={12}>
             <Grid container>
-              <Grid item lg={3} xs={3}>
+              <Grid item lg={4} xs={4}>
                 <SweetBoxProducts key={index} isFeature={true} id={featureSweetBox.productId} />
               </Grid>
-              <Grid item lg={9} xs={9}>
+              <Grid item lg={8} xs={8}>
                 <Grid container>
                   {
                     otherSweetBoxes.map((product, index) => {

@@ -1,15 +1,14 @@
 import Api from '../services/api';
 import { removeCookie, setCookie, getCookie } from '../utils/cookie';
 
+const contentTypeJson = { 'Content-Type': 'application/json' };
+
 export const login = async(data) => {
   if (!Object.keys(data).length) {
     return;
   }
 
-  const config = {
-    'Content-Type': 'application/json',
-  }
-  const result = await Api.post(`login`, data, config);
+  const result = await Api.rawPost(`login`, data, contentTypeJson);
   if (result) {
     setCookie(result)
   }
@@ -21,11 +20,7 @@ export const adminLogin = async(data) => {
     return;
   }
 
-  const config = {
-    'Content-Type': 'application/json',
-  }
-
-  const result = await Api.post(`adminlogin`, data, config);
+  const result = await Api.rawPost(`adminlogin`, data, contentTypeJson);
 
   if (result) {
     setCookie(result)
@@ -44,6 +39,6 @@ export const verifyAuth = () => {
 }
 
 export const verifyUser = () => {
-  let {token, userRole} = getCookie();
+  let { token } = getCookie();
   return !!token;
 }

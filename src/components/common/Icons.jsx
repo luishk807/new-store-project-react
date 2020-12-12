@@ -16,6 +16,7 @@ import Wishlist from '../../../public/images/svg/wishlist.svg';
 import AddressBook from '../../../public/images/svg/notebook.svg';
 import Shield from '../../../public/images/svg/shield.svg';
 import CarWheel from '../../../public/images/svg/car_wheel.svg';
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
 import Delivery from '../../../public/images/svg/delivery.svg';
 import Paypal from '../../../public/images/svg/cc-pay.svg';
 import Mastercard from '../../../public/images/svg/cc-master.svg';
@@ -48,6 +49,7 @@ import Products from '../../../public/images/svg/products.svg';
 import Category from '../../../public/images/svg/category.svg';
 import Vendor from '../../../public/images/svg/vendor.svg';
 import Brand from '../../../public/images/svg/brand.svg';
+import Supplies from '../../../public/images/svg/supplies.svg';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import LogoIconWhite from '../../../public/images/logoIconWhite.svg';
 import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
@@ -73,6 +75,12 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'products':
         return <Products className={classes.icon}/>
+      break;
+      case 'delete':
+        return <DeleteOutlinedIcon className={classes.icon}/>
+      break;
+      case 'sweetbox':
+        return <Supplies className={classes.icon}/>
       break;
       case 'banner':
         return <ImageSearchIcon className={classes.icon}/>

@@ -29,7 +29,7 @@ const styles = (theme) => ({
   }
 });
 
-const Index = ({classes, adminSection, userSection,  fields, id, showTitle = true}) => {
+const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = true}) => {
   const [items, setItems] = useState(null);
   const [section, setSection] = useState({});
   const [itemLink, setItemLink] = useState({})
@@ -103,10 +103,10 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
   
     if (userSection) {
       sect = userSection;
-      setSection(userSection);
+      await setSection(userSection);
     } else if (adminSection) {
       sect = adminSection;
-      setSection(adminSection);
+      await setSection(adminSection);
     } else {
       return;
     }
@@ -170,7 +170,8 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
         
         const imageFields = ['img', 'productImages'];
 
-        const value = obj ? obj[field] : null;
+        let value = obj ? obj[field] : null;
+
         let main_image = field;
 
         switch(field){
@@ -310,7 +311,7 @@ const Index = ({classes, adminSection, userSection,  fields, id, showTitle = tru
   );
 }
 
-Index.protoTypes = {
+ItemForm.protoTypes = {
   classes: T.object,
   adminSection: T.object,
   userSection: T.object,
@@ -319,4 +320,4 @@ Index.protoTypes = {
   id: T.number
 }
 
-export default withStyles(styles)(Index);
+export default withStyles(styles)(ItemForm);

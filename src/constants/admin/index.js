@@ -104,6 +104,29 @@ export const ADMIN_SECTIONS = {
     url: 'bannertypes',
     option: 'bannertype'
   },
+  'sweetbox': {
+    name: 'Sweetbox',
+    names: 'Sweetboxes',
+    key: 'sweetbox',
+    url: 'sweetboxes',
+    option: 'sweetbox',
+    listItems: 'sweetBoxSweetboxProduct',
+  },
+  'sweetBoxType': {
+    name: 'Sweet Box Type',
+    names: 'Sweet Box Types',
+    key: 'sweetboxtype',
+    url: 'sweetboxtypes',
+    option: 'sweetboxtype'
+  },
+  'sweetboxProducts': {
+    name: 'Sweetbox',
+    names: 'Sweetboxes',
+    key: 'sweetboxproduct',
+    url: 'sweet-box-products',
+    option: 'sweetboxproduct',
+    parent: 'sweetbox'
+  },
 }
 
 export const ADMIN_URL = {

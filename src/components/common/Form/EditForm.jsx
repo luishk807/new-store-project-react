@@ -38,6 +38,7 @@ const EditForm = ({
 }) => {
   const router = useRouter()
   const [errors, setErrors] = useState({});
+  const [isAdmin, setIsAdmin] = useState(false);
   const [section, setSection] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [imageDelete, setImageDelete] = useState({})
@@ -133,16 +134,19 @@ const EditForm = ({
   const loadFormOption = async() => {
     let inputs = {}
     let sect = null;
+    let admin = false;
     if (userSection) {
       sect = userSection;
       setSection(userSection);
     } else if (adminSection) {
       sect = adminSection;
+      admin = true;
+      setIsAdmin(admin);
       setSection(adminSection);
     } else {
       return;
     }
-    const mainOptions = await loadMainOptions();
+    const mainOptions = await loadMainOptions(admin);
     if (id) {
       Api.get(`${sect.url}`,{
         id: id
@@ -203,6 +207,7 @@ const EditForm = ({
         showTitle={showTitle}
         errors={errors} 
         id={id}
+        isAdmin={isAdmin}
         hideEntry={hideEntry}
         onChange={formOnChange} 
         onSubmit={handleSubmit} 

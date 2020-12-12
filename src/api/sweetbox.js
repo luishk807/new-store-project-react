@@ -7,11 +7,11 @@ export const getSweetBoxesByType = async(type) => {
   const data = {
     type: type
   }
-  return Api.get(`sweetboxes`, data);
+  return Api.get(`sweet-boxes`, data);
 }
 
 export const getAllSweetBoxes = async(data) => {
-  return Api.get(`sweetboxes`, data);
+  return Api.get(`sweet-boxes`, data);
 }
 
 export const getSweetBoxById = async(id) => {
@@ -21,5 +21,5 @@ export const getSweetBoxById = async(id) => {
   const data = {
     id: id
   }
-  return Api.get(`sweetboxes`, data);
+  return Api.get(`sweet-boxes`, data);
 }

@@ -37,6 +37,7 @@ const AddForm = ({
   const router = useRouter()
   const [section, setSection] = useState({});
   const [errors, setErrors] = useState({});
+  const [isAdmin, setIsAdmin] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -116,19 +117,20 @@ const AddForm = ({
 
   const loadFormOption = async() => {
     let sect = null;
-    let isAdmin = false;
+    let admin = false;
     if (userSection) {
       sect = userSection;
       setSection(userSection);
     } else if (adminSection) {
       sect = adminSection;
-      isAdmin = true;
+      admin = true;
+      setIsAdmin(admin);
       setSection(adminSection);
     } else {
       return;
     }
     try {
-      const options = await loadMainOptions(isAdmin);
+      const options = await loadMainOptions(admin);
       Object.keys(entryForm).forEach(field => {
         if (FORM_SCHEMA[field] == "dropdown") {
           if (hideEntry && hideEntry.indexOf(field) !== -1) {
@@ -184,6 +186,7 @@ const AddForm = ({
         fields={form} 
         hideEntry={hideEntry}
         errors={errors} 
+        isAdmin={isAdmin}
         showTitle={showTitle}
         onChange={formOnChange} 
         onSubmit={handleSubmit} 

@@ -87,6 +87,7 @@ const Form = ({
   onChange: formOnChange, 
   fields,
   snack,
+  isAdmin,
   id,
   children,
   fileOnSave,
@@ -308,7 +309,7 @@ const Form = ({
   useEffect(() => {
     const loadFormOption = async() => {
       const section = ADMIN_SECTIONS
-      const options = await loadMainOptions();
+      const options = await loadMainOptions(isAdmin);
       
       setFormOptions(options)
       setUseFormOptions(true)
@@ -396,6 +397,7 @@ Form.protoTypes = {
   fields: T.object,
   onChange: T.func,
   id: T.number,
+  isAdmin: T.bool,
   fileOnSave: T.func,
   fileLimit: T.bool,
   formSubmit: T.func,

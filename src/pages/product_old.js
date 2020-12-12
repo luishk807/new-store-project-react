@@ -78,7 +78,6 @@ const Product = ({classes, data = ProductSample}) => {
 
   const handleSelectChange = (event) => {
     const value = event.target.value;
-    console.log("hey hey", value)
   };
 
   return (

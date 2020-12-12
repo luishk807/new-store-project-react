@@ -30,8 +30,6 @@ const styles = (theme) => ({
 }); 
 
 const RateBar = ({classes, rate}) => {
-  console.log("rate",data)
-  
   return (
     <div className={classes.root}>
       <Grid container>

@@ -59,7 +59,6 @@ const Add = ({classes}) => {
   });
 
   const onChangeColor = (color) => {
-    console.log(color);
     if (color) {
       setColor(color)
     }

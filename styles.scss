@@ -28,11 +28,17 @@ html {
   body {
     margin-bottom: $stickyFooterLimitMobile; /* Margin bottom by footer height */
   }
+  .main-section {
+    padding: 0px 10px 0px;
+  }
 }
 /* Extra Small Devices, Phones */ 
 @media only screen and (min-width : 480px) {
   body {
     margin-bottom: $stickyFooterLimitMobile; /* Margin bottom by footer height */
+  }
+  .main-section {
+    padding: 0px 10px 0px;
   }
 }
 /* Small Devices, Tablets */

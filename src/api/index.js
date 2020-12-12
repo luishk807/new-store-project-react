@@ -25,20 +25,28 @@ export const getItemByFkId = (section, fk, id) => {
     return;
   }
   let data = {}
+  
   switch(fk){
     case 'address':
       data = {
         'user': id
       }
+      break;
     case 'productsvendor':
       data = {
         'vendor': id
       }
+      break;
     case 'sweetbox':
       data = {
         'sweetbox': id
       }
-    break;
+      break;
+    case 'banner':
+      data = {
+        'banner': id
+      }
+      break;
     default:
     
   }
@@ -71,12 +79,23 @@ export const addItem = (section, data) => {
     return;
   }
 
-  const form = 'image' in data ? {
-    ...data,
-    'image': data.image.files
-  } : {
-    ...data
+  let form = null;
+  
+  if ('image' in data) {
+    form = {
+      ...data,
+      'image': data.image.files
+    }
+  } else if ('banner' in data) {
+    form = {
+      ...data,
+      'image': data.banner
+    }
+  } else {
+    form = {
+      ...data
+    }
   }
-
+  
   return Api.post(`${section}`, form);
 }

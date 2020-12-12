@@ -11,6 +11,7 @@ import NewArrival from '../components/NewArrival';
 import SweetBox from '../components/SweetBox';
 import ProductScroller from '../components/ProductScroller';
 import HomeCarrousel from '../components/HomeCarrousel';
+import BannerBox from '../components/BannerBox';
 
 const styles = (theme) => ({
   root: {
@@ -33,11 +34,10 @@ class ClassComponent extends Component {
           </Grid>
           <Grid item lg={12} xs={12}>
             <SweetBox type={1} />
+            <BannerBox type={2} />
+            <BannerBox type={4} showTitle={true} />
             <SweetBox type={2} />
-            {/* <ProductGallery galleryType='store-list' title="Tiendas" />
-            <ProductGallery galleryType='mini-banner'/>
-            <ProductGallery galleryType='store-feature' title="Nuevas Llegadas" />
-            <ProductGallery galleryType='brand-list' title="Top Brands" /> */}
+            <BannerBox type={3} showTitle={true} />
             <ProductScroller />
           </Grid>
         </Grid>

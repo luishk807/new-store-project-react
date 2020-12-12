@@ -10,6 +10,7 @@ export const FORM_TYPE = {
   rate: 'rate',
   textArea: 'textarea',
   linkItem: 'linkitem',
+  imageUrl: 'imgurl',
 }
 
 export const CATEGORY_ICONS = [
@@ -120,7 +121,9 @@ export const FORM_SCHEMA = {
   userRole: FORM_TYPE.drop,
   bannerType: FORM_TYPE.drop,
   products: FORM_TYPE.linkItem,
+  banners: FORM_TYPE.linkItem,
   sweetBoxType: FORM_TYPE.drop,
+  banner: FORM_TYPE.imageUrl,
 }
 
 export const noImageUrl = {

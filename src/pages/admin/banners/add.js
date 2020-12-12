@@ -23,10 +23,13 @@ const Add = ({classes}) => {
   const form = {
     name: null,
     bannerType: null,
-    image: {
-      values: [],
-      open: false,
-    }
+    banner: [
+      {
+        url: '',
+        open: false,
+        values: [],
+      }
+    ]
   }
 
   return (
@@ -34,6 +37,7 @@ const Add = ({classes}) => {
       <AddForm 
         adminSection={ADMIN_SECTIONS.banner} 
         entryForm={form}
+        fileLimit={true}
         customUrl={`/admin/${ADMIN_SECTIONS.banner.url}`}  
       />
     </AdminLayoutTemplate>

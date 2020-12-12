@@ -42,6 +42,7 @@ const EditForm = ({
   const [section, setSection] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [imageDelete, setImageDelete] = useState({})
+  const [bannerDelete, setBannerDelete] = useState({})
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -57,6 +58,44 @@ const EditForm = ({
         [name]: value,
       });
     }
+  }
+
+  const handleBannerSave = async(evt, index) => {
+    const current = form.banner;
+    const idx = index ? index : 0;
+    if (evt.target) {
+      current[idx] = {
+        ...current[idx],
+        url: evt.target.value,
+      }
+    } else {
+      current[idx] = {
+        ...current[idx],
+        values: evt[0],
+      }
+    }
+    setForm({
+      ...form,
+      banner: current,
+    });
+  }
+
+  const addMoreBanner = (add, indx = 0) => {
+    const current = form.banner;
+    if (add) {
+      current[indx] = {
+        url: '',
+        values: [],
+      }
+    } else {
+      if (current[indx]) {
+        delete current[indx];
+      }
+    }
+    setForm({
+      ...form,
+      banner: current,
+    });
   }
 
   const handleCancel = () => {
@@ -88,6 +127,16 @@ const EditForm = ({
       if ('image' in formSubmit) {
         formSubmit['saved'] = imageDelete;
         delete formSubmit.image.saved
+      } else if ('banner' in formSubmit) {
+        if ('saved' in formSubmit.banner) {
+          delete formSubmit.banner.saved
+        }
+        let bannerArry = [];
+        for(const test in formSubmit.banner) {
+          bannerArry.push(formSubmit.banner[test])
+        }
+        formSubmit['banner'] = bannerArry;
+        formSubmit['saved'] = bannerDelete;
       }
       const confirm = await saveItem(section.url, id, formSubmit)
       const resp = handleFormResponse(confirm);
@@ -130,6 +179,14 @@ const EditForm = ({
     }))
   }
 
+  const markBannerDelete = async(images) => {
+    const index = Object.keys(bannerDelete).length;
+    setBannerDelete(prevValue => ({
+      ...prevValue,
+      [index] : images
+    }))
+  }
+
 
   const loadFormOption = async() => {
     let inputs = {}
@@ -160,6 +217,11 @@ const EditForm = ({
           } else if (FORM_SCHEMA[field] == "file") {
             const images = 'productImages' in info ? info['productImages'] : [info['img']];
             inputs['image'] = {
+              'saved': images
+            }
+          } else if (FORM_SCHEMA[field] == "imgurl") {
+            const images = 'productImages' in info ? info['productImages'] : [];
+            inputs['banner'] = {
               'saved': images
             }
           } else if (FORM_SCHEMA[field] == "linkitem") {
@@ -210,10 +272,13 @@ const EditForm = ({
         isAdmin={isAdmin}
         hideEntry={hideEntry}
         onChange={formOnChange} 
+        bannerOnSave={handleBannerSave}
+        bannerAddMore={addMoreBanner}
         onSubmit={handleSubmit} 
         formSubmit={handleSubmit}
         formCancel={handleCancel}
         onImageDelete={markUserImageDelete}
+        onBannerDelete={markBannerDelete}
         type="edit"
         snack={snack}
         onCloseSnack={onCloseSnack}

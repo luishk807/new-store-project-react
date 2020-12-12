@@ -5,6 +5,8 @@ export const formatForm = (form) => {
   for (var i in form){
     if (FORM_SCHEMA[i] == "file") {
       currentForm[i] = form[i].map((data) => data.name)
+    } else if (FORM_SCHEMA[i] == "imgurl") {
+      currentForm[i] = form[i].map((data) => data.name)
     } else if (FORM_SCHEMA[i] == "dropdown") {
       const dropValue = form[i] && form[i].id ? form[i].id : form[i];
       currentForm[i] = dropValue;
@@ -24,6 +26,15 @@ export const formatFormData = (form) => {
       if (form[i] && form[i].length) {
         form[i].forEach((data) => {
           formData.append('image', data)
+        })
+      }
+    } else if (FORM_SCHEMA[i] === "imgurl") {
+      if (form[i] && form[i].length) {
+        form[i].forEach((data) => {
+          let item = data.values;
+          item['url'] = data.url
+          formData.append('imageData', JSON.stringify(item))
+          formData.append('image', item)
         })
       }
     } else if (FORM_SCHEMA[i] === "dropdown") {

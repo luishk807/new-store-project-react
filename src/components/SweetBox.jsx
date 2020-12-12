@@ -31,6 +31,9 @@ const styles = (theme) => ({
     display: 'block',
     [theme.breakpoints.down('sm')]: {
       display: 'none',
+    },
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
     }
   }
 });

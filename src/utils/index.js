@@ -14,7 +14,6 @@ export const getCartTotal = (cart) => {
     Object.keys(cart).forEach((key, index) => {
       subtotal += cart[key].amount * cart[key].quantity;
     })
-    //console.log("hey", data)
   }
 
   taxes = subtotal * 0.08;
@@ -37,6 +36,10 @@ export const calculateRate = (data) => {
   total = total / data.rates.length;
   
   return parseFloat(total);
+}
+
+export const capitalize = (str) => {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 export const getRatingAvg = (data) => {

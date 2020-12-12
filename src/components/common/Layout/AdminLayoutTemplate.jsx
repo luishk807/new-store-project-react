@@ -13,12 +13,17 @@ import Typography from '../Typography';
 import PrivatePage from '../AdminPrivatePage';
 import { useRouter } from 'next/router';
 import { logout } from '../../../api/auth';
-
+import Icons from '../Icons';
 const styles = (theme) => ({
   root: {
-    marginTop: 80,
+    marginTop: 100,
     flexGrow: 1,
   },
+  icon: {
+    width: 37,
+    height: 37,
+    fill: '#000',
+  }
 });
 
 const AdminLayoutTemplate = ({classes, children}) => {
@@ -37,10 +42,6 @@ const AdminLayoutTemplate = ({classes, children}) => {
         </Head>
         <Header />
         <Grid container className={classes.root}>
-          <Typography align="left" variant="h4" component="h3">
-            <Button onClick={()=>router.push('/admin/home')} href="#" className={classes.smallLink}>[Back to admin Home]</Button>
-            <Button onClick={onLogOut} href="#" className={classes.smallLink}>[Log out]</Button>
-          </Typography>
           <Grid item xs={12} lg={12}>
             {children}
           </Grid>

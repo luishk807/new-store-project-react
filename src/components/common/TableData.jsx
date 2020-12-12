@@ -1,11 +1,7 @@
-import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
 import { DataGrid } from '@material-ui/data-grid';
 
 const TableData = ({
-    classes,
-    fields = ['code', 'name', 'stock', 'amount', 'category', 'brand', 'model', 'description'],
-    data,
     title,
     rows = [],
     columns = [],
@@ -22,9 +18,6 @@ const TableData = ({
 }
 
 TableData.protoTypes = {
-    classes: T.object,
-    fields: T.array,
-    data: T.array,
     title: T.string,
     showTitle: T.bool,
     rows: T.array,

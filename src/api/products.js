@@ -5,6 +5,18 @@ export const getProducts = async() => {
   return Api.get(`products`, data);
 }
 
+export const searchProducts = async(str) => {
+  const data = {
+    search: str,
+  }
+
+  return Api.get(`products`, data);
+}
+
+export const searchProductsByFilter = async(filter) => {
+  return Api.get(`products`, filter);
+}
+
 export const getProductById = async(id) => {
   if (!id) {
     return;

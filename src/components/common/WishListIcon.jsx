@@ -31,7 +31,7 @@ const WishListIcon = ({classes, product, onMouseOver, onClick}) => {
   const [pid, setPid] = useState(null);
   const [wishlistIcon, setWishlistIcon] = useState(WISHLIST_ICON.not_saved);
   const [isSaved, setIsSaved] = useState(false);
-  const cookie = verifyCookie();
+  const [cookie, setCookie] = useState(null);
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -42,10 +42,6 @@ const WishListIcon = ({classes, product, onMouseOver, onClick}) => {
     return wishlistIcon == WISHLIST_ICON.not_saved ? WISHLIST_ICON.saved : WISHLIST_ICON.not_saved;
   }
   const onWishlistClick = async() => {
-    // if (isSaved) {
-    //   return;
-    // }
-    const cookie = verifyCookie();
     let snackRep = null;
     if (!cookie) {
       router.push("/login")
@@ -72,18 +68,21 @@ const WishListIcon = ({classes, product, onMouseOver, onClick}) => {
   }
 
   const checkWishlist = async() => {
-    const resp = await getWishlistByUserId({ product: product})
-    if (resp) {
-      setIsSaved(true);
-      const icon = returnIcon();
-      setWishlistIcon(WISHLIST_ICON.saved)
+    if (cookie) {
+      const resp = await getWishlistByUserId({ product: product})
+      if (resp) {
+        setIsSaved(true);
+        const icon = returnIcon();
+        setWishlistIcon(WISHLIST_ICON.saved)
+      }
     }
   }
 
   useEffect(() => {
+    let getCookie = verifyCookie();
+    setCookie(getCookie);
     setPid(product)
     checkWishlist()
-    console.log('product', product)
   }, [wishlistIcon])
 
   return (

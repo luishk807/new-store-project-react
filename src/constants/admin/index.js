@@ -101,7 +101,7 @@ export const ADMIN_SECTIONS = {
     name: 'Banner Type',
     names: 'Banner Types',
     key: 'bannertype',
-    url: 'bannertypes',
+    url: 'banner-types',
     option: 'bannertype'
   },
   'sweetbox': {

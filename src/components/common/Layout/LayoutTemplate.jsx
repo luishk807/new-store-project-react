@@ -11,7 +11,7 @@ import Footer from '../Footer/Footer';
 
 const styles = (theme) => ({
   root: {
-    marginTop: 150,
+    marginTop: 90,
     flexGrow: 1,
   }
 })

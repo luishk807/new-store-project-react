@@ -187,14 +187,7 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
           </Grid>
           <Grid item lg={6} xs={8} className={`${classes.headerContainerMiddle}`}>
             <Grid container className={classes.headerContainerMiddleSub}>
-              <Grid item lg={2}>
-                <Button onClick={() => setOpenCategory(true)} href="#" color="inherit" className='d-none d-sm-block'>
-                  <Typography className={classes.title} variant="h6" noWrap>
-                    category
-                  </Typography>
-                </Button>
-              </Grid>
-              <Grid item lg={10} xs={10}>
+              <Grid item lg={12} xs={12}>
                 <SearchBar/>
               </Grid>
             </Grid>

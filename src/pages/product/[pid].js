@@ -96,12 +96,17 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
   const loadImages = (data) => {
     const imageUrl = getImageUrlByType('product');
-    const imgs = data.productImages.map((img) => {
-        return {
-          original: `${imageUrl}/${img.img_url}`,
-          thumbnail: `${imageUrl}/${img.img_url}`,
-        }
-    });
+    let imgs = [];
+
+    if (data.productImages.length) {
+        imgs = data.productImages.map((img) => {
+          return {
+            original: `${imageUrl}/${img.img_url}`,
+            thumbnail: `${imageUrl}/${img.img_url}`,
+          }
+      });
+    }
+
     setImages(imgs);
   }
 
@@ -126,7 +131,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       setShowData(true);
     }
     loadProductInfo();
-  }, [])
+  }, [id])
 
   return showData && (
     <LayoutTemplate>
@@ -136,8 +141,14 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
             <Grid container spacing={2}>
               <Grid item lg={8} sm={12}>
                 <Grid container>
-                  <Grid item lg={12} sm={12}>
-                    <ImageGallery items={images} />
+                  <Grid item lg={12} sm={12} align="center">
+                    {
+                      images.length ? (
+                        <ImageGallery items={images} />
+                      ) : (
+                        <img className={`img-fluid`} src="/images/no-image.jpg" alt="no images" />
+                      )
+                    }
                   </Grid>
                 </Grid>
               </Grid>
@@ -180,7 +191,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           </Grid>
           <Grid item lg={4} sm={12}>
             <Typography align="left" variant="h4" component="h4">Acerca del Vendedor</Typography>
-            <VendorBox id={productInfo.vendor} />
+            {
+              productInfo.vendor && <VendorBox id={productInfo.vendor} />
+            }
           </Grid>
         </Grid>
         {/* Q&A section */}

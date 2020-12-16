@@ -8,12 +8,14 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@material-ui/core';
-import { ProductGallerySample } from '../constants/samples/ProductCategoryIconsSample';
-import Icons from './common/Icons';
+import { useRouter } from 'next/router';
 
+import { ProductGallerySample } from '../constants/samples/ProductCategoryIconsSample';
 import { ADMIN_SECTIONS } from '../constants/admin';
 import { getItems } from '../api';
 import { getCategories } from '../api/categories';
+import { searchProductsByCat } from '../api/products';
+import Icons from './common/Icons';
 
 const styles = (theme) => ({
   root: {
@@ -43,11 +45,17 @@ const styles = (theme) => ({
 });
 
 const ProductCategoryIcons = ({classes, data}) => {
+  const router = useRouter();
   const [categories, setCategories] = useState([]);
 
   const getCategories = async() => {
     const categories = await getItems(`${ADMIN_SECTIONS.category.url}`);
     setCategories(categories);
+  }
+
+  const goToSearch = (data) => {
+    const url = encodeURI(`/searchResult?cat=${data.id}&catn=${data.name}`);
+    router.push(url)
   }
 
   useEffect(() => {
@@ -62,7 +70,7 @@ const ProductCategoryIcons = ({classes, data}) => {
             {
               categories && categories.map((data, index) => {
                 return (
-                  <ListItem key={index} button className={classes.listItemCont}>
+                  <ListItem onClick={()=>goToSearch(data)} key={index} button className={classes.listItemCont}>
                     <ListItemIcon className={classes.listItemIcons}>
                       <Icons name={data.icon} classes={{icon: classes.icon}} />
                     </ListItemIcon>

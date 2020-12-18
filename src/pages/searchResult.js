@@ -83,7 +83,8 @@ const SearchResult = ({classes}) => {
   }
 
   useEffect(() => {
-    setCurrentPage(1);
+    let cpage = page ? page : 1;
+    setCurrentPage(cpage);
     loadSearchStr();
   }, [str, cat, page, showData])
 

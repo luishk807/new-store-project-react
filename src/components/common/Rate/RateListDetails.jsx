@@ -15,7 +15,7 @@ import { deepPurple } from '@material-ui/core/colors';
 
 const styles = (theme) => ({
   root: {
-    with: '100%',
+    width: '100%',
   },
   ratingStyle: {
     verticalAlign: 'middle',
@@ -47,12 +47,16 @@ const styles = (theme) => ({
   rateOwner: {
     padding: '5px 0px'
   },
+  rootContainer: {
+    width: '100%',
+  },
   rateBtnContainer: {
     justifyContent: 'space-between',
   },
   rateBtn: {
     borderRadius: '0px !important',
     padding: 10,
+    width: '100%',
   }
 }); 
 
@@ -86,11 +90,11 @@ const RateListDetails = ({classes, data, id}) => {
 
   return (
     <div className={classes.root}>
-      <Grid container>
+      <Grid container  className={classes.rootContainer}>
         {
           showRates && rates.map((item, index) => {
             return (
-              <Grid item lg={12} key={index} className={classes.rateItems}>
+              <Grid item lg={12} xs={12} key={index} className={classes.rateItems}>
                 <Grid container>
                   <Grid item lg={6} xs={5} align="left">
                     <Rate className={classes.ratingStyle} data={item.rate} disabled={true} />

@@ -20,6 +20,9 @@ const styles = (theme) => ({
   smallLink: {
     fontSize: '.6em',
   },
+  formRoot: {
+    width: '50%',
+  },
 });
 
 const Add = ({classes, userInfo, vendorInfo}) => {

@@ -80,29 +80,29 @@ const Index = ({classes, data}) => {
     <LayoutTemplate>
       <div className={classes.root}>
         <Grid container>
-          <Grid item lg={2} className={classes.imageItem}>
+          <Grid item lg={2} xs={12} className={classes.imageItem}>
             <img src={`${images[0].original}`}  className={`img-fluid`} />
           </Grid>
-          <Grid item lg={10} className={classes.contentSection}>
+          <Grid item lg={10} xs={12} className={classes.contentSection}>
             <Grid container>
-              <Grid item lg={12}>
+              <Grid item lg={12} xs={12}>
                 <Link onClick={()=>router.back()} className={classes.name}>{productInfo.name}</Link>
               </Grid>
-              <Grid item lg={12}>
+              <Grid item lg={12} xs={12}>
                 Preguntando en {moment(productInfo.createdAt).format('MMMM D, YYYY')}
               </Grid>
-              <Grid item lg={12}>
+              <Grid item lg={12} xs={12}>
                 <AnswerProductQuestionsForm data={questions} />
               </Grid>
             </Grid>
           </Grid>
-          <Grid item lg={12} className={classes.imageAnswersContent}>
+          <Grid item lg={12} xs={12} className={classes.imageAnswersContent}>
           {
             questions && questions.questionAnswers.map((item, index) => {
               return (
                 <Grid key={index} container className={classes.answerItemsContainer}>
-                    <Grid item lg={12}>{item.answer}</Grid>
-                    <Grid item lg={12}>{item.userId} on {moment(item.createdAt).format('MMMM D, YYYY')}</Grid>
+                  <Grid item lg={12} xs={12}>{item.answer}</Grid>
+                  <Grid item lg={12} xs={12}>{item.userId} on {moment(item.createdAt).format('MMMM D, YYYY')}</Grid>
                 </Grid>
               )
             })

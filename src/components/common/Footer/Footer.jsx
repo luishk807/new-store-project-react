@@ -3,6 +3,7 @@ import * as T from 'prop-types';
 import {
   withStyles, 
   Grid,
+  Link,
 } from '@material-ui/core';
 
 import Typography from '../Typography';
@@ -16,6 +17,11 @@ const styles = (theme) => ({
   },
   footerLink: {
     fontSize: '.8em',
+    color: 'white',
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    }
   },
   firstLineContainer: {
     backgroundColor: 'black',
@@ -31,25 +37,33 @@ const styles = (theme) => ({
     padding: 5,
   },
   firstLineItemsCellsTitle: {
-    '& p': {
+    textAlign: 'center',
+    lineHeight: '30px',
+    '& a': {
       fontWeight: 'bold',
       fontSize: '1.3em',
+      color: 'white'
     }
   },
   firstLineItemsCells: {
     padding: '3px 0px',
     margin: '0px auto',
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center',
+    lineHeight: '10px',
     '& ul': {
-      justifyContent: 'center',
       margin: 0,
-      display: 'block',
       padding: 0,
+      display: 'block',
       [theme.breakpoints.down('sm')]: {
-        display: 'flex',
+        display: 'table',
+        textAlign: 'center',
         listStyleType: 'none',
       },
     },
     '& ul li': {
+      lineHeight: '20px',
       display: 'block',
       padding: '5px 0px',
       [theme.breakpoints.down('sm')]: {
@@ -97,6 +111,10 @@ const styles = (theme) => ({
     padding: 5,
     fontSize: '.9em',
     color: 'white',
+    '&:hover': {
+      textDecoration: 'underline',
+      color: 'white',
+    }
   },
   lastLine: {
     fontSize: '.8em',
@@ -124,29 +142,29 @@ const Footer = ({classes}) => {
               <Grid item lg={2} md={6} xs={12} className={classes.firstLineItems}>
                 <Grid container>
                   <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
-                    <Typography align="center" variant="subtitle1" component="p">Venenatis</Typography>
+                    <a align="center" href="/">Venenatis</a>
                   </Grid>
                   <Grid item lg={4} xs={12} className={classes.firstLineItemsCells}>
                     <ul className={classes.ulList}>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                     </ul>
                   </Grid>
@@ -156,29 +174,29 @@ const Footer = ({classes}) => {
               <Grid item lg={2} md={6} xs={12} className={classes.firstLineItems}>
                 <Grid container>
                   <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
-                    <Typography align="center" variant="subtitle1" component="p">Venenatis</Typography>
+                    <a align="center" href="/">Venenatis</a>
                   </Grid>
                   <Grid item lg={4} xs={12} className={classes.firstLineItemsCells}>
                     <ul className={classes.ulList}>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                     </ul>
                   </Grid>
@@ -188,29 +206,29 @@ const Footer = ({classes}) => {
                <Grid item lg={2} md={6} xs={12} className={classes.firstLineItems}>
                 <Grid container>
                   <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
-                    <Typography align="center" variant="subtitle1" component="p">Venenatis</Typography>
+                    <a align="center" href="/">Venenatis</a>
                   </Grid>
                   <Grid item lg={4} xs={12} className={classes.firstLineItemsCells}>
                     <ul className={classes.ulList}>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                     </ul>
                   </Grid>
@@ -220,29 +238,29 @@ const Footer = ({classes}) => {
               <Grid item lg={2} md={6} xs={12} className={classes.firstLineItems}>
                 <Grid container>
                   <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
-                    <Typography align="center" variant="subtitle1" component="p">Venenatis</Typography>
+                    <a align="center" href="/">Venenatis</a>
                   </Grid>
                   <Grid item lg={4} xs={12} className={classes.firstLineItemsCells}>
                     <ul className={classes.ulList}>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                       <li className={classes.liList}>
-                        <Typography align="center" variant="body1" component="p" className={classes.footerLink}>
+                        <a href="/"  className={classes.footerLink}>
                           Pellentesque
-                        </Typography>
+                        </a>
                       </li>
                     </ul>
                   </Grid>
@@ -274,7 +292,7 @@ const Footer = ({classes}) => {
             </Grid>
           </Grid>
           <Grid item lg={12} xs={12} className={`${classes.lastLine}`}>
-              <Typography align="center" variant="body1" component="p" className={classes.lastLineItems}>&copy; 2020 AvenidaZ.  All right reserverd.</Typography>
+              <Typography align="center" variant="body1" component="p" className={classes.lastLineItems}>&copy; 2020 <a href="/" className={classes.footerLink}>AvenidaZ.com</a>  All right reserverd.</Typography>
           </Grid>
         </Grid>
       </div>

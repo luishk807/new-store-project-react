@@ -23,9 +23,16 @@ const styles = (theme) => ({
     width: '100%',
     textAlign: 'center',
   },
+  wishlistContainer: {
+    display: 'flex',
+    justifyContent: 'flex-start'
+  },
   wishCard: {
     width: '25%',
-    display: 'inline-block'
+    display: 'inline-block',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    }
   }
 });
 
@@ -77,7 +84,7 @@ const Wishlists = ({classes, userInfo, cart, addCart}) => {
     <UserLayoutTemplate>
       <div className={classes.root}>
         <Grid container>
-          <Grid item lg={12} align="center">
+          <Grid item lg={12} xs={12} className={classes.wishlistContainer} align="center">
             {
               showData && wishlists.map((wishlist, index) => {
                 return (

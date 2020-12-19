@@ -100,7 +100,6 @@ const ProductQuestionBox = ({classes, data}) => {
     let range = questions ? questions.length + 5 : 5;
     const fetchQuestions = await getQuestions({limit: range});
     setQuestions(fetchQuestions);
-    console.log("questions", fetchQuestions)
     setShowQuestions(true)
   }
 
@@ -111,29 +110,29 @@ const ProductQuestionBox = ({classes, data}) => {
   return showQuestions && (
     <div className={classes.root}>
       <Grid container>
-        <Grid item lg={12}>
+        <Grid item lg={12} xs={12}>
           <Typography align="left" variant="h4" component="h4">Preguntas y respuestas</Typography>
         </Grid>
-        <Grid item lg={12}>
+        <Grid item lg={12} xs={12}>
           <AskProductQuestionsForm data={data} />
         </Grid>
-        <Grid item lg={12} sm={12} className={classes.qaTitleContainer}>
+        <Grid item lg={12} xs={12} className={classes.qaTitleContainer}>
           <Typography align="left" variant="h5" component="h5">Ultima Preguntas</Typography>
           <Divider className={classes.qaDivider} />
         </Grid>
-        <Grid item lg={12}>
+        <Grid item lg={12} xs={12}>
           <Grid container spacing={2}>
           {
             questions.map((question, index) => {
               return (
-                <Grid key={index} item lg={12}>
+                <Grid key={index} item lg={12} xs={12}>
                   <Grid container>
-                    <Grid item lg={12} className={classes.qaItem}>
+                    <Grid item lg={12} xs={12} className={classes.qaItem}>
                       <Grid container className={classes.qaAnswersContainer}>
-                        <Grid item lg={1} className={classes.qaItemTitle1}>
-                          <CommentOutlinedIcon width="20" height="20"/>&nbsp;&nbsp;Question: 
+                        <Grid item lg={1} xs={2} className={classes.qaItemTitle1}>
+                          <CommentOutlinedIcon width="20" height="20"/>&nbsp;P 
                         </Grid>
-                        <Grid item lg={11} align="left">
+                        <Grid item lg={11} xs={10} align="left">
                           <Link href={`questions/${question.id}`} className={classes.qaLink}>
                             {question.question}
                           </Link>                   
@@ -142,12 +141,12 @@ const ProductQuestionBox = ({classes, data}) => {
                     </Grid>
                     {
                       question.product_answers && question.product_answers.length > 0 && (
-                        <Grid item lg={12}>
+                        <Grid item lg={12} xs={12}>
                           <Grid container className={classes.qaAnswersContainer}>
-                              <Grid item lg={1} className={classes.qaItemTitle1}>
-                                  <MessageOutlinedIcon width="20" height="20"/>&nbsp;&nbsp;Answer: 
+                              <Grid item lg={1} xs={2} className={classes.qaItemTitle1}>
+                                  <MessageOutlinedIcon width="20" height="20"/>&nbsp;&nbsp;R: 
                               </Grid>
-                              <Grid item lg={11} align="left">                          
+                              <Grid item lg={11} xs={10} align="left">                          
                                 <Typography align="left" className={`${classes.questionAnswer}`} variant="body1" component="div">{question.product_answers[0].answer}</Typography>
                                 <Typography align="left" variant="caption" component="legend">By: {question.product_answers[0].user}test on July 24</Typography>
                               </Grid>
@@ -162,10 +161,10 @@ const ProductQuestionBox = ({classes, data}) => {
           }
           </Grid>
         </Grid>
-        <Grid item lg={12} sm={12} className={classes.qaTitleContainer}>
+        <Grid item lg={12} xs={12} className={classes.qaTitleContainer}>
           <Button onClick={loadQuestions} className={`mainButton ${classes.textButton}`}>Ver mas</Button>
         </Grid>
-        <Grid item lg={12} sm={12} className={classes.qaTitleContainer}>
+        <Grid item lg={12} xs={12} className={classes.qaTitleContainer}>
           <Divider className={classes.qaDivider} />
         </Grid>
       </Grid>

@@ -24,6 +24,9 @@ const styles = (theme) => ({
     fontSize: '0.8em',
     flexBasis: 'auto',
     fontWeight: 'bold',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
   }
 });
 

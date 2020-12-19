@@ -20,6 +20,7 @@ import Icons from './common/Icons';
 const styles = (theme) => ({
   root: {
     display: 'flex',
+    overflowX: 'auto',
   },
   title: {
     color: 'red',
@@ -37,10 +38,17 @@ const styles = (theme) => ({
   icon: {
     width: 70,
     height: 70,
+    [theme.breakpoints.down('sm')]: {
+      width: 50,
+      height: 50,
+    },
   },
   listItemMainCont: {
     display: 'flex',
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'start',
+    },
   }
 });
 
@@ -65,7 +73,7 @@ const ProductCategoryIcons = ({classes, data}) => {
   return categories && (
     <div className={classes.root}>
       <Grid container>
-        <Grid item lg={12}>
+        <Grid item lg={12} xs={12}>
           <List component="nav" className={classes.listItemMainCont} aria-label="main mailbox folders">
             {
               categories && categories.map((data, index) => {

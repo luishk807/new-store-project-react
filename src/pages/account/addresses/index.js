@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import {
   withStyles,
   Link,
+  Button,
   Grid,
 } from '@material-ui/core';
 
@@ -16,10 +17,15 @@ import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemp
 import AddressBox from '../../../components/common/AddressBox';
 import Snackbar from '../../../components/common/Snackbar';
 import { handleFormResponse } from '../../../utils/form';
+import ProgressBar from '../../../components/common/ProgressBar';
 
 const styles = (theme) => ({
   root: {
     padding: 5,
+  },
+  headerItem: {
+    display: 'flex',
+    alignItems: 'center',
   },
   addressItem: {
     width: '25%',
@@ -31,6 +37,13 @@ const styles = (theme) => ({
   icon: {
     width: 120,
     height: 120,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  addIcon: {
+    width: 40,
+    height: 40,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -79,18 +92,18 @@ const Index = ({classes, userInfo}) => {
   return (
     <UserLayoutTemplate>
       <div className={classes.root}>
-        <Typography align="left" variant="h4" component="h3">My Addresses</Typography>
+        <Grid container>
+          <Grid item lg={12} xs={12} className={classes.headerItem}>
+            <Typography align="left" variant="h4" component="h3">My Addresses</Typography>
+            &nbsp;&nbsp;<Button href={`addresses/add`}>
+              <Icons name="addCircle" classes={{icon: classes.addIcon}}/>
+            </Button>
+          </Grid>
+        </Grid>
         <Grid container>
           <Grid item lg={12}>
-            <Grid container>
-              <Grid item lg={3}>
-                <CardIcon link={`addresses/add`} title="Add Address">
-                  <Icons name="add" classes={{icon: classes.icon}}/>
-                </CardIcon>
-              </Grid>
-            </Grid>
             {
-              showData && addresses ? addresses.map((address, index) => {
+              showData ? addresses.map((address, index) => {
                 return (
                   <AddressBox 
                     onClickEdit={addressUpdate}
@@ -101,11 +114,7 @@ const Index = ({classes, userInfo}) => {
                   />
                 )
               }) : (
-                <Grid container>
-                  <Grid item>
-                      No Address Saved
-                  </Grid>
-                </Grid>
+                <ProgressBar />
               )
             }
           </Grid>

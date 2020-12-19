@@ -22,6 +22,15 @@ const styles = (theme) => ({
   smallLink: {
     fontSize: '.6em',
   },
+  accountTitle: {
+    display: 'flex',
+    alignItems: 'center',
+  },
+  icon: {
+    width: 37,
+    height: 37,
+    fill: '#000',
+  }
 });
 
 const Settings = ({classes, userInfo}) => {
@@ -35,7 +44,12 @@ const Settings = ({classes, userInfo}) => {
   return (
     <UserLayoutTemplate>
       <div className={classes.root}>
-        <Typography align="left" variant="h4" component="h3">Your Account <Link onClick={onLogOut} href="#" className={classes.smallLink}>[Log out]</Link></Typography>
+        <Typography align="left" variant="h4" component="h3" className={classes.accountTitle}>
+          Your Account&nbsp;
+          <Link onClick={onLogOut} href="#" className={classes.smallLink}>
+            <Icons name="logout"  classes={{icon: classes.icon}} />
+          </Link>
+        </Typography>
         <Grid container spacing={2}>
         {
           USER_ACCOUNT_SECTIONS.map((button, index) => {

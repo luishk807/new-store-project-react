@@ -39,13 +39,13 @@ const RateFullView = ({classes, data}) => {
   return showRate && (
     <div className={classes.root} id="rateSection">
       <Grid container spacing={2} className={classes.mainRateContainer}>
-        <Grid item lg={12}>
-          <Typography align="left" variant="h4" component="h4">Preguntas y respuestas</Typography>
+        <Grid item lg={12} xs={12}>
+          <Typography align="left" variant="h4" component="h4">Opiniones</Typography>
         </Grid>
-        <Grid item lg={3} align="left">
+        <Grid item lg={3} xs={12} align="left">
           <RateBoxBreakdown data={rates} />
         </Grid>
-        <Grid item lg={9} align="right">
+        <Grid item lg={9} xs={12} align="right">
           <RateListDetails data={rates} id={data.id} />
         </Grid>
       </Grid>

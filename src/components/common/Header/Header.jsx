@@ -32,11 +32,24 @@ const styles = (theme) => ({
     width: '100%',
     zIndex: '100',
   },
+  mainLogo: {
+    width: 180,
+    display: 'inline-block',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    },
+    [theme.breakpoints.up('md')]: {
+      width: 145,
+    }
+  },
   menuButton: {
     '& svg': {
       fontSize: '1.5em'
     },
     [theme.breakpoints.up('lg')]: {
+      display: 'none'
+    },
+    [theme.breakpoints.up('md')]: {
       display: 'none'
     }
   },
@@ -51,7 +64,7 @@ const styles = (theme) => ({
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'space-between',
-      padding: '6px 0px',
+      padding: 0,
     }
   },
   headerContainerLeft: {
@@ -69,12 +82,9 @@ const styles = (theme) => ({
   headerContainerMiddleSub: {
     justifyContent: 'center'
   },
-  headerContainerRight: {
+  headerContainerRightin: {
     display: 'flex',
     justifyContent: 'flex-end'
-  },
-  sideMenuRoot: {
-    width: 250,
   },
   search: {
     position: 'relative',
@@ -133,6 +143,39 @@ const styles = (theme) => ({
       width: '50ch',
     },
   },
+  sideMenuRoot: {
+    width: 250,
+  },
+  sideMenuContainer: {
+    
+  },
+  sideMainIcons: {
+    width: '40px',
+  },  
+  sideMenuTop: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    position: 'fixed',
+    width: 258,
+  },
+  sideMenuTitle: {
+    fontSize: '1em',
+    padding: '5px 15px',
+    fontWeight: 'bold',
+  },
+  sideMenuMain: {
+    marginTop: 70,
+    '& ul': {
+      listStyleType: 'none',
+      margin: 0,
+      padding: 0,
+    },
+    '& ul li': {
+      display: 'block',
+      padding: '6px 15px',
+      textAlign: 'left',
+    }
+  }
 })
 
 const Header = ({classes, data, userInfo, loadMain, cart}) => {
@@ -150,17 +193,89 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
       onOpen={handleMobileMenu}
     >
       <div className={classes.sideMenuRoot}>
-      <List>
-        <ListItem>
-          <ListItemIcon><ShoppingCartOutlinedIcon/></ListItemIcon>
-          <ListItemText primary={"testing"} />
-        </ListItem>
-        <ListItem>
-          <ListItemIcon><ShoppingCartOutlinedIcon/></ListItemIcon>
-          <ListItemText primary={"testx"} />
-        </ListItem>
-      </List>
-      <Divider />
+        <Grid container spacing={2} className={classes.sideMenuContainer}>
+          <Grid item xs={12} align="left" className={`AppBarBackColor ${classes.sideMenuTop}`}>
+            <Button href="/"  className={`${classes.sideMenuLogoBtn}`}>
+              <Icon name="logo" classes={{icon: classes.sideMainIcons}} />
+            </Button>
+            <Button onClick={() => setOpenMobile(false)}  className={`${classes.sideMenuLogoBtn}`}>
+              <Icon name="close" classes={{icon: classes.sideMainIcons}} />
+            </Button>
+          </Grid>
+          <Grid item xs={12} align="left" className={classes.sideMenuMain}>
+            <section>
+              <h3 className={classes.sideMenuTitle}>Sign In</h3>
+              <ul>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+              </ul>
+            </section>
+            <Divider />
+            <section>
+              <h3 className={classes.sideMenuTitle}>Category</h3>
+              <ul>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+              </ul>
+            </section>
+            <Divider />
+            <section>
+              <h3 className={classes.sideMenuTitle}>Other</h3>
+              <ul>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+                <li>
+                  <a href="/">test</a>
+                </li>
+              </ul>
+            </section>
+          </Grid>
+        </Grid>
       </div>
     </SwipeableDrawer>
   );
@@ -172,28 +287,22 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
     <div className={classes.root}>
       <Grid container className={`${classes.headerContainer} AppBarBackColor`}>
           <Grid item lg={3} xs={2} className={`${classes.headerContainerLeft}`}>
-            <Grid container>
-              <Grid item lg={2} xs={2}  className={`${classes.menuButton}`}>
-                <Button onClick={handleMobileMenu}>
-                  <Icon name="logo" />
-                </Button>
-              </Grid>
-              <Grid item lg={4}>
-                <Link href="/">
-                  <img className={classes.logo} src="/images/logo-white.svg" alt="" />
-                </Link>
-              </Grid>
-            </Grid>
+            <Button onClick={handleMobileMenu}  className={`${classes.menuButton}`}>
+              <Icon name="logo" />
+            </Button>
+            <Link href="/" className={classes.mainLogo}>
+              <img className={`img-fluid`} src="/images/logo-white.svg" alt="" />
+            </Link>
           </Grid>
-          <Grid item lg={6} xs={8} className={`${classes.headerContainerMiddle}`}>
+          <Grid item lg={7} xs={8} className={`${classes.headerContainerMiddle}`}>
             <Grid container className={classes.headerContainerMiddleSub}>
               <Grid item lg={12} xs={12}>
                 <SearchBar/>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item lg={3} xs={2}>
-            <Grid container className={`${classes.headerContainerRight}`}>
+          <Grid item lg={2} xs={2} align="right">
+            <Grid container className={classes.headerContainerRightin}>
               <Grid item>
                 <Button href="/cart" color="inherit" className={classes.cartBtn}>
                   <ShoppingCartOutlinedIcon style={{ fontSize: 40 }} />

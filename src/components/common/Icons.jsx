@@ -56,9 +56,14 @@ import PersonAddOutlinedIcon from '@material-ui/icons/PersonAddOutlined';
 import StoreMallDirectoryOutlinedIcon from '@material-ui/icons/StoreMallDirectoryOutlined';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ImageSearchIcon from '@material-ui/icons/ImageSearch';
+import SearchIcon from '@material-ui/icons/Search';
 import CloseIcon from '@material-ui/icons/Close';
 import StorefrontIcon from '@material-ui/icons/Storefront';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import ImportExportIcon from '@material-ui/icons/ImportExport';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import HomeIcon from '@material-ui/icons/Home';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 import Typography from './Typography';
 
@@ -73,8 +78,23 @@ const Icons = ({classes, name}) => {
   
   const getIcon = () => {
     switch(name) {
+      case 'addCircle':
+        return <AddCircleIcon className={classes.icon}/>
+      break;
+      case 'back':
+        return <ArrowBackIcon className={classes.icon}/>
+      break;
+      case 'home':
+        return <HomeIcon className={classes.icon}/>
+      break;
       case 'products':
         return <Products className={classes.icon}/>
+      break;
+      case 'import':
+        return <ImportExportIcon className={classes.icon}/>
+      break;
+      case 'search':
+        return <SearchIcon className={classes.icon}/>
       break;
       case 'delete':
         return <DeleteOutlinedIcon className={classes.icon}/>

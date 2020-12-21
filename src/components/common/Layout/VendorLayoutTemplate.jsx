@@ -6,23 +6,71 @@ import { connect } from 'react-redux';
 import {
   withStyles,
   Grid,
-  Button
+  IconButton,
+  Button,
+  Menu,
+  MenuItem,
 } from '@material-ui/core';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 
 import Typography from '../../../components/common/Typography';
 import UserLayoutTemplate from './UserLayoutTemplate';
 import { USER_SECTIONS } from '../../../constants/user';
+import Icons from '../../common/Icons';
 import AddForm from '../../../components/common/Form/AddForm';
 import { defaultCountry } from '../../../../config';
 import { logout } from '../../../api/auth';
+import DotMenu from '../../../components/common/DotMenu';
 
 const styles = (theme) => ({
   root: {},
+  icon: {
+    width: 37,
+    height: 37,
+    fill: '#000',
+  },
+  topContainer: {
+    padding: 9,
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center',
+    }
+  },
+  logoutContainer: {
+    display: 'block',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    }
+  }
 });
 
 const VendorLayoutTemplate = ({classes, userInfo, children, vendorInfo}) => {
   const router = useRouter();
   const [vendor, setVendor] = useState(false);
+
+  const options = [
+    {
+      name: 'Account',
+      url: '/account'
+    },
+    {
+      name: 'Vendor', 
+      url: '/account/vendor',
+    },
+    {
+      name: 'Add product',
+      url: '/account/vendor/add'
+    },
+    {
+      name: 'Import product',
+      url: '/account/vendor/import'
+    },
+    {
+      name: 'Logout',
+      url: 'logout'
+    },
+  ];
 
   const form = {
     name: null,
@@ -65,16 +113,19 @@ const VendorLayoutTemplate = ({classes, userInfo, children, vendorInfo}) => {
   return (
     <UserLayoutTemplate>
       <div className={classes.root}>
-        <Typography align="left" variant="h4" component="h3">
-          {vendor ? `Welcome ${vendor.name} ` : `Welcome`}
-          {
-            vendor && (
-              <Button onClick={()=>router.push('/account/vendor')} href="#" className={classes.smallLink}>[Back to vendor]</Button>
-            )
-          }
-          <Button onClick={()=>router.push('/account')} href="#" className={classes.smallLink}>[Back to user]</Button>
-          <Button onClick={onLogOut} href="#" className={classes.smallLink}>[Log out]</Button>
-        </Typography>
+        <Grid container className={classes.topContainer}>
+          <Grid item lg={8} align="left">
+            <Typography align="left" variant="h4" component="h3" >
+              {vendor ? `Welcome ${vendor.name} ` : `Welcome`}
+              <DotMenu options={options} />
+            </Typography>
+          </Grid>
+          <Grid item lg={4} align="right" className={classes.logoutContainer}>
+            <Button onClick={onLogOut} href="#" className={classes.smallLink}>
+              <Icons name="logout"  classes={{icon: classes.icon}} />
+            </Button>
+          </Grid>
+        </Grid>
         <Grid container spacing={2}>
           {
              vendor ? (

@@ -30,6 +30,8 @@ const styles = (theme) => ({
   },
   pagination: {
     alignItems: 'center',
+    justifyContent: 'center',
+    display: 'flex',
     '& > *': {
       marginTop: theme.spacing(2),
     },
@@ -92,7 +94,7 @@ const SearchResult = ({classes}) => {
     <LayoutTemplate>
       <div className={classes.root}>
         <Grid container>
-          <Grid item lg={12}>
+          <Grid item lg={12} xs={12}>
             <ProductCategoryIcons />
           </Grid>
           <Grid item lg={12} xs={12}>
@@ -109,7 +111,7 @@ const SearchResult = ({classes}) => {
                   <Grid container spacing={2}>
                     {
                       data.map((data, index) => {
-                        let prodImage = data.productImages.length ? `${imageUrl}/${data.productImages[0].img_url}` : `/images/no-image.jpg`;
+                        let prodImage = data.productImages.length ? `${imageUrl}/${data.productImages[0].img_url}` : noImageUrl.img;
                         return (
                           <Grid key={index} item lg={3} sm={12}>
                             <Card className={classes.cardRoot} variant="outlined">

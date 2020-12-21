@@ -70,7 +70,7 @@ const ProductBox = React.memo(({classes, title, id, onDelete}) => {
   
   const imgMainUrl = getImageUrlByType(title);
   
-  let productImg = `${noImageUrl}`;
+  let productImg = `${noImageUrl.img}`;
 
   if (product && product.productImages && product.productImages.length) {
     productImg = `${imgMainUrl}/${product.productImages[0].img_url}`;

@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import SearchIcon from '@material-ui/icons/Search';
+import Icons from './Icons';
 
 import {
   SearchResultSample
@@ -18,6 +19,12 @@ import {
 import { searchProducts } from '../../api/products';
 
 const styles = (theme) => ({
+  searchBarInputContent: {
+    position: 'relative',
+    borderRadius: 4,
+    background: 'white',
+    padding: 3,
+  },
   search: {
     backgroundColor: 'black',
     display: 'inline-block',
@@ -30,10 +37,11 @@ const styles = (theme) => ({
     marginRight: theme.spacing(2),
     marginLeft: 0,
     width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto',
-    },
+  },
+  icon: {
+    fill: 'white',
+    zIndex: 1,
+    width: 25,
   },
   searchIcon: {
     padding: theme.spacing(0, 2),
@@ -43,19 +51,23 @@ const styles = (theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+    right: 0,
+    top: 0,
+    borderRadius: '0px 4px 4px 0px',
+    border: '1px solid white',
   },
   inputRoot: {
     color: 'inherit',
+    width: '80%',
   },
   inputInput: {
     padding: theme.spacing(1, 1, 1, 0),
     // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    paddingLeft: 15,
     transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '50ch',
-    },
+    width: '80%',
+    backgroundColor: 'white',
+    color: 'black',
   },
   searchResults: {
     position: 'absolute',
@@ -64,6 +76,7 @@ const styles = (theme) => ({
     borderRadius: 2,
     maxHeight: 300,
     overflowY: 'scroll',
+    marginTop: '-3px',
   }, 
   searchResultItems: {
     '& div': {
@@ -173,21 +186,23 @@ const SearchBar = ({classes}) => {
     <>
     <ClickAwayListener onClickAway={resetTab}>
       <div className={classes.search}>
-        <div className={classes.searchIcon}>
-          <SearchIcon />
+        <div className={classes.searchBarInputContent}>
+          <div className={`AppBarBackColor ${classes.searchIcon}`}>
+            <Icons classes={{icon: classes.icon}} name="search"/>
+          </div>
+          <InputBase
+            value={currentValue}
+            placeholder="Search…"
+            classes={{
+              root: classes.inputRoot,
+              input: classes.inputInput,
+            }}
+            onChange={handleOnChange}
+            onFocus={resetTab}
+            onKeyDown={onKeyDown}
+            inputProps={{ 'aria-label': 'search' }}
+          />
         </div>
-        <InputBase
-          value={currentValue}
-          placeholder="Search…"
-          classes={{
-            root: classes.inputRoot,
-            input: classes.inputInput,
-          }}
-          onChange={handleOnChange}
-          onFocus={resetTab}
-          onKeyDown={onKeyDown}
-          inputProps={{ 'aria-label': 'search' }}
-        />
         {
           showResults && (
             <Grid container className={classes.searchResults}>

@@ -17,11 +17,13 @@ const styles = (theme) => ({
     width: '100%',
   },
   productSelectDrop: {
-    // minWidth: '100%',
     minWidth: 120,
-    // fontSize: '1.5em',
     padding: '2px 0px',
     margin: theme.spacing(1),
+    [theme.breakpoints.down('sm')]: {
+      margin: 'auto',
+      width: '100%',
+    }
   },
   productSelectLabel: {
     // fontSize: '1em',

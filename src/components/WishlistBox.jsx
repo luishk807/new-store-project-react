@@ -18,7 +18,8 @@ const styles = (theme) => ({
     width: '100%'
   },
   closeButton: {
-    padding: 0,
+    display: 'inline-block',
+    padding: 10,
     '& span': {
       display: 'inline-block'
     }
@@ -36,7 +37,7 @@ const styles = (theme) => ({
     },
   },
   itemContentContainer: {
-    padding: 20,
+    padding: '0px 20px 20px 20px',
   }
 });
 
@@ -59,24 +60,24 @@ const WishlistBox = ({classes, id, userInfo, onDeleteItem, onAddCart}) => {
   return showData && (
     <div className={classes.root}>
       <Grid container>
-        <Grid item lg={12} key={product.id} className={classes.itemContainer}>
+        <Grid item lg={12} xs={12} key={product.id} className={classes.itemContainer}>
           <Grid container>
-            <Grid item lg={12} align="right">
+            <Grid item lg={12} xs={12} align="right">
               <Link  href="#" onClick={()=>onDeleteItem(product.id)}  className={classes.closeButton}>
                 <Icons name="close" classes={{icon: classes.closeIcon}} />
               </Link>
             </Grid>
-            <Grid item lg={12} className={classes.itemContentContainer}>
+            <Grid item lg={12} xs={12} className={classes.itemContentContainer}>
               <Grid container>
-                <Grid item lg={12}>
+                <Grid item lg={12} xs={12}>
                   <img src={`${prodImage}/${product.productImages[0].img_url}`}  className={`img-fluid`} />
                 </Grid>
-                <Grid item lg={12}>
+                <Grid item lg={12} xs={12}>
                   {
                     product.name
                   }
                 </Grid>
-                <Grid item lg={12}>
+                <Grid item lg={12} xs={12}>
                   <Button onClick={()=>onAddCart(product)} className={`mainButton`}>Add Cart</Button>
                 </Grid>
               </Grid>

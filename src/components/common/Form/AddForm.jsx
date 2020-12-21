@@ -184,6 +184,7 @@ const AddForm = ({
         title={section.name} 
         fileOnSave={handleSave} 
         fields={form} 
+        classes={classes}
         hideEntry={hideEntry}
         errors={errors} 
         isAdmin={isAdmin}

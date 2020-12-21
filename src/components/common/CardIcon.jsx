@@ -16,6 +16,9 @@ const styles = (theme) => ({
     margin:5,
   },
   img: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
     height: 180,
     width: 180,
   },

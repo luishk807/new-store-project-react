@@ -14,6 +14,7 @@ import {
 } from '@material-ui/core';
 
 import { getImageUrlByType } from '../../utils/form';
+import { noImageUrl } from '../../../config';
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../../constants/samples/ProductSample';
@@ -29,17 +30,28 @@ import VendorBox from '../../components/vendorBox';
 
 const styles = (theme) => ({
   root: {
-    padding:10
+    padding:10,
+    [theme.breakpoints.down('sm')]: {
+      '& p': {
+        lineHeight: '2 !important',
+      }
+    }
   },
   productName: {
     fontSize: '4rem',
     fontWeight: 'bold',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '3em',
+    }
   },
   productPriceContainer: {
     padding: '5px 0px'
   },
   productPrice: {
     fontSize: '3.5rem',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '2em',
+    }
   },
   deliveryText: {
     color: '#51DC55',
@@ -59,7 +71,7 @@ const styles = (theme) => ({
     padding: 10,
   },
   dropDown: {
-    width: '100%'
+    width: '100%',
   },
   addCartBtn: {
     width: '100%',
@@ -71,7 +83,12 @@ const styles = (theme) => ({
   textInput: {
     width: '100%',
   },
-
+  rateBox: {
+    display: 'block',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    }
+  },
 });
 
 const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
@@ -137,16 +154,16 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     <LayoutTemplate>
       <div className={classes.root}>
         <Grid container>
-          <Grid item lg={9} sm={12}>
+          <Grid item lg={9} xs={12}>
             <Grid container spacing={2}>
-              <Grid item lg={8} sm={12}>
+              <Grid item lg={8} xs={12}>
                 <Grid container>
-                  <Grid item lg={12} sm={12} align="center">
+                  <Grid item lg={12} xs={12} align="center">
                     {
                       images.length ? (
                         <ImageGallery items={images} />
                       ) : (
-                        <img className={`img-fluid`} src="/images/no-image.jpg" alt="no images" />
+                        <img className={`img-fluid`} src={noImageUrl.img} alt={noImageUrl.alt} />
                       )
                     }
                   </Grid>
@@ -170,16 +187,16 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography align="left" variant="h5" component="h5">Disponibilidad: {productInfo.stock}</Typography>
                   </Grid>
-                  <Grid item lg={12}  xs={12}>
+                  <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography className={classes.deliveryText} align="left" variant="body1" component="p">
-                      <Icons name="delivery" classes={{icon: classes.deliveryIcon}}  />&nbsp;Entrega a todo Panama
+                      <Icons name="delivery" classes={{icon: classes.deliveryIcon}}  /> Entrega a todo Panama
                     </Typography>
                   </Grid>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item lg={3} sm={12}>
+          <Grid item lg={3} sm={12} className={classes.rateBox}>
             <RateBox data={productInfo} />
           </Grid>
         </Grid>

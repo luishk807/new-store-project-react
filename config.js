@@ -123,4 +123,7 @@ export const FORM_SCHEMA = {
   sweetBoxType: FORM_TYPE.drop,
 }
 
-export const noImageUrl = '/images/no-image.jpg';
+export const noImageUrl = {
+  img: '/images/no-image.jpg',
+  alt: 'no image',
+}

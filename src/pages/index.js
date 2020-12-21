@@ -28,7 +28,7 @@ class ClassComponent extends Component {
     return (
       <LayoutTemplate classes={{root: classes.layoutClass}}>
         <Grid container className="main-section">
-          <Grid item>
+          <Grid item lg={12} xs={12}>
             <BigCarrousel image={'main-banner.jpg'} />
             <ProductCategoryIcons />
             <SweetBox type={1} />

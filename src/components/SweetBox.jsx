@@ -51,22 +51,22 @@ const SweetBox = React.memo(({classes, type}) => {
     return (
       <div key={index} className={`container-fluid`} className={classes.root}>
         <Grid container>
-          <Grid item lg={12}>
+          <Grid item lg={12} xs={12}>
             <Typography className={classes.title}>{sweetbox.name}</Typography>
           </Grid>
         </Grid>
         <Grid container>
-          <Grid item lg={12}>
+          <Grid item lg={12} xs={12}>
             <Grid container>
-              <Grid item lg={4} xs={4}>
+              <Grid item lg={4} xs={12}>
                 <SweetBoxProducts key={index} isFeature={true} id={featureSweetBox.product} />
               </Grid>
-              <Grid item lg={8} xs={8}>
+              <Grid item lg={8} xs={12}>
                 <Grid container>
                   {
                     otherSweetBoxes.map((product, index) => {
                       return (
-                        <Grid key={index} item lg={3} xs={3}>
+                        <Grid key={index} item lg={3} xs={6}>
                           <SweetBoxProducts key={index} isFeature={false} id={product.product} />
                         </Grid>
                       )

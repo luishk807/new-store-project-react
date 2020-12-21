@@ -6,7 +6,9 @@ import {
   Grid,
   Button,
 } from '@material-ui/core';
+import NumberFormat from 'react-number-format';
 
+import { noImageUrl } from '../../../../config'; 
 import { deleteItem, getItems, getItemByFkId } from '../../../api';
 import Icons from '../../../components/common/Icons';
 import Snackbar from '../../../components/common/Snackbar';
@@ -16,16 +18,63 @@ const styles = (theme) => ({
   root: {
     padding: 10,
   },
+  itemTitle: {
+    textTransform: 'capitalize',
+  },
   item: {
-    padding: 5
+    borderTop: '1px solid rgba(0,0,0, .09)',
+    padding: '20px 0px',
   },
   icon: {
     width: 80,
     height: 80,
     fill: '#000',
   },
+  deleteIcon: {
+    fill: '#000',
+    width: 30,
+    height: 30,
+  },
   mainImage: {
     width: 150,
+  },
+  importBtn: {
+    width: '15%',
+    color: 'white',
+    '& svg': {
+      fill: 'white'
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '45%',
+    }
+  },
+  addBtn: {
+    width: '15%',
+    color: 'white',
+    '& svg': {
+      fill: 'white'
+    },
+    [theme.breakpoints.down('sm')]: {
+      width: '45%',
+    }
+  },
+  addIconBtn: {
+    width: 37,
+    height: 37,
+    fill: '#000',
+  },
+  importIconBtn: {
+    width: 37,
+    height: 37,
+    fill: '#000',
+  },
+  buttonItemSub: {
+    display: 'flex',
+    margin: '20px 0px',
+    justifyContent: 'flex-end',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'space-evenly',
+    }
   }
 });
 
@@ -62,9 +111,10 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
     switch(section.key) {
       case PRODUCTS_VENDOR:
         return (
-          <Link href={`add`}>
-            <a>Add {section.names}</a>
-          </Link>          
+          <Button href={`add`} className={`AppBarBackColor ${classes.addBtn}`}>
+              <Icons name="add" classes={{icon: classes.addIconBtn}}/>&nbsp;
+              Add {section.names}
+          </Button>          
         )
       break;
       default: 
@@ -84,15 +134,17 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
     switch(section.key) {
       case ADMIN_SECTIONS.product.key:
         return (
-          <Link href={`products/import`}>
+          <Button href={`products/import`} className={`AppBarBackColor ${classes.importBtn}`}>
+            <Icons name="import" classes={{icon: classes.importIconBtn}}/>&nbsp;
             <a>Import {section.names}</a>
-          </Link>
+          </Button>
         )
       case PRODUCTS_VENDOR:
         return (
-          <Link href={`import`}>
+          <Button href={`import`} className={`AppBarBackColor ${classes.importBtn}`}>
+            <Icons name="import" classes={{icon: classes.importIconBtn}}/>&nbsp;
             <a>Import {section.names}</a>
-          </Link>
+          </Button>
         )
     }
   }
@@ -134,20 +186,18 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
           })
         }
         return (
-          <Grid item key={index} lg={12} sm={12} className={classes.item}>
+          <Grid item key={index} lg={12} xs={12} className={classes.item}>
             <Grid container>
-              <Grid item lg={1} sm={12}>
+              <Grid item lg={1} xs={12}>
                {index + 1}
               </Grid>
               {
                 setChildTitle(item)
               }
-              <Grid item lg={3} sm={12}>
-                [
-                  <Button onClick={()=> { delItem(item.id) }}>
-                    delete
-                  </Button>
-                ]
+              <Grid item lg={3} xs={12}>
+                <Button onClick={()=> { delItem(item.id) }}>
+                  <Icons name="delete" classes={{icon: classes.deleteIcon}} />
+                </Button>
               </Grid>
             </Grid>
           </Grid>
@@ -188,31 +238,35 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
             )
           case 'img':
             if (imageFields.indexOf(field) !== -1 && obj) {
-              let src = value ? `${process.env.IMAGE_URL}/${section.url}/${value}` : `/images/no-image.jpg`;
+              let src = value ? `${process.env.IMAGE_URL}/${section.url}/${value}` : noImageUrl.img;
               main_image = <img className={classes.mainImage} src={src} />
+            } else {
+              main_image = null;
             }
             return (
-              <Grid key={index} item lg={4} sm={12}>
+              <Grid key={index} item lg={4} xs={12}>
                 { 
-                  main_image
+                  main_image && main_image
                 }
               </Grid>
             )
           case 'productImages':
             if (imageFields.indexOf(field) !== -1 && obj) {
-              let src = value && value.length > 0 ? `${process.env.IMAGE_URL}/${value[0].img_url}` : `/images/no-image.jpg`;
-              main_image = <img className={classes.mainImage} src={src} />
+              let src = value && value.length > 0 ? `${process.env.IMAGE_URL}/${value[0].img_url}` : noImageUrl.img;
+              main_image = <img className={`img-fluid ${classes.mainImage}`} src={src} />
+            } else {
+              main_image = null;
             }
             return (
-              <Grid key={index} item lg={2} sm={12}>
+              <Grid key={index} item lg={2} xs={12}>
                 { 
-                   main_image
+                   main_image && main_image
                 }
               </Grid>
             )
           case 'first_name':
             return (
-              <Grid key={index} item lg={2} sm={12}>
+              <Grid key={index} item lg={2} xs={12}>
                 { 
                   value ?
                   (
@@ -225,7 +279,7 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
             )
           case 'name':
             return (
-              <Grid key={index} item lg={2} sm={12}>
+              <Grid key={index} item lg={2} xs={12}>
                 { 
                   value ?
                   (
@@ -238,7 +292,7 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
             )
           case 'status':
             return (
-              <Grid key={index} item lg={2} sm={12}>
+              <Grid key={index} item lg={2} xs={12}>
                 { 
                   value ? value: field
                 }
@@ -246,7 +300,7 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
             )
           case 'address':
             return (
-              <Grid key={index} item lg={2} sm={12}>
+              <Grid key={index} item lg={2} xs={12}>
                 { 
                   value ?
                   (
@@ -257,9 +311,20 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
                 }
               </Grid>
             )
+          case 'amount':
+            return (
+              <Grid key={index} item lg={2} xs={12}>
+                { 
+                  value ?
+                  (
+                    <NumberFormat value={value} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                  ) : field
+                }
+              </Grid>
+            )
           default:
             return (
-              <Grid item key={index} lg={2} sm={12}>
+              <Grid item key={index} lg={2} xs={12}>
                 { value ? value : field }
               </Grid>
             )
@@ -278,20 +343,21 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
             </Grid>
           )
         }
-        <Grid item lg={12}>
+        <Grid item lg={12} xs={12}>
           <Grid container>
-              <Grid item lg={12} xs={12}>
-                  [
-                    {
-                      loadAddBtn()
-                    }
-                  ]&nbsp;
-                  [{ loadImportBtn() }]
+              <Grid item lg={12} xs={12} className={classes.buttonItemSub}>
+                {
+                  loadAddBtn()
+                }
+                &nbsp;
+                { 
+                  loadImportBtn() 
+                }
               </Grid>
           </Grid>
         </Grid>
-        <Grid item lg={12} sm={12}>
-          <Grid container>
+        <Grid item lg={12} xs={12}>
+          <Grid container className={classes.itemTitle}>
             <Grid item lg={1} xs={12}>&nbsp;</Grid>
             {
               setChildTitle()

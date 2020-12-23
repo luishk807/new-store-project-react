@@ -8,12 +8,13 @@ import * as T from 'prop-types';
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
+import MobileFooter from '../../MobileFooter';
 
 const styles = (theme) => ({
   root: {
     marginTop: 90,
     flexGrow: 1,
-  }
+  },
 })
 const LayoutTemplate = ({classes, children}) => (
   <section>
@@ -27,6 +28,7 @@ const LayoutTemplate = ({classes, children}) => (
         {children}
       </Grid>
     </Grid>
+    <MobileFooter />
     <Footer />
   </section>
 );

@@ -26,6 +26,12 @@ const styles = (theme) => ({
     fontWeight: 'bold',
     margin: '10px 0px',
     fontSize: '1.5em',
+  },
+  featureBox: {
+    display: 'block',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    }
   }
 });
 
@@ -58,7 +64,7 @@ const SweetBox = React.memo(({classes, type}) => {
         <Grid container>
           <Grid item lg={12} xs={12}>
             <Grid container>
-              <Grid item lg={4} xs={12}>
+              <Grid item lg={4} xs={12} className={classes.featureBox}>
                 <SweetBoxProducts key={index} isFeature={true} id={featureSweetBox.product} />
               </Grid>
               <Grid item lg={8} xs={12}>

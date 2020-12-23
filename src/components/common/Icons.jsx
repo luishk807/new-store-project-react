@@ -23,6 +23,7 @@ import Mastercard from '../../../public/images/svg/cc-master.svg';
 import Visa from '../../../public/images/svg/cc-visa.svg';
 import Discovery from '../../../public/images/svg/cc-discover.svg';
 import Cart from '../../../public/images/svg/cart.svg';
+import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import Twitter from '../../../public/images/svg/social-twitter.svg';
 import Facebook from '../../../public/images/svg/social-facebook.svg';
 import Pininterest from '../../../public/images/svg/social-pinterest.svg';
@@ -64,6 +65,8 @@ import ImportExportIcon from '@material-ui/icons/ImportExport';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import HomeIcon from '@material-ui/icons/Home';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 
 import Typography from './Typography';
 
@@ -80,6 +83,9 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'addCircle':
         return <AddCircleIcon className={classes.icon}/>
+      break;
+      case 'listBullets':
+        return <FormatListBulletedIcon className={classes.icon}/>
       break;
       case 'back':
         return <ArrowBackIcon className={classes.icon}/>
@@ -125,6 +131,9 @@ const Icons = ({classes, name}) => {
       break;
       case 'user':
         return <PersonAddOutlinedIcon className={classes.icon}/>
+      break;
+      case 'user2':
+        return <PermIdentityOutlinedIcon className={classes.icon}/>
       break;
       case 'store':
         return <StoreMallDirectoryOutlinedIcon className={classes.icon}/>
@@ -181,7 +190,7 @@ const Icons = ({classes, name}) => {
         return <Discovery className={classes.icon}/>
       break;
       case 'cart':
-        return <Cart className={classes.icon}/>
+        return <ShoppingCartOutlinedIcon className={classes.icon}/>
       break;
       case 'chat':
         return <Chat className={classes.icon}/>

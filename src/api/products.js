@@ -13,6 +13,14 @@ export const searchProducts = async(str) => {
   return Api.get(`products`, data);
 }
 
+export const getProductByCategory = async(cat) => {
+  const filter = {
+    'category': cat
+  }
+
+  return Api.get(`products`, filter);
+}
+
 export const searchProductsByFilter = async(filter) => {
   return Api.get(`products`, filter);
 }

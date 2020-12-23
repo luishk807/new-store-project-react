@@ -10,7 +10,6 @@ import {
   Link,
   Button,
   Grid,
-  SwipeableDrawer,
   Divider,
   List,
   ListItem,
@@ -21,7 +20,6 @@ import Icon from '../../../components/common/Icons';
 import Typography from '../Typography';
 import loadMain from '../../../redux/reducers'
 import SearchBar from '../SearchBar';
-import Modal from '../Modal';
 
 const styles = (theme) => ({
   root: {
@@ -104,6 +102,14 @@ const styles = (theme) => ({
   cartBtn: {
     position: 'relative'
   },
+  cartIcon: {
+    width: 40,
+    height: 40,
+    fill: 'white',
+    [theme.breakpoints.down('sm')]: {
+      fill: 'black'
+    }
+  },
   cartTotal: {
     position: 'absolute',
     backgroundColor: 'red',
@@ -130,6 +136,10 @@ const styles = (theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  accountIcon: {
+    width: 40,
+    height: 40,
+  },
   inputRoot: {
     color: 'inherit',
   },
@@ -143,142 +153,12 @@ const styles = (theme) => ({
       width: '50ch',
     },
   },
-  sideMenuRoot: {
-    width: 250,
-  },
-  sideMenuContainer: {
-    
-  },
-  sideMainIcons: {
-    width: '40px',
-  },  
-  sideMenuTop: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    position: 'fixed',
-    width: 258,
-  },
-  sideMenuTitle: {
-    fontSize: '1em',
-    padding: '5px 15px',
-    fontWeight: 'bold',
-  },
-  sideMenuMain: {
-    marginTop: 70,
-    '& ul': {
-      listStyleType: 'none',
-      margin: 0,
-      padding: 0,
-    },
-    '& ul li': {
-      display: 'block',
-      padding: '6px 15px',
-      textAlign: 'left',
-    }
-  }
+
 })
 
 const Header = ({classes, data, userInfo, loadMain, cart}) => {
-  const [openMobile, setOpenMobile] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
 
-  const handleMobileMenu = () => {
-    setOpenMobile(!openMobile);
-  }
-  const renderSideMenu = (
-    <SwipeableDrawer
-      anchor={'left'}
-      open={openMobile}
-      onClose={handleMobileMenu}
-      onOpen={handleMobileMenu}
-    >
-      <div className={classes.sideMenuRoot}>
-        <Grid container spacing={2} className={classes.sideMenuContainer}>
-          <Grid item xs={12} align="left" className={`AppBarBackColor ${classes.sideMenuTop}`}>
-            <Button href="/"  className={`${classes.sideMenuLogoBtn}`}>
-              <Icon name="logo" classes={{icon: classes.sideMainIcons}} />
-            </Button>
-            <Button onClick={() => setOpenMobile(false)}  className={`${classes.sideMenuLogoBtn}`}>
-              <Icon name="close" classes={{icon: classes.sideMainIcons}} />
-            </Button>
-          </Grid>
-          <Grid item xs={12} align="left" className={classes.sideMenuMain}>
-            <section>
-              <h3 className={classes.sideMenuTitle}>Sign In</h3>
-              <ul>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-              </ul>
-            </section>
-            <Divider />
-            <section>
-              <h3 className={classes.sideMenuTitle}>Category</h3>
-              <ul>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-              </ul>
-            </section>
-            <Divider />
-            <section>
-              <h3 className={classes.sideMenuTitle}>Other</h3>
-              <ul>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-                <li>
-                  <a href="/">test</a>
-                </li>
-              </ul>
-            </section>
-          </Grid>
-        </Grid>
-      </div>
-    </SwipeableDrawer>
-  );
   useEffect(() => {
     loadMain()
   }, [userInfo])
@@ -287,7 +167,7 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
     <div className={classes.root}>
       <Grid container className={`${classes.headerContainer} AppBarBackColor`}>
           <Grid item lg={3} xs={2} className={`${classes.headerContainerLeft}`}>
-            <Button onClick={handleMobileMenu}  className={`${classes.menuButton}`}>
+            <Button href="/"  className={`${classes.menuButton}`}>
               <Icon name="logo" />
             </Button>
             <Link href="/" className={classes.mainLogo}>
@@ -305,7 +185,7 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
             <Grid container className={classes.headerContainerRightin}>
               <Grid item>
                 <Button href="/cart" color="inherit" className={classes.cartBtn}>
-                  <ShoppingCartOutlinedIcon style={{ fontSize: 40 }} />
+                  <ShoppingCartOutlinedIcon className={classes.cartIcon} />
                   {
                     Object.keys(cart).length > 0 && (
                       <div className={classes.cartTotal}>
@@ -319,7 +199,7 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
               </Grid>
               <Grid item>
                 <Button href="/account" color="inherit" className='d-none d-sm-block'>
-                  <PermIdentityOutlinedIcon style={{ fontSize: 40 }} />
+                  <PermIdentityOutlinedIcon className={classes.accountIcon} />
                   {
                     userInfo.first_name && (
                       <Typography className={classes.userName} variant="subtitle2">{userInfo.first_name}</Typography>
@@ -330,18 +210,7 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
             </Grid>
           </Grid>
       </Grid>
-      {renderSideMenu}
     </div>
-    <Modal
-      onOpen={openCategory}
-      onClose={() => setOpenCategory(false)}
-    >
-        <Grid container>
-         <Grid item>
-              Test
-         </Grid>
-      </Grid>
-    </Modal>
     </>
   );
 }

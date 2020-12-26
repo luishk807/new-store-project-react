@@ -51,7 +51,7 @@ const styles = (theme) => ({
     borderRadius: 0,
   },
   catBtnClicked: {
-    backgroundColor: 'black',
+    backgroundColor: 'black !important',
     '& svg': {
       fill: 'white'
     }

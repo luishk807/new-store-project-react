@@ -27,7 +27,7 @@ logs
 .idea/
 .vscode/
 *.sublime*
-/public/images/products/*
+/public/images/products/
 psd
 thumb
 sketch

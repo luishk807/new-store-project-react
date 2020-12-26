@@ -3,15 +3,12 @@ import * as T from 'prop-types';
 import {
   withStyles,
   Grid,
-  Card,
-  CardMedia,
-  CardContent,
-  CardActionArea,
   Link,
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import Pagination from '@material-ui/lab/Pagination';
 
+import { noImageUrl } from '../../config';
 import Rate from '../components/common/Rate/Rate';
 import Typography from '../components/common/Typography';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
@@ -19,6 +16,7 @@ import ProductCategoryIcons from '../components/ProductCategoryIcons'
 import { getImageUrlByType } from '../utils/form';
 import { searchProductsByFilter } from '../api/products';
 import ProgressBar from '../components/common/ProgressBar';
+import TextEllipsis from '../components/common/TextEllipsis';
 
 const styles = (theme) => ({
   root: {
@@ -37,14 +35,75 @@ const styles = (theme) => ({
     },
   },
   cardRoot: {
-    margin: 10,
     textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      margin: 0,
+    }
   },
   media: {
     height: 'auto',
     width: '100%',
     padding: 10,
   },
+  itemsContainer: {
+    padding: '5px 0px',
+  },
+  itemMain: {
+    border: '1px solid rgba(0,0,0,.09)',
+    margin: 8,
+    [theme.breakpoints.down('sm')]: {
+      borderTop: '1px solid rgba(0,0,0,.09)',
+      border: 'none',
+      padding: '5px 0px',
+      margin: 'auto',
+    }
+  },
+  itemImg: {
+    padding: 15,
+    [theme.breakpoints.down('sm')]: {
+      padding: 9,
+    }
+  },
+  itemInfo: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: 9,
+    '& p': {
+      marginBottom: 'auto',
+    },
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'flex-start',
+      lineHeight: 'auto',
+      '& p': {
+        marginBottom: 0,
+      }
+    }
+  },
+  itemAmount: {
+    fontWeight: 'bold',
+    fontSize: '2em',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.2em',
+      textAlign: 'left',
+    }
+  },
+  itemTitle: {
+    fontSize: '2em',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.2em',
+      textAlign: 'left',
+      fontWeight: 'bold',
+    }
+  },
+  itemDesc: {
+    [theme.breakpoints.down('sm')]: {
+      textAlign: 'left',
+    }
+  },
+  rateItem: {
+    padding: '8px 0px'
+  }
 });
 
 const SearchResult = ({classes}) => {
@@ -107,31 +166,34 @@ const SearchResult = ({classes}) => {
                 <Grid item lg={12} xs={12} className={classes.pagination}>
                   <Pagination onChange={onPageChange} page={currentPage} count={pages} variant="outlined" size="large" shape="rounded" />
                 </Grid>
-                <Grid item lg={12} xs={12}>
-                  <Grid container spacing={2}>
+                <Grid item lg={12} xs={12} className={classes.itemsContainer}>
+                  <Grid container>
                     {
                       data.map((data, index) => {
-                        let prodImage = data.productImages.length ? `${imageUrl}/${data.productImages[0].img_url}` : noImageUrl.img;
+                        let prodImage = data.productImages && data.productImages.length ? (
+                          <img className={`img-fluid`} src={`${imageUrl}/${data.productImages[0].img_url}`} />
+                        ) : (
+                          <img className={`img-fluid`} src={noImageUrl.img} alt={noImageUrl.alt} />
+                        )
                         return (
-                          <Grid key={index} item lg={3} sm={12}>
-                            <Card className={classes.cardRoot} variant="outlined">
-                              <CardActionArea>
-                                <Link href={`/product/${data.id}`} color="inherit" underline="none">
-                                  <CardMedia
-                                    className={classes.media}
-                                    image={prodImage}
-                                    title={data.name}
-                                    component="img"
-                                  />
-                                  <CardContent>
-                                    <Typography align="center" variant="h3" component="h3">US ${data.amount}</Typography>
-                                    <Typography align="center" variant="h4" component="h4">{data.name}</Typography>
-                                    <Typography align="center" variant="body1" component="p">{data.description}</Typography>
-                                    <Rate data={0} disabled={true} />
-                                  </CardContent>
-                                </Link>
-                              </CardActionArea>
-                            </Card>
+                          <Grid key={index} item lg={3} xs={12} className={classes.itemMain}>
+                            <Link href={`/product/${data.id}`} color="inherit" underline="none">
+                              <Grid container className={classes.cardRoot} >
+                                <Grid item xs={5} lg={12 } className={classes.itemImg}>
+                                  {
+                                    prodImage
+                                  }
+                                </Grid>
+                                <Grid item xs={7} lg={12} className={classes.itemInfo}>
+                                  <p className={classes.itemAmount}>US ${data.amount}</p>
+                                  <p align="center" variant="h4" component="h4" className={classes.itemTitle}>{data.name}</p>
+                                  <p align="center" variant="body1" component="p" className={classes.itemDesc}>
+                                    <TextEllipsis text={data.description} limit={100} />
+                                  </p>
+                                  <Rate className={classes.rateItem} data={0} disabled={true} />
+                                </Grid>
+                              </Grid>
+                            </Link>
                           </Grid>     
                         );
                       })

@@ -22,10 +22,6 @@ const styles = (theme) => ({
     display: 'flex',
     overflowX: 'auto',
   },
-  title: {
-    color: 'red',
-    borderTop: '2px solid red',
-  },
   listItemCont: {
     display: 'inline-block',
     width: 'auto',
@@ -34,13 +30,19 @@ const styles = (theme) => ({
   listItemIcons: {
     borderBottom: '3px solid blue',
     paddingBottom: 7,
+    minWidth: 40,
+  },
+  name: {
+    '& span': {
+      fontSize: '.8em',
+    }
   },
   icon: {
     width: 70,
     height: 70,
     [theme.breakpoints.down('sm')]: {
-      width: 50,
-      height: 50,
+      width: 40,
+      height: 40,
     },
   },
   listItemMainCont: {
@@ -82,7 +84,7 @@ const ProductCategoryIcons = ({classes, data}) => {
                     <ListItemIcon className={classes.listItemIcons}>
                       <Icons name={data.icon} classes={{icon: classes.icon}} />
                     </ListItemIcon>
-                    <ListItemText primary={data.name} />
+                    <ListItemText primary={data.name} className={classes.name}/>
                   </ListItem>
                 );
               })

@@ -20,7 +20,7 @@ const TextEllipsis = ({
       className={classes}
     >
       { 
-        text.substring(0,80).concat('...')
+        text.length > limit ? text.substring(0,limit).concat('...') : text
       }
     </Typography>
   );

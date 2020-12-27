@@ -1,0 +1,22 @@
+{
+    "name": "Nombre",
+    "description": "Descripción",
+    "basic": "Básico",
+
+    "add_product": "Añadir Producto",
+    "options": "Opciones",
+
+    "po_title": "Opciones de Producto",
+    "po_name": "Nombre",
+    "po_description": "Descripción",
+    "po_add_option": "Añadir Opción",
+
+    "pov_title": "Valor de Opciones de Producto",
+    "pov_add_value": "Añadir Valor para Opción",
+
+    "pv_title": "Variantes de Producto",
+
+    "ca_title": "Categorías",
+    "categories": "Categorías",
+    "ca_add": "Añadir Categoría"
+}

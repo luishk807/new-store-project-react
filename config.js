@@ -127,3 +127,8 @@ export const noImageUrl = {
   img: '/images/no-image.jpg',
   alt: 'no image',
 }
+
+export const config = {
+  backEndUrl: process.env.BACKEND_URL,
+  apiBaseUrl: process.env.API_BASE_URL
+}

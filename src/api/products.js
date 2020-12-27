@@ -1,7 +1,7 @@
 import Api from '../services/api';
 import { verifyCookie } from '../utils/cookie';
 
-export const getProducts = async() => {
+export const getProducts = async(data) => {
   return Api.get(`products`, data);
 }
 

@@ -11,6 +11,7 @@ import ProductGallery from '../components/ProductGallery';
 import ProductCategoryIcons from '../components/ProductCategoryIcons'
 import NewArrival from '../components/NewArrival';
 import SweetBox from '../components/SweetBox';
+import ProductScroller from '../components/ProductScroller';
 
 const styles = (theme) => ({
   root: {
@@ -37,6 +38,7 @@ class ClassComponent extends Component {
             <ProductGallery galleryType='mini-banner'/>
             <ProductGallery galleryType='store-feature' title="Nuevas Llegadas" />
             <ProductGallery galleryType='brand-list' title="Top Brands" /> */}
+            <ProductScroller />
           </Grid>
         </Grid>
       </LayoutTemplate>

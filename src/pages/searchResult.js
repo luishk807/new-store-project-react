@@ -12,7 +12,7 @@ import { noImageUrl } from '../../config';
 import Rate from '../components/common/Rate/Rate';
 import Typography from '../components/common/Typography';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
-import ProductCategoryIcons from '../components/ProductCategoryIcons'
+import CategorySelectorPlain from '../components/CategorySelectorPlain'
 import { getImageUrlByType } from '../utils/form';
 import { searchProductsByFilter } from '../api/products';
 import ProgressBar from '../components/common/ProgressBar';
@@ -154,7 +154,7 @@ const SearchResult = ({classes}) => {
       <div className={classes.root}>
         <Grid container>
           <Grid item lg={12} xs={12}>
-            <ProductCategoryIcons />
+            <CategorySelectorPlain />
           </Grid>
           <Grid item lg={12} xs={12}>
             <Typography align="left" variant="h4" component="span">Searching for &ldquo;{str || catn}&rdquo;</Typography>

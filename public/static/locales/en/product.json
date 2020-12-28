@@ -1,0 +1,22 @@
+{
+    "name": "Name",
+    "description": "Description",
+    "basic": "Basic",
+
+    "add_product": "Add",
+    "options": "Options",
+
+    "po_title": "Product Options",
+    "po_name": "Name",
+    "po_description": "Description",
+    "po_add_option": "Add Option",
+
+    "pov_title": "Product Option's Values",
+    "pov_add_value": "Add Option Values",
+
+    "pv_title": "Product Variants",
+
+    "ca_title": "Categories",
+    "categories": "Categories",
+    "ca_add": "Add Category"
+}

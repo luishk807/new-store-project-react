@@ -12,14 +12,14 @@ import { getMainSliders } from '../api/banners';
 
 const styles = (theme) => ({
   root: {
-
+    width: '100%',
   },
   carrouselContainer: {
     width: '100%'
   }
 });
 
-const BigCarrousel = ({classes, image}) => {
+const BigCarrousel = ({classes}) => {
   const imageUrl = `${process.env.IMAGE_URL}/slideImages`;
   const [images, setImages] = useState([]);
   const [showData, setShowData] = useState(false);
@@ -35,7 +35,6 @@ const BigCarrousel = ({classes, image}) => {
           description: `slideshow ${index}`
         }
       })
-      console.log("image", dataImage)
       setImages(dataImage)
       setShowData(true);
     }
@@ -67,7 +66,6 @@ const BigCarrousel = ({classes, image}) => {
 
 BigCarrousel.protoTypes = {
   classes: T.object,
-  image: T.object,
 }
 
 export default withStyles(styles)(BigCarrousel);

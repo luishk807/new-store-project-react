@@ -153,6 +153,24 @@ a:hover {
     color: $main_color !important;
   }
 }
+.cardRoot2 {
+  width: 100%;
+  text-align: center;
+  border-radius: 0px !important;
+  &:hover {
+    background-color: white !important;
+    & div {
+      color: black
+    }
+    & svg {
+      fill: black,
+    }
+  }
+  & span {
+    display: flex;
+    flex-direction: column;
+  }
+};
 .cardRoot {
   padding: 10;
   background-color: rgb(239,239,239);

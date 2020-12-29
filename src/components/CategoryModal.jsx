@@ -31,17 +31,6 @@ const styles = (theme) => ({
     height: 30,
     fill: '#000',
   },
-  iconsContainer: {
-    borderTop: '1px solid rgba(0,0,0,.08)',
-    backgroundColor: 'rgba(0,0,0,.03)',
-    overflowY: 'auto',
-    width: '30%',
-  },
-
-  iconContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-  },
   catBtn: {
     width: '100%',
     padding: '25px 0px',
@@ -55,15 +44,6 @@ const styles = (theme) => ({
     '& svg': {
       fill: 'white'
     }
-  },
-  productsContainer: {
-    overflowY: 'auto',
-    width: '70%',
-  },
-  categoryIconsContainer: {
-    overflowY: 'scroll',
-    height: 'calc(100% - 110px)',
-    backgroundColor: 'rgba(0,0,0,.03)',
   },
   body: {
     position: 'absolute',
@@ -92,6 +72,20 @@ const styles = (theme) => ({
     width: '100%',
     display: 'flex',
     flexDirection: 'row',
+  },
+  iconsContainer: {
+    borderTop: '1px solid rgba(0,0,0,.08)',
+    backgroundColor: 'rgba(0,0,0,.03)',
+    overflowY: 'auto',
+    width: '30%',
+  },
+  productsContainer: {
+    overflowY: 'auto',
+    width: '70%',
+  },
+  iconContainer: {
+    display: 'flex',
+    justifyContent: 'center',
   },
 });
 

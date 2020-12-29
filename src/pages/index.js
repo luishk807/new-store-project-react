@@ -6,12 +6,11 @@ import {
 } from '@material-ui/core';
 
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
-import BigCarrousel from '../components/BigCarrousel';
 import ProductGallery from '../components/ProductGallery';
-import ProductCategoryIcons from '../components/ProductCategoryIcons'
 import NewArrival from '../components/NewArrival';
 import SweetBox from '../components/SweetBox';
 import ProductScroller from '../components/ProductScroller';
+import HomeCarrousel from '../components/HomeCarrousel';
 
 const styles = (theme) => ({
   root: {
@@ -19,7 +18,7 @@ const styles = (theme) => ({
   },
   layoutClass: {
     marginTop: 80
-  }
+  },
 });
 
 class ClassComponent extends Component {
@@ -29,9 +28,10 @@ class ClassComponent extends Component {
     return (
       <LayoutTemplate classes={{root: classes.layoutClass}}>
         <Grid container className="main-section">
+          <Grid item>
+            <HomeCarrousel />
+          </Grid>
           <Grid item lg={12} xs={12}>
-            <BigCarrousel image={'main-banner.jpg'} />
-            <ProductCategoryIcons />
             <SweetBox type={1} />
             <SweetBox type={2} />
             {/* <ProductGallery galleryType='store-list' title="Tiendas" />

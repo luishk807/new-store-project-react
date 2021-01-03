@@ -97,6 +97,14 @@ export const ADMIN_SECTIONS = {
     url: 'banners',
     option: 'banner'
   },
+  'bannerImages': {
+    name: 'Banner Image',
+    names: 'Banner Images',
+    key: 'bannerImages',
+    url: 'banner-images',
+    option: 'bannerimages',
+    parent: 'banner'
+  },
   'bannerType': {
     name: 'Banner Type',
     names: 'Banner Types',

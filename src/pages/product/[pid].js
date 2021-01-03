@@ -142,7 +142,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   useEffect(()=>{
     const loadProductInfo = async() => {
       const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
-      console.log('product', getProductInfo)
       loadImages(getProductInfo)
       setProductInfo(getProductInfo);
       setShowData(true);

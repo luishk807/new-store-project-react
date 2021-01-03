@@ -72,7 +72,6 @@ const Login = ({classes, inStatus, showRegister, onCancel}) => {
         text: `Unable to login, ${i} is required`
       })
     } else {
-      console.log(form,'form')
       try{
         const resp = await login(form);
         if (resp.data) {

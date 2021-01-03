@@ -67,7 +67,6 @@ export default class Api {
         },
       };
       const request = axios(fetchConfig).then((data) => {
-        // console.log('result data', data)
          return data.data;
        }).catch((e) => {
          throw e;

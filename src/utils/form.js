@@ -30,7 +30,6 @@ export const getImageUrlByType = (type) => {
 }
 
 export const handleFormResponse = (resp) => {
-  console.log('res', resp)
   const {status, message} = resp && resp.data ? resp.data : resp;
   
   if (!status) {
@@ -64,11 +63,27 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
     case "password":
     case "date":
     case "textarea": {
-      if(value && value.length > 0){
+      if (value && value.length > 0) {
         return true
-      }else{
+      } else{
         return false;
       }
+      break;
+    }
+    case "imgurl": {
+      let result = true;
+      if(value && value.length > 0){
+        value.forEach((item) => {
+          if (result) {
+            if (!Object.keys(item.values).length && !item.url) {
+              result = false;
+            } else if ((!Object.keys(item.values).length && item.url) || (Object.keys(item.values).length && !item.url)) {
+              result = false;
+            }
+          }
+        })
+      }
+      return result
       break;
     }
     case "email": {
@@ -76,29 +91,29 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
       
       if(value && expression.test(String(value).toLowerCase())){
         return true
-      }else{
+      } else{
         return false;
       }
       break;
     }
     case "number":
     case "rate": {
-      if(value){
+      if (value) {
         return true
-      }else{
+      } else {
         return false;
       }
       break;
     }
     case "dropdown": {
-      if(value && (value.id || value.name)){
+      if (value && (value.id || value.name)) {
         return true
       }
       return false;
       break;
     }
     case "file": {
-      if(value.files && value.files.length){
+      if (value.files && value.files.length) {
         return true
       }
       return false;

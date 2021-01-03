@@ -83,6 +83,7 @@ const ItemFormAdd = ({
   userSection, 
   source, 
   title, 
+  type,
   id, 
   showTitle = true
 }) => {
@@ -91,6 +92,7 @@ const ItemFormAdd = ({
   const [formItems, setFormItems] = useState([]);
   const [section, setSection] = useState({});
   const [formHtmlItems, setFormHtmlItems] = useState(null);
+  const [formHtmlInputs, setFormHtmlInputs] = useState({});
   const [showData, setShowData] = useState(false);
   const imgMainUrl = getImageUrlByType(title);
   const [snack, setSnack] = useState({
@@ -100,7 +102,6 @@ const ItemFormAdd = ({
   });
 
   const formOnChange = ({value}) => {
-    console.log('adding', value)
     let currFormItems = formItems;
     if (currFormItems && currFormItems.length) {
       const find = currFormItems.filter(item => item.id == value.id);
@@ -138,7 +139,6 @@ const ItemFormAdd = ({
   }
 
   const handleSubmit = async (e) => {
-    console.log("sending",formItems)
     if (!formItems.length) {
       setSnack({
         severity: 'error',
@@ -165,7 +165,7 @@ const ItemFormAdd = ({
     let itemArray = [];
     let getItemResult = null;
     let getParentResult = null;
-
+    let htmlInput = null;
     let parent = ADMIN_SECTIONS[adminSection.parent];
 
     if (source) {
@@ -178,7 +178,30 @@ const ItemFormAdd = ({
     try {
       getItemResult = await getItems(sect.url);
       getParentResult = await getItemByFkId(adminSection.url, adminSection.parent, id);
+      switch(type) {
+        case 'image': 
+        htmlInput = <h1>image</h1>
+        break;
+        default: 
+          htmlInput = 
+            <form>
+              <FormControl fullWidth className={classes.margin} variant="outlined">
+                <Autocomplete
+                  name={title}
+                  options={items}
+                  onChange={(e, value) => {
+                    formOnChange({ name: title, value: value})
+                  }}
+                  getOptionLabel={(option) => 'name' in option ? option.name : option.first_name + " " + option.last_name}
+                  renderInput={(params) => <TextField {...params} label={title} variant="outlined" />}
+                />
+                <FormHelperText name={title}>{`Select your ${title}`}</FormHelperText>
+              </FormControl>
+            </form>
+      }
+
       if (getParentResult) {
+        setFormHtmlInputs(htmlInput);
         getParentResult.forEach((item) => {
           if (item[title]) {
             itemArray.push(item[title])
@@ -189,7 +212,7 @@ const ItemFormAdd = ({
       setItems(getItemResult);
       setShowData(true);
     } catch(err) {
-      console.log(err)
+      console.error(err);
     }
   }
 
@@ -204,13 +227,8 @@ const ItemFormAdd = ({
     setFormHtmlItems(htmlItem);
   }
 
-  const loadInitialItems = async() => {
-    
-    createHtmlItem();
-  }
-
   useEffect(() => {
-    loadInitialItems()
+    createHtmlItem();
   }, [formItems]);
 
   useEffect(() => {
@@ -246,20 +264,9 @@ const ItemFormAdd = ({
           </Grid>
         </Grid>
         <Grid item lg={12} sm={12}>
-          <form>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
-              <Autocomplete
-                name={title}
-                options={items}
-                onChange={(e, value) => {
-                  formOnChange({ name: title, value: value})
-                }}
-                getOptionLabel={(option) => 'name' in option ? option.name : option.first_name + " " + option.last_name}
-                renderInput={(params) => <TextField {...params} label={title} variant="outlined" />}
-              />
-              <FormHelperText name={title}>{`Select your ${title}`}</FormHelperText>
-            </FormControl>
-          </form>
+          {
+            formHtmlInputs
+          }
         </Grid>
       </Grid>
     </>
@@ -271,6 +278,7 @@ ItemFormAdd.protoTypes = {
   adminSection: T.object,
   userSection: T.object,
   source: T.object,
+  type: T.string,
   customUrl: T.string,
   title: T.string,
   showTitle: T.bool,

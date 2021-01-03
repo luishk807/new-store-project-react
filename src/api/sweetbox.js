@@ -14,6 +14,13 @@ export const getAllSweetBoxes = async(data) => {
   return Api.get(`sweet-boxes`, data);
 }
 
+export const deleteSweetBox = async(id) => {
+  const config = {
+    'cotent-Type': 'application/x-www-form-urlencoded'
+  }
+  return Api.delete(`sweet-boxes/${id}`, {}, config);
+}
+
 export const getSweetBoxById = async(id) => {
   if (!id) {
     return;

@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 
 import { addItem } from '../../../api';
 import { validateForm, loadMainOptions, handleFormResponse } from '../../../utils/form';
+import { capitalize } from '../../../utils';
 import Form from './Form';
 import { FORM_SCHEMA } from '../../../../config';
 
@@ -17,8 +18,12 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    width: '70%',
+    margin: '0px auto',
     textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    }
   },
 });
 
@@ -30,6 +35,7 @@ const AddForm = ({
   entryForm, 
   hideEntry,
   showTitle,
+  fileLimit,
   ignoreForm, 
   children, 
   customUrl = null
@@ -56,6 +62,40 @@ const AddForm = ({
     }
   }
 
+
+  const handleBannerSave = async(evt, index) => {
+    const current = form.banner;
+    const idx = index ? index : 0;
+    if (evt.target) {
+      current[idx].url = evt.target.value;
+    } else {
+      current[idx].values = evt[0];
+    }
+    setForm({
+      ...form,
+      banner: current,
+    });
+  }
+
+  const addMoreBanner = (add, indx = 0) => {
+    const current = form.banner;
+    if (add) {
+      current.push(
+        {
+          url: '',
+          open: false,
+          values: [],
+        }
+      )
+    } else {
+      current.splice(indx, 1);
+    }
+    setForm({
+      ...form,
+      banner: current,
+    });
+  }
+
   const handleCancel = () => {
     const url =customUrl ? customUrl : `/${section.url}`
     setTimeout(()=>{
@@ -77,10 +117,16 @@ const AddForm = ({
       }
     }
     if (!errorFound) {
+      let errorText = `Unable to Add ${capitalize(section.name)}, ${capitalize(i)} is required`;
+
+      if (form[i] && form[i].length) {
+        errorText = `Unable to Add ${capitalize(section.name)}, ${capitalize(i)} must be completed`;
+      }
+
       setSnack({
         severity: 'error',
         open: true,
-        text: `Unable to Add ${section.name}, ${i} is required`
+        text: errorText
       })
     } else {
       const confirm = await addItem(section.url, form);
@@ -183,6 +229,7 @@ const AddForm = ({
       <Form 
         title={section.name} 
         fileOnSave={handleSave} 
+        fileLimit={fileLimit}
         fields={form} 
         classes={classes}
         hideEntry={hideEntry}
@@ -190,6 +237,8 @@ const AddForm = ({
         isAdmin={isAdmin}
         showTitle={showTitle}
         onChange={formOnChange} 
+        bannerOnSave={handleBannerSave}
+        bannerAddMore={addMoreBanner}
         onSubmit={handleSubmit} 
         formSubmit={handleSubmit}
         formCancel={handleCancel}
@@ -208,6 +257,7 @@ AddForm.protoTypes = {
   adminSection: T.object,
   userSection: T.object,
   entryForm: T.object,
+  fileLimit: T.bool,
   showTitle: T.bool,
   customUrl: T.string,
   ignoreForm: T.array,

@@ -96,7 +96,6 @@ const Login = ({classes, inStatus}) => {
           })
         }
       }catch(err) {
-        console.log(err.response)
         const errSnack = err ? {
           severity: 'error',
           open: true,

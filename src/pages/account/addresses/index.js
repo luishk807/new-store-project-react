@@ -75,7 +75,6 @@ const Index = ({classes, userInfo}) => {
     } else {
       snackResp = handleFormResponse(res)
     }
-    console.log(addresses)
     const fixAddress = addresses.filter((item) => item.id !== id);
     setAddresses(fixAddress)
     setSnack(snackResp)

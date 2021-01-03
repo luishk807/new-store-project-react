@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
@@ -28,6 +28,7 @@ import Rate from '../../common/Rate/Rate';
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import { getImageUrlByType } from '../../../utils/form';
 import { removeCharacter } from '../../../utils';
+import Icons from '../Icons';
 
 const styles = (theme) => ({
   root: {
@@ -47,12 +48,18 @@ const styles = (theme) => ({
       margin: 0,
     },
   },
+  textfieldClass: {
+    width: '100%',
+  },
   formItems: {
     width: '100%',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
     margin: '20px auto 0px auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   colorInput: {
     marginTop: 18,
@@ -77,6 +84,48 @@ const styles = (theme) => ({
       'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
       'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
   },
+  bannerAddMoreBtnItem: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    margin: '10px 0px',
+  },
+  bannerItem: {
+    position: 'relative',
+    border: '1px solid rgba(0,0,0,.2)',
+    padding: 12,
+    display: 'flex',
+    margin: '10px 0px',
+  },
+  marginBanner: {
+    margin: theme.spacing(1),
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '& input': {
+      width: '100%',
+    },
+    [theme.breakpoints.down('sm')]: {
+      margin: 0,
+    },
+  },
+  bannerTitle: {
+    position: 'absolute',
+    top: -18,
+    fontSize: '.9em',
+    background: 'white',
+    padding: 5,
+  },
+  bannerRemove: {
+    position: 'absolute',
+    top: -20,
+    background: 'white',
+    padding: 5,
+    right: '9px',
+    '& button': {
+      fontSize: '.7em !important',
+    }
+  }
 });
 
 const Form = ({
@@ -91,26 +140,32 @@ const Form = ({
   id,
   children,
   fileOnSave,
+  bannerOnSave,
+  bannerAddMore,
   fileAcceptedMimeTypes=['image/jpeg', 'image/png'],
   fileBtnText='Upload Image',
   formSubmit: handleSubmit,
   formCancel: handleCancel,
   onCloseSnack,
   onImageDelete,
+  onBannerDelete,
   showTitle = true,
   hideEntry,
-  fileLimit,
+  fileLimit = false,
 }) => {
   const [formOptions, setFormOptions] = useState({
     vendors: {},
     brands: {},
     categorys: {}
   })
+
   const [useFormOption, setUseFormOptions] = useState(false)
   const [formTitle, setFormTitle] = useState('');
   const [formBtnTitle, setFormBtnTitle] = useState('');
+  const [bannerImageItems, setBannerImageItems] = useState([{}]);
   const userImages = fields['image'] && 'saved' in fields['image'] ? fields['image'].saved : null;
-  
+  const bannerImages = fields['banner'] && 'saved' in fields['banner'] ? fields['banner'].saved : null;
+
   const imageClickHandle = (e) => {
     const markDelete = userImages[e];
     userImages.splice(e,1);
@@ -118,10 +173,36 @@ const Form = ({
     onImageDelete(markDelete)
   }
 
+  const bannerClickHandle = (e) => {
+    const markDelete = bannerImages[e];
+    bannerImages.splice(e,1);
+    bannerImagesCont.splice(e,1);
+    onBannerDelete(markDelete)
+  }
+
   const handleRateOnChange = (value) => {
     formOnChange({target:{name: 'rate', value: value}})
   }
+
+  const handleBannerChange = (evt, index) => {
+    bannerOnSave(evt, index)
+  }
   
+  const addMoreBanner = async() => {
+    setBannerImageItems(prevItems => [
+      ...prevItems, 
+      {}
+    ]);
+    bannerAddMore(true);
+  }
+
+  const deleteBanner = async(index) => {
+    let banners = bannerImageItems;
+    banners.splice(index,1);
+    setBannerImageItems(banners);
+    bannerAddMore(false, index);
+  }
+
   const imgMainUrl = getImageUrlByType(title);
   const userImagesCont = userImages && typeof userImages == "object" ? userImages.map((data, index) => {
     const imageSrc = typeof data === "object" && data ? data.img_url : data;
@@ -132,6 +213,26 @@ const Form = ({
           titlePosition="top"
           actionIcon={
             <IconButton className={classes.icon} onClick={()=>imageClickHandle(index)}>
+              <DeleteOutlinedIcon />
+            </IconButton>
+          }
+          actionPosition="right"
+          className={classes.titleBar}
+        />
+      </GridListTile>
+    ) : null
+  }) : [];
+
+  const bannerImagesCont = bannerImages && typeof bannerImages == "object" ? bannerImages.map((data, index) => {
+    const imageSrc = typeof data === "object" && data ? data.img_url : data;
+    return imageSrc ? (
+      <GridListTile key={index} cols={1}>
+        <img src={`${imgMainUrl}/${imageSrc}`} />
+        <GridListTileBar
+          title={data.url}
+          titlePosition="top"
+          actionIcon={
+            <IconButton className={classes.icon} onClick={()=>bannerClickHandle(index)}>
               <DeleteOutlinedIcon />
             </IconButton>
           }
@@ -236,7 +337,6 @@ const Form = ({
         break
       }
       case "dropdown": {
-        console.log("filed", field, 'options', formOptions)
         return (
           <Grid item key={index} lg={12} xs={12} className={classes.formItem}>
             <FormControl fullWidth className={classes.margin} variant="outlined">
@@ -286,6 +386,58 @@ const Form = ({
         )
         break;
       }
+      case "imgurl": {
+        return (
+          <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
+            {
+              bannerImagesCont && (
+                <Grid container justify="center">
+                  <GridList cellHeight={160} className={classes.gridList} cols={2}>
+                  {
+                    bannerImagesCont
+                  }
+                  </GridList>
+                </Grid>
+              )
+            }
+            <Grid container>
+              <Grid item lg={12} xs={12} className={classes.bannerAddMoreBtnItem}>
+                <Button onClick={addMoreBanner} className={`smallMainButton`}>Add More</Button>
+              </Grid>
+              {
+                bannerImageItems && bannerImageItems.map((bannerItem, index) => {
+                  const idx = index ? index : 0;
+                  return (
+                    <Grid item key={index} lg={12} xs={12} className={classes.bannerItem}>
+                      <div className={classes.bannerTitle}>Image {idx + 1}</div>
+                      {
+                          index > 0 && ( 
+                            <div className={classes.bannerRemove}>
+                              <Button onClick={ () => deleteBanner(index)}>Remove</Button>
+                            </div>
+                          )
+                      }
+                      <FormControl fullWidth className={classes.marginBanner} variant="outlined">
+                        <TextField 
+                          className={classes.textfieldClass}
+                          error={errors[field].error}
+                          helperText={errors[field].text} 
+                          variant="outlined" 
+                          name={field[idx].url} 
+                          onChange={(evt) => handleBannerChange(evt, idx)}
+                          label="Banner Url" 
+                        />
+                        <FileUploader fileLimit={fileLimit} onSave={(evt)=> handleBannerChange(evt, idx)}/>
+                      </FormControl>
+                    </Grid>
+                  )
+                })
+              }
+            </Grid>
+          </Grid>
+        )
+        break;
+      }
       case "textarea": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
@@ -304,7 +456,7 @@ const Form = ({
       }
     }
   });
-  
+
   useEffect(() => {
     const loadFormOption = async() => {
       const section = ADMIN_SECTIONS
@@ -313,9 +465,13 @@ const Form = ({
       setFormOptions(options)
       setUseFormOptions(true)
     }
-    
    loadFormOption()
   }, [useFormOption])
+
+  useEffect(() => {
+
+  }, [])
+  
 
   useEffect(() => {
     let newTitle = title;
@@ -395,12 +551,15 @@ Form.protoTypes = {
   showTitle: T.bool,
   fields: T.object,
   onChange: T.func,
+  bannerOnSave: T.func,
+  bannerAddMore: T.func,
   id: T.number,
   isAdmin: T.bool,
   fileOnSave: T.func,
   fileLimit: T.bool,
   formSubmit: T.func,
   onImageDelete: T.func,
+  onBannerDelete: T.func,
   formCancel: T.func,
   children: T.node,
   hideEntry: T.object,

@@ -168,10 +168,10 @@ const Header = ({classes, data, loadMain, userInfo}) => {
                 <MenuIcon />
               </IconButton>
               </Grid>
-              <Grid item lg={2} xs={6}>
-                <Link href={`/${ADMIN_URL.index}/${ADMIN_URL.home}`}>
-                  <img className={classes.logo} src="/images/logo-white.svg" alt="" />
-                </Link>
+              <Grid item lg={3} xs={6}>
+                <a href={`/${ADMIN_URL.index}/${ADMIN_URL.home}`}>
+                  <img className={`img-fluid`} src="/images/logo-white.svg" alt="" />
+                </a>
               </Grid>
             </Grid>
           </Grid>

@@ -42,9 +42,9 @@ export const getItemByFkId = (section, fk, id) => {
         'sweetbox': id
       }
       break;
-    case 'banner':
+    case 'imageBox':
       data = {
-        'banner': id
+        'imageBox': id
       }
       break;
     default:
@@ -86,10 +86,10 @@ export const addItem = (section, data) => {
       ...data,
       'image': data.image.files
     }
-  } else if ('banner' in data) {
+  } else if ('imageBox' in data) {
     form = {
       ...data,
-      'image': data.banner
+      'image': data.imageBox
     }
   } else {
     form = {

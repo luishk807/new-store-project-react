@@ -119,11 +119,11 @@ export const FORM_SCHEMA = {
   country: FORM_TYPE.drop,
   township: FORM_TYPE.text,
   userRole: FORM_TYPE.drop,
-  bannerType: FORM_TYPE.drop,
+  imageBoxType: FORM_TYPE.drop,
   products: FORM_TYPE.linkItem,
-  banners: FORM_TYPE.linkItem,
+  imageBoxes: FORM_TYPE.linkItem,
   sweetBoxType: FORM_TYPE.drop,
-  banner: FORM_TYPE.imageUrl,
+  imageBox: FORM_TYPE.imageUrl,
 }
 
 export const noImageUrl = {

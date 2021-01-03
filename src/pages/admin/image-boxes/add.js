@@ -22,8 +22,8 @@ const styles = (theme) => ({
 const Add = ({classes}) => {
   const form = {
     name: null,
-    bannerType: null,
-    banner: [
+    imageBoxType: null,
+    imageBox: [
       {
         url: '',
         open: false,
@@ -35,10 +35,10 @@ const Add = ({classes}) => {
   return (
     <AdminLayoutTemplate>
       <AddForm 
-        adminSection={ADMIN_SECTIONS.banner} 
+        adminSection={ADMIN_SECTIONS.imageBox} 
         entryForm={form}
         fileLimit={true}
-        customUrl={`/admin/${ADMIN_SECTIONS.banner.url}`}  
+        customUrl={`/admin/${ADMIN_SECTIONS.imageBox.url}`}  
       />
     </AdminLayoutTemplate>
   );

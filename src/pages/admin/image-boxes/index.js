@@ -11,7 +11,7 @@ import moment from 'moment'
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import ItemForm from '../../../components/common/Form/ItemForm';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import { getBanners, deleteBanner } from '../../../api/banners';
+import { getImageBoxes, deleteImageBox } from '../../../api/imageBoxes';
 import Snackbar from '../../../components/common/Snackbar';
 
 const styles = (theme) => ({
@@ -84,51 +84,50 @@ const styles = (theme) => ({
 });
 
 const Index = ({classes}) => {
-  const [banners, setBanners] = useState([]);
+  const [imageBoxes, setImageBoxes] = useState([]);
   const [showData, setShowData] = useState(false);
-  const fields = ['bannerType', 'name', 'status'];
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
     text: '',
   });
   
-  const loadBanner = async() => {
-    const gBanner = await getBanners();
-    setBanners(gBanner);
+  const loadImageBoxes = async() => {
+    const gImageBox = await getImageBoxes();
+    setImageBoxes(gImageBox);
     setShowData(true);
   };
 
   const delItem = async(id) => {
-    deleteBanner(id).then((data) => {
+    deleteImageBox(id).then((data) => {
       setSnack({
         severity: 'success',
         open: true,
-        text: `Banner Deleted`,
+        text: `Image Box Deleted`,
       })
-      loadBanner()
+      loadImageBoxes()
     }).catch((err) => {
       setSnack({
         severity: 'error',
         open: true,
-        text: `ERROR: Banner cannot be delete`,
+        text: `ERROR: Image Box cannot be delete`,
       })
     })
   }
 
   useEffect(() => {
-    loadBanner();
+    loadImageBoxes();
   }, []);
 
   return (
     <AdminLayoutTemplate>
       <Grid container className={classes.headerContainer}>
         <Grid item className={classes.headerTitle}>
-          <h3>Banners</h3>
+          <h3>Image Boxes</h3>
         </Grid>
         <Grid item className={classes.headerButton}>
-          <Button href="/admin/banners/add">
-            Add Banner
+          <Button href="/admin/image-boxes/add">
+            Add Image Box
           </Button>
         </Grid>
       </Grid>
@@ -159,7 +158,7 @@ const Index = ({classes}) => {
               </Grid>
             </Grid>
             {
-              banners.map((banner, index) => {
+              imageBoxes.map((imageBox, index) => {
                 return (
                   <Grid key={index} item lg={12} xs={12} className={classes.mainItems}>
                     <Grid container className={classes.itemContainer}>
@@ -169,34 +168,34 @@ const Index = ({classes}) => {
                         }
                       </Grid>
                       <Grid item lg={3} className={classes.itemName}>
-                        <a href={`banners/${banner.id}`}>
+                        <a href={`image-boxes/${imageBox.id}`}>
                         {
-                          banner.name
+                          imageBox.name
                         }
                         </a>
                       </Grid>
                       <Grid item lg={1} className={classes.itemLength}>
                         {
-                          banner.productImages && banner.productImages.length ? banner.productImages.length : 0
+                          imageBox.productImages && imageBox.productImages.length ? imageBox.productImages.length : 0
                         }
                       </Grid>
                       <Grid item lg={2} className={classes.itemType}>
                         {
-                          banner.bannerBannerType.name
+                          imageBox.imageBoxImageBoxType.name
                         }
                       </Grid>
                       <Grid item lg={2} className={classes.itemStatus}>
                         {
-                          banner.bannerStatus.name
+                          imageBox.imageBoxStatus.name
                         }
                       </Grid>
                       <Grid item lg={1} className={classes.itemDate}>
                         {
-                          moment(banner.createdAt).format('YYYY-MM-DD')
+                          moment(imageBox.createdAt).format('YYYY-MM-DD')
                         }
                       </Grid>
                       <Grid item lg={2} className={classes.itemAction}>
-                        <Button className={`smallMainButton`} onClick={() => delItem(banner.id)}>
+                        <Button className={`smallMainButton`} onClick={() => delItem(imageBox.id)}>
                           Delete
                         </Button>
                       </Grid>

@@ -90,27 +90,27 @@ export const ADMIN_SECTIONS = {
     url: 'useraddresses',
     option: 'address'
   },
-  'banner': {
-    name: 'Banner',
-    names: 'Banners',
-    key: 'banner',
-    url: 'banners',
-    option: 'banner'
+  'imageBox': {
+    name: 'Image Box',
+    names: 'Image Boxes',
+    key: 'imagebox',
+    url: 'image-boxes',
+    option: 'imagebox'
   },
-  'bannerImages': {
-    name: 'Banner Image',
-    names: 'Banner Images',
-    key: 'bannerImages',
-    url: 'banner-images',
-    option: 'bannerimages',
-    parent: 'banner'
+  'imageBoxImages': {
+    name: 'Image Box Image',
+    names: 'Image Box Images',
+    key: 'imageBoxImages',
+    url: 'image-box-images',
+    option: 'imageboximages',
+    parent: 'imageBox'
   },
-  'bannerType': {
-    name: 'Banner Type',
-    names: 'Banner Types',
-    key: 'bannertype',
-    url: 'banner-types',
-    option: 'bannertype'
+  'imageBoxType': {
+    name: 'Image Box Type',
+    names: 'Image Box Types',
+    key: 'imageboxtype',
+    url: 'image-box-types',
+    option: 'imageboxtype'
   },
   'sweetbox': {
     name: 'Sweetbox',

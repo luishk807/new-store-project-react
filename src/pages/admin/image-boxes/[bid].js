@@ -28,8 +28,8 @@ const Edit = ({classes}) => {
   const form = {
     name: null,
     status: null,
-    bannerType: null,
-    banner: [
+    imageBoxType: null,
+    imageBox: [
       {
         url: '',
         open: false,
@@ -38,15 +38,15 @@ const Edit = ({classes}) => {
     ]
   }
 
-  const ignoreEntry=['banner']
+  const ignoreEntry=['imageBox']
 
   return (
     <AdminLayoutTemplate>
       <EditForm 
         ignoreForm={ignoreEntry} 
         fileLimit={true}
-        adminSection={ADMIN_SECTIONS.banner} 
-        customUrl={`/admin/${ADMIN_SECTIONS.banner.url}`} 
+        adminSection={ADMIN_SECTIONS.imageBox} 
+        customUrl={`/admin/${ADMIN_SECTIONS.imageBox.url}`} 
         id={id} 
         entryForm={form} 
       />

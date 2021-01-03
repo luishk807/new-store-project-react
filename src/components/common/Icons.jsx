@@ -108,7 +108,7 @@ const Icons = ({classes, name}) => {
       case 'sweetbox':
         return <Supplies className={classes.icon}/>
       break;
-      case 'banner':
+      case 'imagebox':
         return <ImageSearchIcon className={classes.icon}/>
       break;
       case 'logo':

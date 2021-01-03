@@ -9,13 +9,13 @@ import {
   Link,
 } from '@material-ui/core';
 
-import { getBannnerByType } from '../api/banners';
+import { getImageBoxesByType } from '../api/imageBoxes';
 
 const styles = (theme) => ({
   root: {
     margin: '20px 0px',
   },
-  bannerItem: {
+  imageBoxItem: {
     padding: 5,
     display: 'inline-block'
   },
@@ -34,7 +34,7 @@ const styles = (theme) => ({
     fontWeight: 'bold',
     textTransform: 'capitalize',
   },
-  columnMiniBanner: {
+  columnMiniImageBox: {
     display: 'table-cell',
     padding: 5,
     [theme.breakpoints.down('sm')]: {
@@ -42,7 +42,7 @@ const styles = (theme) => ({
       display: 'inline-block',
     }
   },
-  columnStoreBanner: {
+  columnStoreImageBox: {
     display: 'inline-block',
     width: '10%',
     padding: 10,
@@ -51,7 +51,7 @@ const styles = (theme) => ({
       padding: 10,
     }
   },
-  columnBrandBanner: {
+  columnBrandImageBox: {
     display: 'inline-block',
     width: '10%',
     padding: 10,
@@ -62,26 +62,21 @@ const styles = (theme) => ({
   }
 });
 
-const BannerBox = ({classes, type, showTitle = false}) => {
+const ImageBox = ({classes, type, showTitle = false}) => {
   const imageUrl = `${process.env.IMAGE_URL}/slideImages`;
-  const [banners, setBanner] = useState([]);
+  const [imageBoxes, setImageBoxes] = useState([]);
   const [showData, setShowData] = useState(false);
-  const [bannerHtml, setBannerHtml] = useState([]);
 
-  const loadBanners = async() => {
-    const data = await getBannnerByType(type);
+  const loadImageBoxes = async() => {
+    const data = await getImageBoxesByType(type);
     if (data) {
-      setBanner(data)
+      setImageBoxes(data)
       setShowData(true);
     }
   }
 
-  const loadBannerHtml = async() => {
-    setBannerHtml();
-  }
-
   useEffect(() => {
-    loadBanners();
+    loadImageBoxes();
   }, [showData]);
 
   return showData && (
@@ -91,21 +86,21 @@ const BannerBox = ({classes, type, showTitle = false}) => {
           showTitle && (
             <div className={`${classes.row} ${classes.rowTitle}`}>
               {
-                banners.name
+                imageBoxes.name
               }
             </div>
           )
         }
         <div className={classes.row}>
         {
-          banners.productImages.map((banner, index) => {
-            let bannerUrl = `${imageUrl}/${banner.img_url}`;
+          imageBoxes.productImages.map((imageBox, index) => {
+            let imageBoxUrl = `${imageUrl}/${imageBox.img_url}`;
             switch(type) {
               case 2: {
                 return (
-                  <div key={index} className={classes.columnMiniBanner}>
-                    <Link href={banner.url}>
-                      <img className='img-fluid' src={bannerUrl} alt=""/>
+                  <div key={index} className={classes.columnMiniImageBox}>
+                    <Link href={imageBox.url}>
+                      <img className='img-fluid' src={imageBoxUrl} alt=""/>
                     </Link>
                   </div>
                 )
@@ -113,9 +108,9 @@ const BannerBox = ({classes, type, showTitle = false}) => {
               }
               case 3: {
                 return (
-                  <div key={index} className={classes.columnBrandBanner}>
-                    <Link href={banner.url}>
-                      <img className='img-fluid' src={bannerUrl} alt=""/>
+                  <div key={index} className={classes.columnBrandImageBox}>
+                    <Link href={imageBox.url}>
+                      <img className='img-fluid' src={imageBoxUrl} alt=""/>
                     </Link>
                   </div>
                 )
@@ -123,9 +118,9 @@ const BannerBox = ({classes, type, showTitle = false}) => {
               }
               case 4: {
                 return (
-                  <div key={index} className={classes.columnStoreBanner}>
-                    <Link href={banner.url}>
-                      <img className='img-fluid' src={bannerUrl} alt=""/>
+                  <div key={index} className={classes.columnStoreImageBox}>
+                    <Link href={imageBox.url}>
+                      <img className='img-fluid' src={imageBoxUrl} alt=""/>
                     </Link>
                   </div>
                 )
@@ -140,10 +135,10 @@ const BannerBox = ({classes, type, showTitle = false}) => {
   );
 }
 
-BannerBox.protoTypes = {
+ImageBox.protoTypes = {
   classes: T.object,
   type: T.number,
   showTitle: T.bool,
 }
 
-export default withStyles(styles)(BannerBox);
+export default withStyles(styles)(ImageBox);

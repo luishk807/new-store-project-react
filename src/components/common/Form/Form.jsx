@@ -84,20 +84,20 @@ const styles = (theme) => ({
       'linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, ' +
       'rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)',
   },
-  bannerAddMoreBtnItem: {
+  imageBoxAddMoreBtnItem: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
     margin: '10px 0px',
   },
-  bannerItem: {
+  imageBoxItem: {
     position: 'relative',
     border: '1px solid rgba(0,0,0,.2)',
     padding: 12,
     display: 'flex',
     margin: '10px 0px',
   },
-  marginBanner: {
+  marginImageBox: {
     margin: theme.spacing(1),
     display: 'flex',
     alignItems: 'center',
@@ -109,14 +109,14 @@ const styles = (theme) => ({
       margin: 0,
     },
   },
-  bannerTitle: {
+  imageBoxTitle: {
     position: 'absolute',
     top: -18,
     fontSize: '.9em',
     background: 'white',
     padding: 5,
   },
-  bannerRemove: {
+  imageBoxRemove: {
     position: 'absolute',
     top: -20,
     background: 'white',
@@ -140,15 +140,15 @@ const Form = ({
   id,
   children,
   fileOnSave,
-  bannerOnSave,
-  bannerAddMore,
+  imageBoxOnSave,
+  imageBoxAddMore,
   fileAcceptedMimeTypes=['image/jpeg', 'image/png'],
   fileBtnText='Upload Image',
   formSubmit: handleSubmit,
   formCancel: handleCancel,
   onCloseSnack,
   onImageDelete,
-  onBannerDelete,
+  onImageBoxDelete,
   showTitle = true,
   hideEntry,
   fileLimit = false,
@@ -162,9 +162,9 @@ const Form = ({
   const [useFormOption, setUseFormOptions] = useState(false)
   const [formTitle, setFormTitle] = useState('');
   const [formBtnTitle, setFormBtnTitle] = useState('');
-  const [bannerImageItems, setBannerImageItems] = useState([{}]);
+  const [imageBoxImageItems, setImageBoxImageItems] = useState([{}]);
   const userImages = fields['image'] && 'saved' in fields['image'] ? fields['image'].saved : null;
-  const bannerImages = fields['banner'] && 'saved' in fields['banner'] ? fields['banner'].saved : null;
+  const imageBoxImages = fields['imageBox'] && 'saved' in fields['imageBox'] ? fields['imageBox'].saved : null;
 
   const imageClickHandle = (e) => {
     const markDelete = userImages[e];
@@ -173,34 +173,34 @@ const Form = ({
     onImageDelete(markDelete)
   }
 
-  const bannerClickHandle = (e) => {
-    const markDelete = bannerImages[e];
-    bannerImages.splice(e,1);
-    bannerImagesCont.splice(e,1);
-    onBannerDelete(markDelete)
+  const imageBoxClickHandle = (e) => {
+    const markDelete = imageBoxImages[e];
+    imageBoxImages.splice(e,1);
+    imageBoxImagesCont.splice(e,1);
+    onImageBoxDelete(markDelete)
   }
 
   const handleRateOnChange = (value) => {
     formOnChange({target:{name: 'rate', value: value}})
   }
 
-  const handleBannerChange = (evt, index) => {
-    bannerOnSave(evt, index)
+  const handleImageBoxChange = (evt, index) => {
+    imageBoxOnSave(evt, index)
   }
   
-  const addMoreBanner = async() => {
-    setBannerImageItems(prevItems => [
+  const addMoreImageBox = async() => {
+    setImageBoxImageItems(prevItems => [
       ...prevItems, 
       {}
     ]);
-    bannerAddMore(true);
+    imageBoxAddMore(true);
   }
 
-  const deleteBanner = async(index) => {
-    let banners = bannerImageItems;
-    banners.splice(index,1);
-    setBannerImageItems(banners);
-    bannerAddMore(false, index);
+  const deleteImageBox = async(index) => {
+    let imageBox = imageBoxImageItems;
+    imageBox.splice(index,1);
+    setImageBoxImageItems(imageBox);
+    imageBoxAddMore(false, index);
   }
 
   const imgMainUrl = getImageUrlByType(title);
@@ -223,7 +223,7 @@ const Form = ({
     ) : null
   }) : [];
 
-  const bannerImagesCont = bannerImages && typeof bannerImages == "object" ? bannerImages.map((data, index) => {
+  const imageBoxImagesCont = imageBoxImages && typeof imageBoxImages == "object" ? imageBoxImages.map((data, index) => {
     const imageSrc = typeof data === "object" && data ? data.img_url : data;
     return imageSrc ? (
       <GridListTile key={index} cols={1}>
@@ -232,7 +232,7 @@ const Form = ({
           title={data.url}
           titlePosition="top"
           actionIcon={
-            <IconButton className={classes.icon} onClick={()=>bannerClickHandle(index)}>
+            <IconButton className={classes.icon} onClick={()=>imageBoxClickHandle(index)}>
               <DeleteOutlinedIcon />
             </IconButton>
           }
@@ -390,44 +390,44 @@ const Form = ({
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
             {
-              bannerImagesCont && (
+              imageBoxImagesCont && (
                 <Grid container justify="center">
                   <GridList cellHeight={160} className={classes.gridList} cols={2}>
                   {
-                    bannerImagesCont
+                    imageBoxImagesCont
                   }
                   </GridList>
                 </Grid>
               )
             }
             <Grid container>
-              <Grid item lg={12} xs={12} className={classes.bannerAddMoreBtnItem}>
-                <Button onClick={addMoreBanner} className={`smallMainButton`}>Add More</Button>
+              <Grid item lg={12} xs={12} className={classes.imageBoxAddMoreBtnItem}>
+                <Button onClick={addMoreImageBox} className={`smallMainButton`}>Add More</Button>
               </Grid>
               {
-                bannerImageItems && bannerImageItems.map((bannerItem, index) => {
+                imageBoxImageItems && imageBoxImageItems.map((imageBoxItem, index) => {
                   const idx = index ? index : 0;
                   return (
-                    <Grid item key={index} lg={12} xs={12} className={classes.bannerItem}>
-                      <div className={classes.bannerTitle}>Image {idx + 1}</div>
+                    <Grid item key={index} lg={12} xs={12} className={classes.imageBoxItem}>
+                      <div className={classes.imageBoxTitle}>Image {idx + 1}</div>
                       {
                           index > 0 && ( 
-                            <div className={classes.bannerRemove}>
-                              <Button onClick={ () => deleteBanner(index)}>Remove</Button>
+                            <div className={classes.imageBoxRemove}>
+                              <Button onClick={ () => deleteImageBox(index)}>Remove</Button>
                             </div>
                           )
                       }
-                      <FormControl fullWidth className={classes.marginBanner} variant="outlined">
+                      <FormControl fullWidth className={classes.marginImageBox} variant="outlined">
                         <TextField 
                           className={classes.textfieldClass}
                           error={errors[field].error}
                           helperText={errors[field].text} 
                           variant="outlined" 
                           name={field[idx].url} 
-                          onChange={(evt) => handleBannerChange(evt, idx)}
-                          label="Banner Url" 
+                          onChange={(evt) => handleImageBoxChange(evt, idx)}
+                          label="Image Box Url" 
                         />
-                        <FileUploader fileLimit={fileLimit} onSave={(evt)=> handleBannerChange(evt, idx)}/>
+                        <FileUploader fileLimit={fileLimit} onSave={(evt)=> handleImageBoxChange(evt, idx)}/>
                       </FormControl>
                     </Grid>
                   )
@@ -551,15 +551,15 @@ Form.protoTypes = {
   showTitle: T.bool,
   fields: T.object,
   onChange: T.func,
-  bannerOnSave: T.func,
-  bannerAddMore: T.func,
+  imageBoxOnSave: T.func,
+  imageBoxAddMore: T.func,
   id: T.number,
   isAdmin: T.bool,
   fileOnSave: T.func,
   fileLimit: T.bool,
   formSubmit: T.func,
   onImageDelete: T.func,
-  onBannerDelete: T.func,
+  onImageBoxDelete: T.func,
   formCancel: T.func,
   children: T.node,
   hideEntry: T.object,

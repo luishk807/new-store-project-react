@@ -63,8 +63,8 @@ const AddForm = ({
   }
 
 
-  const handleBannerSave = async(evt, index) => {
-    const current = form.banner;
+  const handleImageBoxSave = async(evt, index) => {
+    const current = form.imageBox;
     const idx = index ? index : 0;
     if (evt.target) {
       current[idx].url = evt.target.value;
@@ -73,12 +73,12 @@ const AddForm = ({
     }
     setForm({
       ...form,
-      banner: current,
+      imageBox: current,
     });
   }
 
-  const addMoreBanner = (add, indx = 0) => {
-    const current = form.banner;
+  const addMoreImageBox = (add, indx = 0) => {
+    const current = form.imageBox;
     if (add) {
       current.push(
         {
@@ -92,7 +92,7 @@ const AddForm = ({
     }
     setForm({
       ...form,
-      banner: current,
+      imageBox: current,
     });
   }
 
@@ -237,8 +237,8 @@ const AddForm = ({
         isAdmin={isAdmin}
         showTitle={showTitle}
         onChange={formOnChange} 
-        bannerOnSave={handleBannerSave}
-        bannerAddMore={addMoreBanner}
+        imageBoxOnSave={handleImageBoxSave}
+        imageBoxAddMore={addMoreImageBox}
         onSubmit={handleSubmit} 
         formSubmit={handleSubmit}
         formCancel={handleCancel}

@@ -42,7 +42,7 @@ const EditForm = ({
   const [section, setSection] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [imageDelete, setImageDelete] = useState({})
-  const [bannerDelete, setBannerDelete] = useState({})
+  const [imageBoxDelete, setImageBoxDelete] = useState({})
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -60,8 +60,8 @@ const EditForm = ({
     }
   }
 
-  const handleBannerSave = async(evt, index) => {
-    const current = form.banner;
+  const handleImageBoxSave = async(evt, index) => {
+    const current = form.imageBox;
     const idx = index ? index : 0;
     if (evt.target) {
       current[idx] = {
@@ -76,12 +76,17 @@ const EditForm = ({
     }
     setForm({
       ...form,
-      banner: current,
+      imageBox: current,
     });
   }
 
-  const addMoreBanner = (add, indx = 0) => {
-    const current = form.banner;
+  const addMoreImageBox = (add, indx = 0) => {
+    const current = form.imageBox;
+    // substract 'saved' key
+    const total =  Object.keys(current).length - 1;
+    if (total && !indx) {
+      indx = total;
+    }
     if (add) {
       current[indx] = {
         url: '',
@@ -94,7 +99,7 @@ const EditForm = ({
     }
     setForm({
       ...form,
-      banner: current,
+      imageBox: current,
     });
   }
 
@@ -106,6 +111,7 @@ const EditForm = ({
   const handleSubmit = async (e) => {
     let errorFound = false;
     let key = '';
+    
     for (var i in form) {
       errorFound = await validateForm(i, form[i], ignoreForm);
       key = i;
@@ -127,16 +133,16 @@ const EditForm = ({
       if ('image' in formSubmit) {
         formSubmit['saved'] = imageDelete;
         delete formSubmit.image.saved
-      } else if ('banner' in formSubmit) {
-        if ('saved' in formSubmit.banner) {
-          delete formSubmit.banner.saved
+      } else if ('imageBox' in formSubmit) {
+        if ('saved' in formSubmit.imageBox) {
+          delete formSubmit.imageBox.saved
         }
-        let bannerArry = [];
-        for(const test in formSubmit.banner) {
-          bannerArry.push(formSubmit.banner[test])
+        let imageBox = [];
+        for(const test in formSubmit.imageBox) {
+          imageBox.push(formSubmit.imageBox[test])
         }
-        formSubmit['banner'] = bannerArry;
-        formSubmit['saved'] = bannerDelete;
+        formSubmit['imageBox'] = imageBox;
+        formSubmit['saved'] = imageBoxDelete;
       }
       const confirm = await saveItem(section.url, id, formSubmit)
       const resp = handleFormResponse(confirm);
@@ -179,9 +185,9 @@ const EditForm = ({
     }))
   }
 
-  const markBannerDelete = async(images) => {
-    const index = Object.keys(bannerDelete).length;
-    setBannerDelete(prevValue => ({
+  const markImageBoxDelete = async(images) => {
+    const index = Object.keys(imageBoxDelete).length;
+    setImageBoxDelete(prevValue => ({
       ...prevValue,
       [index] : images
     }))
@@ -221,7 +227,12 @@ const EditForm = ({
             }
           } else if (FORM_SCHEMA[field] == "imgurl") {
             const images = 'productImages' in info ? info['productImages'] : [];
-            inputs['banner'] = {
+            inputs['imageBox'] = {
+              '0': {
+                url: '',
+                open: false,
+                values: [],
+              },
               'saved': images
             }
           } else if (FORM_SCHEMA[field] == "linkitem") {
@@ -272,13 +283,13 @@ const EditForm = ({
         isAdmin={isAdmin}
         hideEntry={hideEntry}
         onChange={formOnChange} 
-        bannerOnSave={handleBannerSave}
-        bannerAddMore={addMoreBanner}
+        imageBoxOnSave={handleImageBoxSave}
+        imageBoxAddMore={addMoreImageBox}
         onSubmit={handleSubmit} 
         formSubmit={handleSubmit}
         formCancel={handleCancel}
         onImageDelete={markUserImageDelete}
-        onBannerDelete={markBannerDelete}
+        onImageBoxDelete={markImageBoxDelete}
         type="edit"
         snack={snack}
         onCloseSnack={onCloseSnack}

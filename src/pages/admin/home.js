@@ -16,7 +16,7 @@ const styles = (theme) => ({});
 const Home = ({classes}) => {
   const [cards, setCards] = useState([])
   const [hasAccess, setHasAccess] = useState([])
-  const sections = ['user','vendor','category','brand','product', 'banner', 'sweetbox']
+  const sections = ['user','vendor','category','brand','product', 'imageBox', 'sweetbox']
   const loadSeactions = () => {
     const getSection = sections.map((section, index) => {
       return (

@@ -88,7 +88,7 @@ const ProductGallery = ({classes, data, title, galleryType}) => {
                     <div key={index} className={`col-lg-4 col-md-6 col-sm-12`}>
                     <ListItem button className={classes.listItemCont}>
                       <ListItemIcon>
-                          <img className={`img-fluid`} src={`/images/banners/mini/${info.image}`} alt={info.name}/>
+                          <img className={`img-fluid`} src={`/images/image-boxes/mini/${info.image}`} alt={info.name}/>
                       </ListItemIcon>
                     </ListItem>
                     </div>

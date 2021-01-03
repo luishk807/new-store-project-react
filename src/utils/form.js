@@ -20,7 +20,7 @@ export const getImageUrlByType = (type) => {
     case 'user':
       return `${process.env.IMAGE_URL}/users`;
       break;
-    case 'banner':
+    case 'image box':
         return `${process.env.IMAGE_URL}/slideImages`;
         break;
     default:
@@ -136,7 +136,7 @@ export const loadMainOptions = async(isAdmin = false) => {
       status,
       gender,
       country,
-      bannerType,
+      imageBoxType,
       sweetBoxType,
       userRole,
       user
@@ -148,7 +148,7 @@ export const loadMainOptions = async(isAdmin = false) => {
       getSections(ADMIN_SECTIONS.status.url),
       getSections(ADMIN_SECTIONS.gender.url),
       getSections(ADMIN_SECTIONS.country.url),
-      getSections(ADMIN_SECTIONS.bannerType.url),
+      getSections(ADMIN_SECTIONS.imageBoxType.url),
       getSections(ADMIN_SECTIONS.sweetBoxType.url),
       getSections(ADMIN_SECTIONS.userRole.url),
       getSections(ADMIN_SECTIONS.user.url),
@@ -163,7 +163,7 @@ export const loadMainOptions = async(isAdmin = false) => {
       position,
       userRole,
       user,
-      bannerType,
+      imageBoxType,
       sweetBoxType,
       icon,
       gender,
@@ -178,7 +178,7 @@ export const loadMainOptions = async(isAdmin = false) => {
       status,
       gender,
       country,
-      bannerType,
+      imageBoxType,
       userRole,
     ] = await Promise.all([
       getSections(ADMIN_SECTIONS.category.url),
@@ -188,7 +188,7 @@ export const loadMainOptions = async(isAdmin = false) => {
       getSections(ADMIN_SECTIONS.status.url),
       getSections(ADMIN_SECTIONS.gender.url),
       getSections(ADMIN_SECTIONS.country.url),
-      getSections(ADMIN_SECTIONS.bannerType.url),
+      getSections(ADMIN_SECTIONS.imageBoxType.url),
       getSections(ADMIN_SECTIONS.userRole.url),
     ])
 
@@ -200,7 +200,7 @@ export const loadMainOptions = async(isAdmin = false) => {
       country,
       position,
       userRole,
-      bannerType,
+      imageBoxType,
       icon,
       gender,
     }

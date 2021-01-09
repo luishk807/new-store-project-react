@@ -26,6 +26,17 @@ const styles = (theme) => ({
       marginLeft: theme.spacing(2),
     },
   },
+  mainTitle: {
+    margin: 10,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  mainTitleTitle: {
+    padding: 5,
+  },
+  mainTitleSub: {
+    padding: 5,
+  },
   pagination: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -157,13 +168,15 @@ const SearchResult = ({classes}) => {
     <LayoutTemplate>
       <div className={classes.root}>
         <Grid container>
-          <Grid item lg={12} xs={12}>
-            <Typography align="left" variant="h4" component="span">Searching for &ldquo;{str || catn}&rdquo;</Typography>
+          <Grid item lg={12} xs={12} className={classes.mainTitle}>
+            <Typography align="left" variant="h4" component="span" className={classes.mainTitleTitle}>
+              Searching for &ldquo;{str || catn}&rdquo;
+            </Typography>
+            <Typography align="left" variant="h6" component="span" className={classes.mainTitleSub}>{totalCount} Resultados</Typography>
           </Grid>
           {
             showData ? data.length ? (
                 <>
-                <Typography align="left" variant="h6" component="span">{totalCount} Resultados</Typography>
                 <Grid item lg={12} xs={12} className={classes.pagination}>
                   <Pagination onChange={onPageChange} page={currentPage} count={pages} variant="outlined" size="large" shape="rounded" />
                 </Grid>

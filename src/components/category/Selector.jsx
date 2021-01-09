@@ -7,8 +7,8 @@ import {
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
-import { getCategories } from '../api/categories';
-import Icons from './common/Icons';
+import { getCategories } from '../../api/categories';
+import Icons from '../common/Icons';
 
 const styles = (theme) => ({
   root: {

@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 
 import Icons from './common/Icons';
-import CategoryModal from './CategoryModal';
+import CategoryModal from './category/Modal';
 
 const styles = (theme) => ({
   root: {

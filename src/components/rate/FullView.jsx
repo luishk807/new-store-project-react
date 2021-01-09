@@ -5,10 +5,10 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import RateBoxBreakdown from './common/Rate/RateBoxBreakdown';
-import RateListDetails from './common/Rate/RateListDetails';
-import Typography from './common/Typography';
-import { getAllProductRatesById } from '../api/rate';
+import RateBoxBreakdown from '../common/Rate/RateBoxBreakdown';
+import RateListDetails from '../common/Rate/RateListDetails';
+import Typography from '../common/Typography';
+import { getAllProductRatesById } from '../../api/rate';
 
 const styles = (theme) => ({
   mainRateContainer: {

@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 
 import BigCarrousel from './BigCarrousel';
-import CategorySelector from './CategorySelector';
+import CategorySelector from '../category/Selector';
 
 const styles = (theme) => ({
   root: {

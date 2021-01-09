@@ -6,14 +6,14 @@ import {
   Button,
 } from '@material-ui/core';
 
-import Typography from './common/Typography';
-import SweetBoxProducts from './SweetBoxProducts';
+import Typography from '../common/Typography';
+import SweetBoxProducts from '../sweetbox/Products';
 
  import {
   getSweetBoxesByType
- } from '../api/sweetbox';
+ } from '../../api/sweetbox';
 
-import CardIcon from './common/CardIcon';
+import CardIcon from '../common/CardIcon';
 
 const styles = (theme) => ({
   root: {

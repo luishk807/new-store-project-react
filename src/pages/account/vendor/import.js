@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
-import ProductImport from '../../../components/product/ProductImport';
+import ProductImport from '../../../components/product/Import';
 import { withStyles } from '@material-ui/core';
 
 const styles = (theme) => ({

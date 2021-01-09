@@ -8,9 +8,9 @@ import {
   TextField,
 } from '@material-ui/core';
 
-import Icons from './common/Icons';
-import { getItems } from '../api';
-import CategoryModalProducts from './CategoryModalProducts';
+import Icons from '../common/Icons';
+import { getItems } from '../../api';
+import CategoryModalProducts from './ModalProduct';
 
 const styles = (theme) => ({
   catIcons: {

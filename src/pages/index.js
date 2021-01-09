@@ -6,12 +6,12 @@ import {
 } from '@material-ui/core';
 
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
-import ProductGallery from '../components/ProductGallery';
-import NewArrival from '../components/NewArrival';
-import SweetBox from '../components/SweetBox';
-import ProductScroller from '../components/ProductScroller';
-import HomeCarrousel from '../components/HomeCarrousel';
-import ImageBox from '../components/ImageBox';
+import ProductGallery from '../components/product/Gallery';
+import NewArrival from '../components/home/NewArrival';
+import SweetBox from '../components/sweetbox';
+import ProductScroller from '../components/product/Scroller';
+import HomeCarrousel from '../components/home/Carrousel';
+import ImageBox from '../components/home/ImageBox';
 
 const styles = (theme) => ({
   root: {

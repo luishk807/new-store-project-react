@@ -8,12 +8,12 @@ import {
 } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 
-import { getProducts } from '../api/products';
-import { getImageUrlByType } from '../utils/form';
-import { noImageUrl } from '../../config';
-import Icons from './common/Icons';
-import Rate from './common/Rate/Rate';
-import ProgressBar from './common/ProgressBar';
+import { getProducts } from '../../api/products';
+import { getImageUrlByType } from '../../utils/form';
+import { noImageUrl } from '../../../config';
+import Icons from '../common/Icons';
+import Rate from '../common/Rate/Rate';
+import ProgressBar from '../common/ProgressBar';
 
 const styles = (theme) => ({
   root: {

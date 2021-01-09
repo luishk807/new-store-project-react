@@ -12,7 +12,7 @@ import { noImageUrl } from '../../config';
 import Rate from '../components/common/Rate/Rate';
 import Typography from '../components/common/Typography';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
-import CategorySelectorPlain from '../components/CategorySelectorPlain'
+import CategorySelectorPlain from '../components/category/SelectorPlain'
 import { getImageUrlByType } from '../utils/form';
 import { searchProductsByFilter } from '../api/products';
 import ProgressBar from '../components/common/ProgressBar';

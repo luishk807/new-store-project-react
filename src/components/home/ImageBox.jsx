@@ -9,7 +9,7 @@ import {
   Link,
 } from '@material-ui/core';
 
-import { getImageBoxesByType } from '../api/imageBoxes';
+import { getImageBoxesByType } from '../../api/imageBoxes';
 
 const styles = (theme) => ({
   root: {

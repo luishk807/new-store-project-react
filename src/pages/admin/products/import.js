@@ -1,4 +1,4 @@
-import ProductImport from '../../../components/product/ProductImport';
+import ProductImport from '../../../components/product/Import';
 import { withStyles } from '@material-ui/core';
 import * as T from 'prop-types';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate'

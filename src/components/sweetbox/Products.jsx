@@ -7,12 +7,12 @@ import {
 } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 
-import { getImageUrlByType } from '../utils/form';
+import { getImageUrlByType } from '../../utils/form';
 import {
   getProductById
-} from '../api/products';
-import CardIcon from './common/CardIcon';
-import Rate from './common/Rate/Rate';
+} from '../../api/products';
+import CardIcon from '../common/CardIcon';
+import Rate from '../common/Rate/Rate';
 
 const styles = (theme) => ({
   featureBtn: {

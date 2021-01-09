@@ -57,3 +57,7 @@ export const getRatingAvg = (data) => {
   })
   return parseFloat(totalAvg / length).toFixed(1);
 }
+
+export const getCatSearch = (data) => {
+  return encodeURI(`/searchResult?cat=${data.id}&catn=${data.name}`);
+}

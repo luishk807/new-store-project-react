@@ -49,8 +49,8 @@ const styles = (theme) => ({
     padding: '5px 0px',
   },
   itemMain: {
-    border: '1px solid rgba(0,0,0,.09)',
-    margin: 8,
+    // border: '1px solid rgba(0,0,0,.09)',
+    // margin: 8,
     [theme.breakpoints.down('sm')]: {
       borderTop: '1px solid rgba(0,0,0,.09)',
       border: 'none',
@@ -99,10 +99,14 @@ const styles = (theme) => ({
   itemDesc: {
     [theme.breakpoints.down('sm')]: {
       textAlign: 'left',
-    }
+    },
+    textAlign: 'center',
   },
   rateItem: {
     padding: '8px 0px'
+  },
+  itemsItemContainer: {
+    justifyContent: 'center',
   }
 });
 
@@ -154,9 +158,6 @@ const SearchResult = ({classes}) => {
       <div className={classes.root}>
         <Grid container>
           <Grid item lg={12} xs={12}>
-            <CategorySelectorPlain />
-          </Grid>
-          <Grid item lg={12} xs={12}>
             <Typography align="left" variant="h4" component="span">Searching for &ldquo;{str || catn}&rdquo;</Typography>
           </Grid>
           {
@@ -167,7 +168,7 @@ const SearchResult = ({classes}) => {
                   <Pagination onChange={onPageChange} page={currentPage} count={pages} variant="outlined" size="large" shape="rounded" />
                 </Grid>
                 <Grid item lg={12} xs={12} className={classes.itemsContainer}>
-                  <Grid container>
+                  <Grid container className={classes.itemsItemContainer}>
                     {
                       data.map((data, index) => {
                         let prodImage = data.productImages && data.productImages.length ? (
@@ -187,9 +188,7 @@ const SearchResult = ({classes}) => {
                                 <Grid item xs={7} lg={12} className={classes.itemInfo}>
                                   <p className={classes.itemAmount}>US ${data.amount}</p>
                                   <p align="center" variant="h4" component="h4" className={classes.itemTitle}>{data.name}</p>
-                                  <p align="center" variant="body1" component="p" className={classes.itemDesc}>
-                                    <TextEllipsis text={data.description} limit={100} />
-                                  </p>
+                                  <TextEllipsis text={data.description} limit={100} classes={classes.itemDesc}/>
                                   <Rate className={classes.rateItem} data={0} disabled={true} />
                                 </Grid>
                               </Grid>

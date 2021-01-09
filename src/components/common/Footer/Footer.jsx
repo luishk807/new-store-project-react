@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 
 import Typography from '../Typography';
-
+import Icons from '../../common/Icons';
 import { FooterSample } from '../../../constants/samples/FooterSample';
 
 const styles = (theme) => ({
@@ -126,6 +126,51 @@ const styles = (theme) => ({
     color: 'white',
     fontSize: '.8em',
     textTransform: 'uppercase',
+  },
+
+
+  socialLine: {
+    textAlign: 'center',
+    backgroundColor: '#323232',
+  },
+  socialLineMain: {
+    margin: '0px auto',
+    '& a:not(:last-child)::after': {
+      paddingRight: 50,
+      borderRight: '1px solid rgba(255, 255, 255, 0.6)',
+    },
+    '& ul': {
+      justifyContent: 'center',
+      margin: 0,
+      display: 'block',
+      padding: 0,
+      [theme.breakpoints.down('sm')]: {
+        display: 'flex',
+        listStyleType: 'none',
+      },
+    },
+    '& ul li': {
+      padding: '5px 0px',
+      display: 'inline',
+      padding: '2px 20px',
+      [theme.breakpoints.down('sm')]: {
+        padding: 10,
+      },
+    },
+  },
+  socialLineItems: {
+    padding: 5,
+    fontSize: '.9em',
+    color: 'white',
+    '&:hover': {
+      textDecoration: 'underline',
+      color: 'white',
+    }
+  },
+  socialIcons: {
+    width: 20,
+    height: 20,
+    fill: 'white',
   },
 });
 
@@ -266,6 +311,29 @@ const Footer = ({classes}) => {
                   </Grid>
                 </Grid>
               </Grid>
+            </Grid>
+          </Grid>
+          <Grid item lg={12} xs={12} className={`${classes.socialLine}`}>
+            <Grid container>
+              <Grid item lg={6} md={6} xs={12} className={classes.socialLineMain}>
+                <ul>
+                  <li>
+                    <a href='/' className={classes.secondLastlineItems}>
+                      <Icons name="facebook" classes={{icon: classes.socialIcons}} />
+                    </a>
+                  </li>
+                  <li>
+                    <a href='/' className={classes.secondLastlineItems}>
+                      <Icons name="instagram" classes={{icon: classes.socialIcons}} />
+                    </a>
+                  </li>
+                  <li>
+                     <a href='/' className={classes.secondLastlineItems}>
+                      <Icons name="whatssap" classes={{icon: classes.socialIcons}} />
+                    </a>
+                  </li>
+                </ul>
+              </Grid>              
             </Grid>
           </Grid>
           <Grid item lg={12} xs={12} className={`${classes.secondLastline}`}>

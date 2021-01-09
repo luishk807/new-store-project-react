@@ -26,6 +26,17 @@ const styles = (theme) => ({
       marginLeft: theme.spacing(2),
     },
   },
+  mainTitle: {
+    margin: 10,
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  mainTitleTitle: {
+    padding: 5,
+  },
+  mainTitleSub: {
+    padding: 5,
+  },
   pagination: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -49,8 +60,8 @@ const styles = (theme) => ({
     padding: '5px 0px',
   },
   itemMain: {
-    border: '1px solid rgba(0,0,0,.09)',
-    margin: 8,
+    // border: '1px solid rgba(0,0,0,.09)',
+    // margin: 8,
     [theme.breakpoints.down('sm')]: {
       borderTop: '1px solid rgba(0,0,0,.09)',
       border: 'none',
@@ -99,10 +110,14 @@ const styles = (theme) => ({
   itemDesc: {
     [theme.breakpoints.down('sm')]: {
       textAlign: 'left',
-    }
+    },
+    textAlign: 'center',
   },
   rateItem: {
     padding: '8px 0px'
+  },
+  itemsItemContainer: {
+    justifyContent: 'center',
   }
 });
 
@@ -153,21 +168,20 @@ const SearchResult = ({classes}) => {
     <LayoutTemplate>
       <div className={classes.root}>
         <Grid container>
-          <Grid item lg={12} xs={12}>
-            <CategorySelectorPlain />
-          </Grid>
-          <Grid item lg={12} xs={12}>
-            <Typography align="left" variant="h4" component="span">Searching for &ldquo;{str || catn}&rdquo;</Typography>
+          <Grid item lg={12} xs={12} className={classes.mainTitle}>
+            <Typography align="left" variant="h4" component="span" className={classes.mainTitleTitle}>
+              Searching for &ldquo;{str || catn}&rdquo;
+            </Typography>
+            <Typography align="left" variant="h6" component="span" className={classes.mainTitleSub}>{totalCount} Resultados</Typography>
           </Grid>
           {
             showData ? data.length ? (
                 <>
-                <Typography align="left" variant="h6" component="span">{totalCount} Resultados</Typography>
                 <Grid item lg={12} xs={12} className={classes.pagination}>
                   <Pagination onChange={onPageChange} page={currentPage} count={pages} variant="outlined" size="large" shape="rounded" />
                 </Grid>
                 <Grid item lg={12} xs={12} className={classes.itemsContainer}>
-                  <Grid container>
+                  <Grid container className={classes.itemsItemContainer}>
                     {
                       data.map((data, index) => {
                         let prodImage = data.productImages && data.productImages.length ? (
@@ -187,9 +201,7 @@ const SearchResult = ({classes}) => {
                                 <Grid item xs={7} lg={12} className={classes.itemInfo}>
                                   <p className={classes.itemAmount}>US ${data.amount}</p>
                                   <p align="center" variant="h4" component="h4" className={classes.itemTitle}>{data.name}</p>
-                                  <p align="center" variant="body1" component="p" className={classes.itemDesc}>
-                                    <TextEllipsis text={data.description} limit={100} />
-                                  </p>
+                                  <TextEllipsis text={data.description} limit={100} classes={classes.itemDesc}/>
                                   <Rate className={classes.rateItem} data={0} disabled={true} />
                                 </Grid>
                               </Grid>

@@ -6,12 +6,14 @@ import {
   withStyles,
   InputBase,
   Grid,
-  Button,
-  Link,
+  Hidden,
 } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import SearchIcon from '@material-ui/icons/Search';
 import Icons from './Icons';
+import Dropdown from './Dropdown';
+import { getCategories } from '../../api/categories';
+import { getCatSearch } from '../../utils';
 
 import {
   SearchResultSample
@@ -21,9 +23,14 @@ import { searchProducts } from '../../api/products';
 const styles = (theme) => ({
   searchBarInputContent: {
     position: 'relative',
-    borderRadius: 4,
     background: 'white',
     padding: 3,
+    width: '95%',
+    borderRadius: '0px 4px 4px 0px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      borderRadius: 4,
+    }
   },
   search: {
     backgroundColor: 'black',
@@ -98,7 +105,11 @@ const styles = (theme) => ({
     left: 0,
     height: 4000,
     zIndex: '-1',
-  }
+  },
+  searchContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
 });
 
 const SearchBar = ({classes}) => {
@@ -107,6 +118,7 @@ const SearchBar = ({classes}) => {
   const [showResults, setShowResult] = useState(false);
   const [htmlList, setHtmlList] = useState([]);
   const [currentValue, setCurrentValue] = useState('');
+  const [dropDownOptions, setDropDownOptions] = useState([]);
   const refLists = useRef([]);
 
   const setFocus = async(direction) => {
@@ -158,6 +170,11 @@ const SearchBar = ({classes}) => {
     window.location.href = `/product/${product.id}`;
   }
 
+  const handleDropDown = async(data) => {
+    const url = await getCatSearch(data);
+    window.location.href = url;
+  }
+
   const resetTab = () => {
     setShowResult(false)
     setCurrentTab(null)
@@ -182,26 +199,40 @@ const SearchBar = ({classes}) => {
     }
   }
 
+  const fetchCategories = async() => {
+    let cat = await getCategories();
+    setDropDownOptions(cat);
+  }
+
+  useEffect(() => {
+    fetchCategories();
+  }, [])
+
   return (
     <>
     <ClickAwayListener onClickAway={resetTab}>
       <div className={classes.search}>
-        <div className={classes.searchBarInputContent}>
-          <div className={`AppBarBackColor ${classes.searchIcon}`}>
-            <Icons classes={{icon: classes.icon}} name="search"/>
+        <div className={classes.searchContainer}>
+          <Hidden smDown>
+            <Dropdown options={dropDownOptions} onSelect={handleDropDown} iconType="listBullets" />
+          </Hidden>
+          <div className={classes.searchBarInputContent}>
+            <div className={`AppBarBackColor ${classes.searchIcon}`}>
+              <Icons classes={{icon: classes.icon}} name="search"/>
+            </div>
+            <InputBase
+              value={currentValue}
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              onChange={handleOnChange}
+              onFocus={resetTab}
+              onKeyDown={onKeyDown}
+              inputProps={{ 'aria-label': 'search' }}
+            />
           </div>
-          <InputBase
-            value={currentValue}
-            placeholder="Search…"
-            classes={{
-              root: classes.inputRoot,
-              input: classes.inputInput,
-            }}
-            onChange={handleOnChange}
-            onFocus={resetTab}
-            onKeyDown={onKeyDown}
-            inputProps={{ 'aria-label': 'search' }}
-          />
         </div>
         {
           showResults && (

@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 
 import { getCategories } from '../../api/categories';
 import Icons from '../common/Icons';
+import { getCatSearch } from '../../utils';
 
 const styles = (theme) => ({
   root: {
@@ -78,8 +79,8 @@ const CategorySelector = ({classes}) => {
     setCategories(categories);
   }
 
-  const goToSearch = (data) => {
-    const url = encodeURI(`/searchResult?cat=${data.id}&catn=${data.name}`);
+  const goToSearch = async(data) => {
+    const url = await getCatSearch(data);
     router.push(url)
   }
 

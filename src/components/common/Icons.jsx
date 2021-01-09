@@ -211,7 +211,7 @@ const Icons = ({classes, name}) => {
         return <Pininterest className={classes.icon}/>
       break;
       case 'instagram':
-        return <Intangram className={classes.icon}/>
+        return <Instagram className={classes.icon}/>
       break;
       case 'clothe':
         return <Clothe className={classes.icon} />

@@ -26,6 +26,8 @@ const styles = (theme) => ({
     background: 'white',
     padding: 3,
     width: '95%',
+    alignItems: 'center',
+    display: 'flex',
     borderRadius: '0px 4px 4px 0px',
     [theme.breakpoints.down('sm')]: {
       width: '100%',

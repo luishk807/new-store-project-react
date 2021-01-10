@@ -99,3 +99,29 @@ export const addItem = (section, data) => {
   
   return Api.post(`${section}`, form);
 }
+
+export const postItem = (section, data) => {
+  if (!Object.keys(data).length) {
+    return;
+  }
+
+  let form = null;
+  
+  if ('image' in data) {
+    form = {
+      ...data,
+      'image': data.image.files
+    }
+  } else if ('imageBox' in data) {
+    form = {
+      ...data,
+      'image': data.imageBox
+    }
+  } else {
+    form = {
+      ...data
+    }
+  }
+  
+  return Api.post(`${section}`, form);
+}

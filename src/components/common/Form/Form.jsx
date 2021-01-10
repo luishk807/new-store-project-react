@@ -152,6 +152,7 @@ const Form = ({
   showTitle = true,
   hideEntry,
   fileLimit = false,
+  showCancelBtn = true
 }) => {
   const [formOptions, setFormOptions] = useState({
     vendors: {},
@@ -498,6 +499,15 @@ const Form = ({
         setFormBtnTitle(`Delete ${newTitle}`);
         break;
       }
+      case "email": {
+        setFormTitle(`${newTitle}`);
+        setFormBtnTitle(`Send Email`);
+        break;
+      }
+      default: {
+        setFormTitle(`${newTitle}`);
+        setFormBtnTitle(`${newTitle}`);
+      }
     }
   }, [])
 
@@ -522,14 +532,18 @@ const Form = ({
           {
             useFormOption && formFields
           }
-          <Grid item lg={6} xs={12} className={classes.formItem}>
-            <FormControl fullWidth className={classes.margin}>
-              <Button onClick={handleCancel} className={`mainButton`}>Cancel</Button>
-            </FormControl>
-          </Grid>
+          {
+            showCancelBtn && (
+              <Grid item lg={6} xs={12} className={classes.formItem}>
+                <FormControl fullWidth className={classes.margin}>
+                  <Button onClick={handleCancel} className={`mainButton`}>Cancel</Button>
+                </FormControl>
+              </Grid>
+            )
+          }
           {
             formBtnTitle && (
-              <Grid item lg={6} xs={12} className={classes.formItem}>
+              <Grid item lg={ showCancelBtn ? 6 : 12 } xs={12} className={classes.formItem}>
                 <FormControl fullWidth className={classes.margin}>
                   <Button onClick={handleSubmit} className={`mainButton`}> {formBtnTitle}</Button>
                 </FormControl>
@@ -555,6 +569,7 @@ Form.protoTypes = {
   imageBoxAddMore: T.func,
   id: T.number,
   isAdmin: T.bool,
+  showCancelBtn: T.bool,
   fileOnSave: T.func,
   fileLimit: T.bool,
   formSubmit: T.func,

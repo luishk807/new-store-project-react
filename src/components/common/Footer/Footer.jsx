@@ -283,23 +283,23 @@ const Footer = ({classes}) => {
               <Grid item lg={2} md={6} xs={12} className={classes.firstLineItems}>
                 <Grid container>
                   <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
-                    <a align="center" href="/">Venenatis</a>
+                    <a align="center" href="/">Our Company</a>
                   </Grid>
                   <Grid item lg={4} xs={12} className={classes.firstLineItemsCells}>
                     <ul className={classes.ulList}>
                       <li className={classes.liList}>
                         <a href="/"  className={classes.footerLink}>
-                          Pellentesque
+                          About Us
+                        </a>
+                      </li>
+                      <li className={classes.liList}>
+                        <a href="/contactus"  className={classes.footerLink}>
+                          Contact Us
                         </a>
                       </li>
                       <li className={classes.liList}>
                         <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
+                          Terms
                         </a>
                       </li>
                       <li className={classes.liList}>

@@ -1,19 +1,10 @@
 import { createStore, applyMiddleware } from 'redux';
+import { createWrapper } from 'next-redux-wrapper';
 import rootReducer from './reducers/rootReducer';
 import thunk from 'redux-thunk';
 
-const logger = ({ getState }) => {
-    return next => action => {
-        console.log('will dispatch', action);
-
-        const returnValue = next(action);
-
-        console.log('state after dispatch', getState());
-
-        return returnValue;
-    }
+const makeStore = (context) => {
+    return createStore(rootReducer, applyMiddleware(thunk));
 }
 
-const store = createStore(rootReducer, applyMiddleware(thunk, logger));
-
-export default store;
+export const wrapper = createWrapper(makeStore, { debug: true });

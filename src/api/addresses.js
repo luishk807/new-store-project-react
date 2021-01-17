@@ -4,6 +4,10 @@ export const saveAddress = async(data, id) => {
   return Api.post(`useraddresses/${id}`, data);
 }
 
+export const updateAddress = async(data, id) => {
+  return Api.save(`useraddresses/${id}`, data);
+}
+
 export const createAddress = async(data) => {
   return Api.post(`useraddresses`, data);
 }

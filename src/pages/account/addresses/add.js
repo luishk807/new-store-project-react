@@ -25,17 +25,17 @@ const Add = ({classes}) => {
   const form = {
     name: null,
     address: null,
-    province: null,
-    township: null,
-    country: defaultCountry,
+    email: null,
     phone: null,
     mobile: null,
-    zip: null,
+    province: null,
+    district: null,
+    corregimiento: null,
+    country: defaultCountry,
   }
-
   return (
     <UserLayoutTemplate classes={{root: classes.templateRoot}}>
-      <AddForm userSection={USER_SECTIONS.userAddress} customUrl={`/account/addresses`} entryForm={form} />
+      <AddForm ignoreForm={['email']} userSection={USER_SECTIONS.userAddress} customUrl={`/account/addresses`} entryForm={form} />
     </UserLayoutTemplate>
   );
 }

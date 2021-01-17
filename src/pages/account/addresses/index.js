@@ -12,9 +12,9 @@ import {
 import Typography from '../../../components/common/Typography';
 import CardIcon from '../../../components/common/CardIcon';
 import Icons from '../../../components/common/Icons';
-import { getAddresses, deleteAddress } from '../../../api/addresses';
+import { getAddresses, deleteAddress, updateAddress } from '../../../api/addresses';
 import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
-import AddressBox from '../../../components/common/AddressBox';
+import AddressBox from '../../../components/address/AddressBox';
 import Snackbar from '../../../components/common/Snackbar';
 import { handleFormResponse } from '../../../utils/form';
 import ProgressBar from '../../../components/common/ProgressBar';
@@ -67,6 +67,32 @@ const Index = ({classes, userInfo}) => {
     setShowDate(true);
   }
 
+  const addressSet = async(id) => {
+    let snackResp = null;
+    let data = null;
+    const selectedData = await addresses.filter((address) => address.id === id)
+    if (selectedData[0].selected) {
+      data = {
+        unfavorite: id,
+        user: userInfo.id,
+      }
+    } else {
+      data = {
+        favorite: id,
+        user: userInfo.id,
+      }
+    }
+
+    const res = await updateAddress(data, id);
+    if (res.status) {
+      snackResp = handleFormResponse(res)
+    } else {
+      snackResp = handleFormResponse(res)
+    }
+    setSnack(snackResp)
+    loadAddresses();
+  }
+
   const addressDelete = async(id) => {
     let snackResp = null
     const res = await deleteAddress(id)
@@ -107,6 +133,7 @@ const Index = ({classes, userInfo}) => {
                   <AddressBox 
                     onClickEdit={addressUpdate}
                     onClickRemove={addressDelete}
+                    onClickSet={addressSet}
                     key={index}
                     classes={{root: classes.addressItem}}
                     data={address} 

@@ -1,7 +1,7 @@
 import { FORM_SCHEMA, CATEGORY_ICONS } from '../../config';
 import { ADMIN_SECTIONS } from '../constants/admin';
 import Api from '../services/api';
-import { getSections } from '../api';
+import { getSections, getBasicAdmin, getBasicUser } from '../api';
 
 export const getImageUrlByType = (type) => {
   if (!type) {
@@ -126,83 +126,13 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
 }
 
 export const loadMainOptions = async(isAdmin = false) => {
+  let data = {}
+  const icon = await CATEGORY_ICONS;
   if (isAdmin) {
-    const icon = await CATEGORY_ICONS;
-    const [
-      category, 
-      position, 
-      vendor, 
-      brand, 
-      status,
-      gender,
-      country,
-      imageBoxType,
-      sweetBoxType,
-      userRole,
-      user
-    ] = await Promise.all([
-      getSections(ADMIN_SECTIONS.category.url),
-      getSections(ADMIN_SECTIONS.workRole.url),
-      getSections(ADMIN_SECTIONS.vendor.url),
-      getSections(ADMIN_SECTIONS.brand.url),
-      getSections(ADMIN_SECTIONS.status.url),
-      getSections(ADMIN_SECTIONS.gender.url),
-      getSections(ADMIN_SECTIONS.country.url),
-      getSections(ADMIN_SECTIONS.imageBoxType.url),
-      getSections(ADMIN_SECTIONS.sweetBoxType.url),
-      getSections(ADMIN_SECTIONS.userRole.url),
-      getSections(ADMIN_SECTIONS.user.url),
-    ])
-
-    return {
-      category,
-      brand,
-      vendor,
-      status,
-      country,
-      position,
-      userRole,
-      user,
-      imageBoxType,
-      sweetBoxType,
-      icon,
-      gender,
-    }
+    data = await getBasicAdmin();
   } else {
-    const icon = await CATEGORY_ICONS;
-    const [
-      category, 
-      position, 
-      vendor, 
-      brand, 
-      status,
-      gender,
-      country,
-      imageBoxType,
-      userRole,
-    ] = await Promise.all([
-      getSections(ADMIN_SECTIONS.category.url),
-      getSections(ADMIN_SECTIONS.workRole.url),
-      getSections(ADMIN_SECTIONS.vendor.url),
-      getSections(ADMIN_SECTIONS.brand.url),
-      getSections(ADMIN_SECTIONS.status.url),
-      getSections(ADMIN_SECTIONS.gender.url),
-      getSections(ADMIN_SECTIONS.country.url),
-      getSections(ADMIN_SECTIONS.imageBoxType.url),
-      getSections(ADMIN_SECTIONS.userRole.url),
-    ])
-
-    return {
-      category,
-      brand,
-      vendor,
-      status,
-      country,
-      position,
-      userRole,
-      imageBoxType,
-      icon,
-      gender,
-    }
+    data = await getBasicUser();
   }
+  data['icon'] = icon;
+  return data;
 }

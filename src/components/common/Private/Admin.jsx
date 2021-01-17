@@ -8,8 +8,8 @@ import {
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 
-import { verifyUser } from '../../api/auth';
-import Login from './Form/Users/Login';
+import { verifyAuth } from '../../../api/auth'
+import Login from '../Form/Admin/Login';
 
 const styles = (theme) => ({
   root: {
@@ -32,7 +32,7 @@ const styles = (theme) => ({
   },
 });
 
-const UserPrivatePage = ({classes, children, userInfo}) => {
+const AdminPrivate = ({classes, children, userInfo}) => {
   const [hasAccess, setHasAccess] = useState(true);
   const [status, setStatus] = useState({
     severity: '',
@@ -40,14 +40,14 @@ const UserPrivatePage = ({classes, children, userInfo}) => {
     text: ``,
   })
   useEffect(() => {
-    setHasAccess(verifyUser());
-  }, [])
+    setHasAccess(verifyAuth());
+  }, [userInfo])
 
 
-  return !hasAccess ? (<Login showRegister={true} inStatus={hasAccess}/>) : children
+  return !hasAccess ? (<Login inStatus={hasAccess}/>) : children
 }
 
-UserPrivatePage.protoTypes = {
+AdminPrivate.protoTypes = {
   classes: T.object,
   children: T.node,
 }
@@ -55,5 +55,4 @@ UserPrivatePage.protoTypes = {
 const mapStateToProps = state => ({
   userInfo: state.user
 }) // add reducer access to props
-
-export default connect(mapStateToProps)(withStyles(styles)(UserPrivatePage));
+export default connect(mapStateToProps)(withStyles(styles)(AdminPrivate));

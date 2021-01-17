@@ -4,12 +4,12 @@ export const removeCharacter = (str) => {
 
 export const formatNumber = (x) => Number.parseFloat(x).toFixed(2);
 
-export const getCartTotal = (cart) => {
+export const getCartTotal = (obj) => {
   let subtotal = 0;
   let taxes = 0;
   let grandTotal = 0;
-  let delivery = 0;
-
+  let delivery = parseFloat(obj.delivery);
+  let cart = obj.cart;
   if (cart) {
     Object.keys(cart).forEach((key, index) => {
       subtotal += cart[key].amount * cart[key].quantity;
@@ -18,7 +18,7 @@ export const getCartTotal = (cart) => {
 
   taxes = subtotal * 0.08;
 
-  grandTotal = taxes + subtotal;
+  grandTotal = taxes + subtotal + delivery;
 
   return {
     'subtotal': formatNumber(subtotal),

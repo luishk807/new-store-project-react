@@ -104,8 +104,12 @@ const EditForm = ({
   }
 
   const handleCancel = () => {
-    const url = customUrl ? customUrl : `/account`;
-    router.push(url);
+    if (customUrl) {
+      const url = customUrl ? customUrl : `/account`;
+      router.push(url);
+    } else {
+      router.back()
+    }
   }
 
   const handleSubmit = async (e) => {

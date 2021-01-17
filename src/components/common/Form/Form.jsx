@@ -13,6 +13,8 @@ import {
   FormControl,
   FormHelperText,
   TextareaAutosize,
+  FormControlLabel,
+  Checkbox,
 } from '@material-ui/core';
 import { 
   Autocomplete,
@@ -32,15 +34,19 @@ import Icons from '../Icons';
 
 const styles = (theme) => ({
   root: {
+    '& input': {
+      backgroundColor: 'white'
+    },
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    textAlign: 'center',
+    textAlign: 'inherit',
   },
   typography: {
-
+    textAlign: 'inherit',
+    padding: 5,
   },
   margin: {
     margin: theme.spacing(1),
@@ -96,6 +102,12 @@ const styles = (theme) => ({
     padding: 12,
     display: 'flex',
     margin: '10px 0px',
+  },
+  whiteBackground: {
+    background: 'white'
+  },
+  checkboxItem: {
+    padding: 3
   },
   marginImageBox: {
     margin: theme.spacing(1),
@@ -164,9 +176,10 @@ const Form = ({
   const [formTitle, setFormTitle] = useState('');
   const [formBtnTitle, setFormBtnTitle] = useState('');
   const [imageBoxImageItems, setImageBoxImageItems] = useState([{}]);
+  const [panamaAddress, setPanamaAddress] = useState({})
   const userImages = fields['image'] && 'saved' in fields['image'] ? fields['image'].saved : null;
   const imageBoxImages = fields['imageBox'] && 'saved' in fields['imageBox'] ? fields['imageBox'].saved : null;
-
+  const panamaFlag = ['province', 'district', 'corregimiento'];
   const imageClickHandle = (e) => {
     const markDelete = userImages[e];
     userImages.splice(e,1);
@@ -195,6 +208,27 @@ const Form = ({
       {}
     ]);
     imageBoxAddMore(true);
+  }
+
+  const onDropDownChange = async(val) => {
+    const options = formOptions;
+    const panama = panamaAddress;
+    let sel_name = '';
+    if (val.name === "province") {
+      const lists = panama.districts.filter((item) => item.province == val.value.id);
+      options['district'] = lists;
+      sel_name = 'sel_province';
+    } else if (val.name === "district") {
+      const lists = panama.corregimientos.filter((item) => item.province == panama.sel_province && item.district == val.value.id);
+      options['corregimiento'] = lists;
+    } else if (val.name === "corregimiento") {
+      sel_name = 'sel_corregimiento';
+    } 
+    setPanamaAddress({
+      ...panamaAddress,
+      [sel_name]: val.value.id
+    })
+    await setFormOptions(options)
   }
 
   const deleteImageBox = async(index) => {
@@ -254,7 +288,7 @@ const Form = ({
       case "email": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
+            <FormControl fullWidth variant="outlined">
               <TextField 
                 error={errors[field].error}
                 helperText={errors[field].text} 
@@ -269,10 +303,28 @@ const Form = ({
         )
         break
       }
+      case "checkbox": {
+        return (
+          <Grid key={index} item lg={12} xs={12} align="left" className={classes.formItem}>
+            <FormControlLabel
+              className={classes.checkboxItem}
+              control={
+                <Checkbox
+                  defaultChecked
+                  onChange={formOnChange}
+                  name={field}
+                />
+              }
+              label={field}
+            />
+          </Grid>
+        )
+        break
+      }
       case "number": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
+            <FormControl fullWidth variant="outlined">
               <TextField 
                 type="number"
                 error={errors[field].error}
@@ -291,7 +343,7 @@ const Form = ({
       case "rate": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
-            <FormControl fullWidth className={classes.margin}>
+            <FormControl fullWidth>
               <Rate name={field}  onChange={handleRateOnChange} data={0} />
             </FormControl>
           </Grid>
@@ -301,7 +353,7 @@ const Form = ({
       case "password": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
+            <FormControl fullWidth variant="outlined">
               <TextField 
                 error={errors[field].error}
                 helperText={errors[field].text} 
@@ -321,7 +373,7 @@ const Form = ({
         const initialDate =fields[field] ? fields[field] : moment(new Date()).format('YYYY-MM-DD');
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
+            <FormControl fullWidth variant="outlined">
               <TextField 
                 error={errors[field].error}
                 helperText={errors[field].text} 
@@ -340,15 +392,19 @@ const Form = ({
       case "dropdown": {
         return (
           <Grid item key={index} lg={12} xs={12} className={classes.formItem}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
+            <FormControl fullWidth variant="outlined">
               <Autocomplete
+                className={classes.whiteBackground}
                 name={field}
                 options={formOptions[field]}
                 onChange={(e, value) => {
+                  if (panamaFlag.includes(field)) {
+                    onDropDownChange({ name: field, value: value})
+                  }
                   formOnChange(null, { name: field, value: value})
                 }}
                 getOptionLabel={(option) => 'name' in option ? option.name : option.first_name + " " + option.last_name}
-                defaultValue={fields[field]}
+                value={fields[field]}
                 renderInput={(params) => <TextField {...params} label={field} variant="outlined" />}
               />
               <FormHelperText name={field}>{`Select your ${field}`}</FormHelperText>
@@ -360,7 +416,7 @@ const Form = ({
       case "linkitem": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
+            <FormControl fullWidth variant="outlined">
               <Button href={`${field}/${id}`} className={`mainButton`}>Edit {field}</Button>
             </FormControl>
           </Grid>
@@ -442,7 +498,7 @@ const Form = ({
       case "textarea": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
-            <FormControl fullWidth className={classes.margin}>
+            <FormControl fullWidth>
               <TextareaAutosize 
                 name={field} 
                 rowsMin={3} 
@@ -462,7 +518,26 @@ const Form = ({
     const loadFormOption = async() => {
       const section = ADMIN_SECTIONS
       const options = await loadMainOptions(isAdmin);
-      
+      const panama = {
+        provinces: [],
+        districts: [],
+        corregimientos: [],
+        sel_province: null,
+        sel_district: null,
+        sel_corregimiento: null
+      }
+      if (options.province) {
+        panama.provinces = options.province
+      }
+      if (options.district) {
+        panama.districts = options.district
+      }
+      if (options.corregimiento) {
+        panama.corregimientos = options.corregimiento
+      }
+
+      setPanamaAddress(panama);
+
       setFormOptions(options)
       setUseFormOptions(true)
     }
@@ -504,6 +579,16 @@ const Form = ({
         setFormBtnTitle(`Send Email`);
         break;
       }
+      case "action": {
+        setFormTitle(`${newTitle}`);
+        setFormBtnTitle(`Save`);
+        break;
+      }
+      case "dynamic": {
+        setFormTitle(`${newTitle}`);
+        setFormBtnTitle(null);
+        break;
+      }
       default: {
         setFormTitle(`${newTitle}`);
         setFormBtnTitle(`${newTitle}`);
@@ -518,7 +603,7 @@ const Form = ({
           {
             showTitle && (
               <Grid item lg={12} xs={12}>
-                <Typography className={classes.typography} align="center" variant="h4" component="h4">{formTitle}</Typography>
+                <Typography className={classes.typography} variant="h4" component="h4">{formTitle}</Typography>
               </Grid>
             )
           }
@@ -535,7 +620,7 @@ const Form = ({
           {
             showCancelBtn && (
               <Grid item lg={6} xs={12} className={classes.formItem}>
-                <FormControl fullWidth className={classes.margin}>
+                <FormControl fullWidth>
                   <Button onClick={handleCancel} className={`mainButton`}>Cancel</Button>
                 </FormControl>
               </Grid>
@@ -544,7 +629,7 @@ const Form = ({
           {
             formBtnTitle && (
               <Grid item lg={ showCancelBtn ? 6 : 12 } xs={12} className={classes.formItem}>
-                <FormControl fullWidth className={classes.margin}>
+                <FormControl fullWidth>
                   <Button onClick={handleSubmit} className={`mainButton`}> {formBtnTitle}</Button>
                 </FormControl>
               </Grid>

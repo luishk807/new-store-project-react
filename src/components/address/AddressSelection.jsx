@@ -18,6 +18,7 @@ import { getAddresses, createAddress } from '../../api/addresses';
 import ActionForm from '../common/Form/Action/Add';
 import RadioBox from '../common/RadioBox';
 import { defaultCountry } from '../../../config';
+import { finished } from 'stream';
 
 const styles = (theme) => ({
   root: {
@@ -122,8 +123,16 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
   }
 
   const handleRadioSelect = (evt) => {
-    const findAddres = userAddresses.filter(item => item.id == evt)
+    const findAddres = userAddresses.filter(item => item.id == evt[0].id)
     if (findAddres && findAddres.length) {
+      const listAddresses = userAddresses.map((item) => {
+        item = {
+          ...item,
+          selected: findAddres[0].id === item.id ? true : false
+        }
+        return item
+      })
+      setUserAddresses(listAddresses)
       setUserAddress(findAddres[0])
       onSelected(findAddres[0]);
     }

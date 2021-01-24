@@ -11,6 +11,7 @@ export const FORM_TYPE = {
   textArea: 'textarea',
   linkItem: 'linkitem',
   imageUrl: 'imgurl',
+  checkbox: 'checkbox',
 }
 
 export const CATEGORY_ICONS = [
@@ -115,7 +116,9 @@ export const FORM_SCHEMA = {
   vendor: FORM_TYPE.drop,
   image: FORM_TYPE.file,
   address: FORM_TYPE.text,
-  province: FORM_TYPE.text,
+  province: FORM_TYPE.drop,
+  district: FORM_TYPE.drop,
+  corregimiento: FORM_TYPE.drop,
   mobile: FORM_TYPE.text,
   phone: FORM_TYPE.text,
   country: FORM_TYPE.drop,
@@ -126,6 +129,7 @@ export const FORM_SCHEMA = {
   imageBoxes: FORM_TYPE.linkItem,
   sweetBoxType: FORM_TYPE.drop,
   imageBox: FORM_TYPE.imageUrl,
+  selected: FORM_TYPE.checkbox,
 }
 
 export const noImageUrl = {

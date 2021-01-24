@@ -37,6 +37,8 @@ my-app*
 .npm/
 yarn.lock
 
+package-lock.json
+
 .next
 
 # Logs

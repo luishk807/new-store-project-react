@@ -10,7 +10,7 @@ import * as T from 'prop-types';
 import Header from '../Header/AdminHeader';
 import Footer from '../Footer/AdminFooter';
 import Typography from '../Typography';
-import PrivatePage from '../AdminPrivatePage';
+import PrivatePage from '../Private/Admin';
 import { useRouter } from 'next/router';
 import { logout } from '../../../api/auth';
 import Icons from '../Icons';

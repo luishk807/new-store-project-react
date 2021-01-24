@@ -17,7 +17,8 @@ import {
   setWorkRoles,
   addCart,
   deleteCart,
-  updateCart
+  updateCart,
+  emptyCart
 } from '../actions/main';
 
 // for thunk usage

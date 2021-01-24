@@ -73,6 +73,11 @@ export const deleteCart = (data) => ({
   payload: data
 })
 
+export const emptyCart = (data) => ({
+  type: t.EMPTY_CART,
+  payload: data
+})
+
 export const updateCart = (data) => ({
   type: t.UPDATE_CART,
   payload: data

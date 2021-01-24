@@ -28,6 +28,7 @@ import { CartSample } from '../constants/samples/CartSample';
 import { makeStyles } from '@material-ui/core/styles';
 import { getImageUrlByType } from '../utils/form';
 import TextEllipsis from '../components/common/TextEllipsis';
+import CartBox from '../components/CartBlock';
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -58,10 +59,7 @@ const styles = makeStyles((theme) => ({
     }
   },
   cartSubtotalCont: {
-    padding: 10,
-    [theme.breakpoints.down('sm')]: {
-      padding: 0,
-    }
+    padding: '0 !important',
   },
   cartActionCont: {
     padding: '2px',
@@ -105,16 +103,7 @@ const styles = makeStyles((theme) => ({
   cartDropDown: {
     fontSize: '1em',
   },
-  cartTotalItems: {
-    padding: '2px 0px;',
-    [theme.breakpoints.down('sm')]: {
-      padding: 0,
-    }
-  },
-  cartTotalCont: {
-    background: '#F8F8F8',
-    padding: 8,
-  },
+
   cardDescTitle: {
     fontSize: '2em',
     lineHeight: 1.5,
@@ -246,70 +235,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
             </Grid>
           </Grid>
           <Grid lg={2} item xs={12} className={classes.cartSubtotalCont}>
-            <Grid container spacing={2} className={classes.cartTotalCont}>
-              <Grid item xs={12} lg={12} xs={12} className={classes.cartTotalItems}>
-                <Grid container>
-                  <Grid item xs={8} lg={8}>
-                    <Typography variant="body1" component="p">
-                      Subtotal
-                    </Typography>
-                  </Grid>
-                  <Grid item xs={4} lg={4}>
-                    <Typography align="right" variant="body1" component="p">
-                       ${total.subtotal}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item lg={12} xs={12} className={classes.cartTotalItems}>
-                <Grid container>
-                  <Grid item lg={8} xs={8}>
-                    <Typography variant="body1" component="p">
-                      Delivery
-                    </Typography>
-                  </Grid>
-                  <Grid item lg={4} xs={4}>
-                    <Typography align="right" variant="body1" component="p">
-                       ${total.delivery}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item lg={12} xs={12} className={classes.cartTotalItems}>
-                <Grid container>
-                  <Grid item lg={8} xs={8}>
-                    <Typography variant="body1" component="p">
-                      Taxes
-                    </Typography>
-                  </Grid>
-                  <Grid item lg={4} xs={4}>
-                    <Typography align="right" variant="body1" component="p">
-                       ${total.taxes}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item lg={12} xs={12}>
-                <Divider />
-              </Grid>
-              <Grid item lg={12} xs={12} className={classes.cartGrandCont}>
-                <Grid container>
-                  <Grid item lg={8} xs={8}>
-                    <Typography variant="body1" component="p">
-                      Grand Total
-                    </Typography>
-                  </Grid>
-                  <Grid item lg={4} xs={4}>
-                    <Typography align="right" variant="body1" component="p">
-                       ${total.grandTotal}
-                    </Typography>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item lg={12} xs={12} >
-                <Button className={`mainButton`}>Checkout</Button>
-              </Grid>
-            </Grid>
+            <CartBox data={cart} showItems={false} showHeader={false} showCheckout={true} />
           </Grid>
         </Grid>
         ) : (

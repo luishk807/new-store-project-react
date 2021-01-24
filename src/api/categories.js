@@ -1,6 +1,6 @@
 import Api from '../services/api';
 
-export const saveCategirues = async(data) => {
+export const saveCategories = async(data) => {
   return Api.post(`categories`, data);
 }
 

@@ -159,6 +159,9 @@ a:hover {
     color: $main_color !important;
   }
 }
+.borderTopMain {
+  border-top: 1px solid rgba(0, 0, 0, .09);
+}
 .cardRoot2 {
   width: 100%;
   text-align: center;

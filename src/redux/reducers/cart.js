@@ -81,6 +81,9 @@ const cart = (state = [], action) => {
       } else {
         return updateCurrentCart(state, action)
       }
+    case t.EMPTY_CART:
+      saveCartLocal([]);
+      return []
     default:
       // nothin happens, return same
       return {...state}

@@ -19,6 +19,13 @@ const styles = (theme) => ({
   layoutRoot: {
     marginTop: 50,
   },
+  formRoot: {
+    width: '50%',
+    margin: '0px auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    }
+  },
 });
 
 const Edit = ({classes}) => {
@@ -27,17 +34,18 @@ const Edit = ({classes}) => {
   const form = {
     name: null,
     address: null,
-    province: null,
-    township: null,
-    country: defaultCountry,
     phone: null,
+    email: null,
     mobile: null,
-    zip: null,
+    province: null,
+    district: null,
+    corregimiento: null,
+    country: defaultCountry,
   }
 
   return (
     <UserLayoutTemplate>
-      <EditForm userSection={USER_SECTIONS.userAddress} id={id} customUrl={`/account/addresses`} entryForm={form} />
+      <EditForm ignoreForm={['email']} classes={{root: classes.formRoot}} userSection={USER_SECTIONS.userAddress} id={id} entryForm={form} />
     </UserLayoutTemplate>
   );
 }

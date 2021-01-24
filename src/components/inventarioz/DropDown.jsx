@@ -16,21 +16,23 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const DropDown = (props) => {
-    const { label, items, defaultValue, onChange, textField, valueField } = props
+    const { label, items, defaultValue, onChange, textField, valueField, readOnly = false } = props
     const [defValue, setDefValue] = useState("")
     const [menuItems, setMenuItems] = useState([])
     const classes = useStyles()
 
     useEffect(() => {
         const mis = []
-        items.forEach(o => {
-            mis.push({
-                text: o[textField],
-                value: o[valueField],
-                object: o
-            })
-        })
-        setMenuItems(mis)
+        if (items && items.length) {
+            for (let n=0; n<items.length; ++n) {
+                mis.push({
+                    text: items[n][textField],
+                    value: items[n][valueField],
+                    object: items[n]
+                })
+            }
+            setMenuItems(mis)
+        }
     }, [items.length]) // Cannot use items, because react will complain about the content changing on render (stupid)
 
     useEffect(() => {
@@ -66,6 +68,7 @@ const DropDown = (props) => {
                 id={getInputLabelId()}
                 value={defValue}
                 onChange={handleChange}
+                readOnly={readOnly}
             >
                 { menuItems.map((mi) => getMenuItem(mi)) }
             </Select>
@@ -79,7 +82,12 @@ DropDown.propTypes = {
     label: PropTypes.string,
     items: PropTypes.array, // { name (field name), t (translation field name)}
     textField: PropTypes.string.isRequired,
-    valueField: PropTypes.string.isRequired
+    valueField: PropTypes.string.isRequired,
+    readOnly: PropTypes.bool
+}
+
+DropDown.defaultProps = {
+    items: []
 }
 
 export default DropDown

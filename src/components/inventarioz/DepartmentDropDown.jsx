@@ -2,17 +2,17 @@ import PropTypes from 'prop-types'
 import { withTranslation } from '../../../i18n'
 import DropDown from './DropDown'
 import { useEffect, useState } from 'react'
-import { getCategories } from '../../services/inventarioz/category'
+import { getDepartments } from '../../services/inventarioz/department'
 
-const CategoryDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
-    const [categories, setCategories] = useState([])
+const DepartmentDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
+    const [departments, setDepartments] = useState([])
     const [selectValue, setSelectValue] = useState(null)
 
     useEffect(() => {
         let mounted = true;
-        getCategories().then(results => {
+        getDepartments().then(results => {
             if (mounted) {
-                setCategories(results.data)
+                setDepartments(results.data)
             }
         })
 
@@ -22,10 +22,10 @@ const CategoryDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
     }, [])
 
     useEffect(() => {
-        if (categories.length) {
+        if (departments.length) {
             setSelectValue(selectedValue)
         }
-    }, [categories, selectedValue])
+    }, [departments, selectedValue])
 
     const onSelectChange = (value) => {
         if (onChange) {
@@ -36,8 +36,8 @@ const CategoryDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
     return (
         <DropDown 
             onChange={onSelectChange}
-            items={categories}
-            label={ t('ca_title') }
+            items={departments}
+            label={ t('departments') }
             textField="name"
             valueField="id"
             defaultValue={selectValue}
@@ -46,14 +46,14 @@ const CategoryDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
     )
 }
 
-CategoryDropDown.getInitialOptions = async () => ({
-    namespacesRequired: ['product']
+DepartmentDropDown.getInitialOptions = async () => ({
+    namespacesRequired: ['common']
 })
 
-CategoryDropDown.propTypes = {
+DepartmentDropDown.propTypes = {
     onChange: PropTypes.func,
     selectedValue: PropTypes.any,
     readOnly: PropTypes.bool
 }
 
-export default withTranslation('product')(CategoryDropDown)
+export default withTranslation('common')(DepartmentDropDown)

@@ -15,6 +15,9 @@ const styles = (theme) => ({
     marginTop: 90,
     flexGrow: 1,
   },
+  mainItem: {
+    paddingBottom: '200px',
+  }
 })
 const LayoutTemplate = ({classes, children}) => (
   <section>
@@ -24,7 +27,7 @@ const LayoutTemplate = ({classes, children}) => (
     </Head>
     <Header />
     <Grid container className={classes.root}>
-      <Grid item xs={12} lg={12}>
+      <Grid item xs={12} lg={12} className={classes.mainItem}>
         {children}
       </Grid>
     </Grid>

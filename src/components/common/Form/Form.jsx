@@ -150,6 +150,7 @@ const Form = ({
   snack,
   isAdmin,
   id,
+  submitCustomName,
   children,
   fileOnSave,
   imageBoxOnSave,
@@ -161,6 +162,7 @@ const Form = ({
   onCloseSnack,
   onImageDelete,
   onImageBoxDelete,
+  cancelCustonName,
   showTitle = true,
   hideEntry,
   fileLimit = false,
@@ -174,6 +176,7 @@ const Form = ({
 
   const [useFormOption, setUseFormOptions] = useState(false)
   const [formTitle, setFormTitle] = useState('');
+  const [cancelFormBtnTitle, setCancelFormBtnTitle] = useState('Cancel');
   const [formBtnTitle, setFormBtnTitle] = useState('');
   const [imageBoxImageItems, setImageBoxImageItems] = useState([{}]);
   const [panamaAddress, setPanamaAddress] = useState({})
@@ -283,7 +286,7 @@ const Form = ({
       return;
     }
     
-    switch(FORM_SCHEMA[field]) {
+    switch(FORM_SCHEMA[field].type) {
       case "textfield":
       case "email": {
         return (
@@ -296,7 +299,7 @@ const Form = ({
                 name={field} 
                 defaultValue={fields[field]}
                 onChange={formOnChange}
-                label={removeCharacter(field)} 
+                label={removeCharacter(FORM_SCHEMA[field].label)} 
               />
             </FormControl>
           </Grid>
@@ -315,7 +318,7 @@ const Form = ({
                   name={field}
                 />
               }
-              label={field}
+              label={FORM_SCHEMA[field].label}
             />
           </Grid>
         )
@@ -333,7 +336,7 @@ const Form = ({
                 name={field} 
                 defaultValue={fields[field]}
                 onChange={formOnChange}
-                label={removeCharacter(field)} 
+                label={removeCharacter(FORM_SCHEMA[field].label)} 
               />
             </FormControl>
           </Grid>
@@ -362,7 +365,7 @@ const Form = ({
                 type="password"
                 defaultValue={fields[field]}
                 onChange={formOnChange}
-                label={removeCharacter(field)} 
+                label={removeCharacter(FORM_SCHEMA[field].label)} 
               />
             </FormControl>
           </Grid>
@@ -382,7 +385,7 @@ const Form = ({
                 type="date"
                 defaultValue={initialDate}
                 onChange={formOnChange}
-                label={removeCharacter(field)} 
+                label={removeCharacter(FORM_SCHEMA[field].label)} 
               />
             </FormControl>
           </Grid>
@@ -405,9 +408,9 @@ const Form = ({
                 }}
                 getOptionLabel={(option) => 'name' in option ? option.name : option.first_name + " " + option.last_name}
                 value={fields[field]}
-                renderInput={(params) => <TextField {...params} label={field} variant="outlined" />}
+                renderInput={(params) => <TextField {...params} label={FORM_SCHEMA[field].label} variant="outlined" />}
               />
-              <FormHelperText name={field}>{`Select your ${field}`}</FormHelperText>
+              <FormHelperText name={field}>{`Select your ${FORM_SCHEMA[field].label}`}</FormHelperText>
             </FormControl>
           </Grid>
         )
@@ -516,7 +519,7 @@ const Form = ({
 
   useEffect(() => {
     const loadFormOption = async() => {
-      const section = ADMIN_SECTIONS
+      const section = ADMIN_SECTIONS;
       const options = await loadMainOptions(isAdmin);
       const panama = {
         provinces: [],
@@ -525,29 +528,22 @@ const Form = ({
         sel_province: null,
         sel_district: null,
         sel_corregimiento: null
-      }
+      };
       if (options.province) {
         panama.provinces = options.province
-      }
+      };
       if (options.district) {
         panama.districts = options.district
-      }
+      };
       if (options.corregimiento) {
         panama.corregimientos = options.corregimiento
-      }
-
+      };
       setPanamaAddress(panama);
-
-      setFormOptions(options)
-      setUseFormOptions(true)
+      setFormOptions(options);
+      setUseFormOptions(true);
     }
-   loadFormOption()
-  }, [useFormOption])
-
-  useEffect(() => {
-
-  }, [])
-  
+   loadFormOption();
+  }, [useFormOption]);
 
   useEffect(() => {
     let newTitle = title;
@@ -556,42 +552,53 @@ const Form = ({
     } else if (fields.name) {
       newTitle = `${fields.name}`;
     }
+    if (cancelCustonName) {
+      setCancelFormBtnTitle(cancelCustonName);
+    }
 
     switch(type) {
       case "submit": {
         setFormTitle(`Add ${newTitle}`);
-        setFormBtnTitle(`Add ${newTitle}`);
+        setFormBtnTitle(`${submitCustomName ? submitCustomName : `Add ${newTitle}`}`);
         break
       }
       case "edit": {
         const buttonName = showTitle ? ` ${newTitle}`:'';
         setFormTitle(`Edit${buttonName}`);
-        setFormBtnTitle(`Update${buttonName}`);
+        setFormBtnTitle(`${submitCustomName ? submitCustomName : `Update${buttonName}`}`);
         break;
       }
       case "delete": {
         setFormTitle(`Delete ${newTitle}`);
-        setFormBtnTitle(`Delete ${newTitle}`);
+        setFormBtnTitle(`${submitCustomName ? submitCustomName : `Delete ${newTitle}`}`);
         break;
       }
       case "email": {
         setFormTitle(`${newTitle}`);
-        setFormBtnTitle(`Send Email`);
+        setFormBtnTitle(`${submitCustomName ? submitCustomName : `Send Email`}`);
         break;
       }
       case "action": {
         setFormTitle(`${newTitle}`);
-        setFormBtnTitle(`Save`);
+        setFormBtnTitle(`${submitCustomName ? submitCustomName : `Save`}`);
+        break;
+      }
+      case "static": {
+        setFormTitle(`${newTitle}`);
         break;
       }
       case "dynamic": {
         setFormTitle(`${newTitle}`);
-        setFormBtnTitle(null);
+        if (submitCustomName) {
+          setFormBtnTitle(submitCustomName);
+        } else {
+          setFormBtnTitle(null);
+        }
         break;
       }
       default: {
         setFormTitle(`${newTitle}`);
-        setFormBtnTitle(`${newTitle}`);
+        setFormBtnTitle(`${submitCustomName ? submitCustomName : newTitle}`);
       }
     }
   }, [])
@@ -621,7 +628,7 @@ const Form = ({
             showCancelBtn && (
               <Grid item lg={6} xs={12} className={classes.formItem}>
                 <FormControl fullWidth>
-                  <Button onClick={handleCancel} className={`mainButton`}>Cancel</Button>
+                  <Button onClick={handleCancel} className={`mainButton`}>{cancelFormBtnTitle}</Button>
                 </FormControl>
               </Grid>
             )
@@ -663,7 +670,9 @@ Form.protoTypes = {
   formCancel: T.func,
   children: T.node,
   hideEntry: T.object,
+  cancelCustonName: T.string,
   snack: T.object,
+  submitCustomName: T.string,
   onCloseSnack: T.func,
 }
 

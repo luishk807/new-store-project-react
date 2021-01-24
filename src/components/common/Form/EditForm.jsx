@@ -221,15 +221,15 @@ const EditForm = ({
         let info = res;
         for(var field in form){
           let value = info[field];
-          if (FORM_SCHEMA[field] == "dropdown") {
+          if (FORM_SCHEMA[field].type == "dropdown") {
             const value = mainOptions[field].filter((data) => 'id' in data ? data.id == info[field] : data.value == info[field])
             inputs[field] = value[0]
-          } else if (FORM_SCHEMA[field] == "file") {
+          } else if (FORM_SCHEMA[field].type == "file") {
             const images = 'productImages' in info ? info['productImages'] : [info['img']];
             inputs['image'] = {
               'saved': images
             }
-          } else if (FORM_SCHEMA[field] == "imgurl") {
+          } else if (FORM_SCHEMA[field].type == "imgurl") {
             const images = 'productImages' in info ? info['productImages'] : [];
             inputs['imageBox'] = {
               '0': {
@@ -239,12 +239,12 @@ const EditForm = ({
               },
               'saved': images
             }
-          } else if (FORM_SCHEMA[field] == "linkitem") {
+          } else if (FORM_SCHEMA[field].type == "linkitem") {
             const items = info[sect.listItems] ? info[sect.listItems].map(item => item.product) : [];
             inputs[field] = {
               'saved': items
             }
-          } else if (FORM_SCHEMA[field] == "password") {
+          } else if (FORM_SCHEMA[field].type == "password") {
             inputs[field] = null
           } else {
             inputs[field] = value

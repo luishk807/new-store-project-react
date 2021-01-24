@@ -31,7 +31,8 @@ export const getImageUrlByType = (type) => {
 
 export const handleFormResponse = (resp) => {
   const {status, message} = resp && resp.data ? resp.data : resp;
-  
+
+  console.log(resp, 'msg')
   if (!status) {
     return {
       severity: 'success',
@@ -58,7 +59,7 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
   if (ignore.indexOf(name) !== -1) {
       return true
   }
-  switch(FORM_SCHEMA[name]){
+  switch(FORM_SCHEMA[name].type){
     case "textfield":
     case "password":
     case "date":

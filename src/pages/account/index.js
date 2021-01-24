@@ -27,8 +27,8 @@ const styles = (theme) => ({
     alignItems: 'center',
   },
   icon: {
-    width: 37,
-    height: 37,
+    width: 30,
+    height: 30,
     fill: '#000',
   }
 });

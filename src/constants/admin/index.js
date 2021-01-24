@@ -20,6 +20,13 @@ export const ADMIN_SECTIONS = {
     url: 'brands',
     option: 'brand',
   },
+  'order': {
+    name: 'Order',
+    names: 'Orders',
+    key: 'order',
+    url: 'orders',
+    option: 'order',
+  },
   'category': {
     name: 'Category',
     names: 'Categories',

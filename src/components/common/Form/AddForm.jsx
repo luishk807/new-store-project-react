@@ -178,7 +178,7 @@ const AddForm = ({
     try {
       const options = await loadMainOptions(admin);
       Object.keys(entryForm).forEach(field => {
-        if (FORM_SCHEMA[field] == "dropdown") {
+        if (FORM_SCHEMA[field].type == "dropdown") {
           if (hideEntry && hideEntry.indexOf(field) !== -1) {
             setForm({
               ...form,

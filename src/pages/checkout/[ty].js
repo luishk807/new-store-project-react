@@ -137,9 +137,8 @@ const Home = ({userInfo, classes, cart, emptyCart}) => {
   const handlePlaceOrder = async() => {
     let errorFound = false;
     let key = '';
-    
     for (var i in form) {
-      errorFound = await validateForm(i, form[i], ['address', 'cart']);
+      errorFound = await validateForm(i, form[i], ['address', 'cart', 'userid']);
       key = i;
     }
     if (!errorFound) {
@@ -152,6 +151,7 @@ const Home = ({userInfo, classes, cart, emptyCart}) => {
       const formSubmit = Object.assign({}, form);
       const useAddress = isUser ? Object.assign({}, address) : Object.assign({}, guestAddress)
       const cart = formSubmit.cart;
+
       formSubmit['shipping_name'] = useAddress.name;
       formSubmit['shipping_address'] = useAddress.address;
       formSubmit['shipping_corregimiento'] = useAddress.corregimiento;
@@ -163,7 +163,8 @@ const Home = ({userInfo, classes, cart, emptyCart}) => {
       formSubmit['cart'] = JSON.stringify(cart);
       formSubmit['subtotal'] = total.subtotal;
       formSubmit['tax'] = total.taxes;
-      formSubmit['grandTotal'] = total.grandTotal;
+      formSubmit['grandtotal'] = total.grandTotal;
+      formSubmit['deliveryId'] = formSubmit.delivery;
       formSubmit['delivery'] = total.delivery;
       const confirm = await processOrderByUser(formSubmit)
       const resp = handleFormResponse(confirm);

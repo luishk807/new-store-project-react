@@ -33,10 +33,13 @@ const Add = ({
   entryForm, 
   type,
   hideEntry,
+  children,
   onSubmitAction,
   showTitle,
   ignoreForm, 
   showCancel,
+  actionButtonName,
+  actionCancelButtonName,
   onCancel,
   onFormChange,
 }) => {
@@ -52,7 +55,7 @@ const Add = ({
 
   const formOnChange = (e, edrop = null) => {
     let { name, value } = edrop ? edrop : e.target;
-    if (e && FORM_SCHEMA[e.target.name] === "checkbox") {
+    if (e && FORM_SCHEMA[e.target.name].type === "checkbox") {
       name = e.target.name;
       value = e.target.checked
       setForm({
@@ -95,14 +98,14 @@ const Add = ({
         saveErrors(name)
         break;
       } else {
-        saveErrors(name, true, `${name} is required`)
+        saveErrors(name, true, `${FORM_SCHEMA[i].label} is required`)
       }
     }
     if (!errorFound) {
       setSnack({
         severity: 'error',
         open: true,
-        text: `Unable to send form, ${i} is required`
+        text: `Unable to send form, ${FORM_SCHEMA[i].label} is required`
       })
     } else {
       const formSubmit = form;
@@ -136,7 +139,7 @@ const Add = ({
   return showForm && (
     <div className={classes.root}>
       <Form 
-        title={section.name} 
+        title={section ? section.name : ''} 
         fields={form} 
         showTitle={showTitle}
         errors={errors} 
@@ -145,9 +148,15 @@ const Add = ({
         formSubmit={handleSubmit} 
         showCancelBtn={showCancel}
         snack={snack}
+        cancelCustonName={actionCancelButtonName}
+        submitCustomName={actionButtonName}
         formCancel={onCancel}
         onCloseSnack={onCloseSnack}
-      />
+      >
+      {
+        children && children
+      }
+      </Form>
     </div>
   );
 }
@@ -157,9 +166,12 @@ Add.protoTypes = {
   formSection: T.object,
   entryForm: T.object,
   showCancel: T.bool,
+  actionButtonName: T.string,
+  actionCancelButtonName: T.string,
   onSubmitAction: T.func,
   showTitle: T.bool,
   type: T.string,
+  children: T.node,
   customUrl: T.string,
   ignoreForm: T.array,
   onCancel: T.func,

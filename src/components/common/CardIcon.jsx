@@ -19,8 +19,8 @@ const styles = (theme) => ({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: 180,
-    width: 180,
+    height: 80,
+    width: 80,
   },
   TypoRoot: {},
   link: {

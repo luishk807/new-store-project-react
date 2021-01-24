@@ -355,6 +355,11 @@ const Footer = ({classes}) => {
                       Aenean
                     </a>
                   </li>
+                  <li>
+                    <a href='/order' className={classes.secondLastlineItems}>
+                      Order Status
+                    </a>
+                  </li>
                 </ul>
               </Grid>              
             </Grid>

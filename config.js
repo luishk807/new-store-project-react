@@ -86,50 +86,261 @@ export const RateLabels = {
   5: 'Excellent+',
 };
 
+export const canceled_status = [7, 8, 9];
+
 export const FORM_SCHEMA = {
-  name: FORM_TYPE.text,
-  status: FORM_TYPE.drop,
-  title: FORM_TYPE.text,
-  subject: FORM_TYPE.text,
-  rate: FORM_TYPE.rate,
-  comment: FORM_TYPE.textArea,
-  icon: FORM_TYPE.drop,
-  password: FORM_TYPE.pass,
-  email: FORM_TYPE.email,
-  user: FORM_TYPE.drop,
-  first_name: FORM_TYPE.text,
-  position: FORM_TYPE.drop,
-  state: FORM_TYPE.text,
-  last_name: FORM_TYPE.text,
-  stock: FORM_TYPE.number,
-  amount: FORM_TYPE.number,
-  category: FORM_TYPE.drop,
-  brand: FORM_TYPE.drop,
-  zip: FORM_TYPE.text,
-  city: FORM_TYPE.text,
-  date_of_birth: FORM_TYPE.date,
-  model: FORM_TYPE.text,
-  gender: FORM_TYPE.drop,
-  code: FORM_TYPE.text,
-  description: FORM_TYPE.textArea,
-  message: FORM_TYPE.textArea,
-  vendor: FORM_TYPE.drop,
-  image: FORM_TYPE.file,
-  address: FORM_TYPE.text,
-  province: FORM_TYPE.drop,
-  district: FORM_TYPE.drop,
-  corregimiento: FORM_TYPE.drop,
-  mobile: FORM_TYPE.text,
-  phone: FORM_TYPE.text,
-  country: FORM_TYPE.drop,
-  township: FORM_TYPE.text,
-  userRole: FORM_TYPE.drop,
-  imageBoxType: FORM_TYPE.drop,
-  products: FORM_TYPE.linkItem,
-  imageBoxes: FORM_TYPE.linkItem,
-  sweetBoxType: FORM_TYPE.drop,
-  imageBox: FORM_TYPE.imageUrl,
-  selected: FORM_TYPE.checkbox,
+  name: {
+    type: FORM_TYPE.text,
+    label: 'Name'
+  },
+  status: {
+    type: FORM_TYPE.drop,
+    label: 'Status',
+  },
+  title: {
+    type: FORM_TYPE.text,
+    label: 'Title',
+  },
+  subject: {
+    type: FORM_TYPE.text,
+    label: 'Subject',
+  },
+  rate: {
+    type: FORM_TYPE.rate,
+    label: 'Rate',
+  },
+  comment: {
+    type: FORM_TYPE.textArea,
+    label: 'Comment',
+  },
+  icon: {
+    type: FORM_TYPE.drop,
+    label: 'Icon',
+  },
+  password: {
+    type: FORM_TYPE.pass,
+    label: 'Password',
+  },
+  email: {
+    type: FORM_TYPE.email,
+    label: 'Email',
+  },
+  user: {
+    type: FORM_TYPE.drop,
+    label: 'Username',
+  },
+  first_name: {
+    type: FORM_TYPE.text,
+    label: 'First name',
+  },
+  position: {
+    type: FORM_TYPE.drop,
+    label: 'Position',
+  },
+  state: {
+    type: FORM_TYPE.text,
+    label: 'State',
+  },
+  last_name: {
+    type: FORM_TYPE.text,
+    label: 'Last Name',
+  },
+  stock: {
+    type: FORM_TYPE.number,
+    label: 'Stock',
+  },
+  amount: {
+    type: FORM_TYPE.number,
+    label: 'Amount',
+  },
+  tax: {
+    type: FORM_TYPE.number,
+    label: 'Tax',
+  },
+  subtotal: {
+    type: FORM_TYPE.number,
+    label: 'Subtotal',
+  },
+  grandtotal: {
+    type: FORM_TYPE.number,
+    label: 'Grand Total',
+  },
+  category: {
+    type: FORM_TYPE.drop,
+    label: 'Category',
+  },
+  brand: {
+    type: FORM_TYPE.drop,
+    label: 'Brand',
+  },
+  zip: {
+    type: FORM_TYPE.text,
+    label: 'Zip code',
+  },
+  city: {
+    type: FORM_TYPE.text,
+    label: 'City',
+  },
+  date_of_birth: {
+    type: FORM_TYPE.date,
+    label: 'Birth of date',
+  },
+  model: {
+    type: FORM_TYPE.text,
+    label: 'Product Model',
+  },
+  gender: {
+    type: FORM_TYPE.drop,
+    label: 'Gender',
+  },
+  code: {
+    type: FORM_TYPE.text,
+    label: 'Product Code',
+  },
+  description: {
+    type: FORM_TYPE.textArea,
+    label: 'Description',
+  },
+  message: {
+    type: FORM_TYPE.textArea,
+    label: 'Message',
+  },
+  vendor: {
+    type: FORM_TYPE.drop,
+    label: 'Vendor',
+  },
+  image: {
+    type: FORM_TYPE.file,
+    label: 'Image',
+  },
+  address: {
+    type: FORM_TYPE.text,
+    label: 'Address',
+  },
+  province: {
+    type: FORM_TYPE.drop,
+    label: 'Province',
+  },
+  district: {
+    type: FORM_TYPE.drop,
+    label: 'District',
+  },
+  corregimiento: {
+    type: FORM_TYPE.drop,
+    label: 'Corregimiento',
+  },
+  mobile: {
+    type: FORM_TYPE.text,
+    label: 'Mobile',
+  },
+  phone: {
+    type: FORM_TYPE.text,
+    label: 'Phone',
+  },
+  country: {
+    type: FORM_TYPE.drop,
+    label: 'Country',
+  },
+  township: {
+    type: FORM_TYPE.text,
+    label: 'Township',
+  },
+  userRole: {
+    type: FORM_TYPE.drop,
+    label: 'Roles',
+  },
+  imageBoxType: {
+    type: FORM_TYPE.drop,
+    label: 'Image box type',
+  },
+  products: {
+    type: FORM_TYPE.linkItem,
+    label: 'Products',
+  },
+  imageBoxes: {
+    type: FORM_TYPE.linkItem,
+    label: 'Image boxes',
+  },
+  sweetBoxType: {
+    type: FORM_TYPE.drop,
+    label: 'Sweet box type',
+  },
+  imageBox: {
+    type: FORM_TYPE.imageUrl,
+    label: 'Image box',
+  },
+  order: {
+    type: FORM_TYPE.text,
+    label: 'Order number',
+  },
+  orderCancelReason: {
+    type: FORM_TYPE.drop,
+    label: 'Order cancel reason',
+  },
+  selected: {
+    type: FORM_TYPE.checkbox,
+    label: 'Selected'
+  },
+  orderCancelReason: {
+    type: FORM_TYPE.drop,
+    label: 'Order cancel reason'
+  },
+  deliveryOption: {
+    type: FORM_TYPE.drop,
+    label: 'Delivery Options'
+  },
+  orderStatus: {
+    type: FORM_TYPE.drop,
+    label: 'Status'
+  },
+  cart: {
+    type: FORM_TYPE.text,
+    label: 'Cart',
+  },
+  shipping_address: {
+    type: FORM_TYPE.text,
+    label: 'Shipping Address',
+  },
+  shipping_corregimiento: {
+    type: FORM_TYPE.text,
+    label: 'Shipping corregimiento',
+  },
+  shipping_country: {
+    type: FORM_TYPE.text,
+    label: 'Shipping country',
+  },
+  shipping_district: {
+    type: FORM_TYPE.text,
+    label: 'Shipping district',
+  },
+  shipping_email: {
+    type: FORM_TYPE.email,
+    label: 'Shipping email',
+  },
+  shipping_name: {
+    type: FORM_TYPE.text,
+    label: 'Shipping name',
+  },
+  shipping_phone: {
+    type: FORM_TYPE.text,
+    label: 'Shipping phone',
+  },
+  shipping_province: {
+    type: FORM_TYPE.text,
+    label: 'Shipping province',
+  },
+  deliveryId: {
+    type: FORM_TYPE.text,
+    label: 'Delivery',
+  },
+  delivery: {
+    type: FORM_TYPE.text,
+    label: 'Delivery option',
+  },
+  userid: {
+    type: FORM_TYPE.text,
+    label: 'User',
+  },
 }
 
 export const noImageUrl = {

@@ -13,6 +13,7 @@ import ProductOptions from '../ProductOptions'
 import Categories from '../Categories'
 import Brands from '../Brands'
 import Departments from '../Departments'
+import Suppliers from '../Suppliers'
 import ProductNoVariant from '../ProductNoVariant'
 
 const useStyles = makeStyles((theme) => {
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => {
 
 const ProductHome = ({ t }) => {
     const classes = useStyles()
-    const [value, setValue] = useState("f");
+    const [value, setValue] = useState("a");
 
     const handleTabChange = (event, newValue) => {
         setValue(newValue);
@@ -33,13 +34,14 @@ const ProductHome = ({ t }) => {
         <div className={classes.root}>
             <TabContext value={value}>
                 <TabList onChange={handleTabChange} aria-label="Product tabs">
-                    <Tab label={ t('add_prod_novariant') } value="f" />
+                    <Tab label={ /*t('add_prod_novariant')*/ '+Product' } value="a" />
                     <Tab label={ t('options') } value="b" />
-                    <Tab label={ t('ca_title') } value="c" />
-                    <Tab label={ t('brand_title') } value="d" />
-                    <Tab label={ t('departments') } value="e" />
+                    <Tab label={ /*t('ca_title')*/'Category' } value="c" />
+                    <Tab label={ /*t('brand_title')*/'Brand' } value="d" />
+                    <Tab label={ /*t('departments')*/'Departments' } value="e" />
+                    <Tab label={ 'Supplier' } value="f" />
                 </TabList>
-                <TabPanel value="f">
+                <TabPanel value="a">
                     <ProductNoVariant />
                 </TabPanel>
                 <TabPanel value="b">
@@ -53,6 +55,9 @@ const ProductHome = ({ t }) => {
                 </TabPanel>
                 <TabPanel value="e">
                     <Departments />
+                </TabPanel>
+                <TabPanel value="f">
+                    <Suppliers />
                 </TabPanel>
             </TabContext>
         </div>

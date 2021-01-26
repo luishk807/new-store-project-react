@@ -85,7 +85,7 @@ const ProductBasic = ({ t, dataObject }) => {
                             aria-controls="product-content"
                             id="product-header"
                             >
-                            { t('basic') }
+                            { /*t('basic')*/ 'Product Basic Information' }
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>

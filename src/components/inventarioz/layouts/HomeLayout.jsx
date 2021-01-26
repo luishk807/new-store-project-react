@@ -7,8 +7,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import { MuiThemeProvider } from '@material-ui/core/styles';
 import myTheme from '../../../themes/inventarioz';
-import { useState } from 'react'
 import SearchInput from '../SearchInput';
+import Link from 'next/link'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -44,7 +44,7 @@ const HomeLayout = (props) => {
                             <MenuIcon />
                         </IconButton>
                         <Typography className={classes.title} variant="h6" noWrap>
-                            InventarioZ
+                            <Link href="/inventarioz/home">InventarioZ</Link>
                         </Typography>
                         <SearchInput />
                     </Toolbar>

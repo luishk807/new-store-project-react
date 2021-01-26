@@ -1,18 +1,34 @@
-import { CircularProgress } from '@material-ui/core'
+import { CircularProgress, Grid } from '@material-ui/core'
 import Centered from '../../../components/common/Layout/Centered'
 import HomeLayout from '../../../components/inventarioz/layouts/HomeLayout'
 import ProductBasic from '../../../components/inventarioz/product/ProductBasic'
 import ProductAddVariants from '../../../components/inventarioz/product/ProductAddVariants'
 import ProductVariants from '../../../components/inventarioz/product/ProductVariants'
+import ProductStock from '../../../components/inventarioz/stock/ProductStock'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { getProduct } from '../../../services/inventarioz/product'
+import { getStock } from '../../../services/inventarioz/stock'
+import {
+    Tab
+} from '@material-ui/core'
+import {
+    TabPanel,
+    TabContext,
+    TabList
+} from '@material-ui/lab'
 
 const ProductDetail = () => {
     const router = useRouter()
-    const [product, setProduct] = useState({})
-    const [isLoading, setIsLoading] = useState(true)
     const { id } = router.query
+    const [product, setProduct] = useState({})
+    const [stock, setStock] = useState([])
+    const [isLoading, setIsLoading] = useState(true)
+    const [tabValue, setTabValue] = useState("product");
+
+    const handleTabChange = (event, newValue) => {
+        setTabValue(newValue);
+    };
 
     useEffect(() => {
         updateProduct()
@@ -23,6 +39,13 @@ const ProductDetail = () => {
         getProduct(id).then(result => {
             setProduct(result.data)
             setIsLoading(false)
+        }).catch(err => {
+            console.log(err)
+        })
+
+        getStock({ productId: id }).then(result => {
+            console.log('getStock', result)
+            setStock(result.data)
         }).catch(err => {
             console.log(err)
         })
@@ -43,9 +66,26 @@ const ProductDetail = () => {
     } else {
         return (
             <HomeLayout>
-                <ProductBasic dataObject={product} />
-                <ProductVariants dataObject={product} />
-                <ProductAddVariants dataObject={product} onUpdate={onProductVariantUpdate} />
+                <TabContext value={tabValue}>
+                    <TabList onChange={handleTabChange} aria-label="Product Details Tabs">
+                        <Tab label="Product Details" value="product" />
+                        <Tab label="Stock" value="stock" />
+                    </TabList>
+                    <TabPanel value="product">
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={12} md={12} xl={12}><ProductBasic dataObject={product} /></Grid>
+                            <Grid item xs={12} sm={12} md={12} xl={12}><ProductVariants dataObject={product} /></Grid>
+                            <Grid item xs={12} sm={12} md={12} xl={12}><ProductAddVariants dataObject={product} onUpdate={onProductVariantUpdate} /></Grid>
+                        </Grid>
+                    </TabPanel>
+                    <TabPanel value="stock">
+                        <Grid container spacing={2}>
+                            <Grid item xs={12} sm={12} md={12} xl={12}>
+                            <ProductStock product={product} stock={stock} />
+                            </Grid>
+                        </Grid>
+                    </TabPanel>
+                </TabContext>
             </HomeLayout>
         )
     }

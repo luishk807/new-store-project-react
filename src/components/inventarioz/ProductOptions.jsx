@@ -121,7 +121,6 @@ const ProductOptions = ({ t, data, onDataChange }) => {
     const addProductOption = (value) => {
         if (!isDuplicate(value)) {
             saveOption(value).then((result) => {
-                console.log(result);
                 options.push({
                     name: value.name.toString().toLowerCase(),
                     description: value.description

@@ -4,6 +4,7 @@ import MaterialTableIcons from '../common/MaterialTableIcons'
 import ProductDetailPanel from './ProductDetailPanel'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -12,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductResults = ({ data }) => {
+    const router = useRouter()
     const classes = useStyles()
     const [tableColumns, setTableColumns] = useState([])
     const [tableData, setTableData] = useState([])
@@ -38,6 +40,9 @@ const ProductResults = ({ data }) => {
 
     const onRowClick = (event, rowData) => {
         console.log('onRowClick', rowData)
+        if (rowData) {
+            router.push(`/inventarioz/product/${rowData.id}`)
+        }
     }
 
     return (

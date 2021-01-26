@@ -16,11 +16,15 @@ import {
     IconButton
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import DeleteIcon from '@material-ui/icons/Delete'
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
+// import DeleteIcon from '@material-ui/icons/Delete'
+import { green } from '@material-ui/core/colors';
 import MessageAlert from '../MessageAlert'
 import CustomDialog from '../CustomDialog'
+import StockEntryFields from './StockEntryFields'
 import { useEffect, useState } from 'react'
-import { removeProductVariant } from '../../../services/inventarioz/product'
+import { addStockEntry } from '../../../services/inventarioz/stock'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -36,20 +40,57 @@ const showOptionValue = (value) => {
     return <div>{ (value) ? value.value : '' }</div>
 }
 
-const ProductVariants = ({ t, dataObject }) => {
+const ProductVariantsStock = ({ t, dataObject, stock }) => {
 
     const classes = useStyles()
     const [productVariants, setProductVariants] = useState([])
     const [openAlert, setOpenAlert] = useState(false)
     const [alertMessage, setAlertMessage] = useState({ severity: 'error', message: 'Toasty!'} )
     const [dialogOpen, setDialogOpen] = useState(false)
-    const [variant, setVariant] = useState(null)
+    const [selectedVariant, setSelectedVariant] = useState(null)
+    const [stockEntry, setStockEntry] = useState(null)
+
+    const getVariantsStock = (variantId, stockArray) => {
+        if (stockArray) {
+            for (let n=0; n<stockArray.length; ++n) {
+                if (stockArray[n].product_variant_id === variantId) {
+                    return stockArray[n]
+                }
+            }
+        }
+        return null
+    }
+
+    /** Attaching the stock into the product_variant object as stock property */
+    const unifyStocksToVariant = (product_variant, stock) => {
+        if (product_variant) {
+            for (let n=0; n<product_variant.length; ++n) {
+                const pv = product_variant[n];
+                console.log('pv.id', pv.id)
+                const pvStock = getVariantsStock(pv.id, stock)
+                // console.log('pvStock', pvStock)
+                pv.stock = pvStock
+            }
+            console.log(product_variant)
+        }
+    }
 
     useEffect(() => {
         if (dataObject) {
+            // Assigns the stock to the product variant as stock property
+            unifyStocksToVariant(dataObject.product_variant, stock)
             setProductVariants([...dataObject.product_variant])
         }
-    }, [dataObject])
+    }, [dataObject, stock])
+
+    const addStock = (value) => {
+        setSelectedVariant(value)
+        setDialogOpen(true)
+    }
+
+    const removeStock = (value) => {
+        console.log('removeStock', value)
+    }
 
     const onAlertClose = () => {
         setOpenAlert(false)
@@ -64,33 +105,29 @@ const ProductVariants = ({ t, dataObject }) => {
         setDialogOpen(false)
     }
 
-    const removeVariant = (value) => {
-        setVariant(value)
-        setDialogOpen(true)
+    const onStockEntryChange = (stock) => {
+        setStockEntry(stock)
     }
 
-    const onVariantDelete = () => {
-        showAlert({ severity: 'error', message: 'Toasty'})
-        removeProductVariant(variant.id)
-            .then(result => {
-                console.log(result)
-                showAlert({ severity: 'success', message: 'Removed successful'})
-                removeFromTable(variant.id)
-            }).catch(err => {
-                console.log(err)
-                showAlert({ severity: 'error', message: err.error })
-            })
-        setDialogOpen(false)
-    }
-
-    const removeFromTable = (id) => {
-        const newVariants = []
-        productVariants.forEach(pv => {
-            if (pv.id !== id) {
-                newVariants.push(pv)
+    const onStockEntrySubmit = () => {
+        if (stockEntry && selectedVariant) {
+            // Add other base information
+            const stockEntryToSubmit = {
+                ...stockEntry,
+                product_id: +dataObject.id,
+                product_variant_id: +selectedVariant.id,
+                stock_id: +selectedVariant.stock.id
             }
-        })
-        setProductVariants(newVariants)
+            addStockEntry(stockEntryToSubmit)
+                .then(result => {
+                    console.log('addStockEntry.result', result)
+                    showAlert({ severity: 'success', message: 'Stock entry successfully added'})
+                    closeConfirmationDialog()
+                })
+                .catch(err => {
+                    showAlert({ severity: 'error', message: err.error })
+                })
+        }
     }
 
     return (
@@ -99,12 +136,14 @@ const ProductVariants = ({ t, dataObject }) => {
             <CustomDialog 
                 dialogOpenFlag={dialogOpen} 
                 cancelButtonFunc={closeConfirmationDialog}
-                submitButtonFunc={onVariantDelete}
-                submitButtonText={ /*t('remove_prod_variant')*/ 'Remove Variant' }
-                title="Confirm Delete"
+                submitButtonFunc={onStockEntrySubmit}
+                submitButtonText={ 'Add Stock Entry' }
+                title="Add Stock Entry"
                 useActions={true}
-                contextText={ /*t('pv_remove_confirmation_message')*/ 'Are you sure you want to remove this product variant?' }
-            />
+                contextText={ 'Add new stock entry to product ' + dataObject.name + ' ?' }
+            >
+                <StockEntryFields onValueChange={onStockEntryChange} />
+            </CustomDialog>
             <Accordion defaultExpanded>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
@@ -122,6 +161,7 @@ const ProductVariants = ({ t, dataObject }) => {
                                     <TableCell>{ /*t('pv_option_value')*/ 'Option Value' }</TableCell>
                                     <TableCell>{ t('sku').toUpperCase() }</TableCell>
                                     <TableCell>{ t('model').toUpperCase() }</TableCell>
+                                    <TableCell>{ t('stock').toUpperCase() }</TableCell>
                                     <TableCell align="right">*</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -136,10 +176,14 @@ const ProductVariants = ({ t, dataObject }) => {
                                     <TableCell>{ showOptionValue(p.option_value) }</TableCell>
                                     <TableCell>{p.sku}</TableCell>
                                     <TableCell>{p.model}</TableCell>
+                                    <TableCell>{p.stock ? p.stock.quantity : 0}</TableCell>
                                     <TableCell align="right">
-                                    <IconButton aria-label="delete" size="small" onClick={() => { removeVariant(p)}}>
-                                        <DeleteIcon />
-                                    </IconButton>
+                                        <IconButton aria-label="delete" size="small" onClick={() => { addStock(p)}}>
+                                            <AddCircleIcon style={{ color: green[500] }} />
+                                        </IconButton>
+                                        <IconButton aria-label="delete" size="small" onClick={() => { removeStock(p)}}>
+                                            <RemoveCircleIcon />
+                                        </IconButton>
                                     </TableCell>
                                 </TableRow>
                             ))}
@@ -152,20 +196,20 @@ const ProductVariants = ({ t, dataObject }) => {
     )
 }
 
-ProductVariants.getInitialProps = async () => ({
+ProductVariantsStock.getInitialProps = async () => ({
     namespacesRequired: ['product']
 })
 
-ProductVariants.defaultProps = {
+ProductVariantsStock.defaultProps = {
     options: [],
     optionValues: []
 }
 
-ProductVariants.propTypes = {
+ProductVariantsStock.propTypes = {
     t: PropTypes.func.isRequired,
     dataObject: PropTypes.object.isRequired,
     options: PropTypes.array,
     optionValues: PropTypes.array
 }
 
-export default withTranslation('product')(ProductVariants);
+export default withTranslation('product')(ProductVariantsStock);

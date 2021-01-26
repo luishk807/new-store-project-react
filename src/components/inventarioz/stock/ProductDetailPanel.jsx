@@ -34,7 +34,7 @@ const ProductDetailPanel = (data) => {
             getStock({ productId: data.data.id })
                 .then(result => {
                     // console.log('result', result)
-                    console.log('stock result.data', result.data)
+                    // console.log('stock result.data', result.data)
                     setIsLoading(false)
                     if (mounted) {
                         setDetail(result.data)

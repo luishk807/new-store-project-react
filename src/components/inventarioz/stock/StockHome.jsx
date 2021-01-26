@@ -58,15 +58,15 @@ const StockHome = () => {
             <TabContext value={tabValue}>
                 <TabList onChange={handleTabChange} aria-label="Stock tabs">
                     <Tab label="Product Search" value="a" />
-                    <Tab label="Something B" value="b" />
+                    {/* <Tab label="Something B" value="b" /> */}
                 </TabList>
                 <TabPanel value="a">
                     <SearchInput onSearchEnterKey={onSearchInputEnterKey} onSearchIconClick={onSearchInputEnterKey} />
                     <ProductResults data={productResults} />
                 </TabPanel>
-                <TabPanel value="b">
+                {/* <TabPanel value="b">
                     <div>SOMETHING</div>
-                </TabPanel>
+                </TabPanel> */}
             </TabContext>
         </div>
     )

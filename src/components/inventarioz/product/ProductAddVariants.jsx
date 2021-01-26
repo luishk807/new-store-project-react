@@ -141,13 +141,13 @@ const ProductAddVariants = ({ t, dataObject, onUpdate }) => {
                 useActions={true}
                 contextText="Are you sure you want to submit the new product variant?"
             />
-            <Accordion defaultExpanded>
+            <Accordion>
                 <AccordionSummary
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="basic-content"
                     id="variants-header"
                     >
-                    { t('pv_title') }
+                    { /*t('pv_title')*/ 'Add Product Variants' }
                 </AccordionSummary>
                 <AccordionDetails>
                     <Grid container spacing={2}>
@@ -180,13 +180,13 @@ const ProductAddVariants = ({ t, dataObject, onUpdate }) => {
                             <DropDown 
                                 onChange={onOptionValueChange}
                                 items={optionValues}
-                                label={ t('pov_title') }
+                                label={ /*t('pov_title')*/ 'Option Values' }
                                 textField="text"
                                 valueField="value"
                             />
                         </Grid>
                         <Grid item xs={12} md={2}>
-                            <Button size="small" variant="outlined" onClick={addVariant}>{ t('va_add') }</Button>
+                            <Button size="small" variant="outlined" onClick={addVariant}>{ /*t('va_add')*/ 'Add Variant' }</Button>
                         </Grid>
                     </Grid>
                 </AccordionDetails>

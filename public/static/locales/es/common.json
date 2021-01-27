@@ -1,3 +1,5 @@
 {
-    "appName": "InventarioZ"
+    "appName": "InventarioZ",
+    "search": "Buscar",
+    "departments": "Departamentos"
 }

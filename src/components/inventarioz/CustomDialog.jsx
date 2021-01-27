@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'
 import { withTranslation } from '../../../i18n'
 import {
     Dialog,

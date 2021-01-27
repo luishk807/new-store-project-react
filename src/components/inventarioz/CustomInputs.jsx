@@ -23,10 +23,10 @@ const CustomInputs = (props) => {
     const classes = useStyles()
     const [value, setValue] = useState({});
 
-    const textFields = (options) => {
+    const textFields = (options, i) => {
         return (
             <TextField
-                key={ options.name }
+                key={ (i) ? `ci-${i}` : options.name }
                 label={ t(options.t) }
                 name={ options.name }
                 variant="filled"
@@ -55,8 +55,8 @@ const CustomInputs = (props) => {
         <div className={classes.root}>
             <Grid container spacing={2} justify="flex-end">
                 <Grid item sm={12}>
-                    {inputs.map((input) => (
-                        textFields(input)
+                    {inputs.map((input, i) => (
+                        textFields(input, i)
                     ))}
                 </Grid>
                 <Divider/>

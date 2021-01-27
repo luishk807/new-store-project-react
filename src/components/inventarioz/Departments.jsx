@@ -22,7 +22,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useState, useEffect } from 'react'
 import CustomInputs from './CustomInputs'
-import { getCategories, saveCategory } from '../../services/inventarioz/category'
+import { getDepartments, saveDepartment } from '../../services/inventarioz/department'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,22 +43,22 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Categories = ({ t }) => {
+const Departments = ({ t }) => {
     const classes = useStyles()
-    const [categories, setCategories] = useState([])
+    const [departments, setDepartments] = useState([])
     const [addDialogOpen, setAddDialogOpen] = useState(false)
     const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
     const [confirmDialogText, setConfirmDialogText] = useState('')
     const [valueRemoveName, setValueRemoveName] = useState(null)
     const [selectedValue, setSelectedValue] = useState(null)
-    let valueDataRows = categories
+    let valueDataRows = departments
 
     useEffect(() => {
         let mounted = true
-        getCategories()
+        getDepartments()
             .then(result => {
                 if (mounted) {
-                    setCategories([...result.data])
+                    setDepartments([...result.data])
                 }
             })
             .catch(error => {
@@ -71,9 +71,9 @@ const Categories = ({ t }) => {
 
     // This is repeated from top mount controlled value set, but it is also used after save, so can't delete it
     const updateValues = () => {
-        getCategories()
+        getDepartments()
             .then(result => {
-                setCategories([...result.data])
+                setDepartments([...result.data])
             })
             .catch(error => {
                 console.log(error)
@@ -98,13 +98,14 @@ const Categories = ({ t }) => {
     }
 
     const isDuplicate = (value) => {
-        const results = categories.filter(o => value.name === o.name)
+        const results = departments.filter(o => value.name === o.name)
         return results.length;
     }
 
     const addValue = (value) => {
         if (!isDuplicate(value)) {
-            saveCategory(value).then((result) => {
+            saveDepartment(value).then((result) => {
+                console.log(result);
                 updateValues()
                 closeAddDialog()
             })
@@ -121,8 +122,8 @@ const Categories = ({ t }) => {
         showConfirmationDialog('Are you sure you want to delete ' + name + ' ?')
     }
 
-    const removeOption = () => {
-        console.log('removeOption', valueRemoveName);
+    const removeDepartment = () => {
+        console.log('removeDepartment', valueRemoveName);
         console.log('NEED TO IMPLEMENT delete from database or set to inactive')
         // let foundIdx = -1
         // for (let n = 0; n < options.length; ++n) {
@@ -145,8 +146,8 @@ const Categories = ({ t }) => {
 
     useEffect(() => {
         // Get the updated value to rerender
-        valueDataRows = categories
-    }, [categories])
+        valueDataRows = departments
+    }, [departments])
 
     return (
         <div className={classes.root}>
@@ -154,7 +155,7 @@ const Categories = ({ t }) => {
                 dialogOpenFlag={confirmDialogOpen}
                 contextText={confirmDialogText}
                 cancelButtonFunc={closeConfirmationDialog} 
-                submitButtonFunc={() => { removeOption(); closeConfirmationDialog() }}
+                submitButtonFunc={() => { removeDepartment(); closeConfirmationDialog() }}
                 submitButtonText="Remove"
                 title="Confirmation"
                 useActions={true}
@@ -163,13 +164,14 @@ const Categories = ({ t }) => {
             <CustomDialog
                 dialogOpenFlag={addDialogOpen}
                 cancelButtonFunc={closeAddDialog}
-                contextText={"Add new category"}
-                title={'Add new category'}
+                contextText={"Add new department"}
+                title={'Add new department'}
             >
                 <CustomInputs
                     onSubmit={addValue}
                     inputs={[
-                        { name: 'name', t: 'name'}
+                        { name: 'name', t: 'name' },
+                        { description: 'description', t: 'description' }
                     ]}
                 >
                 </CustomInputs>
@@ -181,7 +183,7 @@ const Categories = ({ t }) => {
                     aria-controls="basic-content"
                     id="basic-header"
                     >
-                    { t('ca_title') }
+                    { t('departments') }
                 </AccordionSummary>
                 <AccordionDetails>
                     <TableContainer component={Paper}>
@@ -194,8 +196,8 @@ const Categories = ({ t }) => {
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                            {valueDataRows.map((o) => (
-                                <TableRow key={o.name}
+                            {valueDataRows.map((o, i) => (
+                                <TableRow key={i}
                                     hover={true} 
                                     className={classes.tableRow} 
                                     onClick={() => { onValueSelect(o) }}
@@ -218,20 +220,20 @@ const Categories = ({ t }) => {
                 </AccordionDetails>
                 <Divider />
                 <AccordionActions>
-                    <Button onClick={openAddDialog}>{ t('ca_add') }</Button>
+                    <Button onClick={openAddDialog}>{ t('dep_add') }</Button>
                 </AccordionActions>
             </Accordion>
         </div>
     )
 }
 
-Categories.getInitialOptions = async () => ({
-    namespacesRequired: ['product']
+Departments.getInitialOptions = async () => ({
+    namespacesRequired: ['product', 'common']
 })
 
-Categories.propTypes = {
+Departments.propTypes = {
     t: PropTypes.func.isRequired,
     data: PropTypes.array
 }
 
-export default withTranslation('product')(Categories)
+export default withTranslation(['product', 'common'])(Departments)

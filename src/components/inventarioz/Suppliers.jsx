@@ -22,7 +22,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useState, useEffect } from 'react'
 import CustomInputs from './CustomInputs'
-import { getCategories, saveCategory } from '../../services/inventarioz/category'
+import { getSuppliers, addSupplier } from '../../services/inventarioz/supplier'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -43,22 +43,21 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Categories = ({ t }) => {
+const Suppliers = ({ t }) => {
     const classes = useStyles()
-    const [categories, setCategories] = useState([])
+    const [suppliers, setSuppliers] = useState([])
     const [addDialogOpen, setAddDialogOpen] = useState(false)
     const [confirmDialogOpen, setConfirmDialogOpen] = useState(false)
     const [confirmDialogText, setConfirmDialogText] = useState('')
     const [valueRemoveName, setValueRemoveName] = useState(null)
-    const [selectedValue, setSelectedValue] = useState(null)
-    let valueDataRows = categories
+    let valueDataRows = suppliers
 
     useEffect(() => {
         let mounted = true
-        getCategories()
+        getSuppliers()
             .then(result => {
                 if (mounted) {
-                    setCategories([...result.data])
+                    setSuppliers([...result.data])
                 }
             })
             .catch(error => {
@@ -71,9 +70,9 @@ const Categories = ({ t }) => {
 
     // This is repeated from top mount controlled value set, but it is also used after save, so can't delete it
     const updateValues = () => {
-        getCategories()
+        getSuppliers()
             .then(result => {
-                setCategories([...result.data])
+                setSuppliers([...result.data])
             })
             .catch(error => {
                 console.log(error)
@@ -98,13 +97,13 @@ const Categories = ({ t }) => {
     }
 
     const isDuplicate = (value) => {
-        const results = categories.filter(o => value.name === o.name)
+        const results = suppliers.filter(o => value.name === o.name)
         return results.length;
     }
 
     const addValue = (value) => {
         if (!isDuplicate(value)) {
-            saveCategory(value).then((result) => {
+            addSupplier(value).then((result) => {
                 updateValues()
                 closeAddDialog()
             })
@@ -145,8 +144,8 @@ const Categories = ({ t }) => {
 
     useEffect(() => {
         // Get the updated value to rerender
-        valueDataRows = categories
-    }, [categories])
+        valueDataRows = suppliers
+    }, [suppliers])
 
     return (
         <div className={classes.root}>
@@ -163,13 +162,15 @@ const Categories = ({ t }) => {
             <CustomDialog
                 dialogOpenFlag={addDialogOpen}
                 cancelButtonFunc={closeAddDialog}
-                contextText={"Add new category"}
-                title={'Add new category'}
+                contextText={"Add new supplier"}
+                title={'Add new supplier'}
             >
                 <CustomInputs
                     onSubmit={addValue}
                     inputs={[
-                        { name: 'name', t: 'name'}
+                        { name: 'name', t: 'name'},
+                        { name: 'address', t: 'address'},
+                        { name: 'phone', t: 'phone' }
                     ]}
                 >
                 </CustomInputs>
@@ -181,15 +182,16 @@ const Categories = ({ t }) => {
                     aria-controls="basic-content"
                     id="basic-header"
                     >
-                    { t('ca_title') }
+                    { 'Suppliers' }
                 </AccordionSummary>
                 <AccordionDetails>
                     <TableContainer component={Paper}>
                         <Table className={classes.table} size="small" aria-label="a dense table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>{ t('po_name') }</TableCell>
-                                    <TableCell>{ t('po_description') }</TableCell>
+                                    <TableCell>{ 'Name' }</TableCell>
+                                    <TableCell>{ 'Address' }</TableCell>
+                                    <TableCell>{ 'Home' }</TableCell>
                                     <TableCell align="right">*</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -203,7 +205,8 @@ const Categories = ({ t }) => {
                                     <TableCell component="th" scope="o">
                                         {o.name}
                                     </TableCell>
-                                    <TableCell>{o.description}</TableCell>
+                                    <TableCell>{o.address}</TableCell>
+                                    <TableCell>{o.phone}</TableCell>
                                     <TableCell align="right">
                                     <IconButton aria-label="delete" size="small" onClick={() => confirmRemoveValue(o.name)}>
                                         <DeleteIcon />
@@ -218,20 +221,20 @@ const Categories = ({ t }) => {
                 </AccordionDetails>
                 <Divider />
                 <AccordionActions>
-                    <Button onClick={openAddDialog}>{ t('ca_add') }</Button>
+                    <Button onClick={openAddDialog}>{ 'Add Supplier' }</Button>
                 </AccordionActions>
             </Accordion>
         </div>
     )
 }
 
-Categories.getInitialOptions = async () => ({
+Suppliers.getInitialOptions = async () => ({
     namespacesRequired: ['product']
 })
 
-Categories.propTypes = {
+Suppliers.propTypes = {
     t: PropTypes.func.isRequired,
     data: PropTypes.array
 }
 
-export default withTranslation('product')(Categories)
+export default withTranslation('product')(Suppliers)

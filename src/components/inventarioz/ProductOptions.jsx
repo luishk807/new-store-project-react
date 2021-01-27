@@ -55,18 +55,24 @@ const ProductOptions = ({ t, data, onDataChange }) => {
     const [optionRemoveName, setOptionRemoveName] = useState(null)
     const [selectedOption, setSelectedOption] = useState(null)
     let optionsDataRows = options
-    let optionValuesDataRows = []
 
     useEffect(() => {
-        updateOptions()
+        let mounted = true
+        if (mounted) {
+            updateOptions(mounted)
+        }
+        return () => {
+            mounted = false
+        }
     }, [])
 
-    const updateOptions = () => {
+    const updateOptions = (mounted) => {
         getOptions()
             .then(result => {
-                console.log('getOptions', result.data)
-                setOptions([...result.data])
-                pushData()
+                if (mounted) {
+                    setOptions([...result.data])
+                    pushData()
+                }
             })
             .catch(error => {
                 console.log(error)
@@ -115,7 +121,6 @@ const ProductOptions = ({ t, data, onDataChange }) => {
     const addProductOption = (value) => {
         if (!isDuplicate(value)) {
             saveOption(value).then((result) => {
-                console.log(result);
                 options.push({
                     name: value.name.toString().toLowerCase(),
                     description: value.description
@@ -142,11 +147,11 @@ const ProductOptions = ({ t, data, onDataChange }) => {
             }
             saveOptionValue(optionValue).then(result => {
                 const data = result.data
-                optionValues = []
-                optionValues.push({
+                const ovs = [...optionValues]
+                ovs.push({
                     id: data.id, name: data.value, option_id: data.option_id
                 })
-                setOptionValues([...optionValues])
+                setOptionValues([...ovs])
                 closeOptionValueAdd()
                 updateOptions()
             })
@@ -189,7 +194,7 @@ const ProductOptions = ({ t, data, onDataChange }) => {
     }, [options])
 
     useEffect(() => {
-        if (selectedOption) {
+        if (selectedOption && selectedOption.option_value) {
             const ovs = []
             selectedOption.option_value.forEach(v => {
                 ovs.push({
@@ -222,8 +227,8 @@ const ProductOptions = ({ t, data, onDataChange }) => {
             <CustomDialog
                 dialogOpenFlag={optionValueAddOpen}
                 cancelButtonFunc={closeOptionValueAdd}
-                contextText={'Adding a Product\'s Option\'s value for ' + ((selectedOption) ? selectedOption.name.toUpperCase() : '') }
-                title={'Add Option\'s Value ' + ((selectedOption) ? selectedOption.name.toUpperCase() : '') }
+                contextText={'Adding a Product\'s Option\'s value for ' + ((selectedOption && selectedOption.name) ? selectedOption.name.toUpperCase() : '') }
+                title={'Add Option\'s Value ' + ((selectedOption && selectedOption.name) ? selectedOption.name.toUpperCase() : '') }
             >
                 <CustomInputs
                     onSubmit={addOptionValue}
@@ -256,7 +261,6 @@ const ProductOptions = ({ t, data, onDataChange }) => {
                             {optionsDataRows.map((o) => (
                                 <TableRow key={o.name}
                                     hover={true} 
-                                    selected={true} 
                                     className={classes.tableRow} 
                                     onClick={() => { onOptionSelect(o) }}
                                 >
@@ -278,10 +282,6 @@ const ProductOptions = ({ t, data, onDataChange }) => {
                 </AccordionDetails>
                 <Divider />
                 <AccordionActions>
-                    {/* <Button size="small">Cancel</Button>
-                    <Button size="small" color="primary">
-                        Save
-                    </Button> */}
                     <Button onClick={openOptionAdd}>{ t('po_add_option') }</Button>
                 </AccordionActions>
             </Accordion>
@@ -292,7 +292,7 @@ const ProductOptions = ({ t, data, onDataChange }) => {
                     aria-controls="basic-content"
                     id="basic-header"
                     >
-                    { t('pov_title') } <b>&nbsp;{ ((selectedOption) ? selectedOption.name.toUpperCase() : '') }</b>
+                    { t('pov_title') } <b>&nbsp;{ ((selectedOption && selectedOption.name) ? selectedOption.name.toUpperCase() : '') }</b>
                 </AccordionSummary>
                 <AccordionDetails>
                     <TableContainer component={Paper}>
@@ -305,7 +305,7 @@ const ProductOptions = ({ t, data, onDataChange }) => {
                             </TableHead>
                             <TableBody>
                             {optionValues.map((o) => (
-                                <TableRow key={o.id} hover={true} selected={true} className={classes.tableRow}>
+                                <TableRow key={o.id} hover={true} className={classes.tableRow}>
                                     <TableCell component="th" scope="o">
                                         {o.name}
                                     </TableCell>

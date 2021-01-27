@@ -2,17 +2,17 @@ import PropTypes from 'prop-types'
 import { withTranslation } from '../../../i18n'
 import DropDown from './DropDown'
 import { useEffect, useState } from 'react'
-import { getCategories } from '../../services/inventarioz/category'
+import { getSuppliers } from '../../services/inventarioz/supplier'
 
-const CategoryDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
-    const [categories, setCategories] = useState([])
+const SupplierDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
+    const [suppliers, setSuppliers] = useState([])
     const [selectValue, setSelectValue] = useState(null)
 
     useEffect(() => {
         let mounted = true;
-        getCategories().then(results => {
+        getSuppliers().then(results => {
             if (mounted) {
-                setCategories(results.data)
+                setSuppliers(results.data)
             }
         })
 
@@ -22,10 +22,10 @@ const CategoryDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
     }, [])
 
     useEffect(() => {
-        if (categories.length) {
+        if (suppliers.length) {
             setSelectValue(selectedValue)
         }
-    }, [categories, selectedValue])
+    }, [suppliers, selectedValue])
 
     const onSelectChange = (value) => {
         if (onChange) {
@@ -36,8 +36,8 @@ const CategoryDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
     return (
         <DropDown 
             onChange={onSelectChange}
-            items={categories}
-            label={ t('ca_title') }
+            items={suppliers}
+            label={ 'Suppliers' }
             textField="name"
             valueField="id"
             defaultValue={selectValue}
@@ -46,14 +46,14 @@ const CategoryDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
     )
 }
 
-CategoryDropDown.getInitialOptions = async () => ({
-    namespacesRequired: ['product']
+SupplierDropDown.getInitialOptions = async () => ({
+    namespacesRequired: ['common']
 })
 
-CategoryDropDown.propTypes = {
+SupplierDropDown.propTypes = {
     onChange: PropTypes.func,
     selectedValue: PropTypes.any,
     readOnly: PropTypes.bool
 }
 
-export default withTranslation('product')(CategoryDropDown)
+export default withTranslation('common')(SupplierDropDown)

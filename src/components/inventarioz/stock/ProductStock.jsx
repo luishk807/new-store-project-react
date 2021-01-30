@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../../i18n'
 import {
     Accordion,
     AccordionSummary,
@@ -55,4 +54,4 @@ ProductStock.propTypes = {
     stock: PropTypes.array
 }
 
-export default withTranslation('product')(ProductStock)
+export default ProductStock

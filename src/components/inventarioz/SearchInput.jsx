@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import { fade, makeStyles } from '@material-ui/core/styles'
 import SearchIcon from '@material-ui/icons/Search'
 import InputBase from '@material-ui/core/InputBase'
@@ -48,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const SearchInput = ({ t, onSearchEnterKey, onSearchIconClick }) => {
+const SearchInput = ({ onSearchEnterKey, onSearchIconClick }) => {
 
     const [query, setQuery] = useState('')
     const classes = useStyles()
@@ -82,7 +81,7 @@ const SearchInput = ({ t, onSearchEnterKey, onSearchIconClick }) => {
                 <SearchIcon onClick={searchClick} />
             </div>
             <InputBase
-            placeholder={ t('search') + '...'}
+            placeholder={ 'Search...'}
             classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
@@ -95,14 +94,10 @@ const SearchInput = ({ t, onSearchEnterKey, onSearchIconClick }) => {
     )
 }
 
-SearchInput.getInitialProps = async () => ({
-    namespacesRequired: ['common']
-})
-
 SearchInput.propTypes = {
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
     onSearchEnterKey: PropTypes.func,
     onSearchIconClick: PropTypes.func
 }
 
-export default withTranslation('common')(SearchInput);
+export default SearchInput

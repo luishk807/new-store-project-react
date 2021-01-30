@@ -1,4 +1,3 @@
-import { withTranslation } from '../../../../i18n'
 import { makeStyles } from '@material-ui/core'
 import { useState } from 'react'
 import {
@@ -22,7 +21,7 @@ const useStyles = makeStyles((theme) => {
     }
 })
 
-const ProductHome = ({ t }) => {
+const ProductHome = () => {
     const classes = useStyles()
     const [value, setValue] = useState("a");
 
@@ -34,11 +33,11 @@ const ProductHome = ({ t }) => {
         <div className={classes.root}>
             <TabContext value={value}>
                 <TabList onChange={handleTabChange} aria-label="Product tabs">
-                    <Tab label={ /*t('add_prod_novariant')*/ '+Product' } value="a" />
-                    <Tab label={ t('options') } value="b" />
-                    <Tab label={ /*t('ca_title')*/'Category' } value="c" />
-                    <Tab label={ /*t('brand_title')*/'Brand' } value="d" />
-                    <Tab label={ /*t('departments')*/'Departments' } value="e" />
+                    <Tab label={ '+Product' } value="a" />
+                    <Tab label={ 'Options' } value="b" />
+                    <Tab label={ 'Category' } value="c" />
+                    <Tab label={ 'Brand' } value="d" />
+                    <Tab label={ 'Departments' } value="e" />
                     <Tab label={ 'Supplier' } value="f" />
                 </TabList>
                 <TabPanel value="a">
@@ -64,9 +63,4 @@ const ProductHome = ({ t }) => {
     )
 }
 
-ProductHome.getInitialProps = {
-    namespacesRequired: ['product', 'common'],
-    displayName: 'ProductHome' // This is for storybook :facepalm:
-}
-
-export default withTranslation(['product', 'common'])(ProductHome)
+export default ProductHome

@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import DropDown from './DropDown'
 import { useEffect, useState } from 'react'
 import { getBrands } from '../../services/inventarioz/brand'
@@ -37,7 +36,7 @@ const BrandDropDown = ({ t, onChange, selectedValue, readOnly = false }) => {
         <DropDown 
             onChange={onSelectChange}
             items={brands}
-            label={ t('brand_title') }
+            label="Brands"
             textField="name"
             valueField="id"
             defaultValue={selectValue}
@@ -46,14 +45,10 @@ const BrandDropDown = ({ t, onChange, selectedValue, readOnly = false }) => {
     )
 }
 
-BrandDropDown.getInitialOptions = async () => ({
-    namespacesRequired: ['product']
-})
-
 BrandDropDown.propTypes = {
     onChange: PropTypes.func,
     selectedValue: PropTypes.any,
     readOnly: PropTypes.bool
 }
 
-export default withTranslation('product')(BrandDropDown)
+export default BrandDropDown

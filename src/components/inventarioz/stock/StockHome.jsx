@@ -1,4 +1,3 @@
-import { withTranslation } from '../../../../i18n'
 import { makeStyles } from '@material-ui/core/styles'
 import {
     Tab
@@ -72,4 +71,4 @@ const StockHome = () => {
     )
 }
 
-export default withTranslation('common')(StockHome)
+export default StockHome

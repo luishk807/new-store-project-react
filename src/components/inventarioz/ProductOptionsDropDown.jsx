@@ -1,10 +1,9 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import DropDown from './DropDown'
 import { useEffect, useState } from 'react'
 import { getOptions } from '../../services/inventarioz/product'
 
-const ProductOptionsDropDown = ({ t, onChange }) => {
+const ProductOptionsDropDown = ({ onChange }) => {
     const [options, setOptions] = useState([])
 
     useEffect(() => {
@@ -23,7 +22,7 @@ const ProductOptionsDropDown = ({ t, onChange }) => {
         <DropDown 
             onChange={optionsChange}
             items={options}
-            label={ t('po_title') }
+            label="Product Options"
             textField="name"
             valueField="id"
         />
@@ -34,4 +33,4 @@ ProductOptionsDropDown.propTypes = {
     onChange: PropTypes.func,
 }
 
-export default withTranslation('product')(ProductOptionsDropDown)
+export default ProductOptionsDropDown

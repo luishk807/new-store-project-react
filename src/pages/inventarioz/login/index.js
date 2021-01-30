@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../../i18n'
 import Centered from '../../../components/common/Layout/Centered'
 import {
     TextField,
@@ -13,7 +12,6 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import { useState } from 'react'
 
 const Login = (props) => {
-    const { t } = props;
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -22,35 +20,31 @@ const Login = (props) => {
     }
 
     return (
-        <Centered title={ t('credentials') }>
+        <Centered title={ 'Credentials' }>
             <Card>
-                <CardHeader title={ t('credentials') }
+                <CardHeader title={ 'Credentials' }
                     avatar={<ListAltIcon/>}
                     autoCapitalize="true"
                 >
                 </CardHeader>
                 <CardContent>
-                    <TextField required id="username" name="username" label={t('username')} variant="filled" 
+                    <TextField required id="username" name="username" label="Username" variant="filled" 
                         onChange={(e) => setUsername(e.target.value)}
                     />
-                    <TextField required id="password" name="password" label={t('password')} variant="filled" type="password"
+                    <TextField required id="password" name="password" label="Password" variant="filled" type="password"
                         onChange={(e) => setPassword(e.target.value)}
                     />
                 </CardContent>
                 <CardActions>
-                    <Button onClick={handleLogin}>{ t('login') }</Button>
+                    <Button onClick={handleLogin}>Login</Button>
                 </CardActions>
             </Card>
         </Centered>
     )
 }
 
-Login.getInitialProps = async () => ({
-    namespacesRequired: ['login']
-})
-  
 Login.propTypes = {
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
 }
 
-export default withTranslation('login')(Login)
+export default Login

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core'
-import { withTranslation } from '../../../../i18n'
 import {
     Accordion,
     AccordionSummary,
@@ -100,10 +99,10 @@ const ProductVariants = ({ t, dataObject }) => {
                 dialogOpenFlag={dialogOpen} 
                 cancelButtonFunc={closeConfirmationDialog}
                 submitButtonFunc={onVariantDelete}
-                submitButtonText={ /*t('remove_prod_variant')*/ 'Remove Variant' }
+                submitButtonText={ 'Remove Variant' }
                 title="Confirm Delete"
                 useActions={true}
-                contextText={ /*t('pv_remove_confirmation_message')*/ 'Are you sure you want to remove this product variant?' }
+                contextText={ 'Are you sure you want to remove this product variant?' }
             />
             <Accordion defaultExpanded>
                 <AccordionSummary
@@ -111,17 +110,17 @@ const ProductVariants = ({ t, dataObject }) => {
                     aria-controls="basic-content"
                     id="variants-header"
                     >
-                    { /*t('pv_title')*/ 'Product Variants' }
+                    { 'Product Variants' }
                 </AccordionSummary>
                 <AccordionDetails>
                     <TableContainer component={Paper}>
                         <Table className={classes.table} size="small" aria-label="a dense table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>{ /*t('pv_option')*/ 'Option' }</TableCell>
-                                    <TableCell>{ /*t('pv_option_value')*/ 'Option Value' }</TableCell>
-                                    <TableCell>{ t('sku').toUpperCase() }</TableCell>
-                                    <TableCell>{ t('model').toUpperCase() }</TableCell>
+                                    <TableCell>{ 'Option' }</TableCell>
+                                    <TableCell>{ 'Option Value' }</TableCell>
+                                    <TableCell>{ 'SKU' }</TableCell>
+                                    <TableCell>{ 'Model' }</TableCell>
                                     <TableCell align="right">*</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -152,20 +151,16 @@ const ProductVariants = ({ t, dataObject }) => {
     )
 }
 
-ProductVariants.getInitialProps = async () => ({
-    namespacesRequired: ['product']
-})
-
 ProductVariants.defaultProps = {
     options: [],
     optionValues: []
 }
 
 ProductVariants.propTypes = {
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
     dataObject: PropTypes.object.isRequired,
     options: PropTypes.array,
     optionValues: PropTypes.array
 }
 
-export default withTranslation('product')(ProductVariants);
+export default ProductVariants

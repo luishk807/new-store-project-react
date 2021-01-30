@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import { makeStyles } from '@material-ui/core'
 import CustomDialog from './CustomDialog'
 import ProductOptionAdd from './ProductOptionAdd'
@@ -44,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ProductOptions = ({ t, data, onDataChange }) => {
+const ProductOptions = ({ data, onDataChange }) => {
     const classes = useStyles()
     const [options, setOptions] = useState(data || [])
     const [optionValues, setOptionValues] = useState([])
@@ -245,15 +244,15 @@ const ProductOptions = ({ t, data, onDataChange }) => {
                     aria-controls="basic-content"
                     id="basic-header"
                     >
-                    { t('po_title') }
+                    Product Options
                 </AccordionSummary>
                 <AccordionDetails>
                     <TableContainer component={Paper}>
                         <Table className={classes.table} size="small" aria-label="a dense table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>{ t('po_name') }</TableCell>
-                                    <TableCell>{ t('po_description') }</TableCell>
+                                    <TableCell>Name</TableCell>
+                                    <TableCell>Description</TableCell>
                                     <TableCell align="right">*</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -282,7 +281,7 @@ const ProductOptions = ({ t, data, onDataChange }) => {
                 </AccordionDetails>
                 <Divider />
                 <AccordionActions>
-                    <Button onClick={openOptionAdd}>{ t('po_add_option') }</Button>
+                    <Button onClick={openOptionAdd}>Add Product Option</Button>
                 </AccordionActions>
             </Accordion>
 
@@ -292,14 +291,14 @@ const ProductOptions = ({ t, data, onDataChange }) => {
                     aria-controls="basic-content"
                     id="basic-header"
                     >
-                    { t('pov_title') } <b>&nbsp;{ ((selectedOption && selectedOption.name) ? selectedOption.name.toUpperCase() : '') }</b>
+                    Product Variant <b>&nbsp;{ ((selectedOption && selectedOption.name) ? selectedOption.name.toUpperCase() : '') }</b>
                 </AccordionSummary>
                 <AccordionDetails>
                     <TableContainer component={Paper}>
                         <Table className={classes.table} size="small" aria-label="a dense table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>{ t('po_name') }</TableCell>
+                                    <TableCell>Name</TableCell>
                                     <TableCell align="right">*</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -322,21 +321,17 @@ const ProductOptions = ({ t, data, onDataChange }) => {
                 </AccordionDetails>
                 <Divider />
                 <AccordionActions>
-                    <Button onClick={openOptionValueAdd}>{ t('pov_add_value') }</Button>
+                    <Button onClick={openOptionValueAdd}>Add Option Value</Button>
                 </AccordionActions>
             </Accordion>
         </div>
     )
 }
 
-ProductOptions.getInitialOptions = async () => ({
-    namespacesRequired: ['product']
-})
-
 ProductOptions.propTypes = {
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
     data: PropTypes.array,
     onDataChange: PropTypes.func
 }
 
-export default withTranslation('product')(ProductOptions)
+export default ProductOptions

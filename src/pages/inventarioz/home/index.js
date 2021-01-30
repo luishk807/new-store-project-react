@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Tab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { withTranslation } from '../../../../i18n';
 import ProductHome from '../../../components/inventarioz/product/ProductHome';
 import HomeLayout from '../../../components/inventarioz/layouts/HomeLayout';
 import StockHome from '../../../components/inventarioz/stock/StockHome';
@@ -47,7 +46,6 @@ function a11yProps(index) {
 // }));
 
 const Home = (props) => {
-    const { t } = props;
     // const classes = useStyles();
 
     const [value, setValue] = React.useState(0);
@@ -59,8 +57,8 @@ const Home = (props) => {
     return (
         <HomeLayout>
             <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
-                <Tab label={ t('tabs_products') } {...a11yProps(0)} />
-                <Tab label={ t('tabs_stock') } {...a11yProps(1)} />
+                <Tab label={ 'Products' } {...a11yProps(0)} />
+                <Tab label={ 'Stock' } {...a11yProps(1)} />
             </Tabs>
             <TabPanel value={value} index={0}>
                 <ProductHome />
@@ -72,8 +70,4 @@ const Home = (props) => {
     );
 }
 
-Home.getInitialProps = async () => ({
-    namespacesRequired: ['home']
-})
-
-export default withTranslation('home')(Home)
+export default Home

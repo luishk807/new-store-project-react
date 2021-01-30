@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import DropDown from './DropDown'
 import { useEffect, useState } from 'react'
 import { getCategories } from '../../services/inventarioz/category'
@@ -37,7 +36,7 @@ const CategoryDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
         <DropDown 
             onChange={onSelectChange}
             items={categories}
-            label={ t('ca_title') }
+            label="Categories"
             textField="name"
             valueField="id"
             defaultValue={selectValue}
@@ -46,14 +45,10 @@ const CategoryDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
     )
 }
 
-CategoryDropDown.getInitialOptions = async () => ({
-    namespacesRequired: ['product']
-})
-
 CategoryDropDown.propTypes = {
     onChange: PropTypes.func,
     selectedValue: PropTypes.any,
     readOnly: PropTypes.bool
 }
 
-export default withTranslation('product')(CategoryDropDown)
+export default CategoryDropDown

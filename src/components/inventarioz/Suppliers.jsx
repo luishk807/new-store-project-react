@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import { makeStyles } from '@material-ui/core'
 import CustomDialog from './CustomDialog'
 import {
@@ -233,8 +232,8 @@ Suppliers.getInitialOptions = async () => ({
 })
 
 Suppliers.propTypes = {
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
     data: PropTypes.array
 }
 
-export default withTranslation('product')(Suppliers)
+export default Suppliers

@@ -93,11 +93,11 @@ const ProductResult = ({ t, data, dataIdField, dataLinkBaseUrl, dataDisplayField
 }
 
 ProductResult.propTypes = {
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
     data: PropTypes.array,
     dataIdField: PropTypes.string,
     dataLinkBaseUrl: PropTypes.string,
     dataDisplayFields: PropTypes.arrayOf(PropTypes.string).isRequired
 }
 
-export default withTranslation('product')(ProductResult);
+export default ProductResult

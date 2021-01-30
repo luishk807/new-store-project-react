@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core'
-import { withTranslation } from '../../../../i18n'
 import {
     Accordion,
     AccordionSummary,
@@ -40,7 +39,7 @@ const showOptionValue = (value) => {
     return <div>{ (value) ? value.value : '' }</div>
 }
 
-const ProductVariantsStock = ({ t, dataObject, stock }) => {
+const ProductVariantsStock = ({ dataObject, stock }) => {
 
     const classes = useStyles()
     const [productVariants, setProductVariants] = useState([])
@@ -150,18 +149,18 @@ const ProductVariantsStock = ({ t, dataObject, stock }) => {
                     aria-controls="basic-content"
                     id="variants-header"
                     >
-                    { /*t('pv_title')*/ 'Product Variants' }
+                    Product Variants
                 </AccordionSummary>
                 <AccordionDetails>
                     <TableContainer component={Paper}>
                         <Table className={classes.table} size="small" aria-label="a dense table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>{ /*t('pv_option')*/ 'Option' }</TableCell>
-                                    <TableCell>{ /*t('pv_option_value')*/ 'Option Value' }</TableCell>
-                                    <TableCell>{ t('sku').toUpperCase() }</TableCell>
-                                    <TableCell>{ t('model').toUpperCase() }</TableCell>
-                                    <TableCell>{ t('stock').toUpperCase() }</TableCell>
+                                    <TableCell>{ 'Option' }</TableCell>
+                                    <TableCell>{ 'Option Value' }</TableCell>
+                                    <TableCell>{ 'SKU' }</TableCell>
+                                    <TableCell>{ 'Model' }</TableCell>
+                                    <TableCell>{ 'Stock' }</TableCell>
                                     <TableCell align="right">*</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -196,20 +195,16 @@ const ProductVariantsStock = ({ t, dataObject, stock }) => {
     )
 }
 
-ProductVariantsStock.getInitialProps = async () => ({
-    namespacesRequired: ['product']
-})
-
 ProductVariantsStock.defaultProps = {
     options: [],
     optionValues: []
 }
 
 ProductVariantsStock.propTypes = {
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
     dataObject: PropTypes.object.isRequired,
     options: PropTypes.array,
     optionValues: PropTypes.array
 }
 
-export default withTranslation('product')(ProductVariantsStock);
+export default ProductVariantsStock

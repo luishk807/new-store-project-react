@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../../i18n'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState } from 'react'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
@@ -28,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ProductBasic = ({ t, dataObject }) => {
+const ProductBasic = ({ dataObject }) => {
     const [product, setProduct] = useState(null)
     const [category, setCategory] = useState(null)
     const [brand, setBrand] = useState(null)
@@ -85,13 +84,13 @@ const ProductBasic = ({ t, dataObject }) => {
                             aria-controls="product-content"
                             id="product-header"
                             >
-                            { /*t('basic')*/ 'Product Basic Information' }
+                            { 'Product Basic Information' }
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
                                 <Grid item xs={12}>
                                     <TextField
-                                        label={ t('name') }
+                                        label="Name"
                                         variant="filled"
                                         size="small"
                                         margin="dense"
@@ -103,7 +102,7 @@ const ProductBasic = ({ t, dataObject }) => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        label={ t('description') }
+                                        label="Description"
                                         variant="filled"
                                         size="small"
                                         margin="dense"
@@ -115,7 +114,7 @@ const ProductBasic = ({ t, dataObject }) => {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <TextField
-                                        label={ t('sku') }
+                                        label="SKU"
                                         variant="filled"
                                         size="small"
                                         margin="dense"
@@ -127,7 +126,7 @@ const ProductBasic = ({ t, dataObject }) => {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <TextField
-                                        label={ t('model') }
+                                        label="Model"
                                         variant="filled"
                                         size="small"
                                         margin="dense"
@@ -146,10 +145,6 @@ const ProductBasic = ({ t, dataObject }) => {
                                 <Grid item xs={12} md={4}>
                                     <DepartmentDropDown onChange={onDepartmentChange} selectedValue={departmentValue} readOnly={true}/>
                                 </Grid>
-                                {/* <Divider/>
-                                <Grid item xs={12} className={classes.buttonSection}>
-                                    <Button onClick={openConfirmationDialog}>{ t('add_product_novariant') }</Button>
-                                </Grid> */}
                             </Grid>
                         </AccordionDetails>
                     </Accordion>
@@ -160,8 +155,8 @@ const ProductBasic = ({ t, dataObject }) => {
 }
 
 ProductBasic.propTypes = {
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
     dataObject: PropTypes.object.isRequired
 }
 
-export default withTranslation('product')(ProductBasic)
+export default ProductBasic

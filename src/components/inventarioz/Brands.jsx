@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import { makeStyles } from '@material-ui/core'
 import CustomDialog from './CustomDialog'
 import {
@@ -43,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const Brands = ({ t }) => {
+const Brands = () => {
     const classes = useStyles()
     const [brands, setBrands] = useState([])
     const [addDialogOpen, setAddDialogOpen] = useState(false)
@@ -163,8 +162,8 @@ const Brands = ({ t }) => {
             <CustomDialog
                 dialogOpenFlag={addDialogOpen}
                 cancelButtonFunc={closeAddDialog}
-                contextText={ t('brand_add_new') }
-                title={ t('brand_add_new') }
+                contextText="Add new brand"
+                title="Add new brand"
             >
                 <CustomInputs
                     onSubmit={addValue}
@@ -181,15 +180,15 @@ const Brands = ({ t }) => {
                     aria-controls="basic-content"
                     id="basic-header"
                     >
-                    { t('brand_title') }
+                    Brands
                 </AccordionSummary>
                 <AccordionDetails>
                     <TableContainer component={Paper}>
                         <Table className={classes.table} size="small">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>{ t('po_name') }</TableCell>
-                                    <TableCell>{ t('po_description') }</TableCell>
+                                    <TableCell>Name</TableCell>
+                                    <TableCell>Description</TableCell>
                                     <TableCell align="right">*</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -218,20 +217,16 @@ const Brands = ({ t }) => {
                 </AccordionDetails>
                 <Divider />
                 <AccordionActions>
-                    <Button onClick={openAddDialog}>{ t('brand_add') }</Button>
+                    <Button onClick={openAddDialog}>Add Brand</Button>
                 </AccordionActions>
             </Accordion>
         </div>
     )
 }
 
-Brands.getInitialOptions = async () => ({
-    namespacesRequired: ['product']
-})
-
 Brands.propTypes = {
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
     data: PropTypes.array
 }
 
-export default withTranslation('product')(Brands)
+export default Brands

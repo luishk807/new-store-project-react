@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import { makeStyles } from '@material-ui/core'
 import { 
     Grid,
@@ -12,14 +11,11 @@ import { useState } from 'react'
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
-    },
-    submit: {
-        
     }
 }));
 
 const CustomInputs = (props) => {
-    const { t, onSubmit, inputs } = props
+    const { onSubmit, inputs } = props
     const classes = useStyles()
     const [value, setValue] = useState({});
 
@@ -27,7 +23,7 @@ const CustomInputs = (props) => {
         return (
             <TextField
                 key={ (i) ? `ci-${i}` : options.name }
-                label={ t(options.t) }
+                label={ options.t }
                 name={ options.name }
                 variant="filled"
                 size="small"
@@ -61,25 +57,21 @@ const CustomInputs = (props) => {
                 </Grid>
                 <Divider/>
                 <Grid item sm={12}>
-                    <Button className={classes.submit} onClick={handleSubmit}>{ t('save') }</Button>
+                    <Button className={classes.submit} onClick={handleSubmit}>Save</Button>
                 </Grid>
             </Grid>
         </div>
     )
 }
 
-CustomInputs.getInitialOptions = async () => ({
-    namespacesRequired: ['custom-inputs']
-})
-
 CustomInputs.defaultProps = {
     inputs: []
 }
 
 CustomInputs.propTypes = {
-    t: PropTypes.func.isRequired, // This is translation
+    // t: PropTypes.func.isRequired, // This is translation
     onSubmit: PropTypes.func,
     inputs: PropTypes.array // { name (field name), t (translation field name)}
 }
 
-export default withTranslation('custom-inputs')(CustomInputs)
+export default CustomInputs

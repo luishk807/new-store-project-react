@@ -1,4 +1,3 @@
-import { withTranslation } from '../../../i18n'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState } from 'react'
 import {
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ProductNoVariant = ({ t }) => {
+const ProductNoVariant = () => {
     const router = useRouter()
     const classes = useStyles()
     const [selectedCategory, setSelectedCategory] = useState(null)
@@ -121,7 +120,7 @@ const ProductNoVariant = ({ t }) => {
                 dialogOpenFlag={dialogOpened} 
                 cancelButtonFunc={closeConfirmationDialog}
                 submitButtonFunc={onSubmit}
-                submitButtonText={ t('add_product_novariant') }
+                submitButtonText={'Add No Variant'}
                 title="Confirm Submit"
                 useActions={true}
                 contextText="Are you sure you want to submit the new product?"
@@ -135,13 +134,13 @@ const ProductNoVariant = ({ t }) => {
                             aria-controls="product-content"
                             id="product-header"
                             >
-                            { t('basic') }
+                            Product Basic Information
                         </AccordionSummary>
                         <AccordionDetails>
                             <Grid container spacing={1}>
                                 <Grid item xs={12}>
                                     <TextField
-                                        label={ t('name') }
+                                        label="Name"
                                         variant="filled"
                                         size="small"
                                         margin="dense"
@@ -153,7 +152,7 @@ const ProductNoVariant = ({ t }) => {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        label={ t('description') }
+                                        label="Description"
                                         variant="filled"
                                         size="small"
                                         margin="dense"
@@ -165,7 +164,7 @@ const ProductNoVariant = ({ t }) => {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <TextField
-                                        label={ t('sku') }
+                                        label="SKU"
                                         variant="filled"
                                         size="small"
                                         margin="dense"
@@ -177,7 +176,7 @@ const ProductNoVariant = ({ t }) => {
                                 </Grid>
                                 <Grid item xs={12} md={6}>
                                     <TextField
-                                        label={ t('model') }
+                                        label="Model"
                                         variant="filled"
                                         size="small"
                                         margin="dense"
@@ -197,7 +196,7 @@ const ProductNoVariant = ({ t }) => {
                                 </Grid>
                                 <Divider/>
                                 <Grid item xs={12} className={classes.buttonSection}>
-                                    <Button onClick={openConfirmationDialog}>{ t('add_product_novariant') }</Button>
+                                    <Button onClick={openConfirmationDialog}>Add No Variant Product</Button>
                                 </Grid>
                             </Grid>
                         </AccordionDetails>
@@ -208,8 +207,4 @@ const ProductNoVariant = ({ t }) => {
     );
 }
 
-ProductNoVariant.getInitialProps = async () => ({
-    namespacesRequired: ['product']
-})
-
-export default withTranslation('product')(ProductNoVariant);
+export default ProductNoVariant

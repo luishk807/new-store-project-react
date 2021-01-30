@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import { makeStyles } from '@material-ui/core'
 import CustomDialog from './CustomDialog'
 import {
@@ -183,15 +182,15 @@ const Departments = ({ t }) => {
                     aria-controls="basic-content"
                     id="basic-header"
                     >
-                    { t('departments') }
+                    Departments
                 </AccordionSummary>
                 <AccordionDetails>
                     <TableContainer component={Paper}>
                         <Table className={classes.table} size="small" aria-label="a dense table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>{ t('po_name') }</TableCell>
-                                    <TableCell>{ t('po_description') }</TableCell>
+                                    <TableCell>Name</TableCell>
+                                    <TableCell>Description</TableCell>
                                     <TableCell align="right">*</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -220,20 +219,16 @@ const Departments = ({ t }) => {
                 </AccordionDetails>
                 <Divider />
                 <AccordionActions>
-                    <Button onClick={openAddDialog}>{ t('dep_add') }</Button>
+                    <Button onClick={openAddDialog}>Add Department</Button>
                 </AccordionActions>
             </Accordion>
         </div>
     )
 }
 
-Departments.getInitialOptions = async () => ({
-    namespacesRequired: ['product', 'common']
-})
-
 Departments.propTypes = {
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
     data: PropTypes.array
 }
 
-export default withTranslation(['product', 'common'])(Departments)
+export default Departments

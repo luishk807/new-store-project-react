@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import {
     Dialog,
     DialogActions, 
@@ -9,17 +8,17 @@ import {
     Button
 } from '@material-ui/core';
 
-const CustomDialog = ({ t, children, dialogOpenFlag, title, contextText, cancelButtonFunc, submitButtonFunc, submitButtonText, useActions }) => {
+const CustomDialog = ({ children, dialogOpenFlag, title, contextText, cancelButtonFunc, submitButtonFunc, submitButtonText, useActions }) => {
     
     const dialogActions = () => {
         if (useActions) {
             return (
                 <DialogActions>
                     <Button onClick={cancelButtonFunc} color="primary">
-                        { t('cancel') }
+                        Cancel
                     </Button>
                     <Button onClick={submitButtonFunc} color="primary">
-                        { submitButtonText ? submitButtonText : t('submit') }
+                        { submitButtonText ? submitButtonText : 'Submit' }
                     </Button>
                 </DialogActions>
             )
@@ -38,12 +37,8 @@ const CustomDialog = ({ t, children, dialogOpenFlag, title, contextText, cancelB
     )
 }
 
-CustomDialog.getInitialOptions = async () => ({
-    namespacesRequired: ['custom-dialog']
-})
-
 CustomDialog.propTypes = {
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
     cancelButtonFunc: PropTypes.func.isRequired,
     submitButtonFunc: PropTypes.func.isRequired,
     children: PropTypes.element,
@@ -55,7 +50,7 @@ CustomDialog.propTypes = {
 }
 
 CustomDialog.defaultProps = {
-    t: () => '',
+    // t: () => '',
     cancelButtonFunc: () => {},
     submitButtonFunc: () => {},
     title: 'Custom Dialog',
@@ -65,4 +60,4 @@ CustomDialog.defaultProps = {
     useActions: false
 };
 
-export default withTranslation('custom-dialog')(CustomDialog)
+export default CustomDialog

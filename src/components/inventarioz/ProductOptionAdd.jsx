@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import { makeStyles } from '@material-ui/core'
 import { 
     Grid,
@@ -19,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ProductOptionAdd = (props) => {
-    const { t, onSubmit } = props
+    const { onSubmit } = props
     const classes = useStyles()
     const [option, setOption] = useState({});
 
@@ -43,7 +42,7 @@ const ProductOptionAdd = (props) => {
             <Grid container spacing={2}>
                 <Grid item sm={12}>
                     <TextField
-                        label={ t('name') }
+                        label="Name"
                         name="name"
                         variant="filled"
                         size="small"
@@ -52,7 +51,7 @@ const ProductOptionAdd = (props) => {
                         onChange={onChange}
                     />
                     <TextField
-                        label={ t('description') }
+                        label="Description"
                         name="description"
                         variant="filled"
                         size="small"
@@ -62,21 +61,17 @@ const ProductOptionAdd = (props) => {
                     />
                 </Grid>
                 <Divider/>
-                <Grid item sm={12} justify="flex-end">
-                    <Button className={classes.submit} onClick={handleSubmit}>{ t('add') }</Button>
+                <Grid item sm={12}>
+                    <Button className={classes.submit} onClick={handleSubmit}>Add</Button>
                 </Grid>
             </Grid>
         </div>
     )
 }
 
-ProductOptionAdd.getInitialOptions = async () => ({
-    namespacesRequired: ['product']
-})
-
 ProductOptionAdd.propTypes = {
-    t: PropTypes.func.isRequired, // This is translation
+    // t: PropTypes.func.isRequired, // This is translation
     onSubmit: PropTypes.func
 }
 
-export default withTranslation('product')(ProductOptionAdd)
+export default ProductOptionAdd

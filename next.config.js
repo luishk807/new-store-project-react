@@ -1,5 +1,4 @@
 
-const { nextI18NextRewrites } = require('next-i18next/rewrites');
 const { parsed: localEnv } = require('dotenv').config()
 const webpack = require('webpack')
 const localeSubpaths = { en: "en", es: "es" };
@@ -38,7 +37,6 @@ module.exports = {
     locales: ['en', 'es'],
     defaultLocale: 'es'
   },
-  rewrites: async () => nextI18NextRewrites(localeSubpaths),
   publicRuntimeConfig: {
     // Will be available on both server and client
     localeSubpaths

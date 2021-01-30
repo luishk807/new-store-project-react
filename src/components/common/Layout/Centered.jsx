@@ -1,7 +1,5 @@
-import PropTypes from 'prop-types'
 import Head from 'next/head'
 import { makeStyles } from '@material-ui/core'
-import { withTranslation } from '../../../../i18n'
 
 const useStyles = makeStyles(theme => {
     return {
@@ -25,13 +23,12 @@ const useStyles = makeStyles(theme => {
 })
 
 const Centered = (props) => {
-    const { t } = props;
     const classes = useStyles();
     
     return (
         <div className={classes.container}>
             <Head>
-                <title>{ t('appName') }</title>
+                <title>Stockz</title>
                 <link rel="icon" href="/favicon.ico" />
             </Head>
 
@@ -42,12 +39,4 @@ const Centered = (props) => {
     );
 }
 
-Centered.getInitialProps = async () => ({
-  namespacesRequired: ['common']
-})
-
-Centered.propTypes = {
-  t: PropTypes.func.isRequired,
-}
-
-export default withTranslation('common')(Centered)
+export default Centered

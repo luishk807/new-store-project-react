@@ -1,5 +1,4 @@
 // import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import Centered from '../../components/common/Layout/Centered'
 import { CircularProgress } from '@material-ui/core'
 import { useRouter } from 'next/router';
@@ -18,4 +17,4 @@ const Redirector = (props) => {
     );
 }
 
-export default withTranslation('common')(Redirector);
+export default Redirector

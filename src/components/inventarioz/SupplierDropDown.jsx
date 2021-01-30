@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types'
-import { withTranslation } from '../../../i18n'
 import DropDown from './DropDown'
 import { useEffect, useState } from 'react'
 import { getSuppliers } from '../../services/inventarioz/supplier'
@@ -46,14 +45,10 @@ const SupplierDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
     )
 }
 
-SupplierDropDown.getInitialOptions = async () => ({
-    namespacesRequired: ['common']
-})
-
 SupplierDropDown.propTypes = {
     onChange: PropTypes.func,
     selectedValue: PropTypes.any,
     readOnly: PropTypes.bool
 }
 
-export default withTranslation('common')(SupplierDropDown)
+export default SupplierDropDown

@@ -1,4 +1,3 @@
-import { withTranslation } from '../../../../i18n'
 import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core'
 import {
@@ -23,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ProductAddVariants = ({ t, dataObject, onUpdate }) => {
+const ProductAddVariants = ({ /*t,*/ dataObject, onUpdate }) => {
     const classes = useStyles()
     const [sku, setSku] = useState(null)
     const [model, setModel] = useState(null)
@@ -136,7 +135,7 @@ const ProductAddVariants = ({ t, dataObject, onUpdate }) => {
                 dialogOpenFlag={dialogOpened} 
                 cancelButtonFunc={closeConfirmationDialog}
                 submitButtonFunc={onVariantSubmit}
-                submitButtonText={ t('add_product_novariant') }
+                submitButtonText={ 'Add Variant' }
                 title="Confirm Submit"
                 useActions={true}
                 contextText="Are you sure you want to submit the new product variant?"
@@ -147,13 +146,13 @@ const ProductAddVariants = ({ t, dataObject, onUpdate }) => {
                     aria-controls="basic-content"
                     id="variants-header"
                     >
-                    { /*t('pv_title')*/ 'Add Product Variants' }
+                    { 'Add Product Variants' }
                 </AccordionSummary>
                 <AccordionDetails>
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={6}>
                             <TextField
-                                label={ t('sku').toUpperCase() }
+                                label={ 'SKU' }
                                 name="sku"
                                 variant="filled"
                                 size="small"
@@ -164,7 +163,7 @@ const ProductAddVariants = ({ t, dataObject, onUpdate }) => {
                         </Grid>
                         <Grid item xs={12} md={6}>
                             <TextField
-                                label={ t('model').toUpperCase() }
+                                label={ 'MODEL' }
                                 name="model"
                                 variant="filled"
                                 size="small"
@@ -180,13 +179,13 @@ const ProductAddVariants = ({ t, dataObject, onUpdate }) => {
                             <DropDown 
                                 onChange={onOptionValueChange}
                                 items={optionValues}
-                                label={ /*t('pov_title')*/ 'Option Values' }
+                                label={ 'Option Values' }
                                 textField="text"
                                 valueField="value"
                             />
                         </Grid>
                         <Grid item xs={12} md={2}>
-                            <Button size="small" variant="outlined" onClick={addVariant}>{ /*t('va_add')*/ 'Add Variant' }</Button>
+                            <Button size="small" variant="outlined" onClick={addVariant}>{ 'Add Variant' }</Button>
                         </Grid>
                     </Grid>
                 </AccordionDetails>
@@ -195,14 +194,10 @@ const ProductAddVariants = ({ t, dataObject, onUpdate }) => {
     )
 }
 
-ProductAddVariants.getInitialProps = async () => ({
-    namespacesRequired: ['product']
-})
-
 ProductAddVariants.propTypes = {
-    t: PropTypes.func.isRequired,
+    // t: PropTypes.func.isRequired,
     dataObject: PropTypes.object.isRequired,
     onUpdate: PropTypes.func
 }
 
-export default withTranslation('product')(ProductAddVariants);
+export default ProductAddVariants;

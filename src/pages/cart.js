@@ -179,7 +179,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                           <Divider />
                         </Grid>
                         <Grid item lg={2} xs={4}  className={classes.cartImage}>
-                          <Link href='/product'>
+                          <Link href={`/product/${item.id}`}>
                             {
                               imgUrl && imgUrl
                             }
@@ -189,7 +189,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                           <Grid container>
                             <Grid item lg={12} xs={12}>
                               <Typography align="left" component="h4" className={classes.cardDescTitle}>
-                                <Link href="/">{item.name}</Link>
+                                <Link href={`/product/${item.id}`}>{item.name}</Link>
                               </Typography>
                             </Grid>
                             <Grid item lg={12} xs={12}>

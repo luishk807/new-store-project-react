@@ -67,6 +67,8 @@ import HomeIcon from '@material-ui/icons/Home';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
+import PrintIcon from '@material-ui/icons/Print';
+import EditIcon from '@material-ui/icons/Edit';
 
 import Typography from './Typography';
 
@@ -83,6 +85,12 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'addCircle':
         return <AddCircleIcon className={classes.icon}/>
+      break;
+      case 'edit':
+        return <EditIcon className={classes.icon}/>
+      break;
+      case 'print':
+        return <PrintIcon className={classes.icon}/>
       break;
       case 'listBullets':
         return <FormatListBulletedIcon className={classes.icon}/>

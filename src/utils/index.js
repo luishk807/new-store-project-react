@@ -2,13 +2,13 @@ export const removeCharacter = (str) => {
   return str.replace(/_/g, ' ')
 }
 
-export const formatNumber = (x) => Number.parseFloat(x).toFixed(2);
+export const formatNumber = (x) => x ? Number.parseFloat(x).toFixed(2) : 0.00;
 
 export const getCartTotal = (obj) => {
   let subtotal = 0;
   let taxes = 0;
   let grandTotal = 0;
-  let delivery = parseFloat(obj.delivery);
+  let delivery = obj.delivery ? parseFloat(obj.delivery) : 0;
   let cart = obj.cart;
   if (cart) {
     Object.keys(cart).forEach((key, index) => {

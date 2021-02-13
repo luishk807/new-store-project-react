@@ -36,6 +36,17 @@ export const getProductById = async(id) => {
   return Api.get(`products`, data);
 }
 
+export const getProductByIds = async(ids) => {
+  if (!ids) {
+    return;
+  }
+  const data = {
+    ids: ids
+  }
+  
+  return Api.get(`products`, data);
+}
+
 export const createProduct = async(data) => {
   if (!Object.keys(data).length) {
     return;

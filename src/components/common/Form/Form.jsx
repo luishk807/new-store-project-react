@@ -20,17 +20,19 @@ import {
   Autocomplete,
 } from '@material-ui/lab';
 import moment from 'moment'
-import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined';
+import ColorPicker from 'material-ui-color-picker'
+
 import { loadMainOptions } from '../../../utils/form';
-import FileUploader from '../FileUploader';
 import { FORM_SCHEMA, CATEGORY_ICONS } from '../../../../config';
-import Typography from '../Typography';
-import Snackbar from '../Snackbar';
-import Rate from '../../common/Rate/Rate';
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import { getImageUrlByType } from '../../../utils/form';
 import { removeCharacter } from '../../../utils';
+import Rate from '../../common/Rate/Rate';
+import FileUploader from '../FileUploader';
+import Typography from '../Typography';
+import Snackbar from '../Snackbar';
 import Icons from '../Icons';
+import ProgressBar from '../ProgressBar';
 
 const styles = (theme) => ({
   root: {
@@ -83,7 +85,9 @@ const styles = (theme) => ({
     justifyContent: 'center',
   },
   icon: {
-    color: 'white'
+    color: 'white',
+    width: 60,
+    height: 60,
   },
   titleBar: {
     background:
@@ -137,6 +141,10 @@ const styles = (theme) => ({
     '& button': {
       fontSize: '.7em !important',
     }
+  },
+  colorBoxSelection: {
+    width: 40,
+    height: 40,
   }
 });
 
@@ -152,6 +160,7 @@ const Form = ({
   id,
   submitCustomName,
   children,
+  basicParams,
   fileOnSave,
   imageBoxOnSave,
   imageBoxAddMore,
@@ -213,6 +222,12 @@ const Form = ({
     imageBoxAddMore(true);
   }
 
+  const onChangeColor = async(field, val) => {
+    if (val) {
+      formOnChange({target:{name: field, value: val}})
+    }
+  }
+  
   const onDropDownChange = async(val) => {
     const options = formOptions;
     const panama = panamaAddress;
@@ -251,7 +266,7 @@ const Form = ({
           titlePosition="top"
           actionIcon={
             <IconButton className={classes.icon} onClick={()=>imageClickHandle(index)}>
-              <DeleteOutlinedIcon />
+              <Icons name="delete" />
             </IconButton>
           }
           actionPosition="right"
@@ -271,7 +286,7 @@ const Form = ({
           titlePosition="top"
           actionIcon={
             <IconButton className={classes.icon} onClick={()=>imageBoxClickHandle(index)}>
-              <DeleteOutlinedIcon />
+              <Icons name="delete" />
             </IconButton>
           }
           actionPosition="right"
@@ -301,6 +316,22 @@ const Form = ({
                 onChange={formOnChange}
                 label={removeCharacter(FORM_SCHEMA[field].label)} 
               />
+            </FormControl>
+          </Grid>
+        )
+        break
+      }
+      case "color": {
+        return (
+          <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
+            <FormControl fullWidth variant="outlined">
+              <ColorPicker
+                name={field}
+                defaultValue={fields[field]}
+                onChange={(color) => onChangeColor(field, color)}
+                className={classes.colorInput}
+              />
+              <FormHelperText id={field}>Choose {field}</FormHelperText> 
             </FormControl>
           </Grid>
         )
@@ -373,7 +404,7 @@ const Form = ({
         break
       }
       case "date": {
-        const initialDate =fields[field] ? fields[field] : moment(new Date()).format('YYYY-MM-DD');
+        const initialDate =fields[field] ? fields[field] : moment(new Date()).subtract(1, 'day').format('YYYY-MM-DD');
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
             <FormControl fullWidth variant="outlined">
@@ -393,27 +424,60 @@ const Form = ({
         break
       }
       case "dropdown": {
-        return (
-          <Grid item key={index} lg={12} xs={12} className={classes.formItem}>
-            <FormControl fullWidth variant="outlined">
-              <Autocomplete
-                className={classes.whiteBackground}
-                name={field}
-                options={formOptions[field]}
-                onChange={(e, value) => {
-                  if (panamaFlag.includes(field)) {
-                    onDropDownChange({ name: field, value: value})
-                  }
-                  formOnChange(null, { name: field, value: value})
-                }}
-                getOptionLabel={(option) => 'name' in option ? option.name : option.first_name + " " + option.last_name}
-                value={fields[field]}
-                renderInput={(params) => <TextField {...params} label={FORM_SCHEMA[field].label} variant="outlined" />}
-              />
-              <FormHelperText name={field}>{`Select your ${FORM_SCHEMA[field].label}`}</FormHelperText>
-            </FormControl>
-          </Grid>
-        )
+        if (field === "productColor") {
+          return (
+            <Grid item key={index} lg={12} xs={12} className={classes.formItem}>
+              <FormControl fullWidth variant="outlined">
+                <Autocomplete
+                  className={classes.whiteBackground}
+                  name={field}
+                  options={formOptions[field]}
+                  onChange={(e, value) => {
+                    if (panamaFlag.includes(field)) {
+                      onDropDownChange({ name: field, value: value})
+                    }
+                    formOnChange(null, { name: field, value: value})
+                  }}
+                  getOptionLabel={(option) => option.name}
+                  value={fields[field]}
+                  renderOption={(option, { selected }) => (
+                    <React.Fragment>
+                      <div className={classes.colorBoxSelection} style={{backgroundColor: option.color}}></div>
+                      &nbsp;
+                      {
+                        option.name
+                      }
+                    </React.Fragment>
+                  )}
+                  renderInput={(params) => <TextField {...params} label={FORM_SCHEMA[field].label} variant="outlined" />}
+                />
+                <FormHelperText name={field}>{`Select your ${FORM_SCHEMA[field].label}`}</FormHelperText>
+              </FormControl>
+            </Grid>
+          )
+        } else {
+          return (
+            <Grid item key={index} lg={12} xs={12} className={classes.formItem}>
+              <FormControl fullWidth variant="outlined">
+                <Autocomplete
+                  className={classes.whiteBackground}
+                  name={field}
+                  options={formOptions[field]}
+                  onChange={(e, value) => {
+                    if (panamaFlag.includes(field)) {
+                      onDropDownChange({ name: field, value: value})
+                    }
+                    formOnChange(null, { name: field, value: value})
+                  }}
+                  getOptionLabel={(option) => 'name' in option ? option.name : option.first_name + " " + option.last_name}
+                  value={fields[field]}
+                  renderInput={(params) => <TextField {...params} label={FORM_SCHEMA[field].label} variant="outlined" />}
+                />
+                <FormHelperText name={field}>{`Select your ${FORM_SCHEMA[field].label}`}</FormHelperText>
+              </FormControl>
+            </Grid>
+          ) 
+        }
         break;
       }
       case "linkitem": {
@@ -520,7 +584,7 @@ const Form = ({
   useEffect(() => {
     const loadFormOption = async() => {
       const section = ADMIN_SECTIONS;
-      const options = await loadMainOptions(isAdmin);
+      const options = await loadMainOptions(isAdmin, basicParams);
       const panama = {
         provinces: [],
         districts: [],
@@ -622,7 +686,12 @@ const Form = ({
             )
           }
           {
-            useFormOption && formFields
+            useFormOption ? formFields : 
+            (
+              <Grid item lg={12} xs={12}>
+                <ProgressBar />
+              </Grid>
+            )
           }
           {
             showCancelBtn && (
@@ -657,6 +726,7 @@ Form.protoTypes = {
   showTitle: T.bool,
   fields: T.object,
   onChange: T.func,
+  basicParams: T.object,
   imageBoxOnSave: T.func,
   imageBoxAddMore: T.func,
   id: T.number,

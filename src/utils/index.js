@@ -1,8 +1,16 @@
+import { getImageUrlByType } from './form';
+import { noImageUrl } from '../../config';
+
 export const removeCharacter = (str) => {
   return str.replace(/_/g, ' ')
 }
 
 export const formatNumber = (x) => x ? Number.parseFloat(x).toFixed(2) : 0.00;
+
+export const getImage = (product) => {
+  const imageUrl = getImageUrlByType('product');
+  return product.productImages && product.productImages.length ? <img className={`img-fluid`} src={`${imageUrl}/${product.productImages[0].img_url}`} alt={`${product.name}`} /> : <img className={`img-fluid`} src={`${noImageUrl.img}`} alt={`${noImageUrl.alt}`} />;
+}
 
 export const getCartTotal = (obj) => {
   let subtotal = 0;
@@ -12,7 +20,7 @@ export const getCartTotal = (obj) => {
   let cart = obj.cart;
   if (cart) {
     Object.keys(cart).forEach((key, index) => {
-      subtotal += cart[key].amount * cart[key].quantity;
+      subtotal += cart[key].retailPrice * cart[key].quantity;
     })
   }
 

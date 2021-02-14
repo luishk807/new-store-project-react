@@ -8,6 +8,7 @@ export const FORM_TYPE = {
   pass: 'password',
   date: 'date',
   rate: 'rate',
+  color: 'color',
   textArea: 'textarea',
   linkItem: 'linkitem',
   imageUrl: 'imgurl',
@@ -133,6 +134,10 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.text,
     label: 'First name',
   },
+  color: {
+    type: FORM_TYPE.color,
+    label: 'Color',
+  },
   position: {
     type: FORM_TYPE.drop,
     label: 'Position',
@@ -193,9 +198,9 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.drop,
     label: 'Gender',
   },
-  code: {
+  sku: {
     type: FORM_TYPE.text,
-    label: 'Product Code',
+    label: 'Product SKU',
   },
   description: {
     type: FORM_TYPE.textArea,
@@ -228,6 +233,10 @@ export const FORM_SCHEMA = {
   corregimiento: {
     type: FORM_TYPE.drop,
     label: 'Corregimiento',
+  },
+  productId: {
+    type: FORM_TYPE.number,
+    label: 'Product Id',
   },
   mobile: {
     type: FORM_TYPE.text,
@@ -340,6 +349,50 @@ export const FORM_SCHEMA = {
   userid: {
     type: FORM_TYPE.text,
     label: 'User',
+  },
+  flete: {
+    type: FORM_TYPE.number,
+    label: 'Flete',
+  },
+  fleteTotal: {
+    type: FORM_TYPE.number,
+    label: 'Flete Total',
+  },
+  billingCost: {
+    type: FORM_TYPE.number,
+    label: 'Billing Cost',
+  },
+  unitCost: {
+    type: FORM_TYPE.number,
+    label: 'Unit Cost',
+  },
+  unitPrice: {
+    type: FORM_TYPE.number,
+    label: 'Unit Price',
+  },
+  finalUnitPrice: {
+    type: FORM_TYPE.number,
+    label: 'Final Unit Price',
+  },
+  retailPrice: {
+    type: FORM_TYPE.number,
+    label: 'Retail Price',
+  },
+  profitPercentage: {
+    type: FORM_TYPE.number,
+    label: 'Profit Percentage',
+  },
+  exp_date: {
+    type: FORM_TYPE.date,
+    label: 'Expiration Date',
+  },
+  productColor: {
+    type: FORM_TYPE.drop,
+    label: 'Color',
+  },
+  productSize: {
+    type: FORM_TYPE.drop,
+    label: 'Size',
   },
 }
 

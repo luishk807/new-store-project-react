@@ -5,6 +5,14 @@ export const getProducts = async(data) => {
   return Api.get(`products`, data);
 }
 
+export const getAdminProducts = async(data) => {
+  return Api.get(`products/admin/home`, data);
+}
+
+export const getAllProducts = async() => {
+  return Api.get(`products`);
+}
+
 export const searchProducts = async(str) => {
   const data = {
     search: str,
@@ -80,8 +88,9 @@ export const deleteProduct = async(id) => {
   const config = {
     'cotent-Type': 'application/x-www-form-urlencoded'
   }
-  return Api.delete(`${section}/${id}`, {}, config);
+  return Api.delete(`products/${id}`, {}, config);
 }
+
 
 export const getProductsByVendor = async(id) => {
   if (!id) {

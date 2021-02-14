@@ -33,8 +33,11 @@ const AddForm = ({
   adminSection, 
   userSection, 
   entryForm, 
+  id,
+  basicParams,
   hideEntry,
   showTitle,
+  title,
   fileLimit,
   ignoreForm, 
   children, 
@@ -176,7 +179,8 @@ const AddForm = ({
       return;
     }
     try {
-      const options = await loadMainOptions(admin);
+      const options = basicParams && Object.keys(basicParams).length ? await loadMainOptions(admin, basicParams) : await loadMainOptions(admin);
+      
       Object.keys(entryForm).forEach(field => {
         if (FORM_SCHEMA[field].type == "dropdown") {
           if (hideEntry && hideEntry.indexOf(field) !== -1) {
@@ -187,6 +191,20 @@ const AddForm = ({
           } else {
             let dropValue = 0;
             if (field == "vendor" && entryForm[field]) {
+              options[field].forEach((item, key) => {
+                if(item.id === entryForm[field]) {
+                  dropValue = key;
+                }
+              })
+            }
+            else if (field == "productColorId" && entryForm[field]) {
+              options[field].forEach((item, key) => {
+                if(item.id === entryForm[field]) {
+                  dropValue = key;
+                }
+              })
+            }
+            else if (field == "productSizeId" && entryForm[field]) {
               options[field].forEach((item, key) => {
                 if(item.id === entryForm[field]) {
                   dropValue = key;
@@ -227,13 +245,15 @@ const AddForm = ({
   return showForm && (
     <div className={classes.root}>
       <Form 
-        title={section.name} 
+        title={title ? title : section.name} 
         fileOnSave={handleSave} 
         fileLimit={fileLimit}
         fields={form} 
+        basicParams={basicParams}
         classes={classes}
         hideEntry={hideEntry}
         errors={errors} 
+        id={id}
         isAdmin={isAdmin}
         showTitle={showTitle}
         onChange={formOnChange} 
@@ -257,8 +277,11 @@ AddForm.protoTypes = {
   adminSection: T.object,
   userSection: T.object,
   entryForm: T.object,
+  title: T.string,
   fileLimit: T.bool,
   showTitle: T.bool,
+  id: T.number,
+  basicParams: T.object,
   customUrl: T.string,
   ignoreForm: T.array,
   children: T.node,

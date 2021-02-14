@@ -63,6 +63,7 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
     case "textfield":
     case "password":
     case "date":
+    case "color":
     case "textarea": {
       if (value && value.length > 0) {
         return true
@@ -126,13 +127,13 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
   }
 }
 
-export const loadMainOptions = async(isAdmin = false) => {
+export const loadMainOptions = async(isAdmin = false, params={}) => {
   let data = {}
   const icon = await CATEGORY_ICONS;
   if (isAdmin) {
-    data = await getBasicAdmin();
+    data = await getBasicAdmin(params);
   } else {
-    data = await getBasicUser();
+    data = await getBasicUser(params);
   }
   data['icon'] = icon;
   return data;

@@ -11,7 +11,7 @@ import { DropzoneDialog } from 'material-ui-dropzone'
 
 const styles = (theme) => ({
   root: {
-    margin: theme.spacing(1),
+    // margin: theme.spacing(1),
     [theme.breakpoints.down('sm')]: {
       margin: 0,
     },

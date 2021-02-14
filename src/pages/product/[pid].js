@@ -9,6 +9,7 @@ import {
   withStyles,
   Link,
   Button,
+  Hidden,
   Divider,
   Typography
 } from '@material-ui/core';
@@ -22,6 +23,7 @@ import Select from '../../components/common/QuanitySelector';
 import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
 import { getItemById } from '../../api';
+import { getProductItemById } from '../../api/productItems';
 import WishListIcon from '../../components/common/WishListIcon';
 import ProductQuestionBox from '../../components/product/QuestionBox';
 import RateBox from '../../components/rate/Simple';
@@ -37,20 +39,33 @@ const styles = (theme) => ({
       }
     }
   },
+  productBrand: {
+    fontSize: '1.5em',
+    textAlign: 'left',
+    color: 'rgba(0,0,0,.4)',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.2em',
+      margin: '10px 0px',
+    }
+  },
   productName: {
-    fontSize: '4rem',
+    fontSize: '2rem',
     fontWeight: 'bold',
+    textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
       fontSize: '3em',
+      textAlign: 'center',
     }
   },
   productPriceContainer: {
     padding: '5px 0px'
   },
   productPrice: {
-    fontSize: '3.5rem',
+    fontSize: '1.5rem',
+    textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
       fontSize: '2em',
+      textAlign: 'center',
     }
   },
   deliveryText: {
@@ -59,6 +74,11 @@ const styles = (theme) => ({
   },
   infoRowContent: {
     margin: '20px 0px',
+    display: 'flex',
+    alignItems: 'center',
+  },
+  variantRowContent: {
+    margin: 0,
     display: 'flex',
     alignItems: 'center',
   },
@@ -89,6 +109,75 @@ const styles = (theme) => ({
       display: 'none',
     }
   },
+  productStock: {
+    fontSize: '1.2em',
+    fontWeight: 'bold',
+  },
+  productColorBox: {
+    width: 50,
+    height: 28,
+    // cursor: 'pointer',
+    border: '1px solid white',
+    padding: 5,
+    display: 'inline-block',
+  },
+  productColorLink: {
+    margin: '3px',
+    display: 'inline-block',
+    lineHeight: '0px',
+    outline: '1px solid rgba(0,0,0,.2)',
+    '&:hover': {
+      outline: '2px solid rgba(0,0,0)',
+    },
+  },
+  productColorLinkSelected: {
+    margin: '3px',
+    display: 'inline-block',
+    lineHeight: '0px',
+    outline: '2px solid rgba(0,0,0)',
+  },
+  productSizeBox: {
+    border: '1px solid white',
+    display: 'flex',
+    outline: '1px solid rgba(0,0,0,.09)',
+    padding: '8px 10px',
+    fontSize: '.8em',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  variantTitles: {
+    margin: '10px 0px',
+  },
+  productSizeLink: {
+    display: 'inline-block',
+    color: 'grey',
+    '&:hover': {
+      backgroundColor: '#f8be15',
+      color: 'white',
+    }
+  },
+  productSizeLinkSelected: {
+    display: 'inline-block',
+    backgroundColor: '#f8be15',
+    color: 'white',
+    '&:hover': {
+      color: 'white',
+    }
+  },
+  productSizeLinkDisabled: {
+    display: 'inline-block',
+    color: 'rgba(0,0,0,.1)',
+    cursor: 'not-allowed',
+    '&:hover': {
+      color: 'rgba(0,0,0,.1)',
+    }
+  },
+  descriptionItem: {
+    margin: '10px 0px',
+  },
+  descriptionTitle: {
+    margin: '10px 0px',
+  }
 });
 
 const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
@@ -97,16 +186,21 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [images, setImages] = useState({});
   const [productInfo, setProductInfo] = useState({});
   const [showData, setShowData] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [sizeBlocks, setSizeBlock] = useState(null);
+  const [selectedProductItem, setSelectedProductItem] = useState({});
+  const [colors, setColors] = useState(null)
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
     text: '',
   });
 
-  const handleSelectChange = async(resp) => {
+  const handQuantitySelect = (resp) => {
     const index = resp.id.split("-")[1]
-    setProductInfo({
-      ...productInfo,
+    setSelectedProductItem({
+      ...selectedProductItem,
       'quantity': resp.value
     })
   };
@@ -128,32 +222,115 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   const onAddCart = async() => {
-    if (!productInfo.quantity) {
+    if (!selectedProductItem.quantity) {
       setSnack({
         severity: 'error',
         open: true,
         text: 'Please choose quantity',
       })
+    } if (!selectedColor) {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: 'Please choose color',
+      })
+    } if (!selectedSize) {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: 'Please choose size',
+      })
     } else {
-      await addCart(productInfo)
+      await addCart(selectedProductItem);
     }
   }
+
+  const handleColorChange = (e, color) => {
+    if (e) {
+      e.preventDefault();
+    }
+    setSelectedColor(color)
+    setSelectedSize(null);
+    setSelectedProductItem({})
+  }
+
+  const handleSizeChange = async(e, size) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    setSelectedSize(size)
+    
+    const itemsAvailable = productInfo.productProductItems;
+
+    if (itemsAvailable && itemsAvailable.length) {
+      const getItem = productInfo.productProductItems.filter(item => item.productColorId === selectedColor.id && item.productSizeId === size.id)
+      if (getItem && getItem.length) {
+        const searchItem = await getProductItemById(getItem[0].id);
+        setSelectedProductItem(searchItem);
+      }
+    }
+  }
+
+  const createSizeBlock = (color) => {
+    if (showData) {
+      if(productInfo.productSizes && color) {
+        const blocks = productInfo.productSizes.map((size, index) => {
+            const found = productInfo.productProductItems.filter(item => {
+              return item.productSize === size.id && item.productColor == color.id;
+            })
+            if (found && found.length) {
+              if (selectedSize && selectedSize.id === size.id) {
+                return (
+                  <a key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}>{size.name}</div></a>
+                )
+              } else {
+                return (
+                  <a href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}>{size.name}</div></a>
+                )
+              }
+            } else {
+              return (
+                <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}</div></a>
+              )
+            }
+        })
+        setSizeBlock(blocks);
+      } else {
+        const blocks = productInfo.productSizes.map((size, index) => {
+            return (
+              <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}</div></a>
+            )
+        })
+        setSizeBlock(blocks);
+      }
+    }
+  }
+
+  useEffect(() => {
+    createSizeBlock(selectedColor);
+  }, [selectedColor, selectedSize]);
+
 
   useEffect(()=>{
     const loadProductInfo = async() => {
       const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
       loadImages(getProductInfo)
-      setProductInfo(getProductInfo);
+      await setProductInfo(getProductInfo);
+      if (getProductInfo.productColors && getProductInfo.productColors.length) {
+        setColors(getProductInfo.productColors);
+        handleColorChange(null, getProductInfo.productColors[0])
+      }
       setShowData(true);
     }
     loadProductInfo();
-  }, [id])
+  }, [id, showData])
 
   return showData && (
     <LayoutTemplate>
       <div className={classes.root}>
         <Grid container>
-          <Grid item lg={9} xs={12}>
+          <Grid item lg={12} xs={12}>
             <Grid container spacing={2}>
               <Grid item lg={8} xs={12}>
                 <Grid container>
@@ -170,22 +347,58 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
               </Grid>
               <Grid item lg={4} xs={12}>
                 <Grid container>
+    
                   <Grid item lg={12} xs={12}>
-                   <Typography className={classes.productName} align="center" variant="h4" component="h3">{productInfo.name}</Typography>
+                   <Typography className={classes.productName} variant="h4" component="h3">{productInfo.name}</Typography>
                   </Grid>
                   <Grid item lg={12} xs={12} className={classes.productPriceContainer}>
-                    <Typography  className={classes.productPrice} align="center" variant="h1" component="h2">US ${productInfo.amount}</Typography>
+                    <Typography  className={classes.productPrice} variant="h1" component="h2">${productInfo.amount}</Typography>
                   </Grid>
-                  <Grid item lg={12} xs={12}>
-                    <Select onChange={handleSelectChange} className={classes.dropDown} title="quant" id="quant-select" />
+                  {
+                    colors && (
+                      <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
+                        <Grid container>
+                          <Grid item lg={12} xs={12} className={classes.variantTitles}>Colors</Grid>
+                          <Grid item lg={12} xs={12}>
+                            {
+                              colors.map((item, index) => {
+                                return (
+                                  <a key={index} href="#" className={selectedColor.id === item.id ? classes.productColorLinkSelected : classes.productColorLink} onClick={(e) => handleColorChange(e, item)}><div className={classes.productColorBox} style={{backgroundColor: item.color}}></div></a>
+                                )
+                              })
+                            }
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    )
+                  }
+                  {
+                    sizeBlocks && (
+                      <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
+                        <Grid container>
+                          <Grid item lg={12} xs={12} className={classes.variantTitles}>Sizes</Grid>
+                          <Grid item lg={12} xs={12} >
+                            {
+                              sizeBlocks
+                            }
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    )
+                  }
+                  <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
+                    <Select onChange={handQuantitySelect} className={classes.dropDown} title="quant" id="quant-select" />
                   </Grid>
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>
                     <WishListIcon product={productInfo.id} />
                   </Grid>
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
-                    <Typography align="left" variant="h5" component="h5">Disponibilidad: {productInfo.stock}</Typography>
+                    <Typography align="left" variant="h5" component="h5" className={classes.productStock}>{productInfo.stock ? 'Avalialable' : 'Out of Stock'}</Typography>
                   </Grid>
+                  {/* <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
+                    <Typography align="left" variant="h5" component="h5">Disponibilidad: {productInfo.stock}</Typography>
+                  </Grid> */}
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography className={classes.deliveryText} align="left" variant="body1" component="p">
                       <Icons name="delivery" classes={{icon: classes.deliveryIcon}}  /> Entrega a todo Panama
@@ -195,22 +408,22 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item lg={3} sm={12} className={classes.rateBox}>
+          {/* <Grid item lg={3} sm={12} className={classes.rateBox}>
             <RateBox data={productInfo} />
-          </Grid>
+          </Grid> */}
         </Grid>
         {/* Review and Seller */}
         <Grid container spacing={2}>
-          <Grid item lg={8} sm={12}>
-            <Typography align="left" variant="h4" component="h4">Description</Typography>
+          <Grid item lg={12} sm={12} className={classes.descriptionItem}>
+            <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Description</Typography>
             <Typography align="left" variant="body1" component="p">{productInfo.description}</Typography>
           </Grid>
-          <Grid item lg={4} sm={12}>
+          {/* <Grid item lg={4} sm={12}>
             <Typography align="left" variant="h4" component="h4">Acerca del Vendedor</Typography>
             {
               productInfo.vendor && <VendorBox id={productInfo.vendor} />
             }
-          </Grid>
+          </Grid> */}
         </Grid>
         {/* Q&A section */}
         <ProductQuestionBox data={productInfo}/>

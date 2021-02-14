@@ -83,6 +83,27 @@ export const ADMIN_SECTIONS = {
     url: 'genders',
     option: 'gender'
   },
+  'productItem': {
+    name: 'Product Item',
+    names: 'Product Items',
+    key: 'productItems',
+    url: 'product-items',
+    option: 'productItem'
+  },
+  'size': {
+    name: 'Size',
+    names: 'Sizes',
+    key: 'size',
+    url: 'product-sizes',
+    option: 'size'
+  },
+  'color': {
+    name: 'Color',
+    names: 'Colors',
+    key: 'color',
+    url: 'product-colors',
+    option: 'color'
+  },
   'rate': {
     name: 'Rate',
     names: 'rates',

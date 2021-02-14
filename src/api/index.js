@@ -9,12 +9,12 @@ export const getItems = (section) => {
   return Api.get(`${section}`);
 }
 
-export const getBasicUser = () => {
-  return Api.get(`basic/user`);
+export const getBasicUser = (data) => {
+  return Api.get(`basic/user`, data);
 }
 
-export const getBasicAdmin = () => {
-  return Api.get(`basic/admin`);
+export const getBasicAdmin = (data) => {
+  return Api.get(`basic/admin`, data);
 }
 
 export const getItemById = (section, id) => {

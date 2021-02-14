@@ -56,7 +56,7 @@ const DropDown = (props) => {
         setDefValue(value) // No idea I need to do this, makes no sense
         if (onChange) {
             const option = menuItems.find(its => its.value === value)
-            onChange(option.object)
+            onChange(option.object, value)
         }
     }
 
@@ -78,6 +78,7 @@ const DropDown = (props) => {
 
 DropDown.propTypes = {
     onChange: PropTypes.func,
+    onSelect: PropTypes.func,
     defaultValue: PropTypes.any,
     label: PropTypes.string,
     items: PropTypes.array, // { name (field name), t (translation field name)}

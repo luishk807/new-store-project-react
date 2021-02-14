@@ -23,7 +23,7 @@ import MessageAlert from '../MessageAlert'
 import CustomDialog from '../CustomDialog'
 import StockEntryFields from './StockEntryFields'
 import { useEffect, useState } from 'react'
-import { addStockEntry } from '../../../services/inventarioz/stock'
+import { addStockEntry, getStock } from '../../../services/inventarioz/stock'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -49,15 +49,19 @@ const ProductVariantsStock = ({ dataObject, stock }) => {
     const [selectedVariant, setSelectedVariant] = useState(null)
     const [stockEntry, setStockEntry] = useState(null)
 
+    /** Returns the array of stocks belonging to the given variant id */
     const getVariantsStock = (variantId, stockArray) => {
         if (stockArray) {
-            for (let n=0; n<stockArray.length; ++n) {
-                if (stockArray[n].product_variant_id === variantId) {
-                    return stockArray[n]
-                }
-            }
+            return stockArray.filter(s => s.product_variant_id === variantId)
         }
         return null
+    }
+
+    /** Aggregate the quantity of the stock array */
+    const aggregateStocks = (stockArray) => {
+        return stockArray.reduce((accumulator, currentValue) => {
+            return { ...accumulator, quantity: accumulator.quantity + currentValue.quantity }
+        })
     }
 
     /** Attaching the stock into the product_variant object as stock property */
@@ -65,12 +69,9 @@ const ProductVariantsStock = ({ dataObject, stock }) => {
         if (product_variant) {
             for (let n=0; n<product_variant.length; ++n) {
                 const pv = product_variant[n];
-                console.log('pv.id', pv.id)
-                const pvStock = getVariantsStock(pv.id, stock)
-                // console.log('pvStock', pvStock)
+                const pvStock = aggregateStocks(getVariantsStock(pv.id, stock))
                 pv.stock = pvStock
             }
-            console.log(product_variant)
         }
     }
 
@@ -81,6 +82,16 @@ const ProductVariantsStock = ({ dataObject, stock }) => {
             setProductVariants([...dataObject.product_variant])
         }
     }, [dataObject, stock])
+
+    const updateStock = (productId) => {
+        if (productId) {
+            getStock({ productId: productId }).then(result => {
+                unifyStocksToVariant(dataObject.product_variant, result.data)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+    }
 
     const addStock = (value) => {
         setSelectedVariant(value)
@@ -108,6 +119,11 @@ const ProductVariantsStock = ({ dataObject, stock }) => {
         setStockEntry(stock)
     }
 
+    const onCancelStockEntry = () => {
+        setStockEntry({}) // Reset stock
+        closeConfirmationDialog()
+    }
+
     const onStockEntrySubmit = () => {
         if (stockEntry && selectedVariant) {
             // Add other base information
@@ -117,11 +133,18 @@ const ProductVariantsStock = ({ dataObject, stock }) => {
                 product_variant_id: +selectedVariant.id,
                 stock_id: +selectedVariant.stock.id
             }
+            console.log(stockEntryToSubmit)
             addStockEntry(stockEntryToSubmit)
                 .then(result => {
                     console.log('addStockEntry.result', result)
-                    showAlert({ severity: 'success', message: 'Stock entry successfully added'})
-                    closeConfirmationDialog()
+                    if (!result.error) {
+                        updateStock(+dataObject.id)
+                        showAlert({ severity: 'success', message: 'Stock entry successfully added'})
+                        closeConfirmationDialog()
+                    } else {
+                        showAlert({ severity: 'error', message: result.error})
+                    }
+                    
                 })
                 .catch(err => {
                     showAlert({ severity: 'error', message: err.error })
@@ -134,7 +157,7 @@ const ProductVariantsStock = ({ dataObject, stock }) => {
             <MessageAlert open={openAlert} onClose={onAlertClose} message={alertMessage} />
             <CustomDialog 
                 dialogOpenFlag={dialogOpen} 
-                cancelButtonFunc={closeConfirmationDialog}
+                cancelButtonFunc={onCancelStockEntry}
                 submitButtonFunc={onStockEntrySubmit}
                 submitButtonText={ 'Add Stock Entry' }
                 title="Add Stock Entry"

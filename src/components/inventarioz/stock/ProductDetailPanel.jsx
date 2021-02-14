@@ -1,43 +1,59 @@
 import PropTypes from 'prop-types'
 import {
     CircularProgress,
-    TextField
+    Grid
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState, useEffect } from 'react'
-import { getStock } from '../../../services/inventarioz/stock'
+import { getProduct } from '../../../services/inventarioz/product'
+import { getBrand, getDepartment, getCategory, getProductVariants } from '../../../utils/helpers/product'
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         padding: 5
+    },
+    detailGrid: {
+        width: '100%'
+    },
+    capitalize: {
+        textTransform: 'capitalize'
+    },
+    uppercase: {
+        textRransform: 'uppercase'
+    },
+    detailItem: {
+        marginLeft: '2px',
+        marginRight: '20px'
+    },
+    variantContainer: {
+        width: '100%',
+        display: 'flex',
+        flexFlow: 'row wrap',
+        // justifyContent: 'space-evenly',
+        alignItems: 'flex-start'
+    },
+    variantItem: {
+        marginLeft: '2px',
+        marginRight: '20px'
     }
 }))
 
-function getTextField(obj, field) {
-    if (obj) {
-        return <TextField label="Option" value={obj[field]} variant="outlined" size="small" aria-readonly="true" />
-    }
-    return ''
-}
-
-const ProductDetailPanel = (data) => {
+const ProductDetailPanel = ({ data }) => {
 
     const [isLoading, setIsLoading] = useState(true)
-    const [detail, setDetail] = useState([])
+    const [detail, setDetail] = useState({})
 
     const classes = useStyles()
 
     useEffect(() => {
         let mounted = true
         if (data && mounted) {
-            getStock({ productId: data.data.id })
-                .then(result => {
-                    // console.log('result', result)
-                    // console.log('stock result.data', result.data)
+            loadDetails(data)
+                .then(({ productInfo }) => {
                     setIsLoading(false)
                     if (mounted) {
-                        setDetail(result.data)
+                        setDetail(productInfo.data)
                     }
                 })
                 .catch(error => {
@@ -51,6 +67,89 @@ const ProductDetailPanel = (data) => {
         }
     }, [data])
 
+    /** Load product details and stock information */
+    const loadDetails = async (data) => {
+        const productInfo = await getProduct(data.id)
+        return { productInfo }
+    }
+
+    const Department = () => {
+        if (getDepartment(detail)) {
+            return <div className={classes.detailItem}><strong>Department: </strong>{ getDepartment(detail).name }</div>
+        }
+        return ''
+    }
+
+    const Category = () => {
+        if (getCategory(detail)) {
+            return <div className={classes.detailItem}><strong>Category: </strong>{ getCategory(detail).name }</div>
+        }
+        return ''
+    }
+
+    const Brand = () => {
+        if (getBrand(detail)) {
+            return <div className={classes.detailItem}><strong>Brand: </strong>{ getBrand(detail).name }</div>
+        }
+        return ''
+    }
+
+    /** Returns a component if the field has any values */
+    const LabelAndText = (object, field) => {
+        if (object && field) {
+            if (object[field]) {
+                return (<div className={classes.variantItem}><strong className={classes.capitalize}>{ field }: </strong> <span className={classes.uppercase}>{ object[field] }</span></div>)
+            }
+        }
+        return ''
+    }
+
+    const aggregateStock = (stockArray) => {
+        if (Array.isArray(stockArray)) {
+            return stockArray.reduce((accumulator, currentValue) => {
+                return { ...accumulator, quantity: accumulator.quantity + currentValue.quantity }
+            })
+        }
+        return null
+    }
+
+    const Stock = (object) => {
+        if (object && Array.isArray(object)) {
+            const stockAggregate = aggregateStock(object)
+            if (stockAggregate) {
+                return (
+                    <div className={classes.variantItem}>
+                        <strong>Stock: </strong>{ stockAggregate.quantity }
+                    </div>
+                )
+            }
+        }
+        return ''
+    }
+
+    const ProductVariant = () => {
+        if (getProductVariants(detail).length > 0) {
+            const variants = getProductVariants(detail)
+            return (
+                <div>
+                    { variants.map((v, i) => {
+                        return (
+                            <div key={`variant-${v.id}-${i}`} className={classes.variantContainer}>
+                                { LabelAndText(v, 'model') }
+                                { LabelAndText(v, 'sku') }
+                                { LabelAndText(v.option, 'name') }
+                                { LabelAndText(v.option_value, 'value') }
+                                { Stock(v.stock) }
+                            </div>
+                        )
+                    })}
+                </div>
+            )
+        }
+        return ''
+    }
+
+    // Render component section
     if (isLoading) {
         return (
             <CircularProgress />
@@ -58,18 +157,23 @@ const ProductDetailPanel = (data) => {
     } else {
         return (
             <div className={classes.root}>
-                {/* <div>{ JSON.stringify(detail) }</div> */}
-                {detail.map((s, index) => {
-                    return (
-                    <div>
-                        <TextField label="Stock" value={s.quantity} variant="outlined" size="small" />
-                        { getTextField(s.option, 'name') }
-                            {/* <TextField label="Option" value={s.option.name} variant="outlined" size="small" /> */}
-                        { getTextField(s.option_value, 'value') }
-                            {/* <TextField label="Option Value" value={s.option_value.value} variant="outlined" size="small" /> */}
-                    </div>
-                    )
-                })}
+                <Grid container className={classes.detailGrid}>
+                    <Grid item xs={12} md={4}>
+                        {/* Picture maybe? */}
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Grid container>
+                            <Grid item container xs={12} className={classes.variantContainer}>
+                                { Department() }
+                                { Category() }
+                                { Brand() }
+                            </Grid>
+                            <Grid item xs={12}>
+                                { ProductVariant() }
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </Grid>
             </div>
         )
     }

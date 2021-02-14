@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import ProductHome from '../../../components/inventarioz/product/ProductHome';
 import HomeLayout from '../../../components/inventarioz/layouts/HomeLayout';
 import StockHome from '../../../components/inventarioz/stock/StockHome';
+import OrderHome from '../../../components/inventarioz/order/OrderHome';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -59,12 +60,16 @@ const Home = (props) => {
             <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                 <Tab label={ 'Products' } {...a11yProps(0)} />
                 <Tab label={ 'Stock' } {...a11yProps(1)} />
+                <Tab label="Orders" {...a11yProps(2)} />
             </Tabs>
             <TabPanel value={value} index={0}>
                 <ProductHome />
             </TabPanel>
             <TabPanel value={value} index={1}>
                 <StockHome />
+            </TabPanel>
+            <TabPanel value={value} index={2}>
+                <OrderHome />
             </TabPanel>
         </HomeLayout>
     );

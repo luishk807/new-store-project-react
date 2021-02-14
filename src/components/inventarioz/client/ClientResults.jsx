@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types'
 import MaterialTable from 'material-table'
 import MaterialTableIcons from '../common/MaterialTableIcons'
-import ProductDetailPanel from './ProductDetailPanel'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
@@ -12,15 +11,11 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ProductResults = ({ data, onResultRowClick }) => {
+const ClientResults = ({ data, onResultRowClick, title }) => {
     const router = useRouter()
     const classes = useStyles()
     const [tableColumns, setTableColumns] = useState([])
     const [tableData, setTableData] = useState([])
-
-    const detailPanel = (rowData) => {
-        return <ProductDetailPanel data={rowData} />
-    }
 
     useEffect(() => {
         let mounted = true
@@ -39,12 +34,11 @@ const ProductResults = ({ data, onResultRowClick }) => {
     }
 
     const onRowClick = (event, rowData) => {
-        // console.log('onRowClick', rowData)
         if (rowData) {
             if (onResultRowClick) { // If function given, will override default behavior of going to page
                 onResultRowClick(rowData)
             } else {
-                router.push(`/inventarioz/product/${rowData.id}`)
+                router.push(`/inventarioz/client/${rowData.id}`)
             }
         }
     }
@@ -54,8 +48,7 @@ const ProductResults = ({ data, onResultRowClick }) => {
             <MaterialTable 
                 icons={MaterialTableIcons}
                 columns={tableColumns} data={tableData}
-                title="Search Results"
-                detailPanel={detailPanel}
+                title={ title }
                 onRowClick={onRowClick}
                 onRowSelected={onRowSelected}
             />
@@ -63,13 +56,15 @@ const ProductResults = ({ data, onResultRowClick }) => {
     )
 }
 
-ProductResults.defaultProps = {
-    data: { columns: [], data: [] }
+ClientResults.defaultProps = {
+    data: { columns: [], data: [] },
+    title: 'Client Search Results'
 }
 
-ProductResults.propTypes = {
+ClientResults.propTypes = {
     data: PropTypes.object,
-    onResultRowClick: PropTypes.func
+    onResultRowClick: PropTypes.func,
+    title: PropTypes.string
 }
 
-export default ProductResults
+export default ClientResults

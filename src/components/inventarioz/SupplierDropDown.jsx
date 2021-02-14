@@ -26,9 +26,10 @@ const SupplierDropDown = ({ t, onChange, selectedValue, readOnly=false }) => {
         }
     }, [suppliers, selectedValue])
 
-    const onSelectChange = (value) => {
+    const onSelectChange = (objectValue, value) => {
+        console.log('onSelectChange', objectValue, value)
         if (onChange) {
-            onChange(value)
+            onChange(objectValue, value)
         }
     }
 

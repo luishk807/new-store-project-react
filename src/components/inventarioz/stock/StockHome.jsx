@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles'
+// import { makeStyles } from '@material-ui/core/styles'
 import {
     Tab
 } from '@material-ui/core'
@@ -11,15 +11,16 @@ import { useState } from 'react'
 import ProductResults from './ProductResults'
 import SearchInput from '../SearchInput'
 import { searchProduct } from '../../../services/inventarioz/product'
+import { convertDataToTableData } from '../../../utils/materialtable'
 
-const useStyles = makeStyles((theme) => {
-    root: {
-        padding: 0
-    }
-})
+// const useStyles = makeStyles((theme) => {
+//     root: {
+//         padding: 0
+//     }
+// })
 
 const StockHome = () => {
-    const classes = useStyles()
+    // const classes = useStyles()
     const [tabValue, setTabValue] = useState("a");
     const [productResults, setProductResults] = useState({ columns: [], data: [] })
 
@@ -38,30 +39,18 @@ const StockHome = () => {
             })
     }
 
-    const convertDataToTableData = (dataArray) => {
-        const columns = []
-        const data = []
-        dataArray.forEach((d, i) => {
-            if (i === 0) { // Only once
-                for (let prop in d) {
-                    columns.push({ title: prop, field: prop })
-                }
-            }
-            data.push({ key: i, ...d})
-        })
-        return { columns: columns, data: data }
-    }
-
     return (
-        <div className={classes.root}>
+        <div>
             <TabContext value={tabValue}>
                 <TabList onChange={handleTabChange} aria-label="Stock tabs">
                     <Tab label="Product Search" value="a" />
                     {/* <Tab label="Something B" value="b" /> */}
                 </TabList>
                 <TabPanel value="a">
+                    <div>
                     <SearchInput onSearchEnterKey={onSearchInputEnterKey} onSearchIconClick={onSearchInputEnterKey} />
                     <ProductResults data={productResults} />
+                    </div>
                 </TabPanel>
                 {/* <TabPanel value="b">
                     <div>SOMETHING</div>

@@ -148,10 +148,10 @@ const ItemFormAdd = ({
     } else {
       let sendArray = [];
       Object.keys(formItems).forEach((index) => {
-        sendArray.push(formItems[index])
+        sendArray.push(Number(formItems[index]))
       })
       
-      const confirm = await addItem(section.url, { id: id, items: sendArray});
+      const confirm = await addItem(section.url, { id: Number(id), items: sendArray.toString()});
       const resp = handleFormResponse(confirm);
       setSnack(resp);
       setTimeout(() => {

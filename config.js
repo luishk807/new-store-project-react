@@ -348,6 +348,8 @@ export const noImageUrl = {
   alt: 'no image',
 }
 
+export const ALLOW_FIELDS = ['saved', 'id', 'items'];
+
 export const config = {
   backEndUrl: process.env.BACKEND_URL,
   apiBaseUrl: process.env.API_BASE_URL

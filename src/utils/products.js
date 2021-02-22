@@ -1,4 +1,4 @@
-import { FORM_SCHEMA } from '../../config';
+import { FORM_SCHEMA, ALLOW_FIELDS } from '../../config';
 
 export const formatForm = (form) => {
   const currentForm = form;
@@ -50,11 +50,11 @@ export const formatFormData = (form) => {
           dropValue = form[i];
         }
         formData.append(i,dropValue)
-      } else if (i == "saved") {
-        formData.append(i, JSON.stringify(form[i]))
       } else {
         formData.append(i,form[i])
       }
+    } else if (ALLOW_FIELDS.includes(i)) {
+      formData.append(i, JSON.stringify(form[i]))
     }
   }
   return formData;

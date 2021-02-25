@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Pluralize from 'react-pluralize'
 import * as T from 'prop-types';
 import { 
   withStyles,

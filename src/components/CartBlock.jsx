@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import Icons from './common/Icons';
 import { connect } from 'react-redux';
-import { formatNumber, getCartTotal } from '../utils';
+import { formatNumber, getCartTotal, getImage } from '../utils';
 import { getImageUrlByType } from '../utils/form';
 import { noImageUrl } from '../../config';
 import TextEllipsis from './common/TextEllipsis';
@@ -157,7 +157,7 @@ const Index = ({
           <Grid container className={classes.itemItemsContainer}>
             {
               products && products.map((product, index) => {
-                const image = product.productImages && product.productImages.length ? <img className={`img-fluid`} src={`${imageUrl}/${product.productImages[0].img_url}`} alt={product.name} /> : <img className={`img-fluid`}  src={`${noImageUrl.img}`} alt={noImageUrl.alt} />
+                const image = getImage(product);
                 return (
                   <Grid item key={index} lg={12} xs={12} className={`borderTopMain ${classes.itemItems}`}>
                     <Grid container className={classes.itemItemsItemsContainer}>
@@ -167,11 +167,11 @@ const Index = ({
                       }
                       </Grid>
                       <Grid item lg={8} xs={8} className={classes.itemItemsContent}>
-                        <p>${product.amount}</p>
-                        <p>{product.name}</p>
-                        <TextEllipsis classes={classes.itemItemsContentDescription} text={product.description} limit={50} />
-                        <p>color:</p>
-                        <p>size:</p>
+                        <p>${product.retailPrice}</p>
+                        <p>{product.productItemProduct.name}</p>
+                        <TextEllipsis classes={classes.itemItemsContentDescription} text={product.productItemProduct.description} limit={50} />
+                        <p>color: {product.productItemColor.name}</p>
+                        <p>size: {product.productItemSize.name}</p>
                       </Grid>
                     </Grid>
                   </Grid>

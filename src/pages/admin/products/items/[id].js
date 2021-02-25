@@ -3,15 +3,17 @@ import * as T from 'prop-types';
 import { 
   withStyles,
   Grid,
-  Button,
   Hidden,
+  Button,
 } from '@material-ui/core';
 import moment from 'moment';
+import { useRouter } from 'next/router';
 
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteProduct, getAdminProducts } from '../../../api/products';
-import Snackbar from '../../../components/common/Snackbar';
-import { getImage } from '../../../utils';
+import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
+import { deleteProductItemByID, getAllProductItemsByProductId } from '../../../../api/productItems';
+import Snackbar from '../../../../components/common/Snackbar';
+import { getImage } from '../../../../utils/';
+import HeaderSub from '../../../../components/product/HeaderSub';
 
 const styles = (theme) => ({
   root: {
@@ -21,6 +23,14 @@ const styles = (theme) => ({
     width: 30,
     height: 30,
     fill: 'black'
+  },
+  noData: {
+    color: 'red',
+    fontSize: '1.5em',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '10px 0px',
   },
   actionBtn: {
     margin: 2,
@@ -67,7 +77,9 @@ const styles = (theme) => ({
 });
 
 const Index = ({classes}) => {
-  const [products, setProducts] = useState([]);
+  const router = useRouter();
+  const [product, setProduct] = useState(null)
+  const [productItems, setProductItems] = useState([]);
   const [showData, setShowData] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -75,81 +87,73 @@ const Index = ({classes}) => {
     text: '',
   });
 
-  const loadProducts = async() => {
-    const getProducts = await getAdminProducts();
-    console.log(getProducts)
-    setProducts(getProducts);
-    setShowData(true);
+  const loadProductItems = async() => {
+    const pid = router.query.id;
+    setProduct(pid);
+    if (pid) {
+      const items = await getAllProductItemsByProductId(pid);
+      console.log(items);
+      setProductItems(items);
+      setShowData(true);
+    }
   };
 
   const delItem = async(id) => {
-    deleteProduct(id).then((data) => {
+    deleteProductItemByID(id).then((data) => {
       setSnack({
         severity: 'success',
         open: true,
-        text: `Product Deleted`,
+        text: `Product Item Deleted`,
       })
-      loadOrders()
+      loadProductItems()
     }).catch((err) => {
       setSnack({
         severity: 'error',
         open: true,
-        text: `ERROR: Product cannot be delete`,
+        text: `ERROR: Product Item cannot be delete`,
       })
     })
   }
 
   useEffect(() => {
-    loadProducts();
+    loadProductItems()
   }, []);
 
   return (
     <AdminLayoutTemplate>
-      <Grid container className={classes.headerContainer}>
-        <Grid item lg={9} className={classes.headerTitle}>
-          <h3>Products</h3>
-        </Grid>
-        <Grid item lg={3} className={classes.headerTitle}>
-          <Button className={`mainButton`} href={`/admin/products/add`}>Add Product</Button>
-        </Grid>
-      </Grid>
+      <HeaderSub id={product} name="items" />
       {
-        showData && (
+        productItems && productItems.length ? (
           <Grid container className={classes.mainContainer}>
             <Hidden smDown>
             <Grid item lg={12} xs={12} className={classes.mainHeader}>
               <Grid container className={classes.itemContainer}>
                 <Grid item lg={1} className={classes.itemIndex}></Grid>
-                <Grid item lg={2} className={classes.itemColumn}>
-                  Name
-                </Grid>
-                <Grid item lg={2} className={classes.itemColumn}>
-                  Categories
+                <Grid item lg={3} className={classes.itemColumn}>
+                  Test
                 </Grid>
                 <Grid item lg={1} className={classes.itemColumn}>
-                  Colors
-                </Grid>
-                <Grid item lg={1} className={classes.itemColumn}>
-                  Sizes
-                </Grid>
-                <Grid item lg={1} className={classes.itemColumn}>
-                  Items
+                  Stock
                 </Grid>
                 <Grid item lg={2} className={classes.itemColumn}>
-                  Brand
+                  Retail Price
                 </Grid>
-                <Grid item lg={1} className={classes.itemColumn}>
+                <Grid item lg={2} className={classes.itemColumn}>
                   Status
                 </Grid>
-                <Grid item lg={1} className={classes.itemAction}>
+                <Grid item lg={1} className={classes.itemColumn}>
+                  Date Created
+                </Grid>
+                <Grid item lg={2} className={classes.itemAction}>
                   Action
                 </Grid>
               </Grid>
             </Grid>
             </Hidden>
             {
-              products.map((product, index) => {
-                const img = getImage(product)
+              productItems.map((item, index) => {
+                const image = getImage(item);
+                console.log("image", image)
                 return (
                   <Grid key={index} item lg={12} xs={12} className={classes.mainItems}>
                     <Grid container className={classes.itemContainer}>
@@ -158,52 +162,57 @@ const Index = ({classes}) => {
                           index + 1
                         }
                       </Grid>
-                      <Grid item lg={2} xs={6} className={classes.itemColumn}>
-                        <a href={`/admin/products/${product.id}`}>
-                        {
-                          product.name
-                        }
-                        </a>
-                      </Grid>
-                      <Grid item lg={2} xs={6} className={classes.itemColumn}>
-                        {
-                          product.categories.name
-                        }
+                      <Grid item lg={3} xs={6} className={classes.itemColumn}>
+                        <Grid container>
+                          <Grid item lg={4} xs={6}>
+                            {
+                              image
+                            }
+                          </Grid>
+                          <Grid item lg={8} xs={6}>
+                            <p>
+                              <a href={`/admin/products/items/edit/${item.id}`}>
+                              {
+                                `Color: ${item.productItemColor ? item.productItemColor.name : '--' }`
+                              }
+                              </a>
+                            </p>
+                            <p>
+                              <a href={`/admin/products/items/edit/${item.id}`}>
+                              {
+                                `Size: ${item.productItemSize ? item.productItemSize.name : '--'}`
+                              }
+                              </a>
+                            </p>
+                          </Grid>
+                        </Grid>
                       </Grid>
                       <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                        <a href={`/admin/products/colors/${product.id}`}>
                         {
-                          product.productColors.length
+                          item.stock
                         }
-                        </a>
-                      </Grid>
-                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                        <a href={`/admin/products/sizes/${product.id}`}>
-                        {
-                          product.productSizes.length
-                        }
-                        </a>
-                      </Grid>
-                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                        <a href={`/admin/products/items/${product.id}`}>
-                        {
-                          product.productProductItems.length
-                        }
-                        </a>
                       </Grid>
                       <Grid item lg={2} xs={6} className={classes.itemColumn}>
                         {
-                          product.productBrand.name
+                          item.retailPrice
+                        }
+                      </Grid>
+                      <Grid item lg={2} xs={6} className={classes.itemColumn}>
+                        {
+                          item.productItemsStatus.name
                         }
                       </Grid>
                       <Grid item lg={1} xs={6} className={classes.itemColumn}>
                         {
-                          product.productStatus.name
+                          moment(item.createdAt).format('YYYY-MM-DD')
                         }
                       </Grid>
                       <Hidden smDown>
-                      <Grid item lg={1} className={classes.itemAction}>
-                        <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => delItem(product.id)}>
+                      <Grid item lg={2} className={classes.itemAction}>
+                        <Button className={`smallMainButton ${classes.actionBtn}`} href={`/admin/products/items/edit/${item.id}`}>
+                          Edit
+                        </Button>
+                        <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => delItem(item.id)}>
                           Delete
                         </Button>
                       </Grid>
@@ -213,6 +222,12 @@ const Index = ({classes}) => {
                 )
               })
             }
+          </Grid>
+        ) : (
+          <Grid container className={classes.mainContainer}>
+            <Grid item lg={12} xs={12} className={classes.noData}>
+              No items found
+            </Grid>
           </Grid>
         )
       }

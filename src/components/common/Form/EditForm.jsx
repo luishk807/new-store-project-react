@@ -31,9 +31,10 @@ const EditForm = ({
   ignoreForm, 
   showTitle, 
   adminSection, 
+  basicParams,
   userSection, 
   hideEntry,
-  children, 
+  children,
   customUrl = null
 }) => {
   const router = useRouter()
@@ -133,7 +134,7 @@ const EditForm = ({
         text: `Unable to Add ${section.name}, ${i} is required`
       })
     } else {
-      const formSubmit = form;
+      const formSubmit = Object.assign({}, form);
       if ('image' in formSubmit) {
         formSubmit['saved'] = imageDelete;
         delete formSubmit.image.saved
@@ -213,7 +214,9 @@ const EditForm = ({
     } else {
       return;
     }
-    const mainOptions = await loadMainOptions(admin);
+    
+    const mainOptions = basicParams && Object.keys(basicParams).length ? await loadMainOptions(admin, basicParams) : await loadMainOptions(admin);
+
     if (id) {
       Api.get(`${sect.url}`,{
         id: id
@@ -286,6 +289,7 @@ const EditForm = ({
         id={id}
         isAdmin={isAdmin}
         hideEntry={hideEntry}
+        basicParams={basicParams}
         onChange={formOnChange} 
         imageBoxOnSave={handleImageBoxSave}
         imageBoxAddMore={addMoreImageBox}
@@ -309,6 +313,7 @@ EditForm.protoTypes = {
   customUrl: T.string,
   adminSection: T.object, 
   userSection: T.object, 
+  basicParams: T.object,
   showTitle: T.bool,
   entryForm: T.object,
   ignoreForm: T.array,

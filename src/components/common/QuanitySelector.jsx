@@ -19,7 +19,6 @@ const styles = (theme) => ({
   productSelectDrop: {
     minWidth: 120,
     padding: '2px 0px',
-    margin: theme.spacing(1),
     [theme.breakpoints.down('sm')]: {
       margin: 'auto',
       width: '100%',

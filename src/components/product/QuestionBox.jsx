@@ -23,7 +23,7 @@ import AskProductQuestionsForm from '../common/AskProductQuestionsForm';
 
 const styles = (theme) => ({
   root: {
-    padding:10
+    padding:'10px 0px'
   },
   qaItem: {
     display: 'flex',

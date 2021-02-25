@@ -27,7 +27,7 @@ const Add = ({classes}) => {
     category: null,
     brand: null,
     model: null,
-    code: null,
+    sku: null,
     description: null,
     vendor: null,
     image: {

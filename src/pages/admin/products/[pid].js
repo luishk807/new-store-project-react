@@ -30,7 +30,7 @@ const Edit = ({classes}) => {
     category: null,
     brand: null,
     model: null,
-    code: null,
+    sku: null,
     description: null,
     vendor: null,
     image: {
@@ -38,8 +38,8 @@ const Edit = ({classes}) => {
       open: false,
     }
   }
-  
-  const ignoreEntry=['image']
+
+  const ignoreEntry=['image'];
 
   return (
     <AdminLayoutTemplate>

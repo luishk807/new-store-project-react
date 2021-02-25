@@ -26,6 +26,7 @@ import { noImageUrl } from '../../config';
 import QuanitySelector from '../components/common/QuanitySelector';
 import { CartSample } from '../constants/samples/CartSample';
 import { makeStyles } from '@material-ui/core/styles';
+import { getImage } from '../utils';
 import { getImageUrlByType } from '../utils/form';
 import TextEllipsis from '../components/common/TextEllipsis';
 import CartBox from '../components/CartBlock';
@@ -103,9 +104,11 @@ const styles = makeStyles((theme) => ({
   cartDropDown: {
     fontSize: '1em',
   },
-
+  cartDropRoot: {
+    padding: '10px 0px',
+  },
   cardDescTitle: {
-    fontSize: '2em',
+    fontSize: '1.2em',
     lineHeight: 1.5,
     textTransform: 'capitalize',
     '& a': {
@@ -167,11 +170,8 @@ const Cart = ({cart, updateCart, deleteCart}) => {
               {
                 Object.keys(cart).map((key, index) => {
                   const item = cart[key];
-                  const imgUrl = item.productImages && item.productImages.length ? (
-                    <img src={`${imageUrl}/${item.productImages[0].img_url}`} className="img-fluid" />
-                  ) : (
-                    <img src={`${noImageUrl.img}`} className="img-fluid" />
-                  );
+                  const imgUrl = getImage(item)
+
                   return (
                     <Grid key={index} item lg={12} xs={12}>
                       <Grid container>
@@ -189,28 +189,32 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                           <Grid container>
                             <Grid item lg={12} xs={12}>
                               <Typography align="left" component="h4" className={classes.cardDescTitle}>
-                                <Link href={`/product/${item.id}`}>{item.name}</Link>
+                                <Link href={`/product/${item.productItemProduct.id}`}>{item.productItemProduct.name}</Link>
                               </Typography>
                             </Grid>
                             <Grid item lg={12} xs={12}>
-                              <TextEllipsis classes={classes.cardDescDescription} text={item.description} limit={100} />
+                              <TextEllipsis classes={classes.cardDescDescription} text={item.productItemProduct.description} limit={100} />
+                            </Grid>
+                            <Grid item lg={12} xs={12}>
+                              <p>Color: {item.productItemColor.name}</p>
+                              <p>Size: {item.productItemSize.name}</p>
                             </Grid>
                             <Hidden lgDown>
                               <Grid item lg={12} xs={12}>
                                 <Typography align="left" variant="body1" component="p">
-                                  {formatNumber(item.amount)}
+                                  {formatNumber(item.retailPrice)}
                                 </Typography>
                               </Grid>
                             </Hidden>
                           </Grid>
                         </Grid>
                         <Grid item lg={2} xs={6} className={classes.cartSelectCont}>
-                          <QuanitySelector data={item.quantity} classes={{ productSelectDrop: classes.cartDropDown}} onChange={handleSelectChange} title="quantity" id={`select-${key}`} />
+                          <QuanitySelector data={item.quantity} classes={{ root: classes.cartDropRoot, productSelectDrop: classes.cartDropDown}} onChange={handleSelectChange} title="quantity" id={`select-${key}`} />
                         </Grid>
                         <Hidden xsDown>
                           <Grid item lg={2} xs={12} >
                             <Typography align="right" className={classes.cartItemTotal} variant="body1" component="p">
-                              ${formatNumber(item.amount * parseInt(item.quantity))}
+                              ${formatNumber(item.retailPrice * parseInt(item.quantity))}
                             </Typography>
                           </Grid>
                         </Hidden>

@@ -69,6 +69,7 @@ import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import PrintIcon from '@material-ui/icons/Print';
 import EditIcon from '@material-ui/icons/Edit';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 
 import Typography from './Typography';
 
@@ -85,6 +86,9 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'addCircle':
         return <AddCircleIcon className={classes.icon}/>
+      break;
+      case 'backArrow':
+        return <KeyboardBackspaceIcon className={classes.icon}/>
       break;
       case 'edit':
         return <EditIcon className={classes.icon}/>

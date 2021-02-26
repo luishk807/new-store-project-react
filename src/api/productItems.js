@@ -13,6 +13,17 @@ export const getProductItemById = async(id) => {
   return Api.get(`product-items/${id}`);
 }
 
+export const getProductItemByIds = async(ids) => {
+  if (!ids) {
+    return;
+  }
+  const data = {
+    ids: ids
+  }
+  
+  return Api.get(`product-items`, data);
+}
+
 export const saveProductItem = async(data, id) => {
   if (!Object.keys(data).length) {
     return;

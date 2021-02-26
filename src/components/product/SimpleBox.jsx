@@ -7,10 +7,10 @@ import {
 } from '@material-ui/core';
 
 import { formatNumber } from '../../utils';
-import { getImageUrlByType } from '../../utils/form';
+import { getImage } from '../../utils';
 import { noImageUrl } from '../../../config';
 import { getProductsByOrderId } from '../../api/orderProducts';
-import { getProductByIds } from '../../api/products';
+import { getProductItemByIds } from '../../api/productItems';
 
 const styles = (theme) => ({
   root: {
@@ -58,16 +58,15 @@ const styles = (theme) => ({
 const SimpleBox = React.memo(({ classes, data }) => {
   const [products, setProducts] = useState([]);
   const [showData, setShowData] = useState(false);
-  const imageUrl = getImageUrlByType('product');
 
   const loadProducts = async() => {
-    const ids = data.map((item) => item.productId);
-    const getProduct = await getProductByIds(ids);
+    const ids = data.map((item) => item.productItemId);
+    const getProduct = await getProductItemByIds(ids);
     const newProducts = data;
 
     const refactorData = newProducts.map(item => {
       const getImage = getProduct.filter(prod => {
-        return prod.id === item.productId
+        return prod.id === item.productItemId
       })
       const data = {
         ...item,
@@ -88,11 +87,14 @@ const SimpleBox = React.memo(({ classes, data }) => {
       <Grid container className={classes.container}>
       {
         products.map((item, indx) => {
+          const img = getImage(item)
           return (
             <Grid key={indx} item className={classes.items}>
               <Grid container className={classes.itemsContainer}>
                 <Grid item lg={2} xs={6} className={classes.itemProductImage}>
-                  <img className='img-fluid' src={`${item.productImages && item.productImages.length ? `${imageUrl}/${item.productImages[0].img_url} `: noImageUrl.img}`} alt={`${data.name}`} />
+                  {
+                    img
+                  }
                 </Grid>
                 <Grid item lg={10} xs={6} className={classes.itemProductDescription}>
                   <p className={classes.itemName}><a href={`/product/${item.productId}`}>{item.name}</a></p>

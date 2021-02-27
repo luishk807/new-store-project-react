@@ -231,13 +231,13 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         open: true,
         text: 'Please choose quantity',
       })
-    } if (!selectedColor) {
+    } else if (!selectedColor) {
       setSnack({
         severity: 'error',
         open: true,
         text: 'Please choose color',
       })
-    } if (!selectedSize) {
+    } else if (!selectedSize) {
       setSnack({
         severity: 'error',
         open: true,

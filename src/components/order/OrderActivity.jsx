@@ -4,7 +4,9 @@ import {
   withStyles,
   Grid,
   Button,
+  Hidden,
 } from '@material-ui/core';
+import moment from 'moment';
 import { getOrderActivitiesByOrderid } from '../../api/ordersActivities';
 
 const styles = (theme) => ({
@@ -67,13 +69,22 @@ const OrderActivity = ({classes, order}) => {
                     {item.orderActivityStatuses.name}
                 </Grid>
                 <Grid item lg={3} xs={3}>
-                    {item.createdAt}
+                    {moment(item.createdAt).format('MMMM D, YYYY HH:mm A')}
                 </Grid>
-                <Grid item lg={3} xs={3}>
-                  {
-                    item.orderActivityUser ? `${item.orderActivityUser.first_name}(${userRole})` : 'Sytem'
-                  }
-                </Grid>
+                <Hidden smDown>
+                  <Grid item lg={3} xs={3}>
+                    {
+                      item.orderActivityUser ? `${item.orderActivityUser.first_name}(${userRole})` : 'Sytem'
+                    }
+                  </Grid>
+                </Hidden>
+                <Hidden smUp>
+                  <Grid item lg={3} xs={3}>
+                    {
+                      item.orderActivityUser ? `${item.orderActivityUser.first_name}` : 'Sytem'
+                    }
+                  </Grid>
+                </Hidden>
               </Grid>
             </Grid>
           )

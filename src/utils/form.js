@@ -31,15 +31,6 @@ export const getImageUrlByType = (type) => {
 
 export const handleFormResponse = (resp) => {
   const {status, message} = resp && resp.data ? resp.data : resp;
-
-  console.log(resp, 'msg')
-  if (!status) {
-    return {
-      severity: 'success',
-      open: false,
-      text: '',
-    }
-  }
   if (status) {
     return {
       severity: 'success',

@@ -34,7 +34,6 @@ const styles = (theme) => ({
 });
 
 const OrderItem = ({classes, order, isAdmin = false}) => {
-
   return (
     <Grid container className={classes.container}>
       <Grid item lg={9} xs={9} className={classes.itemProduct}>

@@ -58,7 +58,7 @@ const styles = (theme) => ({
 const SimpleBox = React.memo(({ classes, data }) => {
   const [products, setProducts] = useState([]);
   const [showData, setShowData] = useState(false);
-
+  
   const loadProducts = async() => {
     const ids = data.map((item) => item.productItemId);
     const getProduct = await getProductItemByIds(ids);

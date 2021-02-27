@@ -19,6 +19,7 @@ import OrderDetail from '../../../components/order/OrderDetail';
 import ProgressBar from '../../../components/common/ProgressBar';
 import { loadMainOptions, validateForm, handleFormResponse } from '../../../utils/form';
 import { getOrderById, saveOrderStatus } from '../../../api/orders';
+import OrderActivity from '../../../components/order/OrderActivity';
 
 const styles = (theme) => ({
   root: {
@@ -49,6 +50,9 @@ const styles = (theme) => ({
   mainContainer: {
     justifyContent: 'space-between',
     padding: 10,
+  },
+  orderActivity: {
+    margin: '20px 0px',
   }
 });
 
@@ -153,6 +157,9 @@ const Edit = ({classes}) => {
               </Grid>
               <Grid item lg={12} xs={12}>
                 <OrderDetail classes={{ orderContainer: classes.orderDetailContainer }} order={order} isAdmin={true} />
+              </Grid>
+              <Grid item lg={12} xs={12}>
+                <OrderActivity classes={{root: classes.orderActivity}} order={order} />
               </Grid>
               <Grid item lg={12} xs={12} className={classes.formInput}>
                   <FormControl fullWidth variant="outlined">

@@ -401,6 +401,8 @@ export const noImageUrl = {
   alt: 'no image',
 }
 
+export const statusAllowedCancellation = [1, 2];
+
 export const ALLOW_FIELDS = ['saved', 'id', 'items'];
 
 export const config = {

@@ -9,7 +9,7 @@ import moment from 'moment';
 
 import Icons from '../common/Icons';
 import OrderItem from './OrderItem';
-import { canceled_status } from '../../../config';
+import { canceled_status, statusAllowedCancellation } from '../../../config';
 import { formatNumber } from '../../utils';
 
 const styles = (theme) => ({
@@ -109,6 +109,11 @@ const styles = (theme) => ({
   itemHeaderCancel: {
     textAlign: 'right',
   },
+  itemHeaderCannotCancel: {
+    fontWeight: 'bold',
+    textAlign: 'right',
+    color: 'green',
+  },
   icon: {
     width: 24,
     height: 24,
@@ -122,12 +127,11 @@ const styles = (theme) => ({
     border: '1px solid red',
     padding: '15px 0px',
     margin: '15px 0px',
-  }
+  },
 });
 
 const View = ({classes, order, isAdmin = false}) => {
   const [isCancelled, setIsCancelled] = useState(false);
-
   useEffect(() => {
     const status = parseInt(order.orderStatuses.id);
     if (canceled_status.indexOf(status) > -1) {
@@ -160,11 +164,15 @@ const View = ({classes, order, isAdmin = false}) => {
                       <p className={classes.orderHeaderSubTitle}>Status</p>
                       <p>{order.orderStatuses.name}</p>
                     </Grid>
-                    <Grid item lg={2} xs={6} className={classes.itemHeaderCancel}>
-                      <Button href={`cancel/${order.id}`} className={`mainButton`}>
-                          Cancel Order
-                      </Button>
-                    </Grid>
+                    {
+                      statusAllowedCancellation.includes(Number(order.orderStatus)) && (
+                        <Grid item lg={2} xs={6} className={classes.itemHeaderCancel}>
+                          <Button href={`cancel/${order.id}`} className={`mainButton`}>
+                              Cancel Order
+                          </Button>
+                        </Grid>
+                      )
+                    }
                   </>
                 )
               }

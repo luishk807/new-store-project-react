@@ -97,17 +97,21 @@ const CancelOrder = ({classes, userInfo, id}) => {
       id: order,
       cancel: cancelReason.orderCancelReason
     }
-    const confimg = await cancelOrder(submit);
-    const resp = handleFormResponse(confirm);
-    setSnack(resp);
-    setSnack({
-      severity: 'success',
-      open: true,
-      text: `Order cancel request send`,
-    })
-    setTimeout(() => {
-      handleCancel() 
-    }, 1000);
+    try {
+      const confim = await cancelOrder(submit);
+      setSnack({
+        severity: 'success',
+        open: true,
+        text: `Order cancel request send`,
+      })
+      setTimeout(() => {
+        handleCancel() 
+      }, 1000);
+    } catch(err) {
+      const confirm = err.response.data;
+      const resp = handleFormResponse(confirm);
+      setSnack(resp)
+    }
   }
 
   useEffect(() => {

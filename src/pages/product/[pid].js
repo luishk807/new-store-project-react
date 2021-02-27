@@ -24,6 +24,7 @@ import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
 import { getItemById } from '../../api';
 import { getProductItemById } from '../../api/productItems';
+import ProgressBar from '../../components/common/ProgressBar';
 import WishListIcon from '../../components/common/WishListIcon';
 import ProductQuestionBox from '../../components/product/QuestionBox';
 import RateBox from '../../components/rate/Simple';
@@ -209,16 +210,18 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     const imageUrl = getImageUrlByType('product');
     let imgs = [];
 
-    if (data.productImages.length) {
-        imgs = data.productImages.map((img) => {
-          return {
-            original: `${imageUrl}/${img.img_url}`,
-            thumbnail: `${imageUrl}/${img.img_url}`,
-          }
-      });
-    }
+    if (data && data.productImages && data.productImages.length) {
+      if (data.productImages.length) {
+          imgs = data.productImages.map((img) => {
+            return {
+              original: `${imageUrl}/${img.img_url}`,
+              thumbnail: `${imageUrl}/${img.img_url}`,
+            }
+        });
+      }
 
-    setImages(imgs);
+      setImages(imgs);
+    }
   }
 
   const onAddCart = async() => {
@@ -249,9 +252,22 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     if (e) {
       e.preventDefault();
     }
-    setSelectedColor(color)
+    setSelectedColor(color);
     setSelectedSize(null);
     setSelectedProductItem({})
+  }
+
+  const handleDefaultSize = () => {
+    if (productInfo && selectedColor) {
+      const items = productInfo.productProductItems;
+      if (items && items.length) {
+        const getItem = items.filter(item => item.productColor === selectedColor.id)
+        if (getItem && getItem.length) {
+          const getSize = productInfo.productSizes.filter(size => size.id === getItem[0].productSize)
+          handleSizeChange(null, getSize[0])
+        }
+      }
+    }
   }
 
   const handleSizeChange = async(e, size) => {
@@ -311,11 +327,17 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     createSizeBlock(selectedColor);
   }, [selectedColor, selectedSize]);
 
+  useEffect(() => {
+    loadImages(selectedProductItem)
+  }, [selectedProductItem]);
+
+  useEffect(() => {
+    handleDefaultSize()
+  }, [productInfo, selectedColor]);
 
   useEffect(()=>{
     const loadProductInfo = async() => {
       const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
-      loadImages(getProductInfo)
       await setProductInfo(getProductInfo);
       if (getProductInfo.productColors && getProductInfo.productColors.length) {
         setColors(getProductInfo.productColors);
@@ -339,7 +361,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                       images.length ? (
                         <ImageGallery items={images} />
                       ) : (
-                        <img className={`img-fluid`} src={noImageUrl.img} alt={noImageUrl.alt} />
+                        <ProgressBar />
                       )
                     }
                   </Grid>

@@ -104,6 +104,13 @@ export const ADMIN_SECTIONS = {
     url: 'product-colors',
     option: 'color'
   },
+  'productDiscount': {
+    name: 'Product Discount',
+    names: 'Product Discounts',
+    key: 'productDiscount',
+    url: 'product-discounts',
+    option: 'productDiscount'
+  },
   'rate': {
     name: 'Rate',
     names: 'rates',

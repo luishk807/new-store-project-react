@@ -20,6 +20,35 @@ export const formatForm = (form) => {
   return currentForm;
 }
 
+export const checkDiscountPrice = async(product, selectedItem, quantity) => {
+  const finalPrice = {};
+  const currProduct = Object.assign({}, selectedItem);
+
+  if (!product || !selectedItem || !quantity) {
+    return;
+  }
+  const originalItem = product.productProductItems.filter(item => item.id === selectedItem.id)[0];
+
+  currProduct['quantity'] = quantity;
+  currProduct['retailPrice'] = originalItem.retailPrice;
+  currProduct['discount'] = null;
+  
+  if (product.productProductDiscount && product.productProductDiscount.length) {
+    let found = null;
+    product.productProductDiscount.forEach((deal) => {
+      if (parseInt(quantity) >= parseInt(deal.minQuantity)) {
+        found = deal;
+      }
+      if (found) {
+          currProduct['quantity'] = quantity;
+          currProduct['retailPrice'] = found.price;
+          currProduct['discount'] = found;
+      }
+    })
+  }
+  return currProduct;
+}
+
 export const formatFormData = (form) => {
   const currentForm = form;
   const formData = new FormData();

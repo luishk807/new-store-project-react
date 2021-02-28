@@ -44,7 +44,6 @@ const View = ({classes, userInfo}) => {
   const getOrders = async() => {
     const id = router.query.id
     const gdata = await getOrderById(id);
-    console.log(gdata)
     setOrder(gdata);
     setShowData(true);
   }

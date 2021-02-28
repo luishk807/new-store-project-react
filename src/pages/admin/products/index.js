@@ -135,7 +135,10 @@ const Index = ({classes}) => {
                 <Grid item lg={1} className={classes.itemColumn}>
                   Items
                 </Grid>
-                <Grid item lg={2} className={classes.itemColumn}>
+                <Grid item lg={1} className={classes.itemColumn}>
+                  Deals
+                </Grid>
+                <Grid item lg={1} className={classes.itemColumn}>
                   Brand
                 </Grid>
                 <Grid item lg={1} className={classes.itemColumn}>
@@ -191,7 +194,14 @@ const Index = ({classes}) => {
                         }
                         </a>
                       </Grid>
-                      <Grid item lg={2} xs={6} className={classes.itemColumn}>
+                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
+                        <a href={`/admin/products/discounts/${product.id}`}>
+                        {
+                          product.productProductDiscount.length
+                        }
+                        </a>
+                      </Grid>
+                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
                         {
                           product.productBrand.name
                         }

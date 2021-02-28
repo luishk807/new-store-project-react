@@ -394,6 +394,26 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.drop,
     label: 'Size',
   },
+  price: {
+    type: FORM_TYPE.number,
+    label: 'Price',
+  },
+  minQuantity: {
+    type: FORM_TYPE.number,
+    label: 'Minimun quantity',
+  },
+  percentage: {
+    type: FORM_TYPE.number,
+    label: 'Percentage',
+  },
+  startDate: {
+    type: FORM_TYPE.date,
+    label: 'Start Date',
+  },
+  endDate: {
+    type: FORM_TYPE.date,
+    label: 'End Date',
+  },
 }
 
 export const noImageUrl = {

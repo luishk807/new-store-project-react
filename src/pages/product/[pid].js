@@ -15,6 +15,8 @@ import {
 } from '@material-ui/core';
 
 import { getImageUrlByType } from '../../utils/form';
+import { checkDiscountPrice } from '../../utils/products';
+import { formatNumber } from '../../utils';
 import { noImageUrl } from '../../../config';
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
@@ -190,6 +192,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeBlocks, setSizeBlock] = useState(null);
+  const [dealPrice, setDealPrice] = useState(0);
+  const [originalRetailPrice, setOriginalRetailPrice] = useState(0);
   const [selectedProductItem, setSelectedProductItem] = useState({});
   const [colors, setColors] = useState(null)
   const [snack, setSnack] = useState({
@@ -198,12 +202,10 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     text: '',
   });
 
-  const handQuantitySelect = (resp) => {
-    const index = resp.id.split("-")[1]
-    setSelectedProductItem({
-      ...selectedProductItem,
-      'quantity': resp.value
-    })
+  const handQuantitySelect = async(resp) => {
+    const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem,resp.value);
+    setDealPrice(getDiscountItem.retailPrice);
+    setSelectedProductItem(getDiscountItem);
   };
 
   const loadImages = (data) => {
@@ -283,7 +285,10 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       const getItem = productInfo.productProductItems.filter(item => item.productColorId === selectedColor.id && item.productSizeId === size.id)
       if (getItem && getItem.length) {
         const searchItem = await getProductItemById(getItem[0].id);
+        const getTotal = formatNumber(searchItem.retailPrice);
         setSelectedProductItem(searchItem);
+        setOriginalRetailPrice(getTotal);
+        setDealPrice(getTotal)
       }
     }
   }
@@ -374,7 +379,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                    <Typography className={classes.productName} variant="h4" component="h3">{productInfo.name}</Typography>
                   </Grid>
                   <Grid item lg={12} xs={12} className={classes.productPriceContainer}>
-                    <Typography  className={classes.productPrice} variant="h1" component="h2">${productInfo.amount}</Typography>
+                    <Typography  className={classes.productPrice} variant="h1" component="h2">${dealPrice}</Typography>
                   </Grid>
                   {
                     colors && (
@@ -414,6 +419,17 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>
                     <WishListIcon product={productInfo.id} />
+                  </Grid>
+                  <Grid item lg={12} xs={12}>
+                    <ul>
+                        {
+                          productInfo.productProductDiscount.map((item, index) => {
+                            return (
+                              <li key={index}>{item.name}</li>
+                            )
+                          })
+                        }
+                    </ul>
                   </Grid>
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography align="left" variant="h5" component="h5" className={classes.productStock}>{productInfo.stock ? 'Avalialable' : 'Out of Stock'}</Typography>

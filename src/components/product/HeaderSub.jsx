@@ -59,7 +59,7 @@ const HeaderSub = ({ classes, id, name }) => {
 
 HeaderSub.propTypes = {
   classes: T.object,
-  id: T.number,
+  id: T.string,
   name: T.string,
 }
 

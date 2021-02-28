@@ -17,16 +17,17 @@ import {
   CardActions,
   withWidth,
 } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import NumberFormat from 'react-number-format';
 
-import { formatNumber, getCartTotal } from '../utils';
+import { noImageUrl } from '../../config';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
-import { noImageUrl } from '../../config';
+import { getProductById } from '../api/products';
 import QuanitySelector from '../components/common/QuanitySelector';
 import { CartSample } from '../constants/samples/CartSample';
-import { makeStyles } from '@material-ui/core/styles';
-import { getImage } from '../utils';
+import { formatNumber, getCartTotal, getImage } from '../utils';
+import { checkDiscountPrice } from '../utils/products';
 import { getImageUrlByType } from '../utils/form';
 import TextEllipsis from '../components/common/TextEllipsis';
 import CartBox from '../components/CartBlock';
@@ -123,6 +124,11 @@ const styles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       padding: 0,
     }
+  },
+  deleteBtn: {
+    [theme.breakpoints.down('sm')]: {
+      height: '57px !important',
+    }
   }
 }));
 
@@ -140,7 +146,8 @@ const Cart = ({cart, updateCart, deleteCart}) => {
 
   const handleSelectChange = async(resp) => {
     const index = resp.id.split("-")[1]
-    cart[index]['quantity'] = resp.value;
+    const mainProduct = await getProductById(cart[index].productId);
+    cart[index] = await checkDiscountPrice(mainProduct, cart[index], resp.value);
     await updateCart(cart[index])
   }
 
@@ -196,9 +203,17 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                               <TextEllipsis classes={classes.cardDescDescription} text={item.productItemProduct.description} limit={100} />
                             </Grid>
                             <Grid item lg={12} xs={12}>
+                              <p>Price: {item.retailPrice}</p>
                               <p>Color: {item.productItemColor.name}</p>
                               <p>Size: {item.productItemSize.name}</p>
                             </Grid>
+                            {
+                              item.discount && (
+                                <Grid item lg={12} xs={12}>
+                                  Discount Applied: { item.discount.name }
+                                </Grid>
+                              )
+                            }
                             <Hidden lgDown>
                               <Grid item lg={12} xs={12}>
                                 <Typography align="left" variant="body1" component="p">
@@ -219,7 +234,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                           </Grid>
                         </Hidden>
                         <Grid item lg={12} align="right" xs={6} className={classes.cartActionCont}>
-                          <Button onClick={ () => handleDelete(index)} className={`smallMainButton my-2`}>Delete</Button>
+                          <Button onClick={ () => handleDelete(index)} className={`${classes.deleteBtn} smallMainButton my-2`}>Delete</Button>
                         </Grid>
                       </Grid>
                     </Grid>

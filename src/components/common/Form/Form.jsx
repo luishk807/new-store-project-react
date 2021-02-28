@@ -404,7 +404,7 @@ const Form = ({
         break
       }
       case "date": {
-        const initialDate =fields[field] ? fields[field] : moment(new Date()).subtract(1, 'day').format('YYYY-MM-DD');
+        const initialDate =fields[field] ? moment(fields[field]).format('YYYY-MM-DTHH:mm:ss') : moment(new Date()).subtract(1, 'day').format('YYYY-MM-DD');
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
             <FormControl fullWidth variant="outlined">
@@ -413,9 +413,12 @@ const Form = ({
                 helperText={errors[field].text} 
                 variant="outlined" 
                 name={field} 
-                type="date"
+                type="datetime-local"
                 defaultValue={initialDate}
                 onChange={formOnChange}
+                InputLabelProps={{
+                  shrink: true,
+                }}
                 label={removeCharacter(FORM_SCHEMA[field].label)} 
               />
             </FormControl>

@@ -62,7 +62,6 @@ const QuanitySelector = ({classes, data, title, id, onChange}) => {
             id: 'dropdown-label'
           }}
         >
-          <option aria-label="None" value="" />
           { items && items }
         </Select>
 

@@ -9,24 +9,12 @@ import {
 import { formatNumber } from '../../utils';
 import { getImage } from '../../utils';
 import { noImageUrl } from '../../../config';
-import { getProductsByOrderId } from '../../api/orderProducts';
+import { getProductDiscountsByProductIds } from '../../api/productDiscounts';
 import { getProductItemByIds } from '../../api/productItems';
 
 const styles = (theme) => ({
   root: {
     width: '100%',
-  },
-  container: {
-
-  },
-  items: {
-
-  },
-  itemsContainer: {
-
-  },
-  itemProductContainer: {
-
   },
   itemProductImage: {
     padding: 10,
@@ -44,36 +32,40 @@ const styles = (theme) => ({
     fontSize: '1em',
     fontWeight: 'bold',
   },
-  itemQuantity: {
-
-  },
-  itemUnitTotal: {
-
-  },
-  itemTotal: {
-
-  },
 });
 
 const SimpleBox = React.memo(({ classes, data }) => {
   const [products, setProducts] = useState([]);
   const [showData, setShowData] = useState(false);
-  
   const loadProducts = async() => {
-    const ids = data.map((item) => item.productItemId);
-    const getProduct = await getProductItemByIds(ids);
+    const itemIds = data.map((item) => item.productItemId);
+    const productDiscounts = data.map((item) => item.productDiscountId).filter(item => item);
+    const getProduct = await getProductItemByIds(itemIds);
+    let getDiscounts = []
+    if (productDiscounts.length) {
+      getDiscounts = await getProductDiscountsByProductIds(productDiscounts)
+    }
     const newProducts = data;
 
     const refactorData = newProducts.map(item => {
       const getImage = getProduct.filter(prod => {
         return prod.id === item.productItemId
       })
+
+      let getDiscount = null;
+      if (getDiscounts.length) {
+        getDiscount = getDiscounts.filter(disc => {
+          return disc.id == item.productDiscountId
+        })
+      }
       const data = {
         ...item,
-        'productImages': getImage[0].productImages
+        'productImages': getImage[0].productImages,
+        'productDiscount': getDiscount && getDiscount[0]
       }
       return data
     })
+
     setProducts(refactorData);
     setShowData(true);
   }
@@ -84,23 +76,28 @@ const SimpleBox = React.memo(({ classes, data }) => {
 
   return showData && (
     <div className={classes.root}>
-      <Grid container className={classes.container}>
+      <Grid container>
       {
         products.map((item, indx) => {
           const img = getImage(item)
           return (
-            <Grid key={indx} item className={classes.items}>
-              <Grid container className={classes.itemsContainer}>
+            <Grid key={indx} item>
+              <Grid container>
                 <Grid item lg={2} xs={6} className={classes.itemProductImage}>
                   {
                     img
                   }
                 </Grid>
                 <Grid item lg={10} xs={6} className={classes.itemProductDescription}>
-                  <p className={classes.itemName}><a href={`/product/${item.productId}`}>{item.name}</a></p>
-                  <p className={classes.itemQuantity}>Quantity: <b>{item.quantity}</b></p>
-                  <p className={classes.itemUnitTotal}>Unit Total: <b>${formatNumber(item.unit_total)}</b></p>
-                  <p className={classes.itemTotal}>Total: <b>${formatNumber(item.total)}</b></p>
+                  <p className={classes.itemName}><a href={`/product/${item.product}`}>{item.name}</a></p>
+                  <p>Quantity: <b>{item.quantity}</b></p>
+                  <p>Unit Total: <b>${formatNumber(item.unit_total)}</b></p>
+                  <p>Total: <b>${formatNumber(item.total)}</b></p>
+                  {
+                    item.productDiscount && (
+                      <p className={classes.itemTotal}>Discount: <b>{item.productDiscount.name}</b></p>
+                    )
+                  }
                 </Grid>
               </Grid>
             </Grid>

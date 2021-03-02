@@ -423,7 +423,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   <Grid item lg={12} xs={12}>
                     <ul>
                         {
-                          productInfo.productProductDiscount.map((item, index) => {
+                          productInfo.productProductDiscount && productInfo.productProductDiscount.map((item, index) => {
                             return (
                               <li key={index}>{item.name}</li>
                             )

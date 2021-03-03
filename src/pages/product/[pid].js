@@ -11,7 +11,8 @@ import {
   Button,
   Hidden,
   Divider,
-  Typography
+  Typography,
+  ButtonGroup
 } from '@material-ui/core';
 
 import { getImageUrlByType } from '../../utils/form';
@@ -21,9 +22,10 @@ import { noImageUrl } from '../../../config';
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../../constants/samples/ProductSample';
-import Select from '../../components/common/QuanitySelector';
+import Select from '../../components/common/QuantitySelector';
 import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
+import QuantitySelectorB from '../../components/common/QuantitySelectorB';
 import { getItemById } from '../../api';
 import { getProductItemById } from '../../api/productItems';
 import ProgressBar from '../../components/common/ProgressBar';
@@ -32,6 +34,7 @@ import ProductQuestionBox from '../../components/product/QuestionBox';
 import RateBox from '../../components/rate/Simple';
 import RateFullView from '../../components/rate/FullView';
 import VendorBox from '../../components/vendorBox';
+import { getDisplayName } from 'next/dist/next-server/lib/utils';
 
 const styles = (theme) => ({
   root: {
@@ -179,21 +182,23 @@ const styles = (theme) => ({
     margin: '10px 0px',
   },
   descriptionTitle: {
+    fontSize: '1.2em',
     margin: '10px 0px',
-  }
+  },
 });
 
 const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const router = useRouter()
   const id = router.query.pid;
+  const [forceRefresh, setForceRefresh] = useState(false);
   const [images, setImages] = useState({});
   const [productInfo, setProductInfo] = useState({});
   const [showData, setShowData] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
+  const [showDiscount, setShowDiscount] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeBlocks, setSizeBlock] = useState(null);
   const [dealPrice, setDealPrice] = useState(0);
-  const [originalRetailPrice, setOriginalRetailPrice] = useState(0);
   const [selectedProductItem, setSelectedProductItem] = useState({});
   const [colors, setColors] = useState(null)
   const [snack, setSnack] = useState({
@@ -203,7 +208,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   });
 
   const handQuantitySelect = async(resp) => {
-    const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem,resp.value);
+    const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem, resp.value);
     setDealPrice(getDiscountItem.retailPrice);
     setSelectedProductItem(getDiscountItem);
   };
@@ -212,14 +217,27 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     const imageUrl = getImageUrlByType('product');
     let imgs = [];
 
-    if (data && data.productImages && data.productImages.length) {
+    if (data && data.productImages) {
       if (data.productImages.length) {
-          imgs = data.productImages.map((img) => {
-            return {
-              original: `${imageUrl}/${img.img_url}`,
-              thumbnail: `${imageUrl}/${img.img_url}`,
-            }
+        imgs = data.productImages.map((img) => {
+          return {
+            original: `${imageUrl}/${img.img_url}`,
+            thumbnail: `${imageUrl}/${img.img_url}`,
+          }
         });
+      } else if (productInfo.productImages && productInfo.productImages.length) {
+        imgs = productInfo.productImages.map((img) => {
+          return {
+            original: `${imageUrl}/${img.img_url}`,
+            thumbnail: `${imageUrl}/${img.img_url}`,
+          }
+        });
+      } else {
+        console.log(`${noImageUrl.img}`)
+        imgs.push({
+          original: `${noImageUrl.img}`,
+          thumbnail: `${noImageUrl.img}`,
+        })
       }
 
       setImages(imgs);
@@ -254,6 +272,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     if (e) {
       e.preventDefault();
     }
+    setForceRefresh(!forceRefresh)
     setSelectedColor(color);
     setSelectedSize(null);
     setSelectedProductItem({})
@@ -285,9 +304,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       const getItem = productInfo.productProductItems.filter(item => item.productColorId === selectedColor.id && item.productSizeId === size.id)
       if (getItem && getItem.length) {
         const searchItem = await getProductItemById(getItem[0].id);
+        searchItem['quantity'] = 1;
         const getTotal = formatNumber(searchItem.retailPrice);
         setSelectedProductItem(searchItem);
-        setOriginalRetailPrice(getTotal);
         setDealPrice(getTotal)
       }
     }
@@ -345,6 +364,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
       await setProductInfo(getProductInfo);
       if (getProductInfo.productColors && getProductInfo.productColors.length) {
+        if (getProductInfo.productProductDiscount && getProductInfo.productProductDiscount.length) {
+          setShowDiscount(true)
+        }
         setColors(getProductInfo.productColors);
         handleColorChange(null, getProductInfo.productColors[0])
       }
@@ -379,7 +401,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                    <Typography className={classes.productName} variant="h4" component="h3">{productInfo.name}</Typography>
                   </Grid>
                   <Grid item lg={12} xs={12} className={classes.productPriceContainer}>
-                    <Typography  className={classes.productPrice} variant="h1" component="h2">${dealPrice}</Typography>
+                    <Typography  className={classes.productPrice} variant="h1" component="h2">Price: US ${dealPrice}</Typography>
                   </Grid>
                   {
                     colors && (
@@ -414,34 +436,43 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     )
                   }
                   <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
-                    <Select onChange={handQuantitySelect} className={classes.dropDown} title="quant" id="quant-select" />
+                    <QuantitySelectorB refresh={forceRefresh} onChange={handQuantitySelect} className={classes.dropDown} id="quant-select"/>
                   </Grid>
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>
                     <WishListIcon product={productInfo.id} />
                   </Grid>
                   <Grid item lg={12} xs={12}>
-                    <ul>
-                        {
-                          productInfo.productProductDiscount && productInfo.productProductDiscount.map((item, index) => {
-                            return (
-                              <li key={index}>{item.name}</li>
-                            )
-                          })
-                        }
-                    </ul>
+                    <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Description</Typography>
+                    <Typography align="left" variant="body1" component="p">{productInfo.description}</Typography>
                   </Grid>
+                  {
+                      showDiscount && (
+                      <Grid item lg={12} xs={12}>
+                        <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Deals</Typography>
+                        <ul>
+                            {
+                              productInfo.productProductDiscount.map((item, index) => {
+                                return (
+                                  <li key={index}>{item.name}</li>
+                                )
+                              })
+                            }
+                        </ul>
+                      </Grid>
+                    )
+                  }
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
-                    <Typography align="left" variant="h5" component="h5" className={classes.productStock}>{productInfo.stock ? 'Avalialable' : 'Out of Stock'}</Typography>
+                    <Typography align="left" variant="h5" component="h5" className={classes.productStock}>{productInfo.stock ? 'Available' : 'Out of Stock'}</Typography>
                   </Grid>
                   {/* <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography align="left" variant="h5" component="h5">Disponibilidad: {productInfo.stock}</Typography>
                   </Grid> */}
-                  <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
+                  {/* <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography className={classes.deliveryText} align="left" variant="body1" component="p">
                       <Icons name="delivery" classes={{icon: classes.deliveryIcon}}  /> Entrega a todo Panama
                     </Typography>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </Grid>
             </Grid>
@@ -451,20 +482,16 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           </Grid> */}
         </Grid>
         {/* Review and Seller */}
-        <Grid container spacing={2}>
-          <Grid item lg={12} sm={12} className={classes.descriptionItem}>
-            <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Description</Typography>
-            <Typography align="left" variant="body1" component="p">{productInfo.description}</Typography>
-          </Grid>
-          {/* <Grid item lg={4} sm={12}>
+        {/* <Grid container spacing={2}>
+          <Grid item lg={4} sm={12}>
             <Typography align="left" variant="h4" component="h4">Acerca del Vendedor</Typography>
             {
               productInfo.vendor && <VendorBox id={productInfo.vendor} />
             }
-          </Grid> */}
-        </Grid>
+          </Grid>
+        </Grid> */}
         {/* Q&A section */}
-        <ProductQuestionBox data={productInfo}/>
+        {/* <ProductQuestionBox data={productInfo}/> */}
          {/* Rate section */}
         <RateFullView data={productInfo} />
         {/* Gallery thumb */}

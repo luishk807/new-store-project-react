@@ -131,7 +131,7 @@ const Index = ({classes}) => {
                   Name
                 </Grid>
                 <Grid item lg={2} className={classes.itemColumn}>
-                  Price
+                  Deal
                 </Grid>
                 <Grid item lg={2} className={classes.itemColumn}>
                   Deal Starts
@@ -161,8 +161,8 @@ const Index = ({classes}) => {
                         </a>
                       </Grid>
                       <Grid item lg={2} xs={6} className={classes.itemColumn}>
-                        {
-                          discount.price
+                        %{
+                          discount.percentage
                         }
                       </Grid>
                       <Grid item lg={2} xs={6} className={classes.itemColumn}>

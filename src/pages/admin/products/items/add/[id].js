@@ -41,7 +41,7 @@ const Add = ({classes}) => {
     }
   }
   
-  const ignoreForm = ['productId', 'image'];
+  const ignoreForm = ['productId', 'image', 'sku'];
   const hideEntry = ['productId'];
 
   const getProduct = async() => {

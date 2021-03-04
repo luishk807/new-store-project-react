@@ -82,10 +82,10 @@ const HomeLayout = (props) => {
                                 <ListItemIcon><ShowChartIcon /></ListItemIcon>
                                 <ListItemText>STOCK</ListItemText>
                             </ListItem>
-                            <ListItem button key="orders">
+                            {/* <ListItem button key="orders">
                                 <ListItemIcon><ListAltTwoToneIcon /></ListItemIcon>
                                 <ListItemText>ORDERS</ListItemText>
-                            </ListItem>
+                            </ListItem> */}
                         </List>
 
                     </Drawer>

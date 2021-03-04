@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import {
     CircularProgress,
-    Grid
+    Grid,
+    Button
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState, useEffect } from 'react'
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }))
 
-const ProductDetailPanel = ({ data }) => {
+const ProductDetailPanel = ({ data, onProductVariantClick }) => {
 
     const [isLoading, setIsLoading] = useState(true)
     const [detail, setDetail] = useState({})
@@ -71,6 +72,12 @@ const ProductDetailPanel = ({ data }) => {
     const loadDetails = async (data) => {
         const productInfo = await getProduct(data.id)
         return { productInfo }
+    }
+
+    const selectedProductVariant = (value) => {
+        if (onProductVariantClick) {
+            onProductVariantClick(value, data)
+        }
     }
 
     const Department = () => {
@@ -105,7 +112,7 @@ const ProductDetailPanel = ({ data }) => {
     }
 
     const aggregateStock = (stockArray) => {
-        if (Array.isArray(stockArray)) {
+        if (Array.isArray(stockArray) && stockArray.length > 0) {
             return stockArray.reduce((accumulator, currentValue) => {
                 return { ...accumulator, quantity: accumulator.quantity + currentValue.quantity }
             })
@@ -140,6 +147,7 @@ const ProductDetailPanel = ({ data }) => {
                                 { LabelAndText(v.option, 'name') }
                                 { LabelAndText(v.option_value, 'value') }
                                 { Stock(v.stock) }
+                                <Button onClick={() => { selectedProductVariant(v) }} color="secondary" variant="contained">Select</Button>
                             </div>
                         )
                     })}
@@ -180,7 +188,8 @@ const ProductDetailPanel = ({ data }) => {
 }
 
 ProductDetailPanel.propTypes = {
-    data: PropTypes.object
+    data: PropTypes.object,
+    onProductVariantClick: PropTypes.func
 }
 
 export default ProductDetailPanel

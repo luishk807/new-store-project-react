@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import MaterialTable from 'material-table'
 import MaterialTableIcons from '../common/MaterialTableIcons'
-import ProductDetailPanel from './ProductDetailPanel'
+// import ProductDetailPanel from './ProductDetailPanel'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';
@@ -12,15 +12,15 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const ProductResults = ({ data, onResultRowClick }) => {
+const StockResults = ({ data, onResultRowClick }) => {
     const router = useRouter()
     const classes = useStyles()
     const [tableColumns, setTableColumns] = useState([])
     const [tableData, setTableData] = useState([])
 
-    const detailPanel = (rowData) => {
-        return <ProductDetailPanel data={rowData} onProductVariantClick={onProductDetailProductVariantClick} />
-    }
+    // const detailPanel = (rowData) => {
+    //     return <ProductDetailPanel data={rowData} onProductVariantClick={onProductDetailProductVariantClick} />
+    // }
 
     useEffect(() => {
         let mounted = true
@@ -48,18 +48,18 @@ const ProductResults = ({ data, onResultRowClick }) => {
             if (onResultRowClick) { // If function given, will override default behavior of going to page
                 onResultRowClick({ product: rowData })
             } else {
-                router.push(`/inventarioz/product/${rowData.id}`)
+                router.push(`/inventarioz/product/${rowData.product_id}`)
             }
         }
     }
 
-    const onProductDetailProductVariantClick = (productVariant, product) => {
-        console.log('onProductDetailProductVariantClick', productVariant, product)
-        const cleanProduct = cleanTableData(JSON.parse(JSON.stringify(product))) // Clone it before cleaning
-        if (onResultRowClick) { // If function given, will override default behavior of going to page
-            onResultRowClick({ product: cleanProduct, productVariant: productVariant })
-        }
-    }
+    // const onProductDetailProductVariantClick = (productVariant, product) => {
+    //     console.log('onProductDetailProductVariantClick', productVariant, product)
+    //     const cleanProduct = cleanTableData(JSON.parse(JSON.stringify(product))) // Clone it before cleaning
+    //     if (onResultRowClick) { // If function given, will override default behavior of going to page
+    //         onResultRowClick({ product: cleanProduct, productVariant: productVariant })
+    //     }
+    // }
 
     return (
         <div className={classes.root}>
@@ -67,7 +67,7 @@ const ProductResults = ({ data, onResultRowClick }) => {
                 icons={MaterialTableIcons}
                 columns={tableColumns} data={tableData}
                 title="Search Results"
-                detailPanel={detailPanel}
+                // detailPanel={detailPanel}
                 onRowClick={onRowClick}
                 onRowSelected={onRowSelected}
             />
@@ -75,13 +75,13 @@ const ProductResults = ({ data, onResultRowClick }) => {
     )
 }
 
-ProductResults.defaultProps = {
+StockResults.defaultProps = {
     data: { columns: [], data: [] }
 }
 
-ProductResults.propTypes = {
+StockResults.propTypes = {
     data: PropTypes.object,
     onResultRowClick: PropTypes.func
 }
 
-export default ProductResults
+export default StockResults

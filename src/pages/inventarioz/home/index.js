@@ -60,7 +60,7 @@ const Home = (props) => {
             <Tabs value={value} onChange={handleChange} aria-label="simple tabs example">
                 <Tab label={ 'Products' } {...a11yProps(0)} />
                 <Tab label={ 'Stock' } {...a11yProps(1)} />
-                <Tab label="Orders" {...a11yProps(2)} />
+                {/* <Tab label="Orders" {...a11yProps(2)} /> */}
             </Tabs>
             <TabPanel value={value} index={0}>
                 <ProductHome />
@@ -68,9 +68,9 @@ const Home = (props) => {
             <TabPanel value={value} index={1}>
                 <StockHome />
             </TabPanel>
-            <TabPanel value={value} index={2}>
+            {/* <TabPanel value={value} index={2}>
                 <OrderHome />
-            </TabPanel>
+            </TabPanel> */}
         </HomeLayout>
     );
 }

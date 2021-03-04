@@ -11,7 +11,8 @@ import {
   Button,
   Hidden,
   Divider,
-  Typography
+  Typography,
+  ButtonGroup
 } from '@material-ui/core';
 
 import { getImageUrlByType } from '../../utils/form';
@@ -180,7 +181,22 @@ const styles = (theme) => ({
   },
   descriptionTitle: {
     margin: '10px 0px',
-  }
+  },
+  quantityButton: {
+    fontSize: '1.5em',
+    lineHeight: 1,
+  },
+  quantityInput: {
+    margin: '0px 2px',
+    textAlign: 'center',
+    border: '1px solid rgb(248,190,21)',
+  },
+  quantityBox: {
+    width: '35%',
+    [theme.breakpoints.down('sm')]: {
+      width: '50%',
+    }
+  },
 });
 
 const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
@@ -190,6 +206,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [productInfo, setProductInfo] = useState({});
   const [showData, setShowData] = useState(false);
   const [selectedColor, setSelectedColor] = useState(null);
+  const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeBlocks, setSizeBlock] = useState(null);
   const [dealPrice, setDealPrice] = useState(0);
@@ -203,9 +220,11 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   });
 
   const handQuantitySelect = async(resp) => {
-    const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem,resp.value);
-    setDealPrice(getDiscountItem.retailPrice);
-    setSelectedProductItem(getDiscountItem);
+    console.log(resp.target.value);
+    setQuantity(resp.target.value)
+    // const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem,resp.value);
+    // setDealPrice(getDiscountItem.retailPrice);
+    // setSelectedProductItem(getDiscountItem);
   };
 
   const loadImages = (data) => {
@@ -285,6 +304,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       const getItem = productInfo.productProductItems.filter(item => item.productColorId === selectedColor.id && item.productSizeId === size.id)
       if (getItem && getItem.length) {
         const searchItem = await getProductItemById(getItem[0].id);
+        searchItem['quantity'] = 1;
         const getTotal = formatNumber(searchItem.retailPrice);
         setSelectedProductItem(searchItem);
         setOriginalRetailPrice(getTotal);
@@ -414,7 +434,12 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     )
                   }
                   <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
-                    <Select onChange={handQuantitySelect} className={classes.dropDown} title="quant" id="quant-select" />
+                    {/* <Select onChange={handQuantitySelect} className={classes.dropDown} title="quant" id="quant-select" /> */}
+                    <ButtonGroup disableElevation variant="contained" className={classes.quantityBox}>
+                      <Button className={`mainButtonNaked ${classes.quantityButton}`}>-</Button>
+                      <input className={classes.quantityInput} onChange={handQuantitySelect} value={quantity} type="text" title="quant" id="quant-select"/>
+                      <Button className={`mainButtonNaked ${classes.quantityButton}`}>+</Button>
+                    </ButtonGroup>
                   </Grid>
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>

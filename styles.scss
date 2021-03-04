@@ -159,6 +159,15 @@ a:hover {
     color: $main_color !important;
   }
 }
+.mainButtonNaked {
+  background-color: $main_color !important;
+  border: 1px solid $main_color !important;
+  color: white !important;
+  &:hover {
+    background-color: white !important;
+    color: $main_color !important;
+  }
+}
 .borderTopMain {
   border-top: 1px solid rgba(0, 0, 0, .09);
 }

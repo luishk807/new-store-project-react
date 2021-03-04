@@ -59,9 +59,11 @@ const ProductVariantsStock = ({ dataObject, stock }) => {
 
     /** Aggregate the quantity of the stock array */
     const aggregateStocks = (stockArray) => {
-        return stockArray.reduce((accumulator, currentValue) => {
-            return { ...accumulator, quantity: accumulator.quantity + currentValue.quantity }
-        })
+        if (stockArray && !!stockArray.length) {
+            return stockArray.reduce((accumulator, currentValue) => {
+                return { ...accumulator, quantity: accumulator.quantity + currentValue.quantity }
+            })
+        }
     }
 
     /** Attaching the stock into the product_variant object as stock property */
@@ -76,6 +78,7 @@ const ProductVariantsStock = ({ dataObject, stock }) => {
     }
 
     useEffect(() => {
+        console.log('useEffect', dataObject, stock)
         if (dataObject) {
             // Assigns the stock to the product variant as stock property
             unifyStocksToVariant(dataObject.product_variant, stock)
@@ -131,9 +134,8 @@ const ProductVariantsStock = ({ dataObject, stock }) => {
                 ...stockEntry,
                 product_id: +dataObject.id,
                 product_variant_id: +selectedVariant.id,
-                stock_id: +selectedVariant.stock.id
             }
-            console.log(stockEntryToSubmit)
+            // console.log(stockEntryToSubmit)
             addStockEntry(stockEntryToSubmit)
                 .then(result => {
                     console.log('addStockEntry.result', result)

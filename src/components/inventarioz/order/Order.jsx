@@ -24,7 +24,7 @@ import { useState } from 'react'
 import ProductSearchMini from '../product/ProductSearchMini'
 import ClientSearchMini from '../client/ClientSearchMini'
 import { saveClient } from '../../../services/inventarioz/client'
-import { convertDataToTableData } from '../../../utils/materialtable'
+// import { convertDataToTableData } from '../../../utils/materialtable'
 const useStyles = makeStyles((theme) => ({
     root: {
         padding: 0
@@ -33,37 +33,41 @@ const useStyles = makeStyles((theme) => ({
 
 /** Configures the columns and sets which one is editable */
 const tableColumns = [
-    { title: 'id', field: 'id', editable: 'never' }, 
-    { title: 'name', field: 'name', editable: 'never' }, 
-    { title: 'description', field: 'description', editable: 'onUpdate'}
+    { title: 'Id', field: 'id', editable: 'never' }, 
+    { title: 'Name', field: 'name', editable: 'never' }, 
+    { title: 'Description', field: 'description', editable: 'never'},
+    { title: 'Option', field: 'optionName', editable: 'never' }, 
+    { title: 'Option value', field: 'optionValue', editable: 'never' }, 
+    { title: 'Qty', field: 'quantity', type: 'numeric' }
 ]
 
 const Order = () => {
     const [order, setOrder] = useState({})
     const [orderDate, setOrderDate] = useState(new Date())
     const [client, setClient] = useState({})
-    const [orderClient, setOrderClient] = useState({})
     const [openAlert, setOpenAlert] = useState(false)
     const [alertMessage, setAlertMessage] = useState({ severity: 'error', message: 'Toasty!'} )
     const [dialogOpen, setDialogOpen] = useState(false)
     const [psDialogOpen, setPsDialogOpen] = useState(false)
     const [csDialogOpen, setCsDialogOpen] = useState(false)
+    /** Real order items */
     const [orderItems, setOrderItems] = useState([])
+    /** Represents the real order items but adjusted for the table */
     const [orderItemsTableData, setOrderItemsTableData] = useState([])
     const classes = useStyles()
 
     // Order
-    const updateOrder = () => {
-        const orderValues = {
-            ...order,
-            [field]: value
-        }
-        setOrder(orderValues)
-        outputValue(newStockEntry)
-    }
-    const onOrderChange = (event) => {
-        updateOrder({ field: event.target.name, value: event.target.value})
-    }
+    // const updateOrder = () => {
+    //     const orderValues = {
+    //         ...order,
+    //         [field]: value
+    //     }
+    //     setOrder(orderValues)
+    //     outputValue(newStockEntry)
+    // }
+    // const onOrderChange = (event) => {
+    //     updateOrder({ field: event.target.name, value: event.target.value})
+    // }
     const onOrderDateChange = (value) => {
         setOrderDate(value)
     }
@@ -103,7 +107,6 @@ const Order = () => {
                 showAlert({ severity: 'success', message: 'Successfully added new client'})
                 console.log(result)
                 closeConfirmationDialog()
-                setOrderClient(client)
             } else {
                 showAlert({ severity: 'error', message: 'Error adding new client'})
             }
@@ -128,17 +131,75 @@ const Order = () => {
         closeConfirmationDialog()
     }
 
-    const onProductSearchItemClick = (value) => {
-        console.log('onProductSearchItemClick', value)
+    const onProductSearchItemClick = ({ product, productVariant }) => {
+        // console.log('onProductSearchItemClick', product, productVariant)
         const updatedOrderItems = [
             ...orderItems
         ]
-        updatedOrderItems.push(value)
+        updatedOrderItems.push({ product, productVariant, quantity: 1 })
         setOrderItems(updatedOrderItems)
 
-        const tableData = convertDataToTableData(updatedOrderItems)
-        console.log('tableData', tableData)
-        setOrderItemsTableData(tableData.data)
+        setTableData(updatedOrderItems)
+    }
+
+    const convertDataToTableData = (orderItemsArray) => {
+        const retval = []
+        orderItemsArray.forEach(({ product, productVariant, quantity }, index) => {
+            retval.push(getOrderTableItem(product, productVariant, quantity, index))
+        })
+        return retval
+    }
+
+    /** Sets the current orderItems to the order table */
+    const setTableData = (items) => {
+        const tableData = convertDataToTableData(items)
+        setOrderItemsTableData(tableData)
+    }
+
+    const getOrderTableItem = (product, productVariant, quantity, index) => {
+        return {
+            key: index,
+            id: product.id,
+            name: product.name,
+            description: product.description,
+            product_variant_id: productVariant.id,
+            model: productVariant.model,
+            option_id: productVariant.option_id,
+            option_value_id: productVariant.option_value_id,
+            option_value: productVariant.option_value,
+            optionName: (productVariant.option) ? productVariant.option.name : '',
+            optionValue: (productVariant.option_value) ? productVariant.option_value.value : '',
+            sku: productVariant.sku,
+            quantity: quantity
+        }
+    }
+
+    const onOrderTableItemUpdate = (oldData, newData) => {
+        console.log('onOrderTableItemUpdate', oldData, newData)
+        const orderItem = findOrderItem(oldData.id, oldData.product_variant_id)
+        if (orderItem) {
+            orderItem.quantity = newData.quantity
+            console.log('changedOrderItem', orderItem)
+            refreshOrderItems()
+        }
+        return orderItem // Return the modified orderItem, even though it is not needed
+    }
+
+    const findOrderItem = (productId, productVariantId) => {
+        return orderItems.find((p) => p.product.id === productId && p.productVariant.id === productVariantId)
+    }
+
+    const refreshOrderItems = () => {
+        const refresh = [
+            ...orderItems
+        ]
+        setOrderItems(refresh)
+        setTableData(refresh)
+    }
+
+    const onOrderTableItemDelete = (orderTableItem) => {
+        const updatedOrderItems = orderItems.filter(o => o.product.id !== orderTableItem.id && o.productVariant.id !== orderTAbleItem.product_variant_id)
+        setOrderItems(updatedOrderItems)
     }
 
     /** Handles client search row click */
@@ -166,6 +227,11 @@ const Order = () => {
 
     const onOrderItemRowClick = (orderItemRow) => {
         console.log('onOrderItemRowClick', orderItemRow)
+    }
+
+    const onOrderSave = () => {
+        console.log('onOrderSave', orderItems)
+        console.log('onOrderSave', client)
     }
 
     return (
@@ -254,13 +320,6 @@ const Order = () => {
                             Detalles
                         </AccordionSummary>
                         <AccordionDetails>
-                            {/* <div>
-                            { orderItems.map((o, i) => {
-                                return (
-                                    <div key={`oi-${i}`}>{ JSON.stringify(o) }</div>
-                                )
-                            })}
-                            </div> */}
                             <div style={{width: '100%'}}>
                             <MaterialTable 
                                 icons={MaterialTableIcons}
@@ -274,17 +333,28 @@ const Order = () => {
                                     isDeletable: (rowData) => true,
                                     isDeleteHidden: (rowData) => false,
                                     onRowUpdate: (newData, oldData) => {
-                                        console.log('onRowUpdate')
-                                        console.log('newData', newData); console.log('oldData', oldData)
-                                        return Promise.resolve()
+                                        return new Promise((resolve, reject) => {
+                                            onOrderTableItemUpdate(oldData, newData)
+                                            resolve()   
+                                        })
                                     },
                                     onRowDelete: (oldData) => {
                                         console.log('onRowDelete', oldData)
+                                        onOrderTableItemDelete(oldData)
                                         return Promise.resolve()
                                     }
 
                                 }}
                             />
+                            </div>
+                        </AccordionDetails>
+                    </Accordion>
+                </Grid>
+                <Grid item xs={12}>
+                    <Accordion defaultExpanded>
+                        <AccordionDetails>
+                            <div style={{ width: '100%', display: 'flex', flexDirection: 'row-reverse'}}>
+                            <Button color="secondary" onClick={onOrderSave}>WHAT</Button>
                             </div>
                         </AccordionDetails>
                     </Accordion>

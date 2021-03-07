@@ -203,12 +203,12 @@ const Index = ({classes}) => {
                       </Grid>
                       <Grid item lg={1} xs={6} className={classes.itemColumn}>
                         {
-                          product.productBrand.name
+                          product.productBrand && product.productBrand.name
                         }
                       </Grid>
                       <Grid item lg={1} xs={6} className={classes.itemColumn}>
                         {
-                          product.productBrand && product.productStatus.name
+                          product.productStatus.name
                         }
                       </Grid>
                       <Hidden smDown>

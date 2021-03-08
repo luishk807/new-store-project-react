@@ -34,12 +34,16 @@ const Login = ({classes, onSubmit, inStatus}) => {
   });
   const [form, setForm] = useState({})
   const formOnChange = (e, edrop = null) => {
-    const { name, value } = edrop ? edrop : e.target;
-    if(name in form && validateForm(name, value)){
-      setForm({
-        ...form,
-        [name]: value,
-      });
+    if (e.keyCode === 13) { // Enter
+      handleSubmit()
+    } else {
+      const { name, value } = edrop ? edrop : e.target;
+      if(name in form && validateForm(name, value)){
+        setForm({
+          ...form,
+          [name]: value,
+        });
+      }
     }
   }
 
@@ -134,6 +138,7 @@ const Login = ({classes, onSubmit, inStatus}) => {
                   id="filled-error"
                   className={classes.formTextField}
                   label="Password"
+                  onKeyUp={formOnChange}
                 />
             </Grid>
             <Grid item lg={12} xs={12}>

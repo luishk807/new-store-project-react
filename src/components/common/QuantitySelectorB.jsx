@@ -26,6 +26,7 @@ const styles = (theme) => ({
   quantityInput: {
     margin: '0px 2px',
     textAlign: 'center',
+    width: '25%',
     border: '1px solid rgb(248,190,21)',
     mozAppearance: 'textfield',
     '&::-webkit-outer-spin-button': {
@@ -36,57 +37,55 @@ const styles = (theme) => ({
     },
   },
   quantityBox: {
-    width: '28%',
-    [theme.breakpoints.down('sm')]: {
-      width: '50%',
-    }
+    display: 'flex',
   },
 });
 
 const QuantitySelectorB = ({classes, data = 1, id, onChange}) => {
   const [total, setTotal] = useState(0);
-
+  const [showData, setShowData] = useState(false);
+  
   const onHandleDropDown = async(resp) => {
     let value = null;
 
-    if (typeof resp === "undefined" || typeof resp === "null" || (typeof resp !== "boolean" && resp.target.value < 1)) {
-      value = 1;
-    } else {
-      if (typeof resp === "boolean") {
-        value = total;
-        if (resp) {
-          value++;
-        } else {
-          if (value > 1) {
-            value--;
-          } else {
-            value = 1;
-          }
-        }
+    if (typeof resp === "boolean") {
+      value = total;
+      if (resp) {
+        value++;
       } else {
-        value = resp.target.value
+        if (value > 1) {
+          value--;
+        } else {
+          value = 1;
+        }
       }
+    } else {
+      value = resp.target.value
     }
 
-    setTotal(value)
-    onChange({
-      id: id,
-      value:value 
-    })
+    setTotal(value);
+
+    if (value) {
+      onChange({
+        id: id,
+        value:value 
+      })
+    }
   };
 
   useEffect(()=> {
     setTotal(data)
+    setShowData(true)
   }, [])
 
-  return ( 
+  return showData && ( 
     <div className={classes.root}>
       <FormControl variant="outlined" className={classes.productSelectDrop}>
-        <ButtonGroup disableElevation variant="contained" className={classes.quantityBox}>
-          <Button className={`mainButtonNaked ${classes.quantityButton}`} onClick={ () => onHandleDropDown(false)}>-</Button>
-          <input className={classes.quantityInput} onChange={onHandleDropDown} value={total} type="number" title="quant" id={id}/>
-          <Button className={`mainButtonNaked ${classes.quantityButton}`} onClick={ () => onHandleDropDown(true)}>+</Button>
-        </ButtonGroup>
+          <div className={classes.quantityBox}>
+            <Button className={`mainButtonNaked ${classes.quantityButton}`} onClick={ () => onHandleDropDown(false)}>-</Button>
+            <input className={classes.quantityInput} onChange={onHandleDropDown} value={total} type="number" title="quant" id={id}/>
+            <Button className={`mainButtonNaked ${classes.quantityButton}`} onClick={ () => onHandleDropDown(true)}>+</Button>
+          </div>
 
       </FormControl>
     </div>

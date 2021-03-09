@@ -18,9 +18,7 @@ import {
   withWidth,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import NumberFormat from 'react-number-format';
 
-import { noImageUrl } from '../../config';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
 import { getProductById } from '../api/products';
@@ -31,6 +29,7 @@ import { checkDiscountPrice } from '../utils/products';
 import { getImageUrlByType } from '../utils/form';
 import TextEllipsis from '../components/common/TextEllipsis';
 import CartBox from '../components/CartBlock';
+import Icons from '../components/common/Icons';
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -129,6 +128,10 @@ const styles = makeStyles((theme) => ({
     [theme.breakpoints.down('sm')]: {
       height: '57px !important',
     }
+  },
+  deleteIcon: {
+    width: 35,
+    height: 35,
   }
 }));
 
@@ -151,7 +154,10 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     await updateCart(cart[index])
   }
 
-  const handleDelete = (index) => {
+  const handleDelete = (index, e) => {
+    if (e) {
+      e.preventDefault();
+    }
     deleteCart(cart[index])
   }
 
@@ -223,7 +229,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                             </Hidden>
                           </Grid>
                         </Grid>
-                        <Grid item lg={2} xs={6} className={classes.cartSelectCont}>
+                        <Grid item lg={2} xs={9} className={classes.cartSelectCont}>
                           <QuantitySelectorB data={item.quantity} classes={{ root: classes.cartDropRoot}} onChange={handleSelectChange} id={`select-${key}`} />
                         </Grid>
                         <Hidden xsDown>
@@ -233,8 +239,15 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                             </Typography>
                           </Grid>
                         </Hidden>
-                        <Grid item lg={12} align="right" xs={6} className={classes.cartActionCont}>
-                          <Button onClick={ () => handleDelete(index)} className={`${classes.deleteBtn} smallMainButton my-2`}>Delete</Button>
+                        <Grid item lg={12} align="right" xs={3} className={classes.cartActionCont}>
+                          <Hidden xsDown>
+                            <Button onClick={ () => handleDelete(index)} className={`${classes.deleteBtn} smallMainButton my-2`}>Delete</Button>
+                          </Hidden>
+                          <Hidden lgUp>
+                            <a href="#" onClick={ (e) => handleDelete(index, e) }>
+                              <Icons name="delete" classes={{icon: `iconMainColor ${classes.deleteIcon}`}}/>
+                            </a>
+                          </Hidden>
                         </Grid>
                       </Grid>
                     </Grid>

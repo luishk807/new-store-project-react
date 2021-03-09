@@ -185,28 +185,6 @@ const styles = (theme) => ({
     fontSize: '1.2em',
     margin: '10px 0px',
   },
-  // quantityButton: {
-  //   fontSize: '1.5em',
-  //   lineHeight: 1,
-  // },
-  // quantityInput: {
-  //   margin: '0px 2px',
-  //   textAlign: 'center',
-  //   border: '1px solid rgb(248,190,21)',
-  //   mozAppearance: 'textfield',
-  //   '&::-webkit-outer-spin-button': {
-  //     WebkitAppearance: 'none',
-  //   },
-  //   '&::-webkit-inner-spin-button': {
-  //     WebkitAppearance: 'none',
-  //   },
-  // },
-  // quantityBox: {
-  //   width: '28%',
-  //   [theme.breakpoints.down('sm')]: {
-  //     width: '50%',
-  //   }
-  // },
 });
 
 const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
@@ -220,7 +198,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeBlocks, setSizeBlock] = useState(null);
   const [dealPrice, setDealPrice] = useState(0);
-  // const [originalRetailPrice, setOriginalRetailPrice] = useState(0);
   const [selectedProductItem, setSelectedProductItem] = useState({});
   const [colors, setColors] = useState(null)
   const [snack, setSnack] = useState({
@@ -235,29 +212,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     setDealPrice(getDiscountItem.retailPrice);
     setSelectedProductItem(getDiscountItem);
   };
-
-  // const handQuantitySelect = async(resp) => {
-  //   let value = null;
-  //   if (typeof resp === "boolean") {
-  //     value = quantity;
-  //     if (resp) {
-  //       value++;
-  //     } else {
-  //       if (value > 1) {
-  //         value--;
-  //       } else {
-  //         value = 1;
-  //       }
-  //     }
-  //     setQuantity(value)
-  //   } else {
-  //     value = resp.target.value
-  //   }
-  //   setQuantity(value)
-  //   const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem, value);
-  //   setDealPrice(getDiscountItem.retailPrice);
-  //   setSelectedProductItem(getDiscountItem);
-  // };
 
   const loadImages = (data) => {
     const imageUrl = getImageUrlByType('product');
@@ -339,7 +293,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         searchItem['quantity'] = 1;
         const getTotal = formatNumber(searchItem.retailPrice);
         setSelectedProductItem(searchItem);
-        // setOriginalRetailPrice(getTotal);
         setDealPrice(getTotal)
       }
     }
@@ -466,13 +419,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     )
                   }
                   <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
-                    {/* <Select onChange={handQuantitySelect} className={classes.dropDown} title="quant" id="quant-select" /> */}
                     <QuantitySelectorB onChange={handQuantitySelect} className={classes.dropDown} id="quant-select"/>
-                    {/* <ButtonGroup disableElevation variant="contained" className={classes.quantityBox}>
-                      <Button className={`mainButtonNaked ${classes.quantityButton}`} onClick={ () => handQuantitySelect(false)}>-</Button>
-                      <input className={classes.quantityInput} onChange={handQuantitySelect} value={quantity} type="number" title="quant" id="quant-select"/>
-                      <Button className={`mainButtonNaked ${classes.quantityButton}`} onClick={ () => handQuantitySelect(true)}>+</Button>
-                    </ButtonGroup> */}
                   </Grid>
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>

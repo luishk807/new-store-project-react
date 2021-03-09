@@ -211,6 +211,9 @@ a:hover {
   fill: $main_color;
   color: $main_color;
 }
+.iconMainColor {
+  fill: $main_color !important;
+}
 .cardLink {
   color: $main_color;
 }

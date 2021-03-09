@@ -37,8 +37,10 @@ const SweetBoxProducts = ({classes, id, isFeature}) => {
 
   const getProduct = async() => {
     const fetchProduct = await getProductById(id);
-    setProduct(fetchProduct);
-    setShowData(true);
+    if (fetchProduct) {
+      setProduct(fetchProduct);
+      setShowData(true); 
+    }
   }
 
   const loadCardIcons = () => {

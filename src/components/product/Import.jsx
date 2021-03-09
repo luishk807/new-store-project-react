@@ -34,8 +34,14 @@ const tableColumns = [
   { field: 'amount', headerName: 'Amount'},
   { field: 'category', headerName: 'Category'},
   { field: 'brand', headerName: 'Brand'},
-  { field: 'model', headerName: 'Model'},
-  { field: 'description', headerName: 'Description'}
+  { field: 'sku', headerName: 'SKU'},
+  { field: 'description', headerName: 'Description'},
+  // Variant (product item)
+  { field: 'color', headerName: 'Color'},
+  { field: 'size', headerName: 'Size'},
+  { field: 'halfDozen', headerName: 'Half Dozen'},
+  { field: 'dozen', headerName: 'Dozen'},
+  { field: 'cost', headerName: 'Cost'}
 ];
 
 const transformData = (csvArrayData) => {

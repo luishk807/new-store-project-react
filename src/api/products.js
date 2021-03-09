@@ -110,8 +110,5 @@ export const importProducts = async (data) => {
   if (!Object.keys(data).length) {
     return;
   }
-  console.log('importProducts');
-  console.log(data);
-
   return Api.rawPost('products/import', data, {});
 }

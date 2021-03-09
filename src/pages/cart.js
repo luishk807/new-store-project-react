@@ -24,7 +24,7 @@ import { noImageUrl } from '../../config';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
 import { getProductById } from '../api/products';
-import QuanitySelector from '../components/common/QuanitySelector';
+import QuantitySelectorB from '../components/common/QuantitySelectorB';
 import { CartSample } from '../constants/samples/CartSample';
 import { formatNumber, getCartTotal, getImage } from '../utils';
 import { checkDiscountPrice } from '../utils/products';
@@ -224,7 +224,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                           </Grid>
                         </Grid>
                         <Grid item lg={2} xs={6} className={classes.cartSelectCont}>
-                          <QuanitySelector data={item.quantity} classes={{ root: classes.cartDropRoot, productSelectDrop: classes.cartDropDown}} onChange={handleSelectChange} title="quantity" id={`select-${key}`} />
+                          <QuantitySelectorB data={item.quantity} classes={{ root: classes.cartDropRoot}} onChange={handleSelectChange} id={`select-${key}`} />
                         </Grid>
                         <Hidden xsDown>
                           <Grid item lg={2} xs={12} >

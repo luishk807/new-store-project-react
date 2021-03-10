@@ -273,12 +273,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     console.log("bundle", bundle)
     const items = productInfo.productProductItems;
     if (items && items.length) {
-      const getItem = items.filter(item => item.productColor === selectedColor.id && item.productSize === selectedSize.id && item.quantity === selectedBundle)
-      console.log(getItem, 'lllll')
-      // if (getItem && getItem.length) {
-      //   const getSize = productInfo.productSizes.filter(size => size.id === getItem[0].productSize)
-      //   handleSizeChange(null, getSize[0])
-      // }
+      const getItem = getBundleProduct(items);
+      setSelectedProductItem(getItem)
     }
     setSelectedBundle(bundle);
   }
@@ -352,13 +348,28 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
   }
 
-  const createBundleBlock = () => {
-    if (selectedColor && selectedSize) {
-      console.log("hey hey", productInfo)
-      const found = productInfo.productProductItems.filter(item => {
-        return item.productSize === selectedSize.id && item.productColor == selectedColor.id;
+  const getBundleProduct = (items) => {
+    if (items && items.length) {
+      const getItem = items.filter(item => {
+        console.log("compare size: ", item.productSize, ' and ' , selectedSize.id);
+        console.log("compare color: ", item.productColor, ' and ' , selectedColor.id);
+        console.log("compare bundle: ", quantity, ' and ' , selectedBundle);
+        let quantity = item.quantity;
+        if (!quantity) {
+          quantity = 1;
+        }
+        return item.productColor === selectedColor.id && item.productSize === selectedSize.id && quantity === selectedBundle
       })
-      
+      if (getItem && getItem.length) {
+        console.log(getItem, 'lllll')
+        return getItem[0]
+      }
+    }
+  }
+
+  const createBundleBlock = () => {
+    if (selectedSize && selectedColor && selectedBundle) {
+      const found = getBundleProduct(productInfo.productProductItems);
       if (found && found.length > 1) {
         console.log('found: ',found, 'total', found.length)
         const blocks = found.map((item, index) => {
@@ -378,12 +389,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   useEffect(() => {
+    createBundleBlock();
+  }, [selectedColor, selectedSize, selectedBundle]);
+
+  useEffect(() => {
     createSizeBlock(selectedColor);
   }, [selectedColor, selectedSize]);
 
   useEffect(() => {
     loadImages(selectedProductItem)
-    createBundleBlock();
   }, [selectedProductItem]);
 
   useEffect(() => {
@@ -394,7 +408,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     const loadProductInfo = async() => {
       const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
       await setProductInfo(getProductInfo);
-      if (getProductInfo.productColors && getProductInfo.productColors.length) {
+      console.log("proidct", getProductInfo)
+      if (getProductInfo && getProductInfo.productColors && getProductInfo.productColors.length) {
         setColors(getProductInfo.productColors);
         handleColorChange(null, getProductInfo.productColors[0])
       }

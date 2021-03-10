@@ -25,7 +25,7 @@ const styles = (theme) => ({
     position: 'relative',
     background: 'white',
     padding: 3,
-    width: '95%',
+    width: '100%',
     alignItems: 'center',
     display: 'flex',
     borderRadius: '0px 4px 4px 0px',

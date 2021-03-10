@@ -133,9 +133,12 @@ const Index = ({classes}) => {
                   Test
                 </Grid>
                 <Grid item lg={1} className={classes.itemColumn}>
-                  Bundles
+                  Stock
                 </Grid>
-                <Grid item lg={2} className={classes.itemColumn}>
+                <Grid item lg={1} className={classes.itemColumn}>
+                  Qty
+                </Grid>
+                <Grid item lg={1} className={classes.itemColumn}>
                   Retail Price
                 </Grid>
                 <Grid item lg={2} className={classes.itemColumn}>
@@ -188,13 +191,16 @@ const Index = ({classes}) => {
                         </Grid>
                       </Grid>
                       <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                        <a href={`/admin/products/items/bundles/${item.id}`}>
                         {
-                          item.productItemProductBundles && item.productItemProductBundles.length
+                          item.stock
                         }
-                        </a>
                       </Grid>
-                      <Grid item lg={2} xs={6} className={classes.itemColumn}>
+                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
+                        {
+                          item.quantity
+                        }
+                      </Grid>
+                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
                         {
                           item.retailPrice
                         }

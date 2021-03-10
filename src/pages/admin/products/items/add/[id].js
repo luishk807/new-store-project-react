@@ -31,6 +31,8 @@ const Add = ({classes}) => {
     productColor: null,
     productSize: null,
     stock: null,
+    quantity: 1,
+    quantityLabel: null,
     retailPrice: null,
     model: null,
     sku: null,
@@ -41,7 +43,7 @@ const Add = ({classes}) => {
     }
   }
   
-  const ignoreForm = ['productId', 'image', 'sku'];
+  const ignoreForm = ['productId', 'image', 'sku', 'quantity', 'quantityLabel'];
   const hideEntry = ['productId'];
 
   const getProduct = async() => {

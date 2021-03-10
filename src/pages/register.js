@@ -15,9 +15,12 @@ import AddForm from '../components/common/Form/AddForm';
 const styles = (theme) => ({
   root: {
     padding: 20,
+    [theme.breakpoints.down('sm')]: {
+      padding: 0
+    }
   },
   formRoot: {
-    padding: 5
+    width: '100%'
   },
   formTextField: {
     padding: '10px 0px',
@@ -54,6 +57,7 @@ const Register = ({classes, data, showRegister}) => {
               </Grid>
               <Grid item lg={12} xs={12}>
                 <AddForm 
+                  classes={{root: classes.formRoot}}
                   customUrl={`/account`} 
                   ignoreForm={ignoreEntry} 
                   userSection={USER_SECTIONS.user} 

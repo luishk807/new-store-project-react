@@ -402,6 +402,14 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.number,
     label: 'Minimun quantity',
   },
+  quantity: {
+    type: FORM_TYPE.number,
+    label: 'Quantity',
+  },
+  quantityLabel: {
+    type: FORM_TYPE.text,
+    label: 'Quantity Label',
+  },
   percentage: {
     type: FORM_TYPE.number,
     label: 'Percentage',

@@ -379,7 +379,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
               </Grid>
               <Grid item lg={4} xs={12}>
                 <Grid container>
-    
                   <Grid item lg={12} xs={12}>
                    <Typography className={classes.productName} variant="h4" component="h3">{productInfo.name}</Typography>
                   </Grid>
@@ -418,6 +417,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                       </Grid>
                     )
                   }
+                  <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
+                    <Grid container>
+                      <Grid item lg={12} xs={12} className={classes.variantTitles}>Bundle</Grid>
+                      <Grid item lg={12} xs={12} >
+                        <a className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>Single</div></a>
+                        <a href="#" className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}>Caja x 3</div></a>
+                        </Grid>
+                    </Grid>
+                  </Grid>
                   <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
                     <QuantitySelectorB onChange={handQuantitySelect} className={classes.dropDown} id="quant-select"/>
                   </Grid>

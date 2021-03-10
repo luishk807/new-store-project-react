@@ -25,7 +25,7 @@ const styles = (theme) => ({
     marginTop: 50,
     display: 'flex',
     justifyContent: 'center',
-    width: '50%%',
+    width: '50%',
     '& div': {
       width: '100%',
     }

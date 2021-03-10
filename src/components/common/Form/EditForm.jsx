@@ -18,7 +18,11 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    width: '50%',
+    margin: '0px auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
     textAlign: 'center',
   },
 });

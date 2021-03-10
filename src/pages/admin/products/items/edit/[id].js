@@ -31,6 +31,8 @@ const Edit = ({classes}) => {
     productColor: null,
     productSize: null,
     stock: null,
+    quantity: 1,
+    quantityLabel: null,
     retailPrice: null,
     model: null,
     sku: null,
@@ -40,7 +42,7 @@ const Edit = ({classes}) => {
     }
   }
   
-  const ignoreEntry=['image', 'sku']
+  const ignoreEntry=['image', 'sku', 'quantity', 'quantityLabel']
   
   const getProductItem = async() => {
     const id = router.query.id;

@@ -11,6 +11,9 @@ const styles = (theme) => ({
   root: {
     width: '100%',
   },
+  title: {
+    margin: '10px 0px',
+  },
   productSelectDrop: {
     minWidth: 120,
     padding: '2px 0px',
@@ -41,7 +44,7 @@ const styles = (theme) => ({
   },
 });
 
-const QuantitySelectorB = ({classes, data = 1, id, onChange}) => {
+const QuantitySelectorB = ({classes, data = 1, id, onChange, title = null}) => {
   const [total, setTotal] = useState(0);
   const [showData, setShowData] = useState(false);
   
@@ -81,6 +84,11 @@ const QuantitySelectorB = ({classes, data = 1, id, onChange}) => {
   return showData && ( 
     <div className={classes.root}>
       <FormControl variant="outlined" className={classes.productSelectDrop}>
+          {
+            title && (
+              <div className={classes.title}>{title}</div>
+            )
+          }
           <div className={classes.quantityBox}>
             <Button className={`mainButtonNaked ${classes.quantityButton}`} onClick={ () => onHandleDropDown(false)}>-</Button>
             <input className={classes.quantityInput} onChange={onHandleDropDown} value={total} type="number" title="quant" id={id}/>

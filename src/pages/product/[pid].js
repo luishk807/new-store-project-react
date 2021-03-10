@@ -197,6 +197,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeBlocks, setSizeBlock] = useState(null);
+  const [selectedBundle, setSelectedBundle] = useState(null);
+  const [bundleBlocks, setBundleBlocks] = useState(null);
   const [dealPrice, setDealPrice] = useState(0);
   const [selectedProductItem, setSelectedProductItem] = useState({});
   const [colors, setColors] = useState(null)
@@ -262,6 +264,23 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     setSelectedColor(color);
     setSelectedSize(null);
     setSelectedProductItem({})
+  }
+
+  const handleBundleChange = (e, bundle) => {
+    if (e) {
+      e.preventDefault();
+    }
+    console.log("bundle", bundle)
+    const items = productInfo.productProductItems;
+    if (items && items.length) {
+      const getItem = items.filter(item => item.productColor === selectedColor.id && item.productSize === selectedSize.id && item.quantity === selectedBundle)
+      console.log(getItem, 'lllll')
+      // if (getItem && getItem.length) {
+      //   const getSize = productInfo.productSizes.filter(size => size.id === getItem[0].productSize)
+      //   handleSizeChange(null, getSize[0])
+      // }
+    }
+    setSelectedBundle(bundle);
   }
 
   const handleDefaultSize = () => {
@@ -333,12 +352,38 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
   }
 
+  const createBundleBlock = () => {
+    if (selectedColor && selectedSize) {
+      console.log("hey hey", productInfo)
+      const found = productInfo.productProductItems.filter(item => {
+        return item.productSize === selectedSize.id && item.productColor == selectedColor.id;
+      })
+      
+      if (found && found.length > 1) {
+        console.log('found: ',found, 'total', found.length)
+        const blocks = found.map((item, index) => {
+          if (item.quantity) {
+            return <a href="#" key={index} onClick={(e) => handleBundleChange(e, item.quantity)} className={classes.productSizeLink}><div className={classes.productSizeBox}>{item.quantityLabel}</div></a>
+          } else {
+            return <a href="#" key={index} onClick={(e) => handleBundleChange(e, 1)} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}>Single</div></a>
+          }
+        });
+        setBundleBlocks(blocks);
+      } else {
+        const blocks = <a className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}>Single</div></a>
+        handleBundleChange(null, 1)
+        setBundleBlocks(blocks);
+      }
+    }
+  }
+
   useEffect(() => {
     createSizeBlock(selectedColor);
   }, [selectedColor, selectedSize]);
 
   useEffect(() => {
     loadImages(selectedProductItem)
+    createBundleBlock();
   }, [selectedProductItem]);
 
   useEffect(() => {
@@ -421,13 +466,14 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     <Grid container>
                       <Grid item lg={12} xs={12} className={classes.variantTitles}>Bundle</Grid>
                       <Grid item lg={12} xs={12} >
-                        <a className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>Single</div></a>
-                        <a href="#" className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}>Caja x 3</div></a>
+                        {
+                          bundleBlocks && bundleBlocks
+                        }
                         </Grid>
                     </Grid>
                   </Grid>
                   <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
-                    <QuantitySelectorB onChange={handQuantitySelect} className={classes.dropDown} id="quant-select"/>
+                    <QuantitySelectorB onChange={handQuantitySelect} title="Quantity" className={classes.dropDown} id="quant-select"/>
                   </Grid>
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>

@@ -218,7 +218,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const loadImages = (data) => {
     const imageUrl = getImageUrlByType('product');
     let imgs = [];
-
+    console.log("loading images", data)
     if (data && data.productImages && data.productImages.length) {
       if (data.productImages.length) {
           imgs = data.productImages.map((img) => {
@@ -261,26 +261,51 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     if (e) {
       e.preventDefault();
     }
+    console.log(productInfo)
     setSelectedColor(color);
     setSelectedSize(null);
-    setSelectedProductItem({})
+    setSelectedBundle(null)
+    setSelectedProductItem(null)
   }
 
-  const handleBundleChange = (e, bundle) => {
+  const handleBundleChange = async(e, bundle) => {
     if (e) {
       e.preventDefault();
     }
     console.log("bundle", bundle)
-    const items = productInfo.productProductItems;
-    if (items && items.length) {
-      const getItem = getBundleProduct(items);
-      setSelectedProductItem(getItem)
+    // const items = productInfo.productProductItems;
+    // if (items && items.length) {
+    //   const getItem = getBundleProduct(items);
+    //   console.log("foundddd", getItem)
+    //   setSelectedProductItem(getItem)
+    // }
+
+    const itemsAvailable = productInfo.productProductItems;
+    console.log("item avalialnle", itemsAvailable)
+    if (itemsAvailable && itemsAvailable.length) {
+      const getItem = productInfo.productProductItems.filter(item => {
+        const quantity = item.quantity ? item.quantity : 1;
+
+        return item.productColorId === selectedColor.id && item.productSizeId === selectedSize.id && quantity == bundle
+      })
+      if (getItem && getItem.length) {
+        console.log("found found", getItem)
+        const searchItem = await getProductItemById(getItem[0].id);
+        searchItem['quantity'] = searchItem.quantity ? Number(searchItem.quantity) : 1;
+        const getTotal = formatNumber(searchItem.retailPrice);
+        setSelectedProductItem(searchItem);
+        setDealPrice(getTotal)
+      }
     }
+
     setSelectedBundle(bundle);
   }
+  
 
   const handleDefaultSize = () => {
+
     if (productInfo && selectedColor) {
+      console.log("hadnle default")
       const items = productInfo.productProductItems;
       if (items && items.length) {
         const getItem = items.filter(item => item.productColor === selectedColor.id)
@@ -289,6 +314,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           handleSizeChange(null, getSize[0])
         }
       }
+    } else {
+      console.log("hadnle default emoty")
     }
   }
 
@@ -299,18 +326,18 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
     setSelectedSize(size)
     
-    const itemsAvailable = productInfo.productProductItems;
+    // const itemsAvailable = productInfo.productProductItems;
 
-    if (itemsAvailable && itemsAvailable.length) {
-      const getItem = productInfo.productProductItems.filter(item => item.productColorId === selectedColor.id && item.productSizeId === size.id)
-      if (getItem && getItem.length) {
-        const searchItem = await getProductItemById(getItem[0].id);
-        searchItem['quantity'] = 1;
-        const getTotal = formatNumber(searchItem.retailPrice);
-        setSelectedProductItem(searchItem);
-        setDealPrice(getTotal)
-      }
-    }
+    // if (itemsAvailable && itemsAvailable.length) {
+    //   const getItem = productInfo.productProductItems.filter(item => item.productColorId === selectedColor.id && item.productSizeId === size.id)
+    //   if (getItem && getItem.length) {
+    //     const searchItem = await getProductItemById(getItem[0].id);
+    //     searchItem['quantity'] = 1;
+    //     const getTotal = formatNumber(searchItem.retailPrice);
+    //     setSelectedProductItem(searchItem);
+    //     setDealPrice(getTotal)
+    //   }
+    // }
   }
 
   const createSizeBlock = (color) => {
@@ -348,42 +375,73 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
   }
 
-  const getBundleProduct = (items) => {
-    if (items && items.length) {
-      const getItem = items.filter(item => {
-        console.log("compare size: ", item.productSize, ' and ' , selectedSize.id);
-        console.log("compare color: ", item.productColor, ' and ' , selectedColor.id);
-        console.log("compare bundle: ", quantity, ' and ' , selectedBundle);
-        let quantity = item.quantity;
-        if (!quantity) {
-          quantity = 1;
-        }
-        return item.productColor === selectedColor.id && item.productSize === selectedSize.id && quantity === selectedBundle
-      })
-      if (getItem && getItem.length) {
-        console.log(getItem, 'lllll')
-        return getItem[0]
-      }
-    }
-  }
-
   const createBundleBlock = () => {
-    if (selectedSize && selectedColor && selectedBundle) {
+    if (selectedSize && selectedColor) {
       const found = getBundleProduct(productInfo.productProductItems);
-      if (found && found.length > 1) {
+      console.log("bundle product",productInfo.productProductItems )
+      console.log("bundle product found",found )
+      let foundSelected = false;
+
+      if (found && found.length > 0) {
         console.log('found: ',found, 'total', found.length)
+        // add initial block of single
+        // found.unshift(<a key='f0' className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}>Single</div></a>)
         const blocks = found.map((item, index) => {
-          if (item.quantity) {
-            return <a href="#" key={index} onClick={(e) => handleBundleChange(e, item.quantity)} className={classes.productSizeLink}><div className={classes.productSizeBox}>{item.quantityLabel}</div></a>
-          } else {
-            return <a href="#" key={index} onClick={(e) => handleBundleChange(e, 1)} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}>Single</div></a>
+          let selectedClass = classes.productSizeLink;
+          if (selectedBundle && item.quantity == selectedBundle) {
+            console.log("found match")
+            selectedClass = classes.productSizeLinkSelected;
+            foundSelected = true;
           }
+          
+          const quantity = item.quantity ? item.quantity : 1;
+          
+          return <a href="#" key={index} onClick={(e) => handleBundleChange(e, quantity)} className={selectedClass}><div className={classes.productSizeBox}>{item.quantityLabel}</div></a>
+          // if (item.quantity) {
+          //   return <a href="#" key={index} onClick={(e) => handleBundleChange(e, item.quantity)} className={classes.productSizeLink}><div className={classes.productSizeBox}>{item.quantityLabel}</div></a>
+          // } else {
+          //   return <a href="#" key={index} onClick={(e) => handleBundleChange(e, 1)} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}>Single</div></a>
+          // }
         });
+
+        blocks.unshift(<a href="#" key="f00" onClick={(e) => handleBundleChange(e, 1)} className={!foundSelected ? classes.productSizeLinkSelected : classes.productSizeLink}><div className={classes.productSizeBox}>Single</div></a>)
+        
+        if (selectedBundle) {
+          handleBundleChange(null, selectedBundle)
+        } else {
+          handleBundleChange(null, 1)
+        }
         setBundleBlocks(blocks);
       } else {
+        console.log("no bundle found")
         const blocks = <a className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}>Single</div></a>
         handleBundleChange(null, 1)
         setBundleBlocks(blocks);
+      }
+    } 
+    // else if(selectedSize && selectedColor) {
+    //   const blocks = <a className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}>Single</div></a>
+    //   handleBundleChange(null, 1)
+    //   setBundleBlocks(blocks);
+    // }
+  }
+
+  const getBundleProduct = (items) => {
+    if (items && items.length) {
+      const getItem = items.filter(item => {
+        let quantity = item.quantity;
+        // console.log("compare size: ", item.productSize, ' and selected' , selectedSize.id);
+        // console.log("compare color: ", item.productColor, ' and seleceted' , selectedColor.id);
+        // console.log("compare bundle: ", quantity, ' and selected' , selectedBundle);
+        if (!quantity) {
+          quantity = 1;
+        }
+        // return item.productColor === selectedColor.id && item.productSize === selectedSize.id && quantity === selectedBundle
+        return item.productColor === selectedColor.id && item.productSize === selectedSize.id && item.quantity
+      })
+      if (getItem && getItem.length) {
+        // console.log(getItem, 'lllll')
+        return getItem
       }
     }
   }
@@ -395,7 +453,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   useEffect(() => {
     createSizeBlock(selectedColor);
   }, [selectedColor, selectedSize]);
-
+  
   useEffect(() => {
     loadImages(selectedProductItem)
   }, [selectedProductItem]);
@@ -412,6 +470,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       if (getProductInfo && getProductInfo.productColors && getProductInfo.productColors.length) {
         setColors(getProductInfo.productColors);
         handleColorChange(null, getProductInfo.productColors[0])
+       // createBundleBlock();
       }
       setShowData(true);
     }

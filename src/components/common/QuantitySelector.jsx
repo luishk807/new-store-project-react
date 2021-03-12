@@ -29,7 +29,7 @@ const styles = (theme) => ({
   },
 });
 
-const QuanitySelector = ({classes, data, title, id, onChange}) => {
+const QuantitySelector = ({classes, data, title, id, onChange}) => {
   const items = [];
   const [total, setTotal] = useState(0);
   const length = 10;
@@ -70,7 +70,7 @@ const QuanitySelector = ({classes, data, title, id, onChange}) => {
   );
 }
 
-QuanitySelector.protoTypes = {
+QuantitySelector.protoTypes = {
   classes: T.object,
   data: T.object,
   title: T.string,
@@ -78,4 +78,4 @@ QuanitySelector.protoTypes = {
   onChange: T.func,
 };
 
-export default withStyles(styles)(QuanitySelector);
+export default withStyles(styles)(QuantitySelector);

@@ -36,6 +36,8 @@ const Edit = ({classes}) => {
     minQuantity: null
   }
 
+  const ignoreForm = ['startDate', 'endDate'];
+
   useEffect(() => {
     const pid = router.query.id;
     setId(pid);
@@ -56,6 +58,7 @@ const Edit = ({classes}) => {
             id={id} 
             title={`discount ${discount.name}`}
             entryForm={form} 
+            ignoreForm={ignoreForm}
             customUrl={`/admin/products/discounts/${discount.productId}`}  
           />
         ) : (

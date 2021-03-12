@@ -36,7 +36,7 @@ const Add = ({classes}) => {
     productId: router.query.id
   }
 
-  const ignoreForm = ['productId'];
+  const ignoreForm = ['productId', 'startDate', 'endDate'];
   const hideEntry = ['productId'];
 
   const loadProductInfo = async() => {

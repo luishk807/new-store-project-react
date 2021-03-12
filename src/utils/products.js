@@ -40,8 +40,9 @@ export const checkDiscountPrice = async(product, selectedItem, quantity) => {
         found = deal;
       }
       if (found) {
+          const newTotal = originalItem.retailPrice - (originalItem.retailPrice * (found.percentage / 100));
           currProduct['quantity'] = quantity;
-          currProduct['retailPrice'] = found.price;
+          currProduct['retailPrice'] = newTotal.toFixed(2);
           currProduct['discount'] = found;
       }
     })

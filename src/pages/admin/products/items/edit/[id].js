@@ -40,7 +40,7 @@ const Edit = ({classes}) => {
     }
   }
   
-  const ignoreEntry=['image']
+  const ignoreEntry=['image', 'sku']
   
   const getProductItem = async() => {
     const id = router.query.id;

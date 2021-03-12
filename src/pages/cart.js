@@ -6,15 +6,10 @@ import { updateCart, deleteCart } from '../redux/actions/main'
 
 import {
   Grid,
-  withStyles,
   Link,
   Button,
   Divider,
-  CardMedia,
-  CardContent,
-  Card,
   Hidden,
-  CardActions,
   withWidth,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,7 +18,6 @@ import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
 import { getProductById } from '../api/products';
 import QuantitySelectorB from '../components/common/QuantitySelectorB';
-import { CartSample } from '../constants/samples/CartSample';
 import { formatNumber, getCartTotal, getImage } from '../utils';
 import { checkDiscountPrice } from '../utils/products';
 import { getImageUrlByType } from '../utils/form';
@@ -162,7 +156,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
   }
 
   useEffect(() => {
-    const total = getCartTotal(cart);
+    const total = getCartTotal({cart: cart});
     setShowCart(!!Object.keys(cart).length)
     setTotals(total)
   }, [cart])

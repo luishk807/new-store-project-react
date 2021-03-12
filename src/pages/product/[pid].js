@@ -210,8 +210,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const handQuantitySelect = async(resp) => {
     const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem, resp.value);
     setDealPrice(getDiscountItem.retailPrice);
-    setSelectedProductItem(getDiscountItem);
+    setProductItem(getDiscountItem);
   };
+
+  const setProductItem = async(item) => {
+    if (Object.keys(item).length && !item.productImages.length && item.productItemProduct) {
+      item.productImages = productInfo.productImages;
+    }
+    setSelectedProductItem(item);
+  }
 
   const loadImages = (data) => {
     const imageUrl = getImageUrlByType('product');
@@ -275,7 +282,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     setForceRefresh(!forceRefresh)
     setSelectedColor(color);
     setSelectedSize(null);
-    setSelectedProductItem({})
+    setProductItem({})
   }
 
   const handleDefaultSize = () => {
@@ -305,8 +312,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       if (getItem && getItem.length) {
         const searchItem = await getProductItemById(getItem[0].id);
         searchItem['quantity'] = 1;
+        setForceRefresh(!forceRefresh)
         const getTotal = formatNumber(searchItem.retailPrice);
-        setSelectedProductItem(searchItem);
+        setProductItem(searchItem);
         setDealPrice(getTotal)
       }
     }
@@ -347,6 +355,19 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
   }
 
+  const loadProductInfo = async() => {
+    const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
+    await setProductInfo(getProductInfo);
+    if (getProductInfo.productColors && getProductInfo.productColors.length) {
+      if (getProductInfo.productProductDiscount && getProductInfo.productProductDiscount.length) {
+        setShowDiscount(true)
+      }
+      setColors(getProductInfo.productColors);
+      handleColorChange(null, getProductInfo.productColors[0])
+    }
+    setShowData(true);
+  }
+  
   useEffect(() => {
     createSizeBlock(selectedColor);
   }, [selectedColor, selectedSize]);
@@ -360,18 +381,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }, [productInfo, selectedColor]);
 
   useEffect(()=>{
-    const loadProductInfo = async() => {
-      const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
-      await setProductInfo(getProductInfo);
-      if (getProductInfo.productColors && getProductInfo.productColors.length) {
-        if (getProductInfo.productProductDiscount && getProductInfo.productProductDiscount.length) {
-          setShowDiscount(true)
-        }
-        setColors(getProductInfo.productColors);
-        handleColorChange(null, getProductInfo.productColors[0])
-      }
-      setShowData(true);
-    }
+
     loadProductInfo();
   }, [id, showData])
 

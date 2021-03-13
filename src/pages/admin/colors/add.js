@@ -22,26 +22,15 @@ const styles = (theme) => ({
 const Add = ({classes}) => {
   const form = {
     name: null,
-    category: null,
-    brand: null,
-    model: null,
-    sku: null,
-    description: null,
-    image: {
-      values: [],
-      open: false,
-    }
+    color: 'black'
   }
-  
-  const ignoreEntry=['image']
 
   return (
     <AdminLayoutTemplate>
       <AddForm 
-        adminSection={ADMIN_SECTIONS.product} 
-        ignoreForm={ignoreEntry} 
+        adminSection={ADMIN_SECTIONS.color} 
         entryForm={form}
-        customUrl={`/admin/${ADMIN_SECTIONS.product.url}`}  
+        customUrl={`/admin/${ADMIN_SECTIONS.color.url}`}  
       />
     </AdminLayoutTemplate>
   );

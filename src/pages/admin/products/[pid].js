@@ -25,14 +25,11 @@ const Edit = ({classes}) => {
   const id = router.query.pid;
   const form = {
     name: null,
-    stock: null,
-    amount: null,
     category: null,
     brand: null,
     model: null,
     sku: null,
     description: null,
-    vendor: null,
     image: {
       values: [],
       open: false,

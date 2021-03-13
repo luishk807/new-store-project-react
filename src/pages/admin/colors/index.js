@@ -7,23 +7,15 @@ import {
   Button,
 } from '@material-ui/core';
 import moment from 'moment';
-import { useRouter } from 'next/router';
 
-import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteColorById, getColorsByProductId } from '../../../../api/productColors';
-import Snackbar from '../../../../components/common/Snackbar';
-import ColorBlock from '../../../../components/common/ColorBlock';
-import HeaderSub from '../../../../components/product/HeaderSub';
+import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
+import Snackbar from '../../../components/common/Snackbar';
+import ColorBlock from '../../../components/common/ColorBlock';
+import { deleteColorById, getColors } from '../../../api/colors'
+import HeaderSub from '../../../components/common/HeaderSub';
+import Icons from '../../../components/common/Icons';
 
 const styles = (theme) => ({
-  root: {
-    padding: 10,
-  },
-  icon: {
-    width: 30,
-    height: 30,
-    fill: 'black'
-  },
   noData: {
     color: 'red',
     fontSize: '1.5em',
@@ -31,6 +23,11 @@ const styles = (theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
     padding: '10px 0px',
+  },
+  icon: {
+    width: 25,
+    height: 25,
+    fill: 'black'
   },
   actionBtn: {
     margin: 2,
@@ -63,20 +60,12 @@ const styles = (theme) => ({
   itemAction: {
     textAlign: 'right',
     padding: 5,
-  },
-  colorBlock: {
-    width: '10%',
-    height: 20,
-    background: 'red',
-    border: '2px solid black',
-    margin: '0px auto',
   }
 });
 
 const Index = ({classes}) => {
-  const router = useRouter();
   const [colors, setColors] = useState([]);
-  const [product, setProduct] = useState(null);
+  const [showData, setShowData] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -84,11 +73,11 @@ const Index = ({classes}) => {
   });
 
   const loadColors = async() => {
-    const pid = router.query.id;
-    setProduct(pid);
-    if (pid) {
-      const gColors = await getColorsByProductId(pid);
+    const gColors = await getColors();
+    console.log(gColors);
+    if (gColors) {
       setColors(gColors);
+      setShowData(true);
     }
   };
 
@@ -115,61 +104,78 @@ const Index = ({classes}) => {
 
   return (
     <AdminLayoutTemplate>
-      <HeaderSub id={product} name="colors" />
+      <HeaderSub name="color" />
       {
-        colors.length ? (
+        showData ? (
           <Grid container className={classes.mainContainer}>
             <Hidden smDown>
             <Grid item lg={12} xs={12} className={classes.mainHeader}>
               <Grid container className={classes.itemContainer}>
                 <Grid item lg={1} className={classes.itemIndex}></Grid>
-                <Grid item lg={4} className={classes.itemColumn}>
-                  Color
-                </Grid>
                 <Grid item lg={3} className={classes.itemColumn}>
-                  Status
+                  Name
                 </Grid>
                 <Grid item lg={2} className={classes.itemColumn}>
+                  Color
+                </Grid>
+                <Grid item lg={2} className={classes.itemColumn}>
+                  Status
+                </Grid>
+                <Grid item lg={1} className={classes.itemColumn}>
                   Date Created
                 </Grid>
-                <Grid item lg={2} className={classes.itemAction}>
+                <Grid item lg={3} className={classes.itemAction}>
                   Action
                 </Grid>
               </Grid>
             </Grid>
             </Hidden>
             {
-              colors.map((color, index) => {
+              colors.map((item, index) => {
                 return (
                   <Grid key={index} item lg={12} xs={12} className={classes.mainItems}>
                     <Grid container className={classes.itemContainer}>
-                      <Grid item lg={1} xs={2} className={classes.itemIndex}>
+                      <Hidden xsDown>
+                        <Grid item lg={1} xs={2} className={classes.itemIndex}>
+                          {
+                            index + 1
+                          }
+                        </Grid>
+                      </Hidden>
+                      <Grid item lg={3} xs={5} className={classes.itemColumn}>
+                        <a href={`colors/${item.id}`}>
                         {
-                          index + 1
+                          item.name
                         }
+                        </a>
                       </Grid>
-                      <Grid item lg={4} xs={6} className={classes.itemColumn}>
-                        <ColorBlock classes={{colorBlock: classes.colorBlock}} color={color.color} url={`/admin/products/colors/edit/${color.id}`} />
+                      <Grid item lg={2} xs={5} className={classes.itemColumn}>
+                        <ColorBlock color={item.color} />
                       </Grid>
-                      <Grid item lg={3} xs={6} className={classes.itemColumn}>
-                        {
-                          color.colorStatus.name
-                        }
-                      </Grid>
-                      <Grid item lg={2} xs={6} className={classes.itemColumn}>
-                        {
-                          moment(color.createdAt).format('YYYY-MM-DD')
-                        }
-                      </Grid>
-                      <Hidden smDown>
-                      <Grid item lg={2} className={classes.itemAction}>
-                        <Button className={`smallMainButton ${classes.actionBtn}`} href={`/admin/products/colors/edit/${color.id}`}>
-                          Edit
-                        </Button>
-                        <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => delItem(color.id)}>
-                          Delete
-                        </Button>
-                      </Grid>
+                      <Hidden only={['lg']}>
+                        <Grid item lg={2} xs={2} className={classes.itemColumn}>
+                          <Icons name="delete" classes={{icon: `${classes.icon}`}}/>
+                        </Grid>
+                      </Hidden>
+                      <Hidden xsDown>
+                        <Grid item lg={2} xs={6} className={classes.itemColumn}>
+                          {
+                            item.colorStatus.name
+                          }
+                        </Grid>
+                        <Grid item lg={1} xs={6} className={classes.itemColumn}>
+                          {
+                            moment(item.createdAt).format('YYYY-MM-DD')
+                          }
+                        </Grid>
+                        <Grid item lg={3} className={classes.itemAction}>
+                          <Button className={`smallMainButton ${classes.actionBtn}`} href={`/admin/colors/${item.id}`}>
+                            Edit
+                          </Button>
+                          <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => delItem(item.id)}>
+                            Delete
+                          </Button>
+                        </Grid>
                       </Hidden>
                     </Grid>
                   </Grid>

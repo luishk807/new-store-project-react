@@ -77,26 +77,27 @@ const Index = ({classes}) => {
 
   const loadProducts = async() => {
     const getProducts = await getAdminProducts();
-    console.log(getProducts)
     setProducts(getProducts);
     setShowData(true);
   };
 
   const delItem = async(id) => {
-    deleteProduct(id).then((data) => {
+    const result = await deleteProduct(id);
+
+    if (result && result.status) {
       setSnack({
         severity: 'success',
         open: true,
         text: `Product Deleted`,
       })
-      loadOrders()
-    }).catch((err) => {
+      loadProducts()
+    } else {
       setSnack({
         severity: 'error',
         open: true,
         text: `ERROR: Product cannot be delete`,
       })
-    })
+    }
   }
 
   useEffect(() => {

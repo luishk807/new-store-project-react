@@ -33,10 +33,10 @@ const Add = ({
   entryForm, 
   type,
   hideEntry,
+  ignoreForm,
   children,
   onSubmitAction,
   showTitle,
-  ignoreForm, 
   showCancel,
   actionButtonName,
   actionCancelButtonName,
@@ -118,7 +118,6 @@ const Add = ({
   }
 
   useEffect(() => {
-    console.log("form", form)
     let newErrors = {}
     if (entryForm) {
       setForm(entryForm);
@@ -148,6 +147,8 @@ const Add = ({
         formSubmit={handleSubmit} 
         showCancelBtn={showCancel}
         snack={snack}
+        ignoreForm={ignoreForm}
+        hideEntry={hideEntry}
         cancelCustonName={actionCancelButtonName}
         submitCustomName={actionButtonName}
         formCancel={onCancel}
@@ -171,6 +172,7 @@ Add.protoTypes = {
   onSubmitAction: T.func,
   showTitle: T.bool,
   type: T.string,
+  hideEntry: T.array,
   children: T.node,
   customUrl: T.string,
   ignoreForm: T.array,

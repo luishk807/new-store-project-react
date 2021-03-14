@@ -170,6 +170,13 @@ export const ADMIN_SECTIONS = {
     option: 'sweetboxproduct',
     parent: 'sweetbox'
   },
+  'color': {
+    name: 'Color',
+    names: 'Colors',
+    key: 'color',
+    url: 'colors',
+    option: 'color'
+  },
 }
 
 export const ADMIN_URL = {

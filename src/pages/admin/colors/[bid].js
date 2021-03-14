@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
+import { useRouter } from 'next/router';
 import { 
   withStyles,
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
-import AddForm from '../../../components/common/Form/AddForm';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
+import EditForm from '../../../components/common/Form/EditForm';
+
 
 const styles = (theme) => ({
   root: {
@@ -19,36 +21,30 @@ const styles = (theme) => ({
   },
 });
 
-const Add = ({classes}) => {
+const Edit = ({classes}) => {
+  const router = useRouter()
+  const id = router.query.bid;
+
   const form = {
     name: null,
-    category: null,
-    brand: null,
-    model: null,
-    sku: null,
-    description: null,
-    image: {
-      values: [],
-      open: false,
-    }
+    color: null,
+    status: null,
   }
-  
-  const ignoreEntry=['image']
 
   return (
     <AdminLayoutTemplate>
-      <AddForm 
-        adminSection={ADMIN_SECTIONS.product} 
-        ignoreForm={ignoreEntry} 
-        entryForm={form}
-        customUrl={`/admin/${ADMIN_SECTIONS.product.url}`}  
+      <EditForm 
+        adminSection={ADMIN_SECTIONS.color} 
+        customUrl={`/admin/${ADMIN_SECTIONS.color.url}`} 
+        id={id} 
+        entryForm={form} 
       />
     </AdminLayoutTemplate>
   );
 }
 
-Add.protoTypes = {
+Edit.protoTypes = {
   classes: T.object
 }
 
-export default withStyles(styles)(Add);
+export default withStyles(styles)(Edit);

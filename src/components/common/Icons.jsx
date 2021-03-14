@@ -70,6 +70,7 @@ import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import PrintIcon from '@material-ui/icons/Print';
 import EditIcon from '@material-ui/icons/Edit';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
+import ColorLensIcon from '@material-ui/icons/ColorLens';
 
 import Typography from './Typography';
 
@@ -86,6 +87,9 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'addCircle':
         return <AddCircleIcon className={classes.icon}/>
+      break;
+      case 'color':
+        return <ColorLensIcon className={classes.icon}/>
       break;
       case 'backArrow':
         return <KeyboardBackspaceIcon className={classes.icon}/>

@@ -30,11 +30,11 @@ export const USER_ACCOUNT_SECTIONS = [
     label: 'Security and Login',
     url: 'settings',
   },
-  {
-    name: 'store',
-    label: 'Business Account',
-    url: 'vendor',
-  }
+  // {
+  //   name: 'store',
+  //   label: 'Business Account',
+  //   url: 'vendor',
+  // }
 ]
 
 export const USER_SECTIONS = {

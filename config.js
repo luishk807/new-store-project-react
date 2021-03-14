@@ -13,6 +13,7 @@ export const FORM_TYPE = {
   linkItem: 'linkitem',
   imageUrl: 'imgurl',
   checkbox: 'checkbox',
+  bool: 'boolean',
 }
 
 export const CATEGORY_ICONS = [
@@ -238,9 +239,17 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.number,
     label: 'Product Id',
   },
+  colorId: {
+    type: FORM_TYPE.number,
+    label: 'Color Id',
+  },
   mobile: {
     type: FORM_TYPE.text,
     label: 'Mobile',
+  },
+  useCustom: {
+    type: FORM_TYPE.bool,
+    label: 'Custom',
   },
   phone: {
     type: FORM_TYPE.text,

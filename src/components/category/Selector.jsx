@@ -50,7 +50,7 @@ const styles = (theme) => ({
   },
   cubeCategoryContainer: {
     width: '100%',
-    overflowY: 'scroll',
+    overflowY: 'auto',
   },
   cubeItems: {
   },

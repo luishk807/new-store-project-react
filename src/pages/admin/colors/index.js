@@ -53,6 +53,14 @@ const styles = (theme) => ({
     textAlign: 'left',
     padding: 5,
   },
+  itemColumnMobileHide: {
+    textAlign: 'center',
+    padding: 5,
+    display: 'none',
+    [theme.breakpoints.down('sm')]: {
+      display: 'block'
+    }
+  },
   itemColumn: {
     textAlign: 'center',
     padding: 5,
@@ -152,11 +160,9 @@ const Index = ({classes}) => {
                       <Grid item lg={2} xs={5} className={classes.itemColumn}>
                         <ColorBlock color={item.color} />
                       </Grid>
-                      <Hidden only={['lg']}>
-                        <Grid item lg={2} xs={2} className={classes.itemColumn}>
-                          <Icons name="delete" classes={{icon: `${classes.icon}`}}/>
-                        </Grid>
-                      </Hidden>
+                      <Grid item lg={2} xs={2} className={classes.itemColumnMobileHide}>
+                        <Icons name="delete" classes={{icon: `${classes.icon}`}}/>
+                      </Grid>
                       <Hidden xsDown>
                         <Grid item lg={2} xs={6} className={classes.itemColumn}>
                           {

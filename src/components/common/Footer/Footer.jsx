@@ -16,11 +16,19 @@ const styles = (theme) => ({
     color: 'black',
   },
   footerLink: {
-    fontSize: '.8em',
     color: 'white',
     cursor: 'pointer',
     '&:hover': {
       textDecoration: 'underline',
+    }
+  },
+  contactUL: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      alignItems: 'center !important',
     }
   },
   firstLineContainer: {
@@ -30,7 +38,7 @@ const styles = (theme) => ({
   firstLine: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     margin: '40px 0px',
   },
   firstLineItems: {
@@ -56,20 +64,17 @@ const styles = (theme) => ({
       margin: 0,
       padding: 0,
       display: 'block',
+      width: '50%',
+      padding: 2,
       [theme.breakpoints.down('sm')]: {
-        display: 'table',
-        textAlign: 'center',
-        listStyleType: 'none',
+        width: '80% !important',
       },
     },
     '& ul li': {
       lineHeight: '20px',
-      display: 'block',
+      display: 'flex',
       padding: '5px 0px',
-      [theme.breakpoints.down('sm')]: {
-        display: 'inline-block',
-        padding: 8,
-      },
+      justifyContent: 'space-between'
     }
   },
   secondLastline: {
@@ -184,133 +189,86 @@ const Footer = ({classes}) => {
           <Grid item lg={12} xs={12} className={classes.firstLineContainer}>
             <Grid container className={classes.firstLine}>
               {/* start of section */}
-              <Grid item lg={2} md={6} xs={12} className={classes.firstLineItems}>
+              <Grid item lg={4} xs={12} className={classes.firstLineItems}>
                 <Grid container>
-                  <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
-                    <a align="center" href="/">Venenatis</a>
-                  </Grid>
-                  <Grid item lg={4} xs={12} className={classes.firstLineItemsCells}>
-                    <ul className={classes.ulList}>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                    </ul>
+                  <Grid item lg={4} xs={7} className={classes.firstLineItemsCells}>
+                    <img className={`img-fluid`} src="/images/logo-all-white.svg" />
                   </Grid>
                 </Grid>
               </Grid>
-              {/* start of section */}
-              <Grid item lg={2} md={6} xs={12} className={classes.firstLineItems}>
+              <Grid item lg={5} xs={12}>
                 <Grid container>
-                  <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
-                    <a align="center" href="/">Venenatis</a>
+                  <Grid item lg={6} xs={12} className={classes.firstLineItems}>
+                    <Grid container>
+                      <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
+                        <a align="center" href="/">Business Hours</a>
+                      </Grid>
+                      <Grid item lg={12} xs={12} className={classes.firstLineItemsCells}>
+                        <ul className={classes.ulList}>
+                          <li className={classes.liList}>
+                            <span>Lunes</span>
+                            <span>9:00AM - 5:00PM</span>
+                          </li>
+                          <li className={classes.liList}>
+                            <span>Martes</span>
+                            <span>9:00AM - 5:00PM</span>
+                          </li>
+                          <li className={classes.liList}>
+                            <span>Miercoles</span>
+                            <span>9:00AM - 5:00PM</span>
+                          </li>
+                          <li className={classes.liList}>
+                            <span>Jueves</span>
+                            <span>9:00AM - 5:00PM</span>
+                          </li>
+                          <li className={classes.liList}>
+                            <span>Viernes</span>
+                            <span>9:00AM - 5:00PM</span>
+                          </li>
+                          <li className={classes.liList}>
+                            <span>Sabado</span>
+                            <span>9:00AM - 5:00PM</span>
+                          </li>
+                          <li className={classes.liList}>
+                            <span>Domingo</span>
+                            <span>9:00AM - 5:00PM</span>
+                          </li>
+                        </ul>
+                      </Grid>
+                    </Grid>
                   </Grid>
-                  <Grid item lg={4} xs={12} className={classes.firstLineItemsCells}>
-                    <ul className={classes.ulList}>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                    </ul>
+                  {/* start of section */}
+                  <Grid item lg={6} xs={12} className={classes.firstLineItems}>
+                    <Grid container>
+                      <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
+                        <a align="center" href="/">Contact</a>
+                      </Grid>
+                      <Grid item lg={12} xs={12} className={classes.firstLineItemsCells}>
+                        <ul className={classes.contactUL}>
+                          <li className={classes.liList}>
+                            <span>Phone</span>
+                            <span>6770-2400</span>
+                          </li>
+                          <li className={classes.liList}>
+                            <span>Whatssap</span>
+                            <span>6770-2400</span>
+                          </li>
+                          <li className={classes.liList}>
+                            <span>Direction</span>
+                            <span>Plaza Dorado</span>
+                          </li>
+                          <li className={classes.liList}>
+                            <span>Email</span>
+                            <span>ventas@avenidaz.com</span>
+                          </li>
+                        </ul>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
+
               </Grid>
-               {/* start of section */}
-               <Grid item lg={2} md={6} xs={12} className={classes.firstLineItems}>
-                <Grid container>
-                  <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
-                    <a align="center" href="/">Venenatis</a>
-                  </Grid>
-                  <Grid item lg={4} xs={12} className={classes.firstLineItemsCells}>
-                    <ul className={classes.ulList}>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                    </ul>
-                  </Grid>
-                </Grid>
-              </Grid>
-              {/* start of section */}
-              <Grid item lg={2} md={6} xs={12} className={classes.firstLineItems}>
-                <Grid container>
-                  <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
-                    <a align="center" href="/">Our Company</a>
-                  </Grid>
-                  <Grid item lg={4} xs={12} className={classes.firstLineItemsCells}>
-                    <ul className={classes.ulList}>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          About Us
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/contactus"  className={classes.footerLink}>
-                          Contact Us
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Terms
-                        </a>
-                      </li>
-                      <li className={classes.liList}>
-                        <a href="/"  className={classes.footerLink}>
-                          Pellentesque
-                        </a>
-                      </li>
-                    </ul>
-                  </Grid>
-                </Grid>
-              </Grid>
+ 
             </Grid>
           </Grid>
           <Grid item lg={12} xs={12} className={`${classes.socialLine}`}>
@@ -341,18 +299,18 @@ const Footer = ({classes}) => {
               <Grid item lg={6} md={6} xs={12} className={classes.secondLastlineMain}>
                 <ul>
                   <li>
-                    <a href='/' className={classes.secondLastlineItems}>
-                      Aenean
+                    <a href='/aboutus' className={classes.secondLastlineItems}>
+                    About Us
                     </a>
                   </li>
                   <li>
-                    <a href='/' className={classes.secondLastlineItems}>
-                      Aenean
+                    <a href='/contactus' className={classes.secondLastlineItems}>
+                    Contact Us
                     </a>
                   </li>
                   <li>
-                    <a href='/' className={classes.secondLastlineItems}>
-                      Aenean
+                    <a href='/terms' className={classes.secondLastlineItems}>
+                    Terms & Privacy
                     </a>
                   </li>
                   <li>
@@ -365,7 +323,7 @@ const Footer = ({classes}) => {
             </Grid>
           </Grid>
           <Grid item lg={12} xs={12} className={`${classes.lastLine}`}>
-              <Typography align="center" variant="body1" component="p" className={classes.lastLineItems}>&copy; 2020 <a href="/" className={classes.footerLink}>AvenidaZ.com</a>  All right reserverd.</Typography>
+              <Typography align="center" variant="body1" component="p" className={classes.lastLineItems}>&copy; 2020 <a href="/" className={classes.footerLink}>AvenidaZ.com</a>  All right reserved.</Typography>
           </Grid>
         </Grid>
       </div>

@@ -20,15 +20,15 @@ const styles = (theme) => ({
 });
 
 const Add = ({classes}) => {
-  const [form, setForm] = useState({
+  const form = {
     name: null,
     icon: null
-  })
+  }
   
   return (
     <AdminLayoutTemplate>
       <AddForm 
-        name={ADMIN_SECTIONS.category.key} 
+        adminSection={ADMIN_SECTIONS.category} 
         customUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 
         entryForm={form} 
       />

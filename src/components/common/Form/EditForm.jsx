@@ -8,7 +8,7 @@ import {
 
 import { saveItem } from '../../../api';
 import Api from '../../../services/api';
-import { validateForm, loadMainOptions, handleFormResponse } from '../../../utils/form';
+import { validateForm, loadMainOptions, handleFormResponse, checkEnforceDates } from '../../../utils/form';
 import Form from './Form';
 import { FORM_SCHEMA } from '../../../../config';
 
@@ -117,6 +117,8 @@ const EditForm = ({
     let errorFound = false;
     let key = '';
     
+    await checkEnforceDates(form, ignoreForm);
+
     for (var i in form) {
       errorFound = await validateForm(i, form[i], ignoreForm);
       key = i;

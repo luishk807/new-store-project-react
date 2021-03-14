@@ -1,4 +1,5 @@
 import { FORM_SCHEMA, ALLOW_FIELDS } from '../../config';
+import { isAroundTime } from '../utils';
 
 export const formatForm = (form) => {
   const currentForm = form;
@@ -37,10 +38,16 @@ export const checkDiscountPrice = async(product, selectedItem, quantity) => {
     let found = null;
     product.productProductDiscount.forEach((deal) => {
       if (parseInt(quantity) >= parseInt(deal.minQuantity)) {
-        found = deal;
+        if (deal.useDate && deal.startDate && deal.endDate) {
+          if (isAroundTime(deal.startDate, deal.endDate)) {
+            found = deal;
+          }
+        } else {
+          found = deal;
+        }
       }
       if (found) {
-          const newTotal = originalItem.retailPrice - (originalItem.retailPrice * (found.percentage / 100));
+          const newTotal = originalItem.retailPrice - (originalItem.retailPrice * found.percentage);
           currProduct['quantity'] = quantity;
           currProduct['retailPrice'] = newTotal.toFixed(2);
           currProduct['discount'] = found;

@@ -13,9 +13,13 @@ const styles = (theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+    width: '50%',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    margin: '0px auto',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
     textAlign: 'center',
   },
 });
@@ -36,11 +40,12 @@ const Edit = ({classes}) => {
     }
   }
 
-  const ignoreEntry=['image'];
+  const ignoreEntry=['image', 'model'];
 
   return (
     <AdminLayoutTemplate>
       <EditForm 
+        classes={{root: classes.root}}
         ignoreForm={ignoreEntry} 
         adminSection={ADMIN_SECTIONS.product} 
         id={id} 

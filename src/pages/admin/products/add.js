@@ -33,7 +33,7 @@ const Add = ({classes}) => {
     }
   }
   
-  const ignoreEntry=['image']
+  const ignoreEntry=['image', 'model']
 
   return (
     <AdminLayoutTemplate>

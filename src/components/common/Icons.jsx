@@ -11,6 +11,7 @@ import {
   makeStyles,
 } from '@material-ui/core';
 
+import LogoWhite from '../../../public/images/logo-white.svg';
 import Order from '../../../public/images/svg/order.svg';
 import Wishlist from '../../../public/images/svg/wishlist.svg';
 import AddressBook from '../../../public/images/svg/notebook.svg';
@@ -71,6 +72,17 @@ import PrintIcon from '@material-ui/icons/Print';
 import EditIcon from '@material-ui/icons/Edit';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import ColorLensIcon from '@material-ui/icons/ColorLens';
+import Bag from '../../../public/images/svg/categories/bag.svg';
+import CloseBag from '../../../public/images/svg/categories/closebag.svg';
+import Ballons from '../../../public/images/svg/categories/ballons.svg';
+import OpenBox from '../../../public/images/svg/categories/openBox.svg';
+import GlassBottle from '../../../public/images/svg/categories/glassbottle.svg';
+import Basket from '../../../public/images/svg/categories/basket.svg';
+import Ribbon from '../../../public/images/svg/categories/ribbon.svg';
+import LifeSaver from '../../../public/images/svg/categories/lifesaver.svg';
+import Paw from '../../../public/images/svg/categories/paw.svg';
+import Costmetic from '../../../public/images/svg/categories/cosmetic.svg';
+import BoxRibbon from '../../../public/images/svg/categories/boxribbon.svg';
 
 import Typography from './Typography';
 
@@ -82,9 +94,41 @@ const styles = (theme) => ({
 });
 
 const Icons = ({classes, name}) => {
-  
   const getIcon = () => {
     switch(name) {
+      case 'bag':
+        return <Bag className={classes.icon}/>
+      break;
+      case 'closeBag':
+        return <CloseBag className={classes.icon}/>
+      break;
+      case 'ballons':
+        return <Ballons className={classes.icon}/>
+      break;
+      case 'openBox':
+        return <OpenBox className={classes.icon}/>
+      break;
+      case 'glassBottle':
+        return <GlassBottle className={classes.icon}/>
+      break;
+      case 'basket':
+        return <Basket className={classes.icon}/>
+      break;
+      case 'ribbon':
+        return <Ribbon className={classes.icon}/>
+      break;
+      case 'lifeSaver':
+        return <LifeSaver className={classes.icon}/>
+      break;
+      case 'cosmetic':
+        return <Costmetic className={classes.icon}/>
+      break;
+      case 'boxRibbon':
+        return <BoxRibbon className={classes.icon}/>
+      break;
+      case 'paw':
+        return <Paw className={classes.icon}/>
+      break;
       case 'addCircle':
         return <AddCircleIcon className={classes.icon}/>
       break;
@@ -125,10 +169,14 @@ const Icons = ({classes, name}) => {
         return <Supplies className={classes.icon}/>
       break;
       case 'imagebox':
+      case 'imageBox':
         return <ImageSearchIcon className={classes.icon}/>
       break;
       case 'logo':
         return <LogoIcon className={classes.icon}/>
+      break;
+      case 'logoNameWhite':
+        return <LogoWhite className={classes.icon}/>
       break;
       case 'logout':
         return <ExitToAppIcon className={classes.icon}/>

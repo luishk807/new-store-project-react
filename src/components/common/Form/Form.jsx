@@ -355,6 +355,24 @@ const Form = ({
         )
         break
       }
+      case "boolean": {
+        return (
+          <Grid key={index} item lg={12} xs={12} align="left" className={classes.formItem}>
+            <FormControlLabel
+              className={classes.checkboxItem}
+              control={
+                <Checkbox
+                  checked={fields[field] ? fields[field] : false}
+                  onChange={(e) => formOnChange(null, {name: field, value: e.target.checked})}
+                  name={field}
+                /> 
+              }
+              label={FORM_SCHEMA[field].label}
+            />
+          </Grid>
+        )
+        break
+      }
       case "number": {
         return (
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>

@@ -15,9 +15,13 @@ const styles = (theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+    width: '50%',
+    margin: '0px auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
     textAlign: 'center',
   },
 });
@@ -29,8 +33,8 @@ const Edit = ({classes}) => {
   const [showData, setShowData] = useState(false);
   const form = {
     name: null,
-    price: null,
     percentage: null,
+    useDate: null,
     startDate: null,
     endDate: null,
     minQuantity: null
@@ -56,6 +60,7 @@ const Edit = ({classes}) => {
           <EditForm 
             adminSection={ADMIN_SECTIONS.productDiscount} 
             id={id} 
+            classes={{root: classes.root}}
             title={`discount ${discount.name}`}
             entryForm={form} 
             ignoreForm={ignoreForm}

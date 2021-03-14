@@ -24,7 +24,7 @@ const styles = (theme) => ({
   },
   contactUL: {
     display: 'flex',
-    flexDirection: 'column',
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'flex-start',
     [theme.breakpoints.down('sm')]: {
@@ -39,19 +39,13 @@ const styles = (theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
-    margin: '40px 0px',
+    margin: '25px 0px',
+    [theme.breakpoints.down("sm")]: {
+      margin: '15px 0px',
+    }
   },
   firstLineItems: {
     padding: 5,
-  },
-  firstLineItemsCellsTitle: {
-    textAlign: 'center',
-    lineHeight: '30px',
-    '& a': {
-      fontWeight: 'bold',
-      fontSize: '1.3em',
-      color: 'white'
-    }
   },
   firstLineItemsCells: {
     padding: '3px 0px',
@@ -63,17 +57,57 @@ const styles = (theme) => ({
     '& ul': {
       margin: 0,
       padding: 0,
-      display: 'block',
+      display: 'flex',
       width: '80%',
       padding: 2,
     },
     '& ul li': {
       lineHeight: '20px',
       display: 'flex',
-      padding: '5px 0px',
+      padding: 10,
       justifyContent: 'space-between'
     }
   },
+
+  localItems: {
+    padding: 5,
+    backgroundColor: '#323232',
+  },
+  localItemsCells: {
+    padding: '3px 0px',
+    margin: '0px auto',
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center',
+    lineHeight: '10px',
+    [theme.breakpoints.down('sm')]: {
+      display: 'inline-block',
+      textAlign: 'center'
+    },
+    '& ul': {
+      margin: 0,
+      padding: 0,
+      display: 'flex',
+      width: '80%',
+      padding: 2,
+      [theme.breakpoints.down('sm')]: {
+        display: 'inline-block',
+        width: '100%',
+      }
+    },
+    '& ul li': {
+      color: 'white',
+      display: 'flex',
+      padding: 10,
+      lineHeight: '20px',
+      justifyContent: 'space-between',
+      [theme.breakpoints.down('sm')]: {
+        display: 'inline-block',
+        lineHeight: '10px',
+      }
+    }
+  },
+
   secondLastline: {
     textAlign: 'center',
     backgroundColor: '#323232',
@@ -133,7 +167,7 @@ const styles = (theme) => ({
 
   socialLine: {
     textAlign: 'center',
-    backgroundColor: '#323232',
+    backgroundColor: 'black',
   },
   socialLineMain: {
     margin: '0px auto',
@@ -186,111 +220,40 @@ const Footer = ({classes}) => {
           <Grid item lg={12} xs={12} className={classes.firstLineContainer}>
             <Grid container className={classes.firstLine}>
               {/* start of section */}
-              <Grid item lg={4} xs={12} className={classes.firstLineItems}>
+              <Grid item lg={12} xs={12} className={classes.firstLineItems}>
                 <Grid container>
-                  <Grid item lg={4} xs={7} className={classes.firstLineItemsCells}>
+                  <Grid item lg={1} xs={7} className={classes.firstLineItemsCells}>
                     <img className={`img-fluid`} src="/images/logo-all-white.svg" />
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item lg={5} xs={12}>
+              {/* start of section */}
+              <Grid item lg={12} xs={12} className={`${classes.socialLine}`}>
                 <Grid container>
-                  <Grid item lg={6} xs={12} className={classes.firstLineItems}>
-                    <Grid container>
-                      <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
-                        <a align="center" href="/">Business Hours</a>
-                      </Grid>
-                      <Grid item lg={12} xs={12} className={classes.firstLineItemsCells}>
-                        <ul className={classes.ulList}>
-                          <li className={classes.liList}>
-                            <span>Lunes</span>
-                            <span>9:00AM - 5:00PM</span>
-                          </li>
-                          <li className={classes.liList}>
-                            <span>Martes</span>
-                            <span>9:00AM - 5:00PM</span>
-                          </li>
-                          <li className={classes.liList}>
-                            <span>Miercoles</span>
-                            <span>9:00AM - 5:00PM</span>
-                          </li>
-                          <li className={classes.liList}>
-                            <span>Jueves</span>
-                            <span>9:00AM - 5:00PM</span>
-                          </li>
-                          <li className={classes.liList}>
-                            <span>Viernes</span>
-                            <span>9:00AM - 5:00PM</span>
-                          </li>
-                          <li className={classes.liList}>
-                            <span>Sabado</span>
-                            <span>9:00AM - 5:00PM</span>
-                          </li>
-                          <li className={classes.liList}>
-                            <span>Domingo</span>
-                            <span>9:00AM - 5:00PM</span>
-                          </li>
-                        </ul>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  {/* start of section */}
-                  <Grid item lg={6} xs={12} className={classes.firstLineItems}>
-                    <Grid container>
-                      <Grid item lg={12} xs={12} className={classes.firstLineItemsCellsTitle}>
-                        <a align="center" href="/">Contact</a>
-                      </Grid>
-                      <Grid item lg={12} xs={12} className={classes.firstLineItemsCells}>
-                        <ul className={classes.contactUL}>
-                          <li className={classes.liList}>
-                            <span>Phone</span>
-                            <span>6770-2400</span>
-                          </li>
-                          <li className={classes.liList}>
-                            <span>Whatssap</span>
-                            <span>6770-2400</span>
-                          </li>
-                          <li className={classes.liList}>
-                            <span>Direction</span>
-                            <span>Plaza Dorado</span>
-                          </li>
-                          <li className={classes.liList}>
-                            <span>Email</span>
-                            <span>ventas@avenidaz.com</span>
-                          </li>
-                        </ul>
-                      </Grid>
-                    </Grid>
-                  </Grid>
+                  <Grid item lg={6} md={6} xs={12} className={classes.socialLineMain}>
+                    <ul>
+                      <li>
+                        <a href='/' className={classes.secondLastlineItems}>
+                          <Icons name="facebook" classes={{icon: classes.socialIcons}} />
+                        </a>
+                      </li>
+                      <li>
+                        <a href='/' className={classes.secondLastlineItems}>
+                          <Icons name="instagram" classes={{icon: classes.socialIcons}} />
+                        </a>
+                      </li>
+                      <li>
+                        <a href='/' className={classes.secondLastlineItems}>
+                          <Icons name="whatssap" classes={{icon: classes.socialIcons}} />
+                        </a>
+                      </li>
+                    </ul>
+                  </Grid>              
                 </Grid>
-
               </Grid>
- 
             </Grid>
           </Grid>
-          <Grid item lg={12} xs={12} className={`${classes.socialLine}`}>
-            <Grid container>
-              <Grid item lg={6} md={6} xs={12} className={classes.socialLineMain}>
-                <ul>
-                  <li>
-                    <a href='/' className={classes.secondLastlineItems}>
-                      <Icons name="facebook" classes={{icon: classes.socialIcons}} />
-                    </a>
-                  </li>
-                  <li>
-                    <a href='/' className={classes.secondLastlineItems}>
-                      <Icons name="instagram" classes={{icon: classes.socialIcons}} />
-                    </a>
-                  </li>
-                  <li>
-                     <a href='/' className={classes.secondLastlineItems}>
-                      <Icons name="whatssap" classes={{icon: classes.socialIcons}} />
-                    </a>
-                  </li>
-                </ul>
-              </Grid>              
-            </Grid>
-          </Grid>
+
           <Grid item lg={12} xs={12} className={`${classes.secondLastline}`}>
             <Grid container>
               <Grid item lg={6} md={6} xs={12} className={classes.secondLastlineMain}>
@@ -317,6 +280,27 @@ const Footer = ({classes}) => {
                   </li>
                 </ul>
               </Grid>              
+            </Grid>
+          </Grid>
+
+          <Grid item lg={12} xs={12} className={classes.localItems} >
+            <Grid container>
+              <Grid item lg={12} xs={12} className={classes.localItemsCells}>
+                <ul className={classes.contactUL}>
+                  <li className={classes.liList}>
+                    Phone: 6770-2400
+                  </li>
+                  <li className={classes.liList}>
+                    Whatssap: 6770-2400
+                  </li>
+                  <li className={classes.liList}>
+                    Direction: Plaza Dorado
+                  </li>
+                  <li className={classes.liList}>
+                    Email: ventas@avenidaz.com
+                  </li>
+                </ul>
+              </Grid>
             </Grid>
           </Grid>
           <Grid item lg={12} xs={12} className={`${classes.lastLine}`}>

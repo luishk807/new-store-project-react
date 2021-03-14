@@ -64,11 +64,8 @@ const styles = (theme) => ({
       margin: 0,
       padding: 0,
       display: 'block',
-      width: '50%',
+      width: '80%',
       padding: 2,
-      [theme.breakpoints.down('sm')]: {
-        width: '80% !important',
-      },
     },
     '& ul li': {
       lineHeight: '20px',

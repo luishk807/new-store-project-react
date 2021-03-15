@@ -1,4 +1,4 @@
-import { FORM_SCHEMA, CATEGORY_ICONS } from '../../config';
+import { FORM_SCHEMA, CATEGORY_ICONS, IGNORE_FORM_FIELDS } from '../../config';
 import { ADMIN_SECTIONS } from '../constants/admin';
 import Api from '../services/api';
 import { getSections, getBasicAdmin, getBasicUser } from '../api';
@@ -45,8 +45,30 @@ export const handleFormResponse = (resp) => {
     }
   }
 }
+
+export const checkEnforceDates = async(form, ignoreForm) => {
+  if ('useDate' in form) {
+    if (form['useDate']) {
+      const getStartDate = ignoreForm.indexOf('startDate');
+      const getEndDate = ignoreForm.indexOf('endDate');
+      if (getStartDate) { 
+        ignoreForm.splice(getStartDate, 1);
+      }
+      if (getEndDate) { 
+        ignoreForm.splice(getEndDate, 1);
+      }
+    } else {
+      ignoreForm.push('startDate');
+      ignoreForm.push('endDate');
+    }
+  }
+
+  return ignoreForm;
+}
+
 export const validateForm = async(name = null, value = null, ignore = []) => {
-  ignore.push('saved');
+  ignore = ignore.concat(IGNORE_FORM_FIELDS);
+  
   if (ignore.indexOf(name) !== -1) {
       return true
   }

@@ -14,10 +14,11 @@ import {
   Typography,
   ButtonGroup
 } from '@material-ui/core';
+import moment from 'moment';
 
 import { getImageUrlByType } from '../../utils/form';
 import { checkDiscountPrice } from '../../utils/products';
-import { formatNumber } from '../../utils';
+import { formatNumber, isAroundTime } from '../../utils';
 import { noImageUrl } from '../../../config';
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
@@ -194,6 +195,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [images, setImages] = useState({});
   const [productInfo, setProductInfo] = useState({});
   const [showData, setShowData] = useState(false);
+  const [discountHtml, setDiscountHtml] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
   const [showDiscount, setShowDiscount] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
@@ -355,6 +357,29 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
   }
 
+  const getDiscountHtml = (product) => {
+    const discounts = product.productProductDiscount.filter((item) => {
+      if (item.useDate) {
+        if (isAroundTime(item.startDate, item.endDate)) {
+          return item
+        }
+      } else {
+        return item
+      }
+    })
+
+    if (discounts) {
+      const discountBlocks = discounts.map((item, index) => {
+        let hitem = <li key={index}>{item.name}</li>;
+        if (item.useDate) {
+          hitem = <li key={index}>{`${item.name} hasta ${moment(item.endDate).format('DD-MM-YYYY')}`}</li>;
+        }
+        return hitem
+      })
+      setDiscountHtml(discountBlocks);
+    }
+  }
+
   const loadProductInfo = async() => {
     const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
     await setProductInfo(getProductInfo);
@@ -363,6 +388,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         setShowDiscount(true)
       }
       setColors(getProductInfo.productColors);
+      getDiscountHtml(getProductInfo);
       handleColorChange(null, getProductInfo.productColors[0])
     }
     setShowData(true);
@@ -462,11 +488,12 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                         <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Deals</Typography>
                         <ul>
                             {
-                              productInfo.productProductDiscount.map((item, index) => {
-                                return (
-                                  <li key={index}>{item.name}</li>
-                                )
-                              })
+                              // productInfo.productProductDiscount.map((item, index) => {
+                              //   return (
+                              //     <li key={index}>{item.name}</li>
+                              //   )
+                              // })
+                              discountHtml && discountHtml
                             }
                         </ul>
                       </Grid>

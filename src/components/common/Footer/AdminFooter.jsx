@@ -14,7 +14,7 @@ const styles = (theme) => ({
   },
   footerBottomContent: {
     margin: '10px 0px',
-    fontSize: '.7em',
+    fontSize: '.9em',
     textAlign: 'center',
   }
 });

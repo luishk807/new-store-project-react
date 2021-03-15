@@ -36,6 +36,14 @@ export const getCartTotal = (obj) => {
   }
 }
 
+export const isAroundTime = (date1, date2) => {
+  const today = new Date();
+  const dStartDate = new Date(date1);
+  const dEndDate = new Date(date2);
+
+  return today.getTime() > dStartDate.getTime() && today.getTime() < dEndDate.getTime();
+}
+
 export const calculateRate = (data) => {
   let total = 0;
   data.rates.forEach((data) => {

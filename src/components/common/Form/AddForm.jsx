@@ -7,7 +7,7 @@ import {
 import { useRouter } from 'next/router';
 
 import { addItem } from '../../../api';
-import { validateForm, loadMainOptions, handleFormResponse } from '../../../utils/form';
+import { validateForm, loadMainOptions, handleFormResponse, checkEnforceDates } from '../../../utils/form';
 import { capitalize } from '../../../utils';
 import Form from './Form';
 import { FORM_SCHEMA } from '../../../../config';
@@ -18,12 +18,9 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '70%',
+    width: '100%',
     margin: '0px auto',
     textAlign: 'center',
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-    }
   },
 });
 
@@ -109,6 +106,9 @@ const AddForm = ({
   const handleSubmit = async (e) => {
     let errorFound = false;
     let key = '';
+    
+    await checkEnforceDates(form, ignoreForm);
+
     for (var i in form) {
       errorFound = await validateForm(i, form[i], ignoreForm);
       key = i;

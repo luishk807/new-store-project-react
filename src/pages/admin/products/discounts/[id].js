@@ -88,7 +88,6 @@ const Index = ({classes}) => {
     setProduct(pid);
     if (pid) {
       const gDiscounts = await getProductDiscountsByProductId(pid);
-      console.log("ggg",gDiscounts)
       if (gDiscounts) {
         setDiscounts(gDiscounts);
         setShowData(true);
@@ -161,18 +160,18 @@ const Index = ({classes}) => {
                         </a>
                       </Grid>
                       <Grid item lg={2} xs={6} className={classes.itemColumn}>
-                        %{
-                          discount.percentage
+                        {
+                          discount.percentage ? `%${discount.percentage * 100}` : 'N/A'
                         }
                       </Grid>
                       <Grid item lg={2} xs={6} className={classes.itemColumn}>
                         {
-                          moment(discount.startDate).format('YYYY-MM-DD')
+                          discount.startDate ? moment(discount.startDate).format('YYYY-MM-DD') : "N/A"
                         }
                       </Grid>
                       <Grid item lg={2} xs={6} className={classes.itemColumn}>
                         {
-                          moment(discount.endDate).format('YYYY-MM-DD')
+                          discount.endDate ? moment(discount.endDate).format('YYYY-MM-DD') : "N/A"
                         }
                       </Grid>
                       <Hidden smDown>

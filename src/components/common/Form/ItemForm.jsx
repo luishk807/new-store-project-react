@@ -227,7 +227,7 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
         switch(field){
           case 'icon':
             return (
-              <Grid item lg={3} xs={12}>
+              <Grid key={index}  item lg={3} xs={12}>
                 { 
                   value ? 
                   (

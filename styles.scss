@@ -1,8 +1,8 @@
 /*-------------------------------------------------- */
 $main_color: rgb(248,190,21);
 $main_hover_color: rgb(248,190,12);
-$stickyFooterLimit: 480px;
-$stickyFooterLimitMobile: 780px;
+$stickyFooterLimit: 400px;
+$stickyFooterLimitMobile: 400px;
 $screen-sm-min: 768px;
 $screen-xs-max: ($screen-sm-min - 1);
 $screen-md-min: 992px;
@@ -99,6 +99,11 @@ a:hover {
   position: absolute;
   bottom: 0;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  color: white;
+  align-items: center;
   min-height: 100px; /* Set the fixed height of the footer here */
   line-height: 60px; /* Vertically center the text there */
   border-top: 1px solid $main_color;

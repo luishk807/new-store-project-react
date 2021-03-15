@@ -64,9 +64,54 @@ export const CATEGORY_ICONS = [
   {
     name: 'Jewerly',
     value: 'jewerly',
-  },  {
+  }, 
+  {
     name: 'Baby',
     value: 'baby',
+  },
+  {
+    name: 'Bag',
+    value: 'bag',
+  },
+  {
+    name: 'ClosedBag',
+    value: 'closeBag',
+  },
+  {
+    name: 'Ballons',
+    value: 'ballons',
+  },
+  {
+    name: 'OpenBox',
+    value: 'openBox',
+  },
+  {
+    name: 'GlassBottle',
+    value: 'glassBottle',
+  },
+  {
+    name: 'Basket',
+    value: 'basket',
+  },
+  {
+    name: 'Ribbon',
+    value: 'ribbon',
+  },
+  {
+    name: 'LifeSaver',
+    value: 'lifeSaver',
+  },
+  {
+    name: 'Cosmetic',
+    value: 'cosmetic',
+  },
+  {
+    name: 'BoxRibbon',
+    value: 'boxRibbon',
+  },
+  {
+    name: 'Paw',
+    value: 'paw',
   }
 ]
 
@@ -419,6 +464,10 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.date,
     label: 'Start Date',
   },
+  useDate: {
+    type: FORM_TYPE.bool,
+    label: 'Enforce Date',
+  },
   endDate: {
     type: FORM_TYPE.date,
     label: 'End Date',
@@ -431,6 +480,8 @@ export const noImageUrl = {
 }
 
 export const statusAllowedCancellation = [1, 2];
+
+export const IGNORE_FORM_FIELDS = ['useDate', 'saved'];
 
 export const ALLOW_FIELDS = ['saved', 'id', 'items'];
 

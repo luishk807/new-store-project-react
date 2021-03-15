@@ -24,6 +24,8 @@ const ContactUs = ({classes}) => {
     url: 'contacts'
   }
   const form = {
+    first_name: null,
+    last_name: null,
     subject: null,
     email: null,
     message: null,

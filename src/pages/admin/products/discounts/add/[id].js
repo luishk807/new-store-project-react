@@ -15,9 +15,13 @@ const styles = (theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+    width: '70%',
+    margin: '0px auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
     textAlign: 'center',
   },
 });
@@ -28,15 +32,15 @@ const Add = ({classes}) => {
   const [showData, setShowData] = useState(false);
   const form = {
     name: null,
-    price: null,
     percentage: null,
+    useDate: false,
     startDate: null,
     endDate: null,
     minQuantity: null,
     productId: router.query.id
   }
 
-  const ignoreForm = ['productId', 'startDate', 'endDate'];
+  const ignoreForm = ['productId'];
   const hideEntry = ['productId'];
 
   const loadProductInfo = async() => {
@@ -55,6 +59,7 @@ const Add = ({classes}) => {
       {
         showData ? (
           <AddForm 
+            classes={{root: classes.root}}
             adminSection={ADMIN_SECTIONS.productDiscount} 
             entryForm={form}
             title={`Discount for ${product.name}`}

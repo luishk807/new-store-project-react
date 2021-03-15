@@ -12,6 +12,7 @@ import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTe
 import { deleteProduct, getAdminProducts } from '../../../api/products';
 import Snackbar from '../../../components/common/Snackbar';
 import { getImage } from '../../../utils';
+import Icons from '../../../components/common/Icons';
 
 const styles = (theme) => ({
   root: {
@@ -21,6 +22,10 @@ const styles = (theme) => ({
     width: 30,
     height: 30,
     fill: 'black'
+  },
+  deleteIcon: {
+    width: 25,
+    height: 25,
   },
   actionBtn: {
     margin: 2,
@@ -33,6 +38,12 @@ const styles = (theme) => ({
   },
   headerButton: {
     padding: 20
+  },
+  mobileDeleteItem: {
+    display: 'none',
+    [theme.breakpoints.down('sm')]: {
+      display: 'block'
+    }
   },
   headerContainer: {
     alignItems: 'center',
@@ -162,62 +173,67 @@ const Index = ({classes}) => {
                           index + 1
                         }
                       </Grid>
-                      <Grid item lg={2} xs={6} className={classes.itemColumn}>
+                      <Grid item lg={2} xs={8} className={classes.itemColumn}>
                         <a href={`/admin/products/${product.id}`}>
                         {
                           product.name
                         }
                         </a>
                       </Grid>
-                      <Grid item lg={2} xs={6} className={classes.itemColumn}>
-                        {
-                          product.categories && product.categories.name
-                        }
-                      </Grid>
-                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                        <a href={`/admin/products/colors/${product.id}`}>
-                        {
-                          product.productColors.length
-                        }
-                        </a>
-                      </Grid>
-                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                        <a href={`/admin/products/sizes/${product.id}`}>
-                        {
-                          product.productSizes.length
-                        }
-                        </a>
-                      </Grid>
-                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                        <a href={`/admin/products/items/${product.id}`}>
-                        {
-                          product.productProductItems.length
-                        }
-                        </a>
-                      </Grid>
-                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                        <a href={`/admin/products/discounts/${product.id}`}>
-                        {
-                          product.productProductDiscount.length
-                        }
-                        </a>
-                      </Grid>
-                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                        {
-                          product.productBrand && product.productBrand.name
-                        }
-                      </Grid>
-                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                        {
-                          product.productStatus.name
-                        }
-                      </Grid>
-                      <Hidden smDown>
-                      <Grid item lg={1} className={classes.itemAction}>
-                        <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => delItem(product.id)}>
-                          Delete
+                      <Grid item xs={1} className={classes.mobileDeleteItem}>
+                        <Button onClick={() => delItem(product.id)}>
+                          <Icons name="delete" classes={{icon: classes.deleteIcon}} />
                         </Button>
                       </Grid>
+                      <Hidden xsDown>
+                        <Grid item lg={2} xs={6} className={classes.itemColumn}>
+                          {
+                            product.categories && product.categories.name
+                          }
+                        </Grid>
+                        <Grid item lg={1} xs={6} className={classes.itemColumn}>
+                          <a href={`/admin/products/colors/${product.id}`}>
+                          {
+                            product.productColors.length
+                          }
+                          </a>
+                        </Grid>
+                        <Grid item lg={1} xs={6} className={classes.itemColumn}>
+                          <a href={`/admin/products/sizes/${product.id}`}>
+                          {
+                            product.productSizes.length
+                          }
+                          </a>
+                        </Grid>
+                        <Grid item lg={1} xs={6} className={classes.itemColumn}>
+                          <a href={`/admin/products/items/${product.id}`}>
+                          {
+                            product.productProductItems.length
+                          }
+                          </a>
+                        </Grid>
+                        <Grid item lg={1} xs={6} className={classes.itemColumn}>
+                          <a href={`/admin/products/discounts/${product.id}`}>
+                          {
+                            product.productProductDiscount.length
+                          }
+                          </a>
+                        </Grid>
+                        <Grid item lg={1} xs={6} className={classes.itemColumn}>
+                          {
+                            product.productBrand && product.productBrand.name
+                          }
+                        </Grid>
+                        <Grid item lg={1} xs={6} className={classes.itemColumn}>
+                          {
+                            product.productStatus.name
+                          }
+                        </Grid>
+                        <Grid item lg={1} className={classes.itemAction}>
+                          <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => delItem(product.id)}>
+                            Delete
+                          </Button>
+                        </Grid>
                       </Hidden>
                     </Grid>
                   </Grid>

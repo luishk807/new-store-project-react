@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
+import SearchBarPlain from '../../../components/common/SearchBarPlain';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import { deleteProduct, getAdminProducts } from '../../../api/products';
 import Snackbar from '../../../components/common/Snackbar';
@@ -123,6 +124,9 @@ const Index = ({classes}) => {
         </Grid>
         <Grid item lg={3} className={classes.headerTitle}>
           <Button className={`mainButton`} href={`/admin/products/add`}>Add Product</Button>
+        </Grid>
+        <Grid item lg={12} xs={12}>
+          <SearchBarPlain />
         </Grid>
       </Grid>
       {

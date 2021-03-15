@@ -75,7 +75,7 @@ import ColorLensIcon from '@material-ui/icons/ColorLens';
 import Bag from '../../../public/images/svg/categories/bag.svg';
 import CloseBag from '../../../public/images/svg/categories/closebag.svg';
 import Ballons from '../../../public/images/svg/categories/ballons.svg';
-import OpenBox from '../../../public/images/svg/categories/openBox.svg';
+import OpenBox from '../../../public/images/svg/categories/openbox.svg';
 import GlassBottle from '../../../public/images/svg/categories/glassbottle.svg';
 import Basket from '../../../public/images/svg/categories/basket.svg';
 import Ribbon from '../../../public/images/svg/categories/ribbon.svg';

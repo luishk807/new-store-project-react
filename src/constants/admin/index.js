@@ -177,6 +177,13 @@ export const ADMIN_SECTIONS = {
     url: 'colors',
     option: 'color'
   },
+  'productColor': {
+    name: 'Product Color',
+    names: 'Product Colors',
+    key: 'productcolor',
+    url: 'product-colors',
+    option: 'productcolor'
+  },
 }
 
 export const SECTIONS = ['user','order','vendor','color','category','brand','product', 'imageBox', 'sweetbox']

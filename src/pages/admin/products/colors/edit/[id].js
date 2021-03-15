@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 
 import { ADMIN_SECTIONS } from '../../../../../constants/admin';
 import ProgressBar from '../../../../../components/common/ProgressBar';
-import { getColorsById } from '../../../../../api/colors';
+import { getColorsById } from '../../../../../api/productColors';
 import EditForm from '../../../../../components/common/Form/EditForm';
 import AdminLayoutTemplate from '../../../../../components/common/Layout/AdminLayoutTemplate';
 
@@ -48,7 +48,7 @@ const Edit = ({classes}) => {
       {
         showData ? (
           <EditForm 
-            adminSection={ADMIN_SECTIONS.color} 
+            adminSection={ADMIN_SECTIONS.productColor} 
             id={id} 
             title={`color ${color.name}`}
             entryForm={form} 

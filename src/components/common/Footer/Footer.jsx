@@ -15,6 +15,11 @@ const styles = (theme) => ({
     backgroundColor: 'white',
     color: 'black',
   },
+  footerMain: {
+    [theme.breakpoints.down('sm')]: {
+      paddingBottom: 40
+    }
+  },
   footerLink: {
     color: 'white',
     cursor: 'pointer',
@@ -214,7 +219,7 @@ const Footer = ({classes}) => {
   const data = FooterSample; 
 
   return (
-    <footer className="footer">
+    <footer className={`footer ${classes.footerMain}`}>
       <div className={classes.root}>
         <Grid container>
           <Grid item lg={12} xs={12} className={classes.firstLineContainer}>

@@ -9,15 +9,11 @@ import {
   Hidden,
 } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import SearchIcon from '@material-ui/icons/Search';
 import Icons from './Icons';
 import Dropdown from './Dropdown';
 import { getCategories } from '../../api/categories';
 import { getCatSearch } from '../../utils';
 
-import {
-  SearchResultSample
-} from '../../constants/samples/SearchResultSample';
 import { searchProducts } from '../../api/products';
 
 const styles = (theme) => ({
@@ -25,7 +21,7 @@ const styles = (theme) => ({
     position: 'relative',
     background: 'white',
     padding: 3,
-    width: '95%',
+    width: '100%',
     alignItems: 'center',
     display: 'flex',
     borderRadius: '0px 4px 4px 0px',
@@ -118,7 +114,6 @@ const SearchBar = ({classes}) => {
   const [options, setOptions] = useState([]);
   const [currentTab, setCurrentTab] = useState(null);
   const [showResults, setShowResult] = useState(false);
-  const [htmlList, setHtmlList] = useState([]);
   const [currentValue, setCurrentValue] = useState('');
   const [dropDownOptions, setDropDownOptions] = useState([]);
   const refLists = useRef([]);

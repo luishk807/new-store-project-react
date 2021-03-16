@@ -6,6 +6,7 @@ import {
   ButtonGroup,
   Button
 } from '@material-ui/core';
+import Snackbar from './Snackbar';
 
 const styles = (theme) => ({
   root: {
@@ -41,11 +42,16 @@ const styles = (theme) => ({
   },
 });
 
-const QuantitySelectorB = React.memo(({refresh, data = 1, classes, id, onChange}) => {
+const QuantitySelectorB = React.memo(({refresh, data = 1, stock, classes, id, onChange}) => {
   const [total, setTotal] = useState(0);
   const [currectRefresh, setCurrentRefresh] = useState(null)
   const [showData, setShowData] = useState(false);
-  
+  const [snack, setSnack] = useState({
+    severity: 'success',
+    open: false,
+    text: '',
+  });
+
   const onHandleDropDown = async(resp) => {
     let value = null;
 
@@ -64,13 +70,20 @@ const QuantitySelectorB = React.memo(({refresh, data = 1, classes, id, onChange}
       value = resp.target.value
     }
 
-    setTotal(value);
-
-    if (value) {
-      onChange({
-        id: id,
-        value:value 
+    if (stock && value > stock) {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: 'Cantidad maxima del producto disponible',
       })
+    } else {
+      setTotal(value);
+      if (value) {
+        onChange({
+          id: id,
+          value:value 
+        })
+      }
     }
   };
 
@@ -92,6 +105,7 @@ const QuantitySelectorB = React.memo(({refresh, data = 1, classes, id, onChange}
           </div>
 
       </FormControl>
+      <Snackbar open={snack.open} severity={snack.severity} onClose={()=>{setSnack({...snack,open:false})}} content={snack.text} />
     </div>
   );
 })
@@ -99,6 +113,7 @@ const QuantitySelectorB = React.memo(({refresh, data = 1, classes, id, onChange}
 QuantitySelectorB.protoTypes = {
   classes: T.object,
   title: T.string,
+  stock: T.number,
   refresh: T.bool,
   data: T.number,
   id: T.string,

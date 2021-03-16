@@ -224,7 +224,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                           </Grid>
                         </Grid>
                         <Grid item lg={2} xs={9} className={classes.cartSelectCont}>
-                          <QuantitySelectorB data={item.quantity} classes={{ root: classes.cartDropRoot}} onChange={handleSelectChange} id={`select-${key}`} />
+                          <QuantitySelectorB stock={item.stock} data={item.quantity} classes={{ root: classes.cartDropRoot}} onChange={handleSelectChange} id={`select-${key}`} />
                         </Grid>
                         <Hidden xsDown>
                           <Grid item lg={2} xs={12} >

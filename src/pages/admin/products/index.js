@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from 'react';
-import * as T from 'prop-types';
 import { 
-  withStyles,
   Grid,
   Button,
   Hidden,
 } from '@material-ui/core';
-import moment from 'moment';
+import { useRouter } from 'next/router';
+import Pagination from '@material-ui/lab/Pagination';
+import { makeStyles } from '@material-ui/core/styles';
 
+import { LIMIT } from '../../../../config';
 import SearchBarPlain from '../../../components/common/SearchBarPlain';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteProduct, getAdminProducts } from '../../../api/products';
 import Snackbar from '../../../components/common/Snackbar';
-import { getImage } from '../../../utils';
-import Icons from '../../../components/common/Icons';
+import ProgressBar from '../../../components/common/ProgressBar';
+import MobileMenu from '../../../components/common/MobileMenu';
+import DialogModal from '../../../components/common/DialogModal';
+import { getImageBaseOnly } from '../../../utils';
+import { deleteProduct, getAdminProducts } from '../../../api/products';
+import AccordionBox from '../../../components/common/accordion/AccordionBox';
 
-const styles = (theme) => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: 10,
   },
@@ -53,13 +57,15 @@ const styles = (theme) => ({
   mainHeader: {
     textAlign: 'center',
     fontWeight: 'bold',
+    borderBottom: '1px solid rgba(0,0,0,.08)',
   },
   mainItems: {
     textAlign: 'center',
-    borderTop: '1px solid rgba(0,0,0,.08)',
-    '&:last-child': {
-      borderBottom: '1px solid rgba(0,0,0,.08)',
-    }
+    margin: '10px 0px',
+    // borderTop: '1px solid rgba(0,0,0,.08)',
+    // '&:last-child': {
+    //   borderBottom: '1px solid rgba(0,0,0,.08)',
+    // }
   },
   itemContainer: {
     textAlign: 'center'
@@ -75,12 +81,49 @@ const styles = (theme) => ({
   itemAction: {
     textAlign: 'right',
     padding: 5,
+  },
+  paginationItem: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  paginationContainer: {
+    padding: '20px 0px',
+  },
+  fixHeader: {
+    position: 'fixed',
+    top: 72,
+    display: 'flex',
+    background: 'white',
+    zIndex: 10,
+    left: 0,
+    width: '100%',
+    padding: '2px 7px',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    borderBottom: '1px solid rgba(0,0,0,.08)',
   }
-});
+}));
 
-const Index = ({classes}) => {
+const Index = () => {
+  const classes = useStyles();
   const [products, setProducts] = useState([]);
   const [showData, setShowData] = useState(false);
+  const [paginationHtml, setPaginationHtml] = useState(null);
+  const [page, setPage] = useState(1);
+  const [totalCount, setTotalCount] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const router = useRouter();
+  const [dialogContent, setDialogContent] = useState({
+    open: false,
+    value: null,
+    title: "Deleting Item",
+    content: "Are you sure, you want to delete this item?",
+    actionLabels: {
+      true: "Yes",
+      false: "No"
+    }
+  })
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -88,10 +131,53 @@ const Index = ({classes}) => {
   });
 
   const loadProducts = async() => {
-    const getProducts = await getAdminProducts();
-    setProducts(getProducts);
-    setShowData(true);
+    const getProducts = await getAdminProducts({
+      page: page
+    });
+    if (getProducts) {
+      setProducts(getProducts.rows);
+      setTotalCount(getProducts.count)
+    }
+
   };
+  
+  const handlePaginationChange = (event, value) => {
+    setPage(value);
+    setShowData(false)
+  }
+
+  const loadPagination = () => {
+    setPaginationHtml(
+      <Grid container className={classes.paginationContainer}>
+        <Grid item lg={12} xs={12} className={classes.paginationItem}>
+          <Pagination onChange={handlePaginationChange} size="large" showFirstButton showLastButton count={Math.round(totalCount / LIMIT )} page={page} variant="outlined" shape="rounded" />
+        </Grid>
+      </Grid>
+    )
+  }
+  
+  const handleActionMenu = (e) => {
+    if (typeof e === "object") {
+      setDialogContent({
+        ...dialogContent,
+        open: true,
+        title: `Deleting ${e.name}`,
+        value: e
+      })
+    } else {
+      router.push(e)
+    }
+  }
+
+  const handleDialogClick = (e) => {
+    setDialogContent({
+      ...dialogContent,
+      open: false
+    })
+    if (e) {
+      delItem(dialogContent.value.id)
+    }
+  }
 
   const delItem = async(id) => {
     const result = await deleteProduct(id);
@@ -113,7 +199,23 @@ const Index = ({classes}) => {
   }
 
   useEffect(() => {
+    loadPagination();
+  }, [totalCount]);
+
+  
+  useEffect(() => {
+    if (products && products.length) {
+      setShowData(true);
+    }
+  }, [products]);
+
+  useEffect(() => {
     loadProducts();
+    loadPagination();
+  }, [page]);
+
+  useEffect(() => {
+    setPage(1);
   }, []);
 
   return (
@@ -130,13 +232,15 @@ const Index = ({classes}) => {
         </Grid>
       </Grid>
       {
-        showData && (
+        paginationHtml && paginationHtml
+      }
+      {
+        showData ? (
           <Grid container className={classes.mainContainer}>
             <Hidden smDown>
             <Grid item lg={12} xs={12} className={classes.mainHeader}>
               <Grid container className={classes.itemContainer}>
-                <Grid item lg={1} className={classes.itemIndex}></Grid>
-                <Grid item lg={2} className={classes.itemColumn}>
+                <Grid item lg={3} className={classes.itemColumn}>
                   Name
                 </Grid>
                 <Grid item lg={2} className={classes.itemColumn}>
@@ -168,26 +272,56 @@ const Index = ({classes}) => {
             </Hidden>
             {
               products.map((product, index) => {
-                const img = getImage(product)
+                const img = getImageBaseOnly(product);
+                const options = [
+                  {
+                    name: `Items (${product.productProductItems ? product.productProductItems.length: 0})`,
+                    value: `/admin/products/items/${product.id}`
+                  },
+                  {
+                    name: `Deals (${product.productProductDiscount ? product.productProductDiscount.length: 0})`,
+                    value: `/admin/products/discounts/${product.id}`
+                  },
+                  {
+                    name: `Colors (${product.productColors ? product.productColors.length: 0})`,
+                    value: `/admin/products/colors/${product.id}`
+                  },
+                  {
+                    name: `Sizes (${product.productSizes ? product.productSizes.length: 0})`,
+                    value: `/admin/products/sizes/${product.id}`
+                  },
+                  {
+                    name: 'Delete',
+                    value: product
+                  }
+                ]
                 return (
                   <Grid key={index} item lg={12} xs={12} className={classes.mainItems}>
                     <Grid container className={classes.itemContainer}>
-                      <Grid item lg={1} xs={2} className={classes.itemIndex}>
-                        {
-                          index + 1
-                        }
-                      </Grid>
-                      <Grid item lg={2} xs={8} className={classes.itemColumn}>
-                        <a href={`/admin/products/${product.id}`}>
-                        {
-                          product.name
-                        }
-                        </a>
+                      <Grid item lg={3} xs={11} className={classes.itemColumn}>
+                        <Grid container>
+                          <Grid item lg={5} xs={5}>
+                          {
+                            img
+                          }
+                          </Grid>
+                          <Grid item lg={7} xs={7}>
+                            <p>
+                              <a href={`/admin/products/${product.id}`}>
+                                { product.name }
+                              </a>
+                            </p>
+                            <p>
+                                SKU: { product.sku }
+                            </p>
+                            <p>
+                                Model: { product.model }
+                            </p>
+                          </Grid>
+                        </Grid>
                       </Grid>
                       <Grid item xs={1} className={classes.mobileDeleteItem}>
-                        <Button onClick={() => delItem(product.id)}>
-                          <Icons name="delete" classes={{icon: classes.deleteIcon}} />
-                        </Button>
+                        <MobileMenu options={options} onChange={handleActionMenu}/>
                       </Grid>
                       <Hidden xsDown>
                         <Grid item lg={2} xs={6} className={classes.itemColumn}>
@@ -234,26 +368,44 @@ const Index = ({classes}) => {
                           }
                         </Grid>
                         <Grid item lg={1} className={classes.itemAction}>
-                          <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => delItem(product.id)}>
+                          <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => handleActionMenu(product)}>
                             Delete
                           </Button>
                         </Grid>
                       </Hidden>
+                      <Grid item lg={12} xs={12}>
+                        <AccordionBox section="variant" title={`Variantes [${product.productProductItems.length}]`} options={product.productProductItems}/>
+                      </Grid>
+                      <Grid item lg={12} xs={12}>
+                        <AccordionBox section="size" title={`Tamaños [${product.productSizes.length}]`}  options={product.productSizes} />
+                      </Grid>
+                      <Grid item lg={12} xs={12}>
+                        <AccordionBox section="color"title={`Colores [${product.productColors.length}]`} options={product.productColors}/>
+                      </Grid>
+                      <Grid item lg={12} xs={12}>
+                        <AccordionBox section="deal" title={`Descuentos [${product.productProductDiscount.length}]`} options={product.productProductDiscount}/>
+                      </Grid>
                     </Grid>
                   </Grid>
                 )
               })
             }
           </Grid>
+        ) : (
+          <Grid container>
+            <Grid item lg={12} xs={12}>
+              <ProgressBar />
+            </Grid>
+          </Grid>
         )
       }
+      {
+        paginationHtml && paginationHtml
+      }
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
+      <DialogModal open={dialogContent.open} onClick={handleDialogClick} title={dialogContent.title} content={dialogContent.content} actionLabels={dialogContent.actionLabels} />
     </AdminLayoutTemplate>
   );
 }
 
-Index.protoTypes = {
-  classes: T.object
-}
-
-export default withStyles(styles)(Index);
+export default Index;

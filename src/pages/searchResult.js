@@ -8,12 +8,10 @@ import {
 import { useRouter } from 'next/router';
 import Pagination from '@material-ui/lab/Pagination';
 
-import { noImageUrl } from '../../config';
+import { getImage } from '../utils';
 import Rate from '../components/common/Rate/Rate';
 import Typography from '../components/common/Typography';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
-import CategorySelectorPlain from '../components/category/SelectorPlain'
-import { getImageUrlByType } from '../utils/form';
 import { searchProductsByFilter } from '../api/products';
 import ProgressBar from '../components/common/ProgressBar';
 import TextEllipsis from '../components/common/TextEllipsis';
@@ -124,7 +122,6 @@ const styles = (theme) => ({
 const SearchResult = ({classes}) => {
   const router = useRouter();
   const { str, cat, catn, page } = router.query;
-  const imageUrl = getImageUrlByType('product');
   const [data, setData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -132,7 +129,7 @@ const SearchResult = ({classes}) => {
   const [showData, setShowData] = useState(false);
 
   const loadSearchStr = async() => {
-    const pageIndex = page ? page : 0;
+    const pageIndex = page ? page : 1;
     const filters = {
       'search': str,
       'category': cat,
@@ -184,11 +181,7 @@ const SearchResult = ({classes}) => {
                   <Grid container className={classes.itemsItemContainer}>
                     {
                       data.map((data, index) => {
-                        let prodImage = data.productImages && data.productImages.length ? (
-                          <img className={`img-fluid`} src={`${imageUrl}/${data.productImages[0].img_url}`} />
-                        ) : (
-                          <img className={`img-fluid`} src={noImageUrl.img} alt={noImageUrl.alt} />
-                        )
+                        const prodImage = getImage(data);
                         return (
                           <Grid key={index} item lg={3} xs={12} className={classes.itemMain}>
                             <Link href={`/product/${data.id}`} color="inherit" underline="none">

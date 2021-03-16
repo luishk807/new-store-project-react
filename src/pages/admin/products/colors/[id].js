@@ -88,6 +88,7 @@ const Index = ({classes}) => {
     setProduct(pid);
     if (pid) {
       const gColors = await getColorsByProductId(pid);
+      console.log("colorrrr", gColors)
       setColors(gColors);
     }
   };

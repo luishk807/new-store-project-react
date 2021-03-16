@@ -9,6 +9,7 @@ import RateBoxBreakdown from '../common/Rate/RateBoxBreakdown';
 import RateListDetails from '../common/Rate/RateListDetails';
 import Typography from '../common/Typography';
 import { getAllProductRatesById } from '../../api/rate';
+import { containerSizesSelector } from '@material-ui/data-grid';
 
 const styles = (theme) => ({
   mainRateContainer: {
@@ -29,8 +30,10 @@ const RateFullView = ({classes, data}) => {
 
   const loadRates = async() => {
     const getRates = await getAllProductRatesById({id: data.id});
-    setRates(getRates);
-    setShowRate(true);
+    if (getRates && getRates.length) {
+      setRates(getRates);
+      setShowRate(true);
+    }
   }
   useEffect(() => {
     loadRates();

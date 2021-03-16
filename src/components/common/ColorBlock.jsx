@@ -11,13 +11,16 @@ const styles = (theme) => ({
     background: 'red',
     border: '2px solid black',
     margin: '0px auto',
+  },
+  colorUrl: {
+    alignItems: 'center'
   }
 });
 
-const ColorBlock = ({classes, color, url}) => {
+const ColorBlock = ({classes, color, url = null}) => {
     if (url) {
       return (
-        <a href={url}>
+        <a href={url} className={classes.colorUrl}>
           <div 
             className={`${classes.colorBlock}`} 
             style={{backgroundColor: color}}>

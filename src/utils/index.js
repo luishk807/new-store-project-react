@@ -1,5 +1,6 @@
 import { getImageUrlByType } from './form';
 import { noImageUrl } from '../../config';
+import { getProductItemByIds } from '../api/productItems';
 
 export const removeCharacter = (str) => {
   return str.replace(/_/g, ' ')
@@ -9,7 +10,69 @@ export const formatNumber = (x) => x ? Number.parseFloat(x).toFixed(2) : 0.00;
 
 export const getImage = (product) => {
   const imageUrl = getImageUrlByType('product');
-  return product.productImages && product.productImages.length ? <img className={`img-fluid`} src={`${imageUrl}/${product.productImages[0].img_url}`} alt={`${product.name}`} /> : <img className={`img-fluid`} src={`${noImageUrl.img}`} alt={`${noImageUrl.alt}`} />;
+  
+  let image = <img className={`img-fluid`} src={`${noImageUrl.img}`} alt={`${noImageUrl.alt}`} />
+
+  if (product.productImages && product.productImages.length) {
+    image = <img className={`img-fluid`} src={`${imageUrl}/${product.productImages[0].img_url}`} alt={`${product.name}`} />;
+  } else if (product.productProductItems && product.productProductItems.length) {
+    const ids = product.productProductItems.map(item => {
+      return Number(item.id);
+    })
+
+    if (ids && ids.length) {
+      getProductItemByIds(ids).then((prod, index) => {
+        image = prod.filter((item, index) => {
+          if (item.productImages && item.productImages.length) {
+            return item.item.productImages[0]
+          }
+        })
+        if (image && image.length) {
+          image = <img className={`img-fluid`} src={`${imageUrl}/${image[0].img_url}`} alt={`${product.name}`} />
+        }
+      });
+    }
+  }
+  return image;
+}
+
+export const getImageBaseOnly = (product) => {
+  const imageUrl = getImageUrlByType('product');
+  
+  let image = <img className={`img-fluid`} src={`${noImageUrl.img}`} alt={`${noImageUrl.alt}`} />
+
+  if (product.productImages && product.productImages.length) {
+    image = <img className={`img-fluid`} src={`${imageUrl}/${product.productImages[0].img_url}`} alt={`${product.name}`} />;
+  }
+  return image;
+}
+
+export const isImageAval = (product) => {
+  const imageUrl = getImageUrlByType('product');
+  
+  let image = false;
+
+  if (product.productImages && product.productImages.length) {
+    image = true;
+  } else if (product.productProductItems && product.productProductItems.length) {
+    const ids = product.productProductItems.map(item => {
+      return Number(item.id);
+    })
+
+    if (ids && ids.length) {
+      getProductItemByIds(ids).then((prod, index) => {
+        image = prod.filter((item, index) => {
+          if (item.productImages && item.productImages.length) {
+            return item.item.productImages[0]
+          }
+        })
+        if (image && image.length) {
+          image = true;
+        }
+      });
+    }
+  }
+  return image;
 }
 
 export const getCartTotal = (obj) => {

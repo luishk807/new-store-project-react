@@ -220,9 +220,7 @@ const EditForm = ({
     const mainOptions = basicParams && Object.keys(basicParams).length ? await loadMainOptions(admin, basicParams) : await loadMainOptions(admin);
 
     if (id) {
-      Api.get(`${sect.url}`,{
-        id: id
-      }).then((res) => {
+      Api.get(`${sect.url}/${id}`).then((res) => {
         let info = res;
         for(var field in form){
           let value = info[field];

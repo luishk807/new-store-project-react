@@ -24,6 +24,10 @@ export const getProductItemByIds = async(ids) => {
   return Api.get(`product-items`, data);
 }
 
+export const searchProductItemByFilter = async(filter) => {
+  return Api.get(`product-items/filters/search`, filter);
+}
+
 export const saveProductItem = async(data, id) => {
   if (!Object.keys(data).length) {
     return;

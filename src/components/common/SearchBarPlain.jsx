@@ -11,8 +11,8 @@ import {
 import { useRouter } from 'next/router';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
-import { getAllProductItems } from '../../api/productItems';
-import { getAllProducts, searchProductsByFilter } from '../../api/products';
+import { searchProductItemByFilter } from '../../api/productItems';
+import { searchProductsByFilter } from '../../api/products';
 // import { isImageAval } from '../../utils';
 import { getImageBaseOnly } from '../../utils';
 import ProgressBar from '../common/ProgressBar';
@@ -42,9 +42,16 @@ const styles = (theme) => ({
     overflowY: 'auto',
     border: '1px solid rgba(0,0,0,0.1)',
   },
+  itemContainer: {
+    alignItems: 'center'
+  },
   resultItems: {
     padding: 5,
   },
+  prodItem: {
+    display: 'flex',
+    flexDirection: 'column',
+  }
 });
 
 const SearchBarPlain = ({classes}) => {
@@ -58,17 +65,29 @@ const SearchBarPlain = ({classes}) => {
 
   const searchProduct = async(value) => {
     setShowLoader(true);
-    const getProd = await searchProductsByFilter({
-      search: value
-    });
-    if (getProd && getProd.length) {
-      console.log("found")
-      setProducts(getProd)
-      setShowLoader(false);
-      setShowResult(true)
-    } else {
-      setShowNoResult()
-    }
+    let getProd = [];
+    Promise.all(
+      [
+        searchProductItemByFilter({
+          search: value
+        }),
+        searchProductsByFilter({
+          search: value
+        }),
+      ]
+    ).then(async(value) => {
+      for (const item of value) {
+        getProd = getProd.concat(item)
+      }
+
+      if (getProd && getProd.length) {
+        setProducts(getProd)
+        setShowLoader(false);
+        setShowResult(true)
+      } else {
+        setShowNoResult()
+      }
+    })
   }
 
   const setShowNoResult = () => {
@@ -92,6 +111,52 @@ const SearchBarPlain = ({classes}) => {
     setShowLoader(false);
     if (deleteValue) {
       setResultText('');
+    }
+  }
+  
+  const prepareProductInfo = (product) => {
+    if (product.productItemProduct) {
+      return (
+        <Grid item  lg={11} xs={11} className={classes.prodItem}>
+          <div>
+            SKU: { product.sku }
+          </div>
+          <div>
+            Model: { product.model }
+          </div>
+          <div>
+            Color: {
+             product.productItemColor && product.productItemColor.name 
+            }
+          </div>
+          <div>
+            Size: {
+              product.productItemSize && product.productItemSize.name
+            }
+          </div>
+        </Grid>
+      )
+    } else {
+      return (
+        <Grid item  lg={11} xs={11} className={classes.prodItem}>
+          {
+            <div>
+              { product.name }
+            </div>
+          }
+          <div>
+            SKU: { product.sku }
+          </div>
+          <div>
+            Model: { product.model }
+          </div>
+          <div>
+            Category: {
+             product.categories && product.categories.name 
+            }
+          </div>
+        </Grid>
+      )
     }
   }
 
@@ -124,17 +189,15 @@ const SearchBarPlain = ({classes}) => {
                         return (
                           <Grid item key={index} className={classes.resultItems} lg={12} xs={12}>
                             <a href={product.productItemProduct ? `/admin/products/items/edit/${product.id}` : `/admin/products/${product.id}`}>
-                              <Grid container>
+                              <Grid container className={classes.itemContainer}>
                                 <Grid item lg={1} xs={1}>
                                   {
                                     img
                                   }
                                 </Grid>
-                                <Grid item  lg={11} xs={11}>
-                                  {
-                                    product.name
-                                  }
-                                </Grid>
+                                {
+                                  prepareProductInfo(product)
+                                }
                               </Grid>
                             </a>
                           </Grid>

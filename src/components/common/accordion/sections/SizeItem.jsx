@@ -51,10 +51,12 @@ const VariantItem = React.memo(({ classes, data }) => {
 
   const loadItems = async() => {
     const itemIds = data.map((item) => item.id);
-    const getProduct = await getSizesByIds(itemIds);
-    if (getProduct) {
-      setItems(getProduct);
-      setShowData(true);
+    if (itemIds && itemIds.length) {
+      const getProduct = await getSizesByIds(itemIds);
+      if (getProduct) {
+        setItems(getProduct);
+        setShowData(true);
+      }
     }
   }
 

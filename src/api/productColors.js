@@ -24,6 +24,7 @@ export const getColorByIds = async(ids) => {
   if (!ids) {
     return;
   }
+  
   const data = {
     ids: ids
   }

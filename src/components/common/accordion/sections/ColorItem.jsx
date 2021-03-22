@@ -66,10 +66,12 @@ const ColorItem = React.memo(({ classes, data }) => {
 
   const loadProducts = async() => {
     const itemIds = data.map((item) => item.id);
-    const getColors = await getColorByIds(itemIds);
-    if (getColors) {
-      setColors(getColors);
-      setShowData(true);
+    if (itemIds && itemIds.length) {
+      const getColors = await getColorByIds(itemIds);
+      if (getColors) {
+        setColors(getColors);
+        setShowData(true);
+      }
     }
   }
 

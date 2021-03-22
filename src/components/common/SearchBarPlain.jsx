@@ -5,15 +5,12 @@ import {
   Grid,
   FormControl,
   TextField,
-  Link,
-  Button
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 import { searchProductItemByFilter } from '../../api/productItems';
 import { searchProductsByFilter } from '../../api/products';
-// import { isImageAval } from '../../utils';
 import { getImageBaseOnly } from '../../utils';
 import ProgressBar from '../common/ProgressBar';
 
@@ -30,7 +27,6 @@ const styles = (theme) => ({
   },
   resultPanel: {
     background: 'white',
-    // color: 'white',
     padding: 5,
     margin: 1,
     borderRadius: 4,

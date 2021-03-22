@@ -68,10 +68,12 @@ const VariantItem = React.memo(({ classes, data }) => {
 
   const loadProducts = async() => {
     const itemIds = data.map((item) => item.id);
-    const getProduct = await getProductItemByIds(itemIds);
-    if (getProduct) {
-      setProducts(getProduct);
-      setShowData(true);
+    if (itemIds && itemIds.length) {
+      const getProduct = await getProductItemByIds(itemIds);
+      if (getProduct) {
+        setProducts(getProduct);
+        setShowData(true);
+      }
     }
   }
 
@@ -123,17 +125,17 @@ const VariantItem = React.memo(({ classes, data }) => {
                     </Grid>
                     <Grid item lg={3} xs={3} className={classes.itemProductDescription}>
                       {
-                        item.productItemColor.name
+                        item.productItemColor && item.productItemColor.name
                       }
                     </Grid>
                     <Grid item lg={3} xs={3} className={classes.itemProductDescription}>
                       {
-                        item.productItemSize.name
+                        item.productItemSize && item.productItemSize.name
                       }
                     </Grid>
                     <Grid item lg={3} xs={3} className={classes.itemProductDescription}>
                       {
-                        item.productItemsStatus.name
+                        item.productItemsStatus && item.productItemsStatus.name
                       }
                     </Grid>
                   </Hidden>
@@ -142,13 +144,13 @@ const VariantItem = React.memo(({ classes, data }) => {
                       { item.sku }
                     </p>
                     <p>
-                      { item.productItemColor.name}
+                      { item.productItemColor && item.productItemColor.name}
                     </p>
                     <p>
-                      { item.productItemSize.name }
+                      { item.productItemSize && item.productItemSize.name }
                     </p>
                     <p>
-                      { item.productItemsStatus.name }
+                      { item.productItemsStatus && item.productItemsStatus.name }
                     </p>
                   </Grid>
                 </Grid>

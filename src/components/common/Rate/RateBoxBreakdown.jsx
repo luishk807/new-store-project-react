@@ -69,7 +69,6 @@ const RateBoxBreakdown = ({classes, data}) => {
   const [totalRate, setTotalRate] = useState(data.length);
   const [totalAverage, setTotalAverage] = useState(0);
   const [breakdown, setBreakdown] = useState({});
-  const [progress, setProgress] = useState(0);
   const [showRates, setShowRates] = useState(false);
 
   useEffect(()=>{
@@ -81,18 +80,21 @@ const RateBoxBreakdown = ({classes, data}) => {
       1: 0
     }
     let total = 0;
-    data.forEach((item, index) => {
-      const rate = parseInt(item.rate);
-      total += item.rate * rate;
-      rateFetch = {
-        ...rateFetch,
-        [rate] : rateFetch[rate] + 1
-      }
-    })
-    let totalAvgTptal = getRatingAvg(data)
-    setTotalAverage(totalAvgTptal);
-    setBreakdown(rateFetch);
-    setShowRates(true);
+    if (data && Object.keys(data).length) {
+      data.forEach((item, index) => {
+        const rate = parseInt(item.rate);
+        total += item.rate * rate;
+        rateFetch = {
+          ...rateFetch,
+          [rate] : rateFetch[rate] + 1
+        }
+      })
+      let totalAvgTptal = getRatingAvg(data)
+      setTotalRate(data.length);
+      setTotalAverage(totalAvgTptal);
+      setBreakdown(rateFetch);
+      setShowRates(true);
+    }
   }, [showRates])
 
   return showRates && (

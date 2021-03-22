@@ -28,6 +28,7 @@ import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
 import QuantitySelectorB from '../../components/common/QuantitySelectorB';
 import { getItemById } from '../../api';
+import { getProductById } from '../../api/products';
 import { getProductItemById } from '../../api/productItems';
 import ProgressBar from '../../components/common/ProgressBar';
 import WishListIcon from '../../components/common/WishListIcon';
@@ -185,7 +186,7 @@ const styles = (theme) => ({
   descriptionTitle: {
     fontSize: '1.2em',
     margin: '10px 0px',
-  },
+  }
 });
 
 const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
@@ -203,6 +204,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [dealPrice, setDealPrice] = useState(0);
   const [selectedProductItem, setSelectedProductItem] = useState({});
   const [colors, setColors] = useState(null)
+  const [outOfStock, setOutofStock] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -210,9 +212,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   });
 
   const handQuantitySelect = async(resp) => {
-    const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem, resp.value);
-    setDealPrice(getDiscountItem.retailPrice);
-    setProductItem(getDiscountItem);
+      const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem, resp.value);
+      setDealPrice(getDiscountItem.retailPrice);
+      setProductItem(getDiscountItem);
   };
 
   const setProductItem = async(item) => {
@@ -318,6 +320,12 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         const getTotal = formatNumber(searchItem.retailPrice);
         setProductItem(searchItem);
         setDealPrice(getTotal)
+        // check if variant is out of stock
+        if (!getItem[0].stock) {
+          setOutofStock(true);
+        } else {
+          setOutofStock(false);
+        }
       }
     }
   }
@@ -381,7 +389,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   const loadProductInfo = async() => {
-    const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
+    const getProductInfo = await getProductById(id)
     await setProductInfo(getProductInfo);
     if (getProductInfo.productColors && getProductInfo.productColors.length) {
       if (getProductInfo.productProductDiscount && getProductInfo.productProductDiscount.length) {
@@ -472,10 +480,16 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     )
                   }
                   <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
-                    <QuantitySelectorB refresh={forceRefresh} onChange={handQuantitySelect} className={classes.dropDown} id="quant-select"/>
+                    <QuantitySelectorB stock={selectedProductItem.stock} refresh={forceRefresh} onChange={handQuantitySelect} className={classes.dropDown} id="quant-select"/>
                   </Grid>
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
-                    <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>
+                    {
+                      outOfStock ? (
+                        <Button disabled className={`cartButtonDisabled ${classes.addCartBtn}`}>Add To Cart</Button>
+                      ) : (
+                        <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>
+                      )
+                    }
                     <WishListIcon product={productInfo.id} />
                   </Grid>
                   <Grid item lg={12} xs={12}>
@@ -487,20 +501,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                       <Grid item lg={12} xs={12}>
                         <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Deals</Typography>
                         <ul>
-                            {
-                              // productInfo.productProductDiscount.map((item, index) => {
-                              //   return (
-                              //     <li key={index}>{item.name}</li>
-                              //   )
-                              // })
-                              discountHtml && discountHtml
-                            }
+                          {
+                            discountHtml && discountHtml
+                          }
                         </ul>
                       </Grid>
                     )
                   }
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
-                    <Typography align="left" variant="h5" component="h5" className={classes.productStock}>{productInfo.stock ? 'Available' : 'Out of Stock'}</Typography>
+                    <Typography align="left" variant="h5" component="h5" className={classes.productStock}>{!outOfStock ? 'Available' : 'Out of Stock'}</Typography>
                   </Grid>
                   {/* <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography align="left" variant="h5" component="h5">Disponibilidad: {productInfo.stock}</Typography>

@@ -222,6 +222,11 @@ a:hover {
 .cardLink {
   color: $main_color;
 }
+.cartButtonDisabled {
+  background-color: white !important;
+  border: 1px solid rgba(0,0,0,.03) !important;
+  color: rgba(0,0,0,.09) !important;
+}
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */

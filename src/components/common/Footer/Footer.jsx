@@ -309,7 +309,7 @@ const Footer = ({classes}) => {
             </Grid>
           </Grid>
           <Grid item lg={12} xs={12} className={`${classes.lastLine}`}>
-              <Typography align="center" variant="body1" component="p" className={classes.lastLineItems}>&copy; 2020 <a href="/" className={classes.footerLink}>AvenidaZ.com</a>  All right reserved.</Typography>
+              <Typography align="center" variant="body1" component="p" className={classes.lastLineItems}>&copy; {(new Date().getFullYear())} <a href="/" className={classes.footerLink}>AvenidaZ.com</a>  All right reserved.</Typography>
           </Grid>
         </Grid>
       </div>

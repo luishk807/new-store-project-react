@@ -481,6 +481,8 @@ export const noImageUrl = {
 
 export const statusAllowedCancellation = [1, 2];
 
+export const LIMIT = 30;
+
 export const IGNORE_FORM_FIELDS = ['useDate', 'saved'];
 
 export const ALLOW_FIELDS = ['saved', 'id', 'items'];

@@ -19,3 +19,14 @@ export const getColorsById = async(id) => {
 export const getColorsByProductId = async(id) => {
   return Api.get(`product-colors/product/${id}`);
 }
+
+export const getColorByIds = async(ids) => {
+  if (!ids) {
+    return;
+  }
+  const data = {
+    ids: ids
+  }
+  
+  return Api.get(`product-colors/filters/bulk`, data);
+}

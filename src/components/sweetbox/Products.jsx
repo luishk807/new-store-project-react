@@ -8,6 +8,8 @@ import {
 import NumberFormat from 'react-number-format';
 
 import { getImageUrlByType } from '../../utils/form';
+import { getImage } from '../../utils';
+
 import {
   getProductById
 } from '../../api/products';
@@ -44,6 +46,8 @@ const SweetBoxProducts = ({classes, id, isFeature}) => {
   }
 
   const loadCardIcons = () => {
+    const img = getImage(product);
+
     if (isFeature) {
       return (
           <Button className={classes.cardBtn}  href={`product/${product.id}`}>
@@ -52,7 +56,9 @@ const SweetBoxProducts = ({classes, id, isFeature}) => {
                 Show Now
               </Grid>
               <Grid item lg={12} xs={12}>
-                <img src={`${imageUrl}/${product.productImages[0].img_url}`} className={`img-fluid`} alt={product.name} />
+               {
+                 img
+               }
               </Grid>
             </Grid>
           </Button>
@@ -62,7 +68,9 @@ const SweetBoxProducts = ({classes, id, isFeature}) => {
           <Button className={classes.cardBtn} href={`product/${product.id}`}>
             <Grid container>
               <Grid item lg={12} xs={12}>
-                <img className={`img-fluid`} src={`${imageUrl}/${product.productImages[0].img_url}`} alt={product.name} />
+                {
+                  img
+                }
               </Grid>
               <Grid item lg={12} xs={12}>
                {product.name}

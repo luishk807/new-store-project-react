@@ -34,7 +34,7 @@ const Home = ({classes}) => {
 
   return (
     <AdminLayoutTemplate>
-      <Grid container spacing={2}>
+      <Grid container>
         <Grid item lg={12} xs={12}>
         <h1>Home Admin</h1>
         </Grid>

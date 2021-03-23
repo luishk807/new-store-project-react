@@ -104,7 +104,6 @@ const Index = ({classes}) => {
     setProduct(pid);
     if (pid) {
       const items = await getAllProductItemsByProductId(pid);
-      console.log(items);
       setProductItems(items);
       setShowData(true);
     }

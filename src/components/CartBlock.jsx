@@ -132,7 +132,6 @@ const Index = ({
       if (onCartTotal) {
         onCartTotal(total);
       }
-      
       setTotals(total)
       setProducts(prods);
     }
@@ -196,7 +195,7 @@ const Index = ({
         <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
           <Grid container className={classes.totalTotalContainer}>
             <Grid item className={classes.totalTotalTitle}>
-              Tax
+              ITBMS 7%
             </Grid>
             <Grid item className={classes.totalTotalTotal}>
             ${totals.taxes}
@@ -214,7 +213,20 @@ const Index = ({
             </Grid>
           </Grid>
         </Grid>
-
+        {
+          totals.saved > 0 && (
+            <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
+              <Grid container className={classes.totalTotalContainer}>
+                <Grid item className={classes.totalTotalTitle}>
+                  You Saved
+                </Grid>
+                <Grid item className={classes.totalTotalTotal}>
+                  - ${totals.saved}
+                </Grid>
+              </Grid>
+            </Grid>
+          )
+        }
         {
           showCheckout ? (
             <Grid item className={`${showCheckout && 'borderTopMain'} ${classes.totalTotalitemsCheckout}`} lg={12} xs={12}>

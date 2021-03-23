@@ -32,6 +32,7 @@ import FileUploader from '../FileUploader';
 import Typography from '../Typography';
 import Snackbar from '../Snackbar';
 import Icons from '../Icons';
+import DialogModal from '../DialogModal';
 import ProgressBar from '../ProgressBar';
 
 const styles = (theme) => ({
@@ -168,6 +169,7 @@ const Form = ({
   fileBtnText='Upload Image',
   formSubmit: handleSubmit,
   formCancel: handleCancel,
+  formDelete,
   onCloseSnack,
   onImageDelete,
   onImageBoxDelete,
@@ -192,6 +194,16 @@ const Form = ({
   const userImages = fields['image'] && 'saved' in fields['image'] ? fields['image'].saved : null;
   const imageBoxImages = fields['imageBox'] && 'saved' in fields['imageBox'] ? fields['imageBox'].saved : null;
   const panamaFlag = ['province', 'district', 'corregimiento'];
+  const [dialogContent, setDialogContent] = useState({
+    open: false,
+    value: null,
+    title: "Deleting Item",
+    content: "Are you sure, you want to delete this item?",
+    actionLabels: {
+      true: "Yes",
+      false: "No"
+    }
+  })
   const imageClickHandle = (e) => {
     const markDelete = userImages[e];
     userImages.splice(e,1);
@@ -204,6 +216,25 @@ const Form = ({
     imageBoxImages.splice(e,1);
     imageBoxImagesCont.splice(e,1);
     onImageBoxDelete(markDelete)
+  }
+
+  const handleDelete = (e) => {
+    setDialogContent({
+      ...dialogContent,
+      open: true,
+      title: `Deleting ${title}`,
+      value: e
+    })
+  }
+
+  const handleDialogClick = (e) => {
+    setDialogContent({
+      ...dialogContent,
+      open: false
+    })
+    if (e) {
+      formDelete(dialogContent.value.id)
+    }
   }
 
   const handleRateOnChange = (value) => {
@@ -650,7 +681,7 @@ const Form = ({
       case "edit": {
         const buttonName = showTitle ? ` ${newTitle}`:'';
         setFormTitle(`Edit${buttonName}`);
-        setFormBtnTitle(`${submitCustomName ? submitCustomName : `Update${buttonName}`}`);
+        setFormBtnTitle(`${submitCustomName ? submitCustomName : `Update`}`);
         break;
       }
       case "delete": {
@@ -716,16 +747,21 @@ const Form = ({
           }
           {
             showCancelBtn && (
-              <Grid item lg={6} xs={12} className={classes.formItem}>
+              <Grid item lg={4} xs={12} className={classes.formItem}>
                 <FormControl fullWidth>
                   <Button onClick={handleCancel} className={`mainButton`}>{cancelFormBtnTitle}</Button>
                 </FormControl>
               </Grid>
             )
           }
+          <Grid item lg={ showCancelBtn ? 4 : 6 } xs={12} className={classes.formItem}>
+            <FormControl fullWidth>
+              <Button onClick={handleDelete} className={`mainButton`}>Delete</Button>
+            </FormControl>
+          </Grid>
           {
             formBtnTitle && (
-              <Grid item lg={ showCancelBtn ? 6 : 12 } xs={12} className={classes.formItem}>
+              <Grid item lg={ showCancelBtn ? 4 : 6 } xs={12} className={classes.formItem}>
                 <FormControl fullWidth>
                   <Button onClick={handleSubmit} className={`mainButton`}> {formBtnTitle}</Button>
                 </FormControl>
@@ -735,6 +771,7 @@ const Form = ({
         </Grid>
       </form>
       <Snackbar open={snack.open} severity={snack.severity} onClose={onCloseSnack} content={snack.text} />
+      <DialogModal open={dialogContent.open} onClick={handleDialogClick} title={dialogContent.title} content={dialogContent.content} actionLabels={dialogContent.actionLabels} />
     </div>
   );
 }
@@ -759,6 +796,7 @@ Form.protoTypes = {
   onImageDelete: T.func,
   onImageBoxDelete: T.func,
   formCancel: T.func,
+  formDelete: T.func,
   children: T.node,
   hideEntry: T.object,
   cancelCustonName: T.string,

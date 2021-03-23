@@ -238,37 +238,37 @@ const Index = () => {
         showData ? (
           <Grid container className={classes.mainContainer}>
             <Hidden smDown>
-            <Grid item lg={12} xs={12} className={classes.mainHeader}>
-              <Grid container className={classes.itemContainer}>
-                <Grid item lg={3} className={classes.itemColumn}>
-                  Name
-                </Grid>
-                <Grid item lg={2} className={classes.itemColumn}>
-                  Categories
-                </Grid>
-                <Grid item lg={1} className={classes.itemColumn}>
-                  Colors
-                </Grid>
-                <Grid item lg={1} className={classes.itemColumn}>
-                  Sizes
-                </Grid>
-                <Grid item lg={1} className={classes.itemColumn}>
-                  Items
-                </Grid>
-                <Grid item lg={1} className={classes.itemColumn}>
-                  Deals
-                </Grid>
-                <Grid item lg={1} className={classes.itemColumn}>
-                  Brand
-                </Grid>
-                <Grid item lg={1} className={classes.itemColumn}>
-                  Status
-                </Grid>
-                <Grid item lg={1} className={classes.itemAction}>
-                  Action
+              <Grid item lg={12} xs={12} className={classes.mainHeader}>
+                <Grid container className={classes.itemContainer}>
+                  <Grid item lg={3} className={classes.itemColumn}>
+                    Name
+                  </Grid>
+                  <Grid item lg={2} className={classes.itemColumn}>
+                    Categories
+                  </Grid>
+                  <Grid item lg={1} className={classes.itemColumn}>
+                    Colors
+                  </Grid>
+                  <Grid item lg={1} className={classes.itemColumn}>
+                    Sizes
+                  </Grid>
+                  <Grid item lg={1} className={classes.itemColumn}>
+                    Items
+                  </Grid>
+                  <Grid item lg={1} className={classes.itemColumn}>
+                    Deals
+                  </Grid>
+                  <Grid item lg={1} className={classes.itemColumn}>
+                    Brand
+                  </Grid>
+                  <Grid item lg={1} className={classes.itemColumn}>
+                    Status
+                  </Grid>
+                  <Grid item lg={1} className={classes.itemAction}>
+                    Action
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
             </Hidden>
             {
               products.map((product, index) => {

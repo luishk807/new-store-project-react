@@ -6,6 +6,7 @@ import {
   Button,
   RadioGroup,
   Radio,
+  CircularProgress,
   FormControlLabel
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
@@ -74,7 +75,9 @@ const styles = (theme) => ({
       paddingRight: 0,
     }
   },
-
+  processBtn: {
+    padding: '5px 0px',
+  },
   addressBox: {
     padding: 10,
     margin: '10px 0px',
@@ -84,6 +87,7 @@ const styles = (theme) => ({
 
 const Home = ({userInfo, classes, cart, emptyCart}) => {
   const router = useRouter()
+  const [showPlaceOrderLoader, setShowPlaceOrderLoader] = useState(false);
   const [deliveryOptions, setDeliveryOptions] = useState([])
   const [form, setForm] = useState(null);
   const [isUser, setIsUser] = useState(false);
@@ -152,20 +156,28 @@ const Home = ({userInfo, classes, cart, emptyCart}) => {
       const useAddress = isUser ? Object.assign({}, address) : Object.assign({}, guestAddress)
       const cart = formSubmit.cart;
 
+      console.log(useAddress.country)
+      let country = useAddress.country;
+      if (typeof country !== "string") {
+        country = useAddress.name;
+      }
       formSubmit['shipping_name'] = useAddress.name;
       formSubmit['shipping_address'] = useAddress.address;
       formSubmit['shipping_corregimiento'] = useAddress.corregimiento;
       formSubmit['shipping_district'] = useAddress.district;
       formSubmit['shipping_phone'] = useAddress.phone;
       formSubmit['shipping_province'] = useAddress.province;
-      formSubmit['shipping_country'] = useAddress.country;
+      formSubmit['shipping_country'] = country;
       formSubmit['shipping_email'] = useAddress.email;
       formSubmit['cart'] = JSON.stringify(cart);
       formSubmit['subtotal'] = total.subtotal;
-      formSubmit['tax'] = total.taxes;
+      formSubmit['totalSaved'] = total.saved;
+      formSubmit['tax'] = parseFloat(total.taxes);
       formSubmit['grandtotal'] = total.grandTotal;
       formSubmit['deliveryId'] = formSubmit.delivery;
       formSubmit['delivery'] = total.delivery;
+      console.log("seidng", formSubmit)
+      setShowPlaceOrderLoader(true);
       const confirm = await processOrderByUser(formSubmit)
       const resp = handleFormResponse(confirm);
       setSnack(resp);
@@ -181,6 +193,7 @@ const Home = ({userInfo, classes, cart, emptyCart}) => {
   }
 
   useEffect(() => {
+    console.log("Cart", cart)
     let form = {
       userid: userInfo.id,
       delivery: '1',
@@ -274,8 +287,14 @@ const Home = ({userInfo, classes, cart, emptyCart}) => {
                         </div>
                       </Grid>
                       <Grid item className={classes.itemSection} lg={12} xs={12}>
-                        <Button onClick={handlePlaceOrder} className={`mainButton`}>
-                            Place Order
+                        <Button onClick={handlePlaceOrder} className={`mainButton ${classes.processBtn}`}>
+                            { 
+                              showPlaceOrderLoader ? (
+                                <CircularProgress color='inherit' />
+                              ) : (
+                                `Place your order`
+                              )
+                            }
                         </Button>
                       </Grid>
                     </Grid>

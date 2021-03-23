@@ -79,22 +79,28 @@ export const getCartTotal = (obj) => {
   let subtotal = 0;
   let taxes = 0;
   let grandTotal = 0;
+  let savedGrandTotal = 0;
   let delivery = obj.delivery ? parseFloat(obj.delivery) : 0;
+  let originalTotal = 0;
   let cart = obj.cart;
   if (cart) {
     Object.keys(cart).forEach((key, index) => {
       subtotal += cart[key].retailPrice * cart[key].quantity;
+      originalTotal += cart[key].originalPrice * cart[key].quantity;
     })
   }
 
-  taxes = subtotal * 0.08;
+  taxes = subtotal * 0.07;
 
   grandTotal = taxes + subtotal + delivery;
+
+  savedGrandTotal = originalTotal - subtotal;
 
   return {
     'subtotal': formatNumber(subtotal),
     'delivery': formatNumber(delivery),
     'taxes': formatNumber(taxes),
+    'saved': formatNumber(savedGrandTotal),
     'grandTotal': formatNumber(grandTotal)
   }
 }

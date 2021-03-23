@@ -77,6 +77,12 @@ const styles = makeStyles((theme) => ({
     // overflow: 'hidden',
     // textOverflow: 'ellipsis',
   },
+  cartPrice: {
+    lineHeight: 2
+  },
+  cartPriceSave: {
+    fontWeight: 600
+  },
   cartItemCont: {
     padding: '0px 10px',
     [theme.breakpoints.down('sm')]: {
@@ -110,7 +116,10 @@ const styles = makeStyles((theme) => ({
     }
   },
   cartImage: {
-    padding: 10
+    padding: 10,
+    [theme.breakpoints.down('sm')]: {
+      padding: 1,
+    }
   },
   cartGrandCont: {
     padding: '10px 0px',
@@ -126,7 +135,13 @@ const styles = makeStyles((theme) => ({
   deleteIcon: {
     width: 35,
     height: 35,
-  }
+  },
+  productPriceScratch: {
+    textDecoration: 'line-through',
+  },
+  priceSave: {
+    color: 'red',
+  },
 }));
 
 const Cart = ({cart, updateCart, deleteCart}) => {
@@ -171,7 +186,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
             <Grid container>
               <Grid item lg={12} xs={12} className={classes.cartTitleCont}>
                 <Typography variant="h5" component="p">
-                  Your Cart
+                  Cart View
                 </Typography>
               </Grid>
               {
@@ -185,27 +200,62 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                         <Grid item lg={12} xs={12} className={classes.cartItemDivider} >
                           <Divider />
                         </Grid>
-                        <Grid item lg={2} xs={4}  className={classes.cartImage}>
+                        <Grid item lg={2} xs={5}  className={classes.cartImage}>
                           <Link href={`/product/${item.productId}`}>
                             {
                               imgUrl && imgUrl
                             }
                           </Link>
                         </Grid>
-                        <Grid item lg={6} xs={8} className={classes.cartDescCont}>
+                        <Grid item lg={6} xs={7} className={classes.cartDescCont}>
                           <Grid container>
                             <Grid item lg={12} xs={12}>
                               <Typography align="left" component="h4" className={classes.cardDescTitle}>
                                 <Link href={`/product/${item.productItemProduct.id}`}>{item.productItemProduct.name}</Link>
                               </Typography>
                             </Grid>
-                            <Grid item lg={12} xs={12}>
-                              <TextEllipsis classes={classes.cardDescDescription} text={item.productItemProduct.description} limit={100} />
+                            {
+
+                              item.discount ? (
+                                <>
+                                <Grid item lg={12} xs={12} className={classes.cartPrice}>
+                                  <Typography align="left" component="p" className={classes.productPriceScratch}>
+                                    Precio Unitario: ${item.originalPrice}
+                                  </Typography>
+                                </Grid>
+                                <Grid item lg={12} xs={12} className={`${classes.cartPrice} ${classes.cartPriceSave}`}>
+                                  <Typography align="left" component="p">
+                                    Precio con Desc.: ${item.retailPrice}
+                                  </Typography>
+                                </Grid>
+                                <Grid item lg={12} xs={12}  className={classes.cartPrice}>
+                                  <Typography align="left" component="p" className={classes.priceSave}>
+                                    Ahorras: {`$${item.save_price} (${item.save_percentag_show})`}
+                                  </Typography>
+                                </Grid>
+                                </>
+                              ) : (
+                                <Grid item lg={12} xs={12} className={classes.cartPrice}>
+                                  <Typography align="left" component="p">
+                                    Price: ${item.retailPrice}
+                                  </Typography>
+                                </Grid>
+                              )
+                            }
+                            <Grid item lg={12} xs={12} className={classes.cartPrice}>
+                              <Typography align="left" component="p">
+                                Sku: {item.sku}
+                              </Typography>
                             </Grid>
-                            <Grid item lg={12} xs={12}>
-                              <p>Price: {item.retailPrice}</p>
-                              <p>Color: {item.productItemColor.name}</p>
-                              <p>Size: {item.productItemSize.name}</p>
+                            <Grid item lg={12} xs={12} className={classes.cartPrice}>
+                              <Typography align="left" component="p">
+                                Color: {item.productItemColor.name}
+                              </Typography>
+                            </Grid>
+                            <Grid item lg={12} xs={12} className={classes.cartPrice}>
+                              <Typography align="left" component="p">
+                                Size: {item.productItemSize.name}
+                              </Typography>
                             </Grid>
                             {
                               item.discount && (
@@ -214,13 +264,6 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                 </Grid>
                               )
                             }
-                            <Hidden lgDown>
-                              <Grid item lg={12} xs={12}>
-                                <Typography align="left" variant="body1" component="p">
-                                  {formatNumber(item.retailPrice)}
-                                </Typography>
-                              </Grid>
-                            </Hidden>
                           </Grid>
                         </Grid>
                         <Grid item lg={2} xs={9} className={classes.cartSelectCont}>
@@ -270,7 +313,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
             <Grid container>
               <Grid item lg={12} xs={12} className={classes.cartTitleCont}>
                 <Typography variant="h5" align="center" component="p">
-                  Your Cart is Empty
+                  Su carrito esta vacio
                 </Typography>
               </Grid>
             </Grid>

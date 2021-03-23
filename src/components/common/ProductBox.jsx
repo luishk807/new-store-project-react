@@ -2,31 +2,27 @@ import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
 import { 
   withStyles, 
-  Fade,
-  Backdrop,
   Grid,
   IconButton,
-  Paper,
 } from '@material-ui/core';
-import { getImageUrlByType } from '../../utils/form';
+import { getImageBaseOnly } from '../../utils';
 import { getProductById } from '../../api/products';
 import Icons from './Icons';
 import Typography from './Typography';
-import { noImageUrl } from '../../../config';
 
 const styles = (theme) => ({
   root: {
     width: '100%',
-    margin: 5,
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'flex-start',
     overflow: 'hidden',
     position: 'relative',
+    border: '1px solid rgba(0,0,0,.09)',
   },
   icon: {
     color: 'black',
-    width: '30%',
+    width: '20%',
     [theme.breakpoints.down('sm')]: {
       width: '20%',
     },
@@ -37,7 +33,8 @@ const styles = (theme) => ({
     padding: '5px',
     width: '100%',
     color: 'white',
-    backgroundImage: 'linear-gradient(transparent, rgba(0,0,0,.5))',
+    background: 'black',
+    fontSize: '.9em',
   },
   iconCont: {
     top: 0,
@@ -52,38 +49,35 @@ const styles = (theme) => ({
   }
 })
 
-const ProductBox = React.memo(({classes, title, id, onDelete}) => {
+const ProductBox = ({classes, id, onDelete}) => {
+  const [productImg, setProductImg] = useState(null);
   const [product, setProduct] = useState({});
   const [showData, setShowData] = useState(false);
 
-  const fetchProduct = async(id) => {
-    const prod = await getProductById(id);
-    if (prod) {
-      setProduct(prod);
+  const loadProduct = async() => {
+    const gProd = await getProductById(id)
+    if (gProd) {
+      setProduct(gProd);
+      const img = getImageBaseOnly(gProd);
+      setProductImg(img);
       setShowData(true);
     }
-  };
+  }
 
   useEffect(() => {
-    fetchProduct(id);
-  }, [id]);
-  
-  const imgMainUrl = getImageUrlByType(title);
-  
-  let productImg = `${noImageUrl.img}`;
-
-  if (product && product.productImages && product.productImages.length) {
-    productImg = `${imgMainUrl}/${product.productImages[0].img_url}`;
-  }
+    loadProduct();
+  }, []);
 
   return showData && (
     <div className={classes.root}>
       <Grid container>
         <Grid item lg={12} xs={12}>
           <Typography className={classes.productTitle}>{product.name}</Typography>
-          <img className="img-fluid" src={productImg} />
+          {
+            productImg
+          }
           <div className={classes.iconCont}>
-            <IconButton className={classes.icon} onClick={()=>onDelete(id)}>
+            <IconButton className={classes.icon} onClick={(e)=>onDelete(false, product)}>
               <Icons name="close" />
             </IconButton>
           </div>
@@ -91,11 +85,11 @@ const ProductBox = React.memo(({classes, title, id, onDelete}) => {
       </Grid>
     </div>
    );
-})
+}
  
 ProductBox.protoTypes = {
   classes: T.object,
-  id: T.object,
+  id: T.string,
   onDelete: T.func.isRequired,
 }
 

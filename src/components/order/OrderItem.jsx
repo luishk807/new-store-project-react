@@ -10,45 +10,21 @@ const styles = (theme) => ({
   root: {
     width: '100%'
   },
-  container: {
-
-  },
-  actionBtn: {
-
-  },
-  itemProduct: {
-
-  },
-  orderOrderProduct: {
-
-  },
-  itemAction: {
-
-  },
-  itemActionItems: {
-
-  },
-  itemActionContainer: {
-
-  }
 });
 
 const OrderItem = ({classes, order, isAdmin = false}) => {
   return (
-    <Grid container className={classes.container}>
-      <Grid item lg={9} xs={9} className={classes.itemProduct}>
+    <Grid container>
+      <Grid item lg={9} xs={9}>
         <SimpleBox data={order.orderOrderProduct} />
       </Grid>
-      <Grid item lg={3} xs={3} className={classes.itemAction}>
+      <Grid item lg={3} xs={3}>
         {
           !isAdmin && (
             <>
-              <Grid container className={classes.itemActionContainer}>
-                <Grid item lg={12} xs={12} className={classes.itemActionItems}>
-                  <Button className={`mainButton ${classes.actionBtn}`}>Review</Button>
-                </Grid>
-                <Grid item lg={12} xs={12} className={classes.itemActionItems}>
-                  <Button className={`mainButton ${classes.actionBtn}`}>Re-Order</Button>
+              <Grid container>
+                <Grid item lg={12} xs={12}>
+                  <Button className={`mainButton`}>Review</Button>
                 </Grid>
               </Grid>
             </>

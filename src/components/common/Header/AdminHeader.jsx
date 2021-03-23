@@ -24,7 +24,7 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-import { ADMIN_URL, SECTIONS } from '../../../constants/admin';
+import { ADMIN_URL, ADMIN_SECTIONS, SECTIONS } from '../../../constants/admin';
 import loadMain from '../../../redux/reducers'
 import { logout } from '../../../api/auth';
 import Icons from '../../common/Icons';
@@ -136,6 +136,10 @@ const styles = (theme) => ({
       width: '50ch',
     },
   },
+  linkItem: {
+    display: 'flex',
+    flexDirection: 'row',
+  }
 })
 
 const Header = ({classes, data, loadMain, userInfo}) => {
@@ -173,8 +177,10 @@ const Header = ({classes, data, loadMain, userInfo}) => {
             SECTIONS.map((section, index) => {
               return (
                 <ListItem key={index}>
-                  <ListItemIcon><Icons name={section} classes={{icon: classes.menuIcon}}/></ListItemIcon>
-                  <ListItemText primary={section} />
+                  <Link href={ADMIN_SECTIONS[section].url} className={classes.linkItem}>
+                    <ListItemIcon><Icons name={ADMIN_SECTIONS[section].key} classes={{icon: classes.menuIcon}}/></ListItemIcon>
+                    <ListItemText primary={section} />
+                  </Link>
                 </ListItem>
               )
             })

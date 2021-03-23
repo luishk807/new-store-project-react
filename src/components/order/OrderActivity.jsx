@@ -29,7 +29,6 @@ const OrderActivity = ({classes, order}) => {
   
   const loadActivities = async() => {
     const getActivity = await getOrderActivitiesByOrderid(order.id);
-    console.log("acti", getActivity)
     setActivity(getActivity);
     setShowData(true);
   };

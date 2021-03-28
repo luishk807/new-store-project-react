@@ -48,9 +48,17 @@ export const checkDiscountPrice = async(product, selectedItem, quantity) => {
       }
       if (found) {
           const newTotal = originalItem.retailPrice - (originalItem.retailPrice * found.percentage);
-          currProduct['quantity'] = quantity;
           currProduct['retailPrice'] = newTotal.toFixed(2);
+          currProduct['originalPrice'] = originalItem.retailPrice;
           currProduct['discount'] = found;
+          currProduct['save_percentage'] =  found.percentage;
+          currProduct['save_percentag_show'] =  `${found.percentage * 100}%`
+          currProduct['save_price'] =  (originalItem.retailPrice - newTotal).toFixed(2)
+      } else {
+          currProduct['discount'] = null;
+          currProduct['save_percentage'] =  0;
+          currProduct['save_percentag_show'] =  '';
+          currProduct['save_price'] =  0
       }
     })
   }
@@ -91,7 +99,11 @@ export const formatFormData = (form) => {
         formData.append(i,form[i])
       }
     } else if (ALLOW_FIELDS.includes(i)) {
-      formData.append(i, JSON.stringify(form[i]))
+      if (typeof form[i] === "object") {
+        formData.append(i, JSON.stringify(form[i]))
+      } else {
+        formData.append(i, form[i])
+      }
     }
   }
   return formData;

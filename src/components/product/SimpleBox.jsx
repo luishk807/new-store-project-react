@@ -20,6 +20,7 @@ const styles = (theme) => ({
     padding: 10,
   },
   itemProductDescription: {
+    textAlign: 'left',
     padding: 10,
     '& p': {
       lineHeight: '10px',
@@ -27,6 +28,12 @@ const styles = (theme) => ({
         lineHeight: 'normal',
       }
     }
+  },
+  saveTotal: {
+    color: 'red',
+  },
+  originalPrice: { 
+    textDecoration: 'line-through',
   },
   itemName: {
     fontSize: '1em',
@@ -39,12 +46,8 @@ const SimpleBox = React.memo(({ classes, data }) => {
   const [showData, setShowData] = useState(false);
   const loadProducts = async() => {
     const itemIds = data.map((item) => item.productItemId);
-    const productDiscounts = data.map((item) => item.productDiscountId).filter(item => item);
     const getProduct = await getProductItemByIds(itemIds);
-    let getDiscounts = []
-    if (productDiscounts.length) {
-      getDiscounts = await getProductDiscountsByProductIds(productDiscounts)
-    }
+    
     const newProducts = data;
 
     const refactorData = newProducts.map(item => {
@@ -52,16 +55,9 @@ const SimpleBox = React.memo(({ classes, data }) => {
         return prod.id === item.productItemId
       })
 
-      let getDiscount = null;
-      if (getDiscounts.length) {
-        getDiscount = getDiscounts.filter(disc => {
-          return disc.id == item.productDiscountId
-        })
-      }
       const data = {
         ...item,
         'productImages': getImage[0].productImages,
-        'productDiscount': getDiscount && getDiscount[0]
       }
       return data
     })
@@ -90,12 +86,27 @@ const SimpleBox = React.memo(({ classes, data }) => {
                 </Grid>
                 <Grid item lg={10} xs={6} className={classes.itemProductDescription}>
                   <p className={classes.itemName}><a href={`/product/${item.product}`}>{item.name}</a></p>
+                  <p>Sku: <b>{item.sku}</b></p>
+                  <p>Size: <b>{item.size}</b></p>
+                  <p>Color: <b>{item.color}</b></p>
                   <p>Quantity: <b>{item.quantity}</b></p>
-                  <p>Unit Total: <b>${formatNumber(item.unit_total)}</b></p>
+                  {
+                    item.savePrice ? (
+                      <p>Unit Total: <b><span className={classes.originalPrice}>{item.originalPrice}</span>&nbsp; ${formatNumber(item.unit_total)}</b></p>
+                    ) : (
+                      <p>Unit Total: <b>${formatNumber(item.unit_total)}</b></p>
+                    )
+                  }
+
                   <p>Total: <b>${formatNumber(item.total)}</b></p>
                   {
+                    item.savePrice && (
+                      <p className={classes.saveTotal}>You saved: <b>${formatNumber(item.savePrice)}</b></p>
+                    )
+                  }
+                  {
                     item.productDiscount && (
-                      <p className={classes.itemTotal}>Discount: <b>{item.productDiscount.name}</b></p>
+                      <p className={classes.itemTotal}>Discount: <b>{item.productDiscount}</b></p>
                     )
                   }
                 </Grid>

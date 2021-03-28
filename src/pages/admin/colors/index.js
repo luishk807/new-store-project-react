@@ -82,7 +82,6 @@ const Index = ({classes}) => {
 
   const loadColors = async() => {
     const gColors = await getColors();
-    console.log(gColors);
     if (gColors) {
       setColors(gColors);
       setShowData(true);

@@ -485,7 +485,7 @@ export const LIMIT = 30;
 
 export const IGNORE_FORM_FIELDS = ['useDate', 'saved'];
 
-export const ALLOW_FIELDS = ['saved', 'id', 'items'];
+export const ALLOW_FIELDS = ['saved', 'id', 'items', 'totalSaved'];
 
 export const config = {
   backEndUrl: process.env.BACKEND_URL,

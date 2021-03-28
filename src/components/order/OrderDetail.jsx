@@ -162,7 +162,7 @@ const View = ({classes, order, isAdmin = false}) => {
                   <>
                     <Grid item lg={10} xs={6} className={classes.itemHeaderDelivery}>
                       <p className={classes.orderHeaderSubTitle}>Status</p>
-                      <p>{order.orderStatuses.name}</p>
+                      <p><b>{order.orderStatuses.name}</b></p>
                     </Grid>
                     {
                       statusAllowedCancellation.includes(Number(order.orderStatus)) && (
@@ -181,20 +181,20 @@ const View = ({classes, order, isAdmin = false}) => {
         }
         <Grid item lg={12} xs={12} className={classes.itemHeader}>
           <Grid container className={classes.orderHeaderContainer}>
-            <Grid item lg={3} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem1}`}>
+            <Grid item lg={4} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem1}`}>
               <p className={classes.orderHeaderSubTitle}>Date</p>
               <p>{moment(order.createdAt).format('MMMM D, YYYY')}</p>
             </Grid>
             <Grid item lg={3} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem2}`}>
               <p className={classes.orderHeaderSubTitle}>Delivery Method:</p><p>{order.deliveryOrder ? order.deliveryOrder.name : 'N/A'}</p>
             </Grid>
-            <Grid item lg={4} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem3}`}>
+            <Grid item lg={5} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
               <p className={classes.orderHeaderSubTitle}>Order Number</p>
               <p>{order.order_number}</p>
             </Grid>
-            <Grid item lg={2} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
+            {/* <Grid item lg={2} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
               <Button><Icons name="print" classes={{icon: classes.icon}} /></Button>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Grid>
         <Grid item lg={12} xs={12} className={classes.orderSummary}>
@@ -208,7 +208,7 @@ const View = ({classes, order, isAdmin = false}) => {
             </Grid>
             <Grid item lg={3} xs={6} className={`${classes.orderHeaderItem} ${classes.orderSummaryItem2}`}>
               <p className={classes.orderHeaderSubTitle}>Payment Method</p>
-              <p>****4566</p>
+              <p>N/A</p>
             </Grid>
             <Grid item lg={5} xs={12} className={`${classes.orderHeaderItem} ${classes.orderSummaryItem3}`}>
               <p className={classes.orderHeaderSubTitle}>Order Summary</p>
@@ -227,7 +227,7 @@ const View = ({classes, order, isAdmin = false}) => {
                 <Grid item lg={12} xs={12}>
                   <Grid container>
                     <Grid item lg={6} xs={6}>
-                      Taxes
+                      ITBMS 7%
                     </Grid>
                     <Grid item lg={6} xs={6}>
                       ${formatNumber(order.tax)}
@@ -252,10 +252,24 @@ const View = ({classes, order, isAdmin = false}) => {
                       GrandTotal
                     </Grid>
                     <Grid item lg={6} xs={6}>
-                      ${formatNumber(order.grandtotal)}
+                      <b>${formatNumber(order.grandtotal)}</b>
                     </Grid>
                   </Grid>
                 </Grid>
+                {
+                  order.totalSaved && (
+                    <Grid item lg={12} xs={12}>
+                      <Grid container>
+                        <Grid item lg={6} xs={6}>
+                          You saved
+                        </Grid>
+                        <Grid item lg={6} xs={6}>
+                          - ${formatNumber(order.totalSaved)}
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  )
+                }
               </Grid>
             </Grid>
           </Grid>

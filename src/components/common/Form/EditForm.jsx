@@ -6,7 +6,7 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import { saveItem } from '../../../api';
+import { saveItem, deleteItem } from '../../../api';
 import Api from '../../../services/api';
 import { validateForm, loadMainOptions, handleFormResponse, checkEnforceDates } from '../../../utils/form';
 import Form from './Form';
@@ -111,6 +111,15 @@ const EditForm = ({
     } else {
       router.back()
     }
+  }
+
+  const handleDelete = async (id) => {
+    const confirm = await deleteItem(section.url, id)
+    const resp = handleFormResponse(confirm);
+    setSnack(resp);
+    setTimeout(() => {
+      handleCancel() 
+    }, 1000);
   }
 
   const handleSubmit = async (e) => {
@@ -296,6 +305,7 @@ const EditForm = ({
         onSubmit={handleSubmit} 
         formSubmit={handleSubmit}
         formCancel={handleCancel}
+        formDelete={handleDelete}
         onImageDelete={markUserImageDelete}
         onImageBoxDelete={markImageBoxDelete}
         type="edit"

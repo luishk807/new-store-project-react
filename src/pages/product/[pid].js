@@ -61,20 +61,46 @@ const styles = (theme) => ({
     fontWeight: 'bold',
     textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '3em',
+      fontSize: '2em',
       textAlign: 'center',
     }
+  },
+  productPriceContainerMain: {
+    padding: '5px 0px'
   },
   productPriceContainer: {
     padding: '5px 0px'
   },
-  productPrice: {
+  productPriceInContainer: {
+    alignItems: 'center'
+  },
+  productPriceMain: {
     fontSize: '1.5rem',
     textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
       fontSize: '2em',
       textAlign: 'center',
     }
+  },
+  productPrice: {
+    fontSize: '1.2rem',
+    textAlign: 'left',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1em',
+      textAlign: 'center',
+    }
+  },
+  productPriceDeal: {
+    fontSize: '1.2rem',
+    textAlign: 'left',
+    fontWeight: '600',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1em',
+      textAlign: 'center',
+    }
+  },
+  productPriceScratch: {
+    textDecoration: 'line-through',
   },
   deliveryText: {
     color: '#51DC55',
@@ -98,9 +124,6 @@ const styles = (theme) => ({
   productBottomSec: {
     padding: 10,
   },
-  dropDown: {
-    width: '100%',
-  },
   addCartBtn: {
     width: '100%',
     height: '100%',
@@ -119,7 +142,14 @@ const styles = (theme) => ({
   },
   productStock: {
     fontSize: '1.2em',
-    fontWeight: 'bold',
+    color: 'green'
+  },
+  productOutStock: {
+    fontSize: '1.2em',
+    color: 'red'
+  },
+  priceSave: {
+    color: 'red',
   },
   productColorBox: {
     width: 50,
@@ -186,6 +216,9 @@ const styles = (theme) => ({
   descriptionTitle: {
     fontSize: '1.2em',
     margin: '10px 0px',
+  },
+  infoRowContentQuantity: {
+    alignItems: 'center'
   }
 });
 
@@ -244,7 +277,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           }
         });
       } else {
-        console.log(`${noImageUrl.img}`)
         imgs.push({
           original: `${noImageUrl.img}`,
           thumbnail: `${noImageUrl.img}`,
@@ -426,27 +458,66 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           <Grid item lg={12} xs={12}>
             <Grid container spacing={2}>
               <Grid item lg={8} xs={12}>
-                <Grid container>
-                  <Grid item lg={12} xs={12} align="center">
-                    {
-                      images.length ? (
-                        <ImageGallery items={images} />
-                      ) : (
-                        <ProgressBar />
-                      )
-                    }
-                  </Grid>
-                </Grid>
+              {
+                images.length ? (
+                  <ImageGallery items={images} />
+                ) : (
+                  <ProgressBar />
+                )
+              }
               </Grid>
               <Grid item lg={4} xs={12}>
                 <Grid container>
-    
                   <Grid item lg={12} xs={12}>
                    <Typography className={classes.productName} variant="h4" component="h3">{productInfo.name}</Typography>
                   </Grid>
-                  <Grid item lg={12} xs={12} className={classes.productPriceContainer}>
-                    <Typography  className={classes.productPrice} variant="h1" component="h2">Price: US ${dealPrice}</Typography>
+                  <Grid item lg={12} xs={12}  className={classes.productPriceContainer}>
+                    {
+                    selectedProductItem.discount ? (
+                      <Grid container className={classes.productPriceInContainer}>
+                        <Grid item lg={4} xs={4} className={classes.productPrice}>
+                          <span>Precio Unitario:</span>
+                        </Grid>
+                        <Grid item lg={8} xs={8} className={classes.productPriceScratch}>
+                          <span>&nbsp;${selectedProductItem.originalPrice}</span>
+                        </Grid>
+                        <Grid item lg={4} xs={4} className={classes.productPriceDeal}>
+                          <span>Precio con Desc.:</span>
+                        </Grid>
+                        <Grid item lg={8} xs={8}  className={classes.productPriceDeal}>
+                          <span>&nbsp;${dealPrice}</span>
+                        </Grid>
+                        <Grid item lg={4} xs={4} className={classes.productPrice}>
+                          <span>Ahorras:</span>
+                        </Grid>
+                        <Grid item lg={8} xs={8} className={classes.priceSave}>
+                          <span>&nbsp;${selectedProductItem.save_price} ({selectedProductItem.save_percentag_show})</span>
+                        </Grid>
+                      </Grid>
+                    ) : (
+                      <Grid container className={classes.productPriceInContainer}>
+                        <Grid item lg={4} xs={4} className={classes.productPrice}>
+                          <span>Precio Unitario:</span>
+                        </Grid>
+                        <Grid item lg={8} xs={8}>
+                        < span>&nbsp;${selectedProductItem.retailPrice}</span>
+                        </Grid>
+                      </Grid>
+                    )
+                    }
                   </Grid>
+                  {
+                      showDiscount && (
+                      <Grid item lg={12} xs={12}>
+                        <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Deals</Typography>
+                        <ul>
+                          {
+                            discountHtml && discountHtml
+                          }
+                        </ul>
+                      </Grid>
+                    )
+                  }
                   {
                     colors && (
                       <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
@@ -480,7 +551,21 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     )
                   }
                   <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
-                    <QuantitySelectorB stock={selectedProductItem.stock} refresh={forceRefresh} onChange={handQuantitySelect} className={classes.dropDown} id="quant-select"/>
+                    <Grid container className={classes.infoRowContentQuantity}>
+                      <Grid item lg={6} xs={6}>
+                        <QuantitySelectorB stock={selectedProductItem.stock} refresh={forceRefresh} onChange={handQuantitySelect} id="quant-select"/>
+                      </Grid>
+                      <Grid item lg={6} xs={6}>
+                        {
+                          outOfStock ? (
+                            <Typography align="left" variant="h5" component="h5" className={classes.productOutStock}>Agotado</Typography>
+                          ) : (
+                            <Typography align="left" variant="h5" component="h5" className={classes.productStock}>Disponible</Typography>
+                          )
+                        }
+
+                      </Grid>
+                    </Grid>
                   </Grid>
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     {
@@ -496,24 +581,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Description</Typography>
                     <Typography align="left" variant="body1" component="p">{productInfo.description}</Typography>
                   </Grid>
-                  {
-                      showDiscount && (
-                      <Grid item lg={12} xs={12}>
-                        <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Deals</Typography>
-                        <ul>
-                          {
-                            discountHtml && discountHtml
-                          }
-                        </ul>
-                      </Grid>
-                    )
-                  }
-                  <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
-                    <Typography align="left" variant="h5" component="h5" className={classes.productStock}>{!outOfStock ? 'Available' : 'Out of Stock'}</Typography>
-                  </Grid>
-                  {/* <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
-                    <Typography align="left" variant="h5" component="h5">Disponibilidad: {productInfo.stock}</Typography>
-                  </Grid> */}
                   {/* <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography className={classes.deliveryText} align="left" variant="body1" component="p">
                       <Icons name="delivery" classes={{icon: classes.deliveryIcon}}  /> Entrega a todo Panama

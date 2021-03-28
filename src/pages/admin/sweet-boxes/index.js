@@ -173,9 +173,11 @@ const Index = ({classes}) => {
                         </a>
                       </Grid>
                       <Grid item lg={1} className={classes.itemLength}>
+                        <a href={`sweet-boxes/products/${sweetbox.id}`}>
                         {
                           sweetbox.sweetBoxSweetboxProduct && sweetbox.sweetBoxSweetboxProduct.length ? sweetbox.sweetBoxSweetboxProduct.length : 0
                         }
+                        </a>
                       </Grid>
                       <Grid item lg={2} className={classes.itemType}>
                         {

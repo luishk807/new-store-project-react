@@ -223,7 +223,7 @@ const Form = ({
       ...dialogContent,
       open: true,
       title: `Deleting ${title}`,
-      value: e
+      value: id
     })
   }
 
@@ -233,7 +233,7 @@ const Form = ({
       open: false
     })
     if (e) {
-      formDelete(dialogContent.value.id)
+      formDelete(dialogContent.value)
     }
   }
 

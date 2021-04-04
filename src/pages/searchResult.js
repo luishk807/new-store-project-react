@@ -125,11 +125,11 @@ const SearchResult = ({classes}) => {
   const [data, setData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pages, setPages] = useState(0);
+  const [pageCount, setPages] = useState(0);
   const [showData, setShowData] = useState(false);
 
   const loadSearchStr = async() => {
-    const pageIndex = page ? page : 1;
+    const pageIndex = page ? +page : 1;
     const filters = {
       'search': str,
       'category': cat,
@@ -138,7 +138,7 @@ const SearchResult = ({classes}) => {
     const { count, items: fetchData, pages } = await searchProductsByFilter(filters);
     if (fetchData) {
       setTotalCount(count);
-      setPages(pages);
+      setPages(+pages);
       setShowData(true);
       setData(fetchData);
     }
@@ -156,7 +156,7 @@ const SearchResult = ({classes}) => {
   }
 
   useEffect(() => {
-    let cpage = page ? page : 1;
+    let cpage = page ? +page : 1;
     setCurrentPage(cpage);
     loadSearchStr();
   }, [str, cat, page, showData])
@@ -175,7 +175,7 @@ const SearchResult = ({classes}) => {
             showData ? data.length ? (
                 <>
                 <Grid item lg={12} xs={12} className={classes.pagination}>
-                  <Pagination onChange={onPageChange} page={currentPage} count={pages} variant="outlined" size="large" shape="rounded" />
+                  <Pagination onChange={onPageChange} page={currentPage} count={pageCount} variant="outlined" size="large" shape="rounded" />
                 </Grid>
                 <Grid item lg={12} xs={12} className={classes.itemsContainer}>
                   <Grid container className={classes.itemsItemContainer}>
@@ -206,7 +206,7 @@ const SearchResult = ({classes}) => {
                   </Grid>
                 </Grid>
                 <Grid item lg={12} xs={12} className={classes.pagination}>
-                  <Pagination count={pages} page={currentPage} variant="outlined" size="large" shape="rounded" />
+                  <Pagination count={pageCount} page={currentPage} variant="outlined" size="large" shape="rounded" />
                 </Grid>
               </>
               ) : (

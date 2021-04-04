@@ -221,11 +221,14 @@ const Index = () => {
   return (
     <AdminLayoutTemplate>
       <Grid container className={classes.headerContainer}>
-        <Grid item lg={9} className={classes.headerTitle}>
+        <Grid item lg={7} className={classes.headerTitle}>
           <h3>Products</h3>
         </Grid>
         <Grid item lg={3} className={classes.headerTitle}>
           <Button className={`mainButton`} href={`/admin/products/add`}>Add Product</Button>
+        </Grid>
+        <Grid item lg={2} className={classes.headerTitle}>
+          <Button className={`mainButton`} href={`/admin/products/import`}>Import</Button>
         </Grid>
         <Grid item lg={12} xs={12}>
           <SearchBarPlain />

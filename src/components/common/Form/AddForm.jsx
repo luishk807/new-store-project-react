@@ -18,9 +18,12 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    width: '60%',
     margin: '0px auto',
     textAlign: 'center',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    }
   },
 });
 
@@ -135,9 +138,11 @@ const AddForm = ({
       const confirm = await addItem(section.url, form);
       const resp = handleFormResponse(confirm);
       setSnack(resp);
-      setTimeout(() => {
-        handleCancel() 
-      }, 1000)
+      if (confirm.data.status) {
+        setTimeout(() => {
+          handleCancel() 
+        }, 1000);
+      }
     }
   }
   const saveErrors = async (key, err = false, str = '') => {

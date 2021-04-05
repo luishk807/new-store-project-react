@@ -83,6 +83,15 @@ import LifeSaver from '../../../public/images/svg/categories/lifesaver.svg';
 import Paw from '../../../public/images/svg/categories/paw.svg';
 import Costmetic from '../../../public/images/svg/categories/cosmetic.svg';
 import BoxRibbon from '../../../public/images/svg/categories/boxribbon.svg';
+import Mask from '../../../public/images/svg/categories/mask.svg';
+import Special from '../../../public/images/svg/categories/special.svg';
+import Manualidades from '../../../public/images/svg/categories/manualidades.svg';
+import Fiestas from '../../../public/images/svg/categories/fiestas.svg';
+import Envases from '../../../public/images/svg/categories/envases.svg';
+import Covid from '../../../public/images/svg/categories/covid.svg';
+import Accesorios from '../../../public/images/svg/categories/accesorios.svg';
+import PaymentIcon from '@material-ui/icons/Payment';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 
 import Typography from './Typography';
 
@@ -96,11 +105,35 @@ const styles = (theme) => ({
 const Icons = ({classes, name}) => {
   const getIcon = () => {
     switch(name) {
-      case 'bag':
-        return <Bag className={classes.icon}/>
+      case 'special':
+        return <Special className={classes.icon}/>
+      break;
+      case 'manualidades':
+        return <Manualidades className={classes.icon}/>
+      break;
+      case 'covid':
+        return <Covid className={classes.icon}/>
+      break;
+      case 'accesorios':
+        return <Accesorios className={classes.icon}/>
+      break;
+      case 'fiestas':
+        return <Fiestas className={classes.icon}/>
+      break;
+      case 'envases':
+        return <Envases className={classes.icon}/>
+      break;
+      case 'money':
+        return <AttachMoneyIcon className={classes.icon}/>
+      break;
+      case 'mask':
+        return <Mask className={classes.icon}/>
       break;
       case 'closeBag':
         return <CloseBag className={classes.icon}/>
+      break;
+      case 'payment':
+        return <PaymentIcon className={classes.icon}/>
       break;
       case 'ballons':
         return <Ballons className={classes.icon}/>

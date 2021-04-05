@@ -177,9 +177,9 @@ const Header = ({classes, data, loadMain, userInfo}) => {
             SECTIONS.map((section, index) => {
               return (
                 <ListItem key={index}>
-                  <Link href={ADMIN_SECTIONS[section].url} className={classes.linkItem}>
+                  <Link href={`/admin/${ADMIN_SECTIONS[section].url}`} className={classes.linkItem}>
                     <ListItemIcon><Icons name={ADMIN_SECTIONS[section].key} classes={{icon: classes.menuIcon}}/></ListItemIcon>
-                    <ListItemText primary={section} />
+                    {ADMIN_SECTIONS[section].names}
                   </Link>
                 </ListItem>
               )

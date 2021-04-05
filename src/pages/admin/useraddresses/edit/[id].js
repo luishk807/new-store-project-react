@@ -29,13 +29,15 @@ const Edit = ({classes}) => {
 
   const form = {
     name: null,
-    address: null,
-    province: null,
-    township: null,
-    country: defaultCountry,
     phone: null,
     mobile: null,
-    zip: null,
+    address: null,
+    addressB: null,
+    province: null,
+    district: null,
+    corregimiento: null,
+    zone: null,
+    country: defaultCountry,
   }
 
   return (

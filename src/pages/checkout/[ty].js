@@ -1,32 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
   Grid,
   Button,
-  RadioGroup,
-  Radio,
   CircularProgress,
-  FormControlLabel
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 
-import { defaultCountry } from '../../../config';
-import { emptyCart } from '../../redux/actions/main'
+import { defaultCountry, defaultPanama } from '../../../config';
 import CartBox from '../../components/CartBlock';
-import Icons from '../../components/common/Icons';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import ActionForm from '../../components/common/Form/Action/Add';
 import Snackbar from '../../components/common/Snackbar';
-import { formatNumber } from '../../utils';
-import { validateForm, handleFormResponse } from '../../utils/form';
-import { processOrderByUser } from '../../api/orders';
-import { getDeliveryOptions } from '../../api/deliveryOptions';
-import { getAddresses } from '../../api/addresses';
-import Api from '../../services/api';
 import AddressSelection from '../../components/address/AddressSelection';
 import RadioBox from '../../components/common/RadioBox';
+import ProgressBar from '../../components/common/ProgressBar';
+import { validateForm, handleFormResponse } from '../../utils/form';
+import { returnDefaultOption } from '../../utils';
+import { getDeliveryServiceCostByFilter } from '../../api/deliveryServiceCosts';
+import { getActiveDeliveryServicesByDeliveryOption } from '../../api/deliveryOptionServices';
+import { processOrderByUser } from '../../api/orders';
+import { getDeliveryOptions } from '../../api/deliveryOptions';
+import { getActivePaymentOptions } from '../../api/paymentOptions';
+import { emptyCart } from '../../redux/actions/main'
 
 const styles = (theme) => ({
   root: {
@@ -85,13 +83,23 @@ const styles = (theme) => ({
 });
 
 
-const Home = ({userInfo, classes, cart, emptyCart}) => {
+const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   const router = useRouter()
   const [showPlaceOrderLoader, setShowPlaceOrderLoader] = useState(false);
+  const [selectedDeliveryOption, setSelectedDeliveryOption] = useState(null)
+  const [selectedPaymentOption, setSelectedPaymentOption] = useState(null)
+  const [selectedDeliveryService, setSelectedDeliveryService] = useState(null)
+  const [selectedZone, setSelectedZone] = useState(null)
   const [deliveryOptions, setDeliveryOptions] = useState([])
+  const [deliveryServices, setDeliveryServices] = useState([])
+  const [forceAddressRefresh, setForceAdddressRefresh] = useState(null);
+  const [paymentOptions, setPaymentOptions] = useState(null)
   const [form, setForm] = useState(null);
+  const [showDeliveryServices, setShowDeliveryServices] = useState(false);
+  const [disableFields, setDisabledFields] = useState([]);
   const [isUser, setIsUser] = useState(false);
   const [address, setAddress] = useState({});
+  const [showAddressLoader, setShowAddressLoader] = useState(false);
   const [guestAddress, setGuestAddress] = useState({});
   const [total, setTotal] = useState({});
   const [snack, setSnack] = useState({
@@ -112,26 +120,82 @@ const Home = ({userInfo, classes, cart, emptyCart}) => {
     router.push('/');
   }
 
+  const handleServiceOption = async(val) => {
+    setSelectedDeliveryService(val[0])
+    if (val[0] && val[0].id) {
+      setForm({
+        ...form,
+        'deliveryService': val[0].id
+      })
+    }
+  }
+
   const handleDeliveryOption = async(val) => {
     await setTotal({
       ...total,
-      delivery: val[0].total
+      delivery: val[0].deliveryOptionDeliveryServiceOptions && val[0].deliveryOptionDeliveryServiceOptions.length ? 0 : val[0].total
     })
     await setForm({
       ...form,
       delivery: val[0].id
     })
+    setSelectedDeliveryOption(val[0])
+  }
+
+  const handlePaymentOption = (val) => {
+    setSelectedPaymentOption(val[0]);
+  }
+
+  const getDeliveryCost = async() => {
+    if (selectedZone && form.delivery == 3 && form.deliveryService) {
+      const foundPrice = await getDeliveryServiceCostByFilter(selectedZone.id, form.deliveryService)
+      if (foundPrice) {
+        await setTotal({
+          ...total,
+          delivery: foundPrice.amount
+        })
+      } else {
+        setTotal({
+          ...total,
+          delivery: 0
+        })
+      }
+    }
   }
 
   const handleFormChange = async(add) => {
-    setGuestAddress({
-      ...guestAddress,
-      [add.key]: typeof add.val === "object" ? add.val.name : add.val
-    })
+    if (add && add.key && 'val' in add) {
+      console.log(add)
+      if (add.key && add.key === "zone") {
+        setSelectedZone(add.val)
+      }
+      setGuestAddress({
+        ...guestAddress,
+        [add.key]: add.val
+      })
+    }
   }
 
   const handleAddressSelection = async(evt) => {
-    await setAddress(evt)
+    const fetchedAddress = Object.assign({}, guestAddress);
+
+    fetchedAddress.name = evt.name;
+    fetchedAddress.addressB = evt.addressB;
+    fetchedAddress.address = evt.address;
+    fetchedAddress.email = evt.email;
+    fetchedAddress.phone = evt.phone;
+    fetchedAddress.note = evt.note;
+    fetchedAddress.province = evt.addressProvince && evt.addressProvince.name ? evt.addressProvince.name : evt.province ? evt.province : null;
+    fetchedAddress.district = evt.addressDistrict && evt.addressDistrict.name ? evt.addressDistrict.name : evt.district ? evt.district : null;
+    fetchedAddress.corregimiento = evt.addressCorregimiento && evt.addressCorregimiento.iso ? evt.addressCorregimiento.iso : evt.district ? evt.corregimiento : null;
+    fetchedAddress.zone = evt.addressZone && evt.addressZone.name ? evt.addressZone.name : evt.zone ? evt.zone : null;
+    fetchedAddress.country = evt.addressCountry  && evt.addressCountry.name ? evt.addressCountry.name : evt.district ? evt.country : null;
+
+    if (fetchedAddress.zone) {
+      setSelectedZone(fetchedAddress.zone)
+    }
+
+    await setAddress(fetchedAddress)
   }
 
   const handleCartTotal = async(evt) => {
@@ -139,44 +203,78 @@ const Home = ({userInfo, classes, cart, emptyCart}) => {
   }
 
   const handlePlaceOrder = async() => {
-    let errorFound = false;
+    let errorFound = true;
     let key = '';
-    for (var i in form) {
-      errorFound = await validateForm(i, form[i], ['address', 'cart', 'userid']);
-      key = i;
+    let ignoreFields = ['address', 'cart', 'userid'];
+    let saveAddress = false;
+    let isUserPickUp = false;
+    const copyFormCheck = Object.assign({}, form);
+    ignoreFields = ['cart', 'userid', 'delivery'];
+    copyFormCheck['paymentOption'] = selectedPaymentOption;
+    copyFormCheck['deliveryOption'] = selectedDeliveryOption;
+    copyFormCheck['deliveryService'] = selectedDeliveryService;
+    const useAddress = isUser ? Object.assign({}, address) : Object.assign({}, guestAddress)
+    if (form.delivery == 2 || form.delivery == 3) {
+      ignoreFields = ignoreFields.concat(['addressB', 'zone', 'note']);
+      saveAddress = true;
+      for(const key in useAddress) {
+        copyFormCheck[key] = useAddress[key];
+      }
+    } else {
+      ignoreFields = ignoreFields.concat(['deliveryService']);
+      isUserPickUp = true;
+      copyFormCheck['name'] = useAddress.name;
+      copyFormCheck['email'] = useAddress.email;
+      copyFormCheck['phone'] = useAddress.phone;
     }
+
+    for (var i in copyFormCheck) {
+      if (errorFound) {
+        errorFound = await validateForm(i, copyFormCheck[i], ignoreFields);
+        key = i;
+      } else {
+        break;
+      }
+    }
+
     if (!errorFound) {
       setSnack({
         severity: 'error',
         open: true,
-        text: `Unable to process order, ${i} is required`
+        text: `Unable to process order, ${key} is required`
       })
     } else {
       const formSubmit = Object.assign({}, form);
-      const useAddress = isUser ? Object.assign({}, address) : Object.assign({}, guestAddress)
       const cart = formSubmit.cart;
-
-      console.log(useAddress.country)
-      let country = useAddress.country;
+      let country = copyFormCheck.country;
       if (typeof country !== "string") {
-        country = useAddress.name;
+        country = copyFormCheck.name;
       }
-      formSubmit['shipping_name'] = useAddress.name;
-      formSubmit['shipping_address'] = useAddress.address;
-      formSubmit['shipping_corregimiento'] = useAddress.corregimiento;
-      formSubmit['shipping_district'] = useAddress.district;
-      formSubmit['shipping_phone'] = useAddress.phone;
-      formSubmit['shipping_province'] = useAddress.province;
+
+      formSubmit['shipping_name'] = copyFormCheck.name;
+      formSubmit['shipping_address'] = copyFormCheck.address;
+      formSubmit['shipping_addressB'] = copyFormCheck.addressB;
+      formSubmit['shipping_corregimiento'] = copyFormCheck.corregimiento ? copyFormCheck.corregimiento.name : null;
+      formSubmit['shipping_district'] = copyFormCheck.district ? copyFormCheck.district.name : null;
+      formSubmit['shipping_zone'] = copyFormCheck.zone ? copyFormCheck.zone.name : null;
+      formSubmit['shipping_phone'] = copyFormCheck.phone;
+      formSubmit['shipping_province'] =copyFormCheck.province ? copyFormCheck.province.name : null;
       formSubmit['shipping_country'] = country;
-      formSubmit['shipping_email'] = useAddress.email;
+      formSubmit['shipping_email'] = copyFormCheck.email;
+      formSubmit['shipping_note'] = copyFormCheck.note ? copyFormCheck.note : null;
       formSubmit['cart'] = JSON.stringify(cart);
       formSubmit['subtotal'] = total.subtotal;
       formSubmit['totalSaved'] = total.saved;
       formSubmit['tax'] = parseFloat(total.taxes);
       formSubmit['grandtotal'] = total.grandTotal;
-      formSubmit['deliveryId'] = formSubmit.delivery;
+      formSubmit['deliveryOption'] = selectedDeliveryOption ? selectedDeliveryOption.name : null;
+      formSubmit['deliveryOptionId'] = selectedDeliveryOption ? selectedDeliveryOption.id : null;
+      formSubmit['paymentOption'] = selectedPaymentOption ? selectedPaymentOption.name : null;
+      formSubmit['paymentOptionId'] = selectedPaymentOption ? selectedPaymentOption.id : null;
       formSubmit['delivery'] = total.delivery;
-      console.log("seidng", formSubmit)
+      formSubmit['deliveryService'] = !isUserPickUp && selectedDeliveryService ? selectedDeliveryService.name : null;
+      formSubmit['deliveryServiceId'] = !isUserPickUp && selectedDeliveryService ? selectedDeliveryService.id : null;
+
       setShowPlaceOrderLoader(true);
       const confirm = await processOrderByUser(formSubmit)
       const resp = handleFormResponse(confirm);
@@ -189,56 +287,171 @@ const Home = ({userInfo, classes, cart, emptyCart}) => {
 
   const loadDelivery = async() => {
     const data = await getDeliveryOptions();
-    setDeliveryOptions(data)
+    if (data) {
+      setDeliveryOptions(data);
+      const loadDefault = returnDefaultOption(data);
+      if (loadDefault) {
+        setSelectedDeliveryOption(loadDefault);
+      }
+    } else {
+      setDeliveryOptions([]);
+    }
   }
 
+  const loadServices = useCallback(async(serviceOption) => {
+    if (serviceOption) {
+      const data = await getActiveDeliveryServicesByDeliveryOption(serviceOption.id);
+      if (data) {
+        const getServices = data.map(item => {
+          return item.deliveryOptionServiceDeliveryService;
+        })
+        setDeliveryServices(getServices);
+        const loadDefault = returnDefaultOption(getServices);
+        if (loadDefault) {
+          setSelectedDeliveryService(loadDefault);
+        }
+      } else {
+        setDeliveryServices([]);
+      }
+    }
+  }, [deliveryServices])
+
+  const loadPayment = useCallback(async() => {
+    const data = await getActivePaymentOptions();
+    if (data) {
+      setPaymentOptions(data);
+      const loadDefault = returnDefaultOption(data);
+      if (loadDefault) {
+        setSelectedPaymentOption(loadDefault);
+      }
+    } else {
+      setPaymentOptions(null);
+    }
+  }, [paymentOptions])
+
+  const loadCartTotal = useCallback(() => {
+    return <CartBox deliveryOption={total.delivery} onCartTotal={handleCartTotal} data={cart} />
+  }, [total.delivery, cart])
+  
+  const resetAddress = useCallback(() => {
+    setShowAddressLoader(true);
+    if (selectedDeliveryOption) {
+      loadServices(selectedDeliveryOption)
+      if (selectedDeliveryOption.id == 1) {
+
+        if (!isUser) {
+          setAddress({
+            name: null,
+            // address: null,
+            email: null,
+            phone: null,
+          })
+        }
+        setForm({
+          ...form,
+          'deliveryService': null
+        })
+        setShowDeliveryServices(false);
+        setForceAdddressRefresh(selectedDeliveryOption.id)
+      } else {
+        const address = {
+          name: null,
+          address: null,
+          addressB: null,
+          email: null,
+          phone: null,
+          province: defaultPanama.province,
+          district: defaultPanama.district,
+          corregimiento: null,
+          zone: null,
+          country: defaultCountry,
+          note: null,
+        }
+        if (selectedDeliveryOption.id == 2) {
+          setDisabledFields(['province', 'district']);
+          address.province = defaultPanama.province;
+          address.district = defaultPanama.district;
+        } else {
+          setDisabledFields([]);
+          address.province = null;
+          address.district = null;
+        }
+        if (!isUser) {
+          setAddress(address)
+          setGuestAddress(address)
+        }
+        setForm({
+          ...form,
+          'deliveryService': 1
+        })
+        setShowDeliveryServices(true);
+        setForceAdddressRefresh(selectedDeliveryOption.id)
+      }
+    }
+  }, [selectedDeliveryOption])
+
   useEffect(() => {
-    console.log("Cart", cart)
+    if (showAddressLoader) {
+      setShowAddressLoader(false);
+    }
+  }, [address])
+
+  useEffect(() => {
+    resetAddress();
+  }, [selectedDeliveryOption]);
+
+  useEffect(() => {
+    getDeliveryCost();
+  }, [selectedZone, selectedDeliveryService]);
+
+  useEffect(() => {
+    if (selectedPaymentOption) {
+      setTotal({
+        ...total,
+        payment: selectedPaymentOption.total
+      })
+      setForm({
+        ...form,
+        paymentOption: selectedPaymentOption
+      })
+    }
+  }, [selectedPaymentOption]);
+
+  useEffect(() => {
     let form = {
       userid: userInfo.id,
       delivery: '1',
       cart: cart,
     }
-    const initialAddress = {
-      name: null,
-      address: null,
-      email: null,
-      phone: null,
-      province: null,
-      district: null,
-      corregimiento: null,
-      country: defaultCountry,
-    }
-    
+
     setAddress({
       name: null,
-      address: null,
       email: null,
       phone: null,
-      province: null,
-      district: null,
-      corregimiento: null,
-      country: defaultCountry,
     })
+    if (userInfo.id) {
+      setIsUser(true)
+    }
 
     setGuestAddress(
       {
         name: null,
         address: null,
+        addressB: null,
         email: null,
         phone: null,
         province: null,
         district: null,
         corregimiento: null,
+        zone: null,
         country: defaultCountry.name,
+        note: null,
       }
     )
 
-    if (userInfo.id) {
-      setIsUser(true)
-    }
-
     loadDelivery();
+    // loadServices();
+    loadPayment();
     setForm(form);
   }, [userInfo, cart])
 
@@ -259,33 +472,47 @@ const Home = ({userInfo, classes, cart, emptyCart}) => {
                   <Grid className={classes.contentSection} item lg={7} xs={12}>
                     <Grid container>
                       <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
+                        <RadioBox selected={form.delivery} onSelected={handleDeliveryOption} options={deliveryOptions} name="delivery" type="deliveryOption" title="Opciones de Entrega" />
+                      </Grid>
+                      <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
                         {
                           isUser ? (
-                            <AddressSelection onSelected={handleAddressSelection} />
-                          ) : (
-                            <ActionForm 
-                              classes={{root: classes.formRoot}}
-                              formSection={{
-                                name: 'Direccion de entrega',
-                              }} 
-                              onFormChange={handleFormChange}
-                              ignoreForm={['email']}
-                              entryForm={address} 
-                              onSubmitAction={handleDeliveryForm}
-                              showCancel={false}
-                              type="dynamic"
-                            />
-                          )
+                              <AddressSelection onSelected={handleAddressSelection} />
+                            ) : showAddressLoader ? (
+                              <ProgressBar />
+                            ) : (
+                              <ActionForm 
+                                classes={{root: classes.formRoot}}
+                                formSection={{
+                                  name: 'Direccion de entrega',
+                                }} 
+                                disableFields={disableFields}
+                                resetPanamaSection={forceAddressRefresh}
+                                forceRefresh={forceAddressRefresh}
+                                onFormChange={handleFormChange}
+                                ignoreForm={['email']}
+                                entryForm={address} 
+                                onSubmitAction={handleDeliveryForm}
+                                showCancel={false}
+                                type="dynamic"
+                              />
+                            )
                         }
                       </Grid>
-                      <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
-                        <RadioBox selected={form.delivery} onSelected={handleDeliveryOption} options={deliveryOptions} name="delivery" title="Opciones de Entrega" />
-                      </Grid>
-                      <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
-                        <div className={classes.contentBoxSectionContainer}>
-                          pago
-                        </div>
-                      </Grid>
+                      {
+                        showDeliveryServices && (
+                          <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
+                            <RadioBox selected={form.deliveryService} onSelected={handleServiceOption} options={deliveryServices} name="deliveryOption" type="deliveryService" title="Opciones de Service de Envio" />
+                          </Grid>                       
+                        )
+                      }
+                      {
+                        paymentOptions && (
+                          <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
+                            <RadioBox selected={form.payment} onSelected={handlePaymentOption} options={paymentOptions} name="payment" type="payment" title="Opciones de Pago" />
+                          </Grid>                       
+                        )
+                      }
                       <Grid item className={classes.itemSection} lg={12} xs={12}>
                         <Button onClick={handlePlaceOrder} className={`mainButton ${classes.processBtn}`}>
                             { 
@@ -300,7 +527,9 @@ const Home = ({userInfo, classes, cart, emptyCart}) => {
                     </Grid>
                   </Grid>
                   <Grid item className={classes.itemSection} lg={5} xs={12}>
-                    <CartBox deliveryOption={total.delivery} onCartTotal={handleCartTotal} data={cart} />
+                     {
+                       loadCartTotal()
+                     }
                   </Grid>
                 </Grid>
               </Grid>
@@ -313,7 +542,7 @@ const Home = ({userInfo, classes, cart, emptyCart}) => {
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false})} content={snack.text} />
     </LayoutTemplate>
   );
-}
+})
 
 Home.protoTypes = {
   classes: T.object

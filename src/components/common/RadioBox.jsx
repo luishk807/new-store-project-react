@@ -6,8 +6,7 @@ import {
   Radio,
   Button,
 } from '@material-ui/core';
-import Icons from './Icons';
-import { formatNumber } from '../../utils';
+import { formatNumber, sortOptions } from '../../utils';
 
 const styles = (theme) => ({
   root: {
@@ -30,6 +29,7 @@ const styles = (theme) => ({
   },
   radioDescription: {
     fontSize: '.8em',
+    whiteSpace: 'pre-line',
   },
   radioTitle: {
     fontWeight: 'bold',
@@ -41,7 +41,7 @@ const styles = (theme) => ({
   },
 });
 
-const RadioBox = ({
+const RadioBox = React.memo(({
   options, 
   classes,
   title,
@@ -50,89 +50,161 @@ const RadioBox = ({
   name,
   type
 }) => {
-  const [itemSelected, setItemSelected] = useState(null);
-
+  const [itemOptions, setItemOptions] = useState(null);
+  const [checkedOptions, setCheckedOptions] = useState({})
+  const [contentHtml, setContentHtml] = useState([]);
   const handleSelect = async(evt) => {
     const opt = options.filter(item => item.id === evt.target.value);
-    setItemSelected(evt.target.value);
+    const checks = Object.assign({}, checkedOptions);
+    for(const i in checks) {
+      checks[i] = false;
+    }
+    checks[evt.target.value] = true;
+    setCheckedOptions(checks)
     onSelected(opt)
   }
 
   useEffect(() => {
-    let data = selected;
+    let data = null;
+    let useSelected = selected;
     if (type === "address") {
       let getFav = options.filter(item => item.selected === true);
       data = getFav ? getFav[0].id : options[0].id;
-    } else {
-      if (!selected) {
-        data = options[0].id;
+      if (!useSelected) {
+        useSelected = data;
       }
     }
 
-    setItemSelected(data)
+    const opts = sortOptions(options, 'position');
+
+    const checkOpts = {}
+    
+    opts.forEach(item => {
+      checkOpts[item.id] = useSelected ? useSelected == item.id : item.default ? true : false;
+    });
+
+    setCheckedOptions(checkOpts);
+    setItemOptions(opts);
   }, [options]);
 
+  useEffect(() => {
+    loadContent();
+  }, [checkedOptions])
+
   const loadContent = () => {
+    let content = null;
     switch(type) {
       case 'address': {
-        return (
-          options && options.map((option, index) => {
-            return (
-              <Grid container key={index}>
-                <Grid item lg={10} xs={9} className={classes.radioRadio}>
-                  <div className={classes.radioItemRadio}>
-                    <Radio
-                      checked={itemSelected === option.id}
-                      onChange={handleSelect}
-                      value={option.id}
-                      name={name}
-                    />
-                  </div>
-                  <div className={classes.radioItemContent}>
-                    <p className={classes.radioTitle}>{option.name} {option.selected && '[Default]'}</p>
-                    <p className={classes.radioDescription}>{option.address}</p>
-                    <p className={classes.radioDescription}>{option.addressDistrict.name} {option.addressCorregimiento.name}</p>
-                    <p className={classes.radioDescription}>{option.addressProvince.name}</p>
-                    <p className={classes.radioDescription}>{option.addressCountry.nicename}</p>
-                  </div>
-                </Grid>
-                <Grid item lg={2} xs={3} className={classes.radioTotal}>
-                  <Button href={`/account/addresses/${option.id}`}  className={`secondButton`}>Edit</Button>
-                </Grid>
+        content = itemOptions && itemOptions.map((option, index) => {
+          return (
+            <Grid container key={index}>
+              <Grid item lg={10} xs={9} className={classes.radioRadio}>
+                <div className={classes.radioItemRadio}>
+                  <Radio
+                    checked={checkedOptions[option.id]}
+                    onChange={handleSelect}
+                    value={option.id}
+                    name={name}
+                  />
+                </div>
+                <div className={classes.radioItemContent}>
+                  <p className={classes.radioTitle}>{option.name} {option.selected && '[Default]'}</p>
+                  <p className={classes.radioDescription}>{option.address}</p>
+                  <p className={classes.radioDescription}>{option.addressDistrict.name} {option.addressCorregimiento.name}</p>
+                  <p className={classes.radioDescription}>{option.addressProvince.name}</p>
+                  <p className={classes.radioDescription}>{option.addressCountry.nicename}</p>
+                </div>
               </Grid>
-            )
-          })
-        )
+              <Grid item lg={2} xs={3} className={classes.radioTotal}>
+                <Button href={`/account/addresses/${option.id}`}  className={`secondButton`}>Edit</Button>
+              </Grid>
+            </Grid>
+          )
+        })
+        break;
+      }
+      case 'payment': {
+        content = itemOptions && itemOptions.map((option, index) => {
+          return (
+            <Grid container key={index}>
+              <Grid item lg={12} xs={12} className={classes.radioRadio}>
+                <div className={classes.radioItemRadio}>
+                  <Radio
+                    checked={checkedOptions[option.id]}
+                    onChange={handleSelect}
+                    value={option.id}
+                    name={name}
+                  />
+                </div>
+                <div className={classes.radioItemContent}>
+                  <p className={classes.radioTitle}>{option.name}</p>
+                  <p className={classes.radioDescription}>{option.description}</p>
+                </div>
+              </Grid>
+            </Grid>
+          )
+        })
+        break;
+      }
+      case 'deliveryService': {
+        content = itemOptions && itemOptions.map((option, index) => {
+          return (
+            <Grid container key={index}>
+              <Grid item lg={12} xs={12} className={classes.radioRadio}>
+                <div className={classes.radioItemRadio}>
+                  <Radio
+                    checked={checkedOptions[option.id]}
+                    onChange={handleSelect}
+                    value={option.id}
+                    name={name}
+                  />
+                </div>
+                <div className={classes.radioItemContent}>
+                  <p className={classes.radioTitle}>{option.name}</p>
+                </div>
+              </Grid>
+            </Grid>
+          )
+        })
         break;
       }
       default: {
-        return (
-          options && options.map((option, index) => {
-            return (
-              <Grid container key={index}>
-                <Grid item lg={10} xs={9} className={classes.radioRadio}>
-                  <div className={classes.radioItemRadio}>
-                    <Radio
-                      checked={itemSelected === option.id}
-                      onChange={handleSelect}
-                      value={option.id}
-                      name={name}
-                    />
-                  </div>
-                  <div className={classes.radioItemContent}>
-                    <p className={classes.radioTitle}>{option.name}</p>
-                    <p className={classes.radioDescription}>{option.description}</p>
-                  </div>
-                </Grid>
-                <Grid item lg={2} xs={3} className={classes.radioTotal}>
-                  {option.total > 0 ? `$${formatNumber(option.total)}` : `FREE`}
-                </Grid>
+        content = itemOptions && itemOptions.map((option, index) => {
+          let optionTotal = null;
+          if (option.total > 0) {
+            optionTotal = `$${formatNumber(option.total)}`;
+          } else if (option.total < 0) {
+            optionTotal = ``;
+          } else if (option.deliveryOptionDeliveryServiceOptions && option.deliveryOptionDeliveryServiceOptions.length) {
+            optionTotal = ``;
+          } else {
+            optionTotal = `FREE`;
+          }
+          return (
+            <Grid container key={index}>
+              <Grid item lg={10} xs={9} className={classes.radioRadio}>
+                <div className={classes.radioItemRadio}>
+                  <Radio
+                    checked={checkedOptions[option.id]}
+                    onChange={handleSelect}
+                    value={option.id}
+                    name={name}
+                  />
+                </div>
+                <div className={classes.radioItemContent}>
+                  <p className={classes.radioTitle}>{option.name}</p>
+                  <p className={classes.radioDescription}>{option.description}</p>
+                </div>
               </Grid>
-            )
-          })
-        )
+              <Grid item lg={2} xs={3} className={classes.radioTotal}>
+                {optionTotal}
+              </Grid>
+            </Grid>
+          )
+        })
       }
     }
+    setContentHtml(content);
   }
 
   return (
@@ -140,10 +212,10 @@ const RadioBox = ({
       {
         title && (<h4 className={classes.mainTitle}>{title}</h4>)
       }
-      { loadContent() }
+      { contentHtml && contentHtml }
     </div>
   );
-}
+})
 
 RadioBox.protoTypes = {
   classes: T.object,

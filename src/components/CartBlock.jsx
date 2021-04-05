@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 import Icons from './common/Icons';
 import { connect } from 'react-redux';
-import { formatNumber, getCartTotal, getImage } from '../utils';
+import { formatNumber, getCartTotal, getTotal, getImage } from '../utils';
 import { getImageUrlByType } from '../utils/form';
 import { noImageUrl } from '../../config';
 import TextEllipsis from './common/TextEllipsis';
@@ -41,6 +41,9 @@ const styles = (theme) => ({
       textDecoration: 'underline'
     }
   },
+  originalPrice: {
+    textDecoration: 'line-through',
+  },
   itemItemsContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -71,9 +74,6 @@ const styles = (theme) => ({
   },
   totalTotalitems: {
     padding: 8,
-    '&:last-child > div': {
-      fontWeight: 'bold'
-    }
   },
   totalTotalitemsCheckout: {
     padding: 10,
@@ -92,7 +92,7 @@ const styles = (theme) => ({
   }
 });
 
-const Index = ({
+const Index = React.memo(({
   data, 
   classes,
   showItems = true,
@@ -113,6 +113,10 @@ const Index = ({
     })
   }
 
+  const dispathGetTotal = useMemo(() => (obj) => {
+    return getCartTotal(obj);
+  }, [])
+
   useEffect(() => {
     if (data && Object.keys(data).length) {
       let prods = [];
@@ -127,7 +131,7 @@ const Index = ({
         cart: cart,
         delivery: deliveryOption ? deliveryOption : 0
       }
-      const total = getCartTotal(obj);
+      const total = dispathGetTotal(obj);
 
       if (onCartTotal) {
         onCartTotal(total);
@@ -157,6 +161,7 @@ const Index = ({
             {
               products && products.map((product, index) => {
                 const image = getImage(product);
+                const itemTotal = getTotal(product);
                 return (
                   <Grid item key={index} lg={12} xs={12} className={`borderTopMain ${classes.itemItems}`}>
                     <Grid container className={classes.itemItemsItemsContainer}>
@@ -166,11 +171,18 @@ const Index = ({
                       }
                       </Grid>
                       <Grid item lg={8} xs={8} className={classes.itemItemsContent}>
-                        <p>${product.retailPrice}</p>
                         <p>{product.productItemProduct.name}</p>
-                        <TextEllipsis classes={classes.itemItemsContentDescription} text={product.productItemProduct.description} limit={50} />
-                        <p>color: {product.productItemColor.name}</p>
-                        <p>size: {product.productItemSize.name}</p>
+                        <p>Color: {product.productItemColor.name}</p>
+                        <p>Size: {product.productItemSize.name}</p>
+                        <p>Cantidad: {product.quantity}</p>
+                        {
+                          product.save_price ? (
+                            <p>Price: <span className={classes.originalPrice}>${product.originalPrice}&nbsp; </span>${product.retailPrice}</p>
+                          ) : (
+                            <p>Price: ${product.retailPrice}</p>
+                          )
+                        }
+                        <p>Total: {`${itemTotal}`}</p>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -214,20 +226,6 @@ const Index = ({
           </Grid>
         </Grid>
         {
-          totals.saved > 0 && (
-            <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
-              <Grid container className={classes.totalTotalContainer}>
-                <Grid item className={classes.totalTotalTitle}>
-                  You Saved
-                </Grid>
-                <Grid item className={classes.totalTotalTotal}>
-                  - ${totals.saved}
-                </Grid>
-              </Grid>
-            </Grid>
-          )
-        }
-        {
           showCheckout ? (
             <Grid item className={`${showCheckout && 'borderTopMain'} ${classes.totalTotalitemsCheckout}`} lg={12} xs={12}>
               <Grid container className={classes.totalTotalContainer}>
@@ -243,10 +241,24 @@ const Index = ({
             <Grid item className={`${classes.totalTotalitems}`} lg={12} xs={12}>
               <Grid container className={classes.totalTotalContainer}>
                 <Grid item className={classes.totalTotalTitle}>
-                  GrandTotal
+                  <b>GrandTotal</b>
                 </Grid>
                 <Grid item className={classes.totalTotalTotal}>
-                  ${totals.grandTotal}
+                  <b>${totals.grandTotal}</b>
+                </Grid>
+              </Grid>
+            </Grid>
+          )
+        }
+        {
+          totals.saved > 0 && (
+            <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
+              <Grid container className={classes.totalTotalContainer}>
+                <Grid item className={classes.totalTotalTitle}>
+                  You Saved
+                </Grid>
+                <Grid item className={classes.totalTotalTotal}>
+                  - ${totals.saved}
                 </Grid>
               </Grid>
             </Grid>
@@ -262,7 +274,7 @@ const Index = ({
       </Grid>
     </div>
   );
-}
+})
 
 Index.protoTypes = {
   classes: T.object,

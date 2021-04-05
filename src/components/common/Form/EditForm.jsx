@@ -160,12 +160,15 @@ const EditForm = ({
         formSubmit['imageBox'] = imageBox;
         formSubmit['saved'] = imageBoxDelete;
       }
+
       const confirm = await saveItem(section.url, id, formSubmit)
       const resp = handleFormResponse(confirm);
       setSnack(resp);
-      setTimeout(() => {
-        handleCancel() 
-      }, 1000);
+      if (confirm.data.status) {
+        setTimeout(() => {
+          handleCancel() 
+        }, 1000);
+      }
     }
   }
   const saveErrors = async (key, err = false, str = '') => {
@@ -231,6 +234,7 @@ const EditForm = ({
     if (id) {
       Api.get(`${sect.url}/${id}`).then((res) => {
         let info = res;
+        console.log("info", info)
         for(var field in form){
           let value = info[field];
           if (FORM_SCHEMA[field].type == "dropdown") {

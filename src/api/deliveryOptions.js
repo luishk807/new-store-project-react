@@ -14,3 +14,8 @@ export const deleteDeliveryOptionById = async(id) => {
 export const getDeliveryOptions = async(data) => {
   return Api.get(`delivery-options`, data);
 }
+
+export const getDeliveryOptionById = async(id) => {
+  return Api.get(`delivery-options/${id}`);
+}
+

@@ -206,7 +206,7 @@ const SearchResult = ({classes}) => {
                   </Grid>
                 </Grid>
                 <Grid item lg={12} xs={12} className={classes.pagination}>
-                  <Pagination count={pageCount} page={currentPage} variant="outlined" size="large" shape="rounded" />
+                  <Pagination onChange={onPageChange} page={currentPage} count={pageCount} variant="outlined" size="large" shape="rounded" />
                 </Grid>
               </>
               ) : (

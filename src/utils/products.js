@@ -87,7 +87,7 @@ export const formatFormData = (form) => {
         }
       } else if (FORM_SCHEMA[i].type === "dropdown") {
         let dropValue = null;
-        if (Object.keys(form[i]).length && form[i].id) {
+        if (form[i] && Object.keys(form[i]).length && form[i].id) {
           dropValue = form[i].id;
         } else if (form[i] && form[i].value) {
           dropValue = form[i].value;

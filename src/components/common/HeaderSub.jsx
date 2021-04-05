@@ -27,7 +27,7 @@ const styles = (theme) => ({
   },
 });
 
-const HeaderSub = ({ classes, name }) => {
+const HeaderSub = ({ classes, name, previousUrl, addUrl }) => {
   const [urlName, setUrlName] = useState(name);
 
   useEffect(() => {
@@ -38,10 +38,10 @@ const HeaderSub = ({ classes, name }) => {
   return (
     <Grid container className={classes.headerContainer}>
       <Grid item className={classes.headerTitle} lg={10} xs={7}>
-        <h3><Button href='home'><Icons classes={{icon: classes.icon}} name="backArrow" /></Button>&nbsp; Admin</h3>
+        <h3><Button href={previousUrl ? previousUrl : `/admin/home`}><Icons classes={{icon: classes.icon}} name="backArrow" /></Button>&nbsp; {name}</h3>
       </Grid>
       <Grid item className={classes.headerTitle} lg={2} xs={5}>
-        <Button className={`mainButton`} href={`/admin/${urlName}/add`}>Add {name}</Button>
+        <Button className={`mainButton`} href={addUrl ? addUrl : `/admin/${urlName}/add`}>Add {name}</Button>
       </Grid>
     </Grid>
   );
@@ -50,6 +50,8 @@ const HeaderSub = ({ classes, name }) => {
 HeaderSub.propTypes = {
   classes: T.object,
   name: T.string,
+  previousUrl: T.string,
+  addUrl: T.string
 }
 
 export default withStyles(styles)(HeaderSub);

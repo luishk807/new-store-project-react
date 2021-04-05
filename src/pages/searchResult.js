@@ -8,7 +8,7 @@ import {
 import { useRouter } from 'next/router';
 import Pagination from '@material-ui/lab/Pagination';
 
-import { getImage } from '../utils';
+import { getImage, getSortPriceRange } from '../utils';
 import Rate from '../components/common/Rate/Rate';
 import Typography from '../components/common/Typography';
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
@@ -91,16 +91,14 @@ const styles = (theme) => ({
   },
   itemAmount: {
     fontWeight: 'bold',
-    fontSize: '2em',
+    fontSize: '1.2em',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '1.2em',
       textAlign: 'left',
     }
   },
   itemTitle: {
-    fontSize: '2em',
+    fontSize: '1.2em',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '1.2em',
       textAlign: 'left',
       fontWeight: 'bold',
     }
@@ -121,12 +119,15 @@ const styles = (theme) => ({
 
 const SearchResult = ({classes}) => {
   const router = useRouter();
-  const { str, cat, catn, page } = router.query;
+  const [mounted, setMounted] = useState(false);
   const [data, setData] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageCount, setPages] = useState(0);
   const [showData, setShowData] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+  const [showEmpty, setShowEmpty] = useState(false);
+  const { str, cat, catn, page } = router.query;
 
   const loadSearchStr = async() => {
     const pageIndex = page ? +page : 1;
@@ -137,10 +138,13 @@ const SearchResult = ({classes}) => {
     }
     const { count, items: fetchData, pages } = await searchProductsByFilter(filters);
     if (fetchData) {
+      setShowEmpty(false)
       setTotalCount(count);
       setPages(+pages);
-      setShowData(true);
       setData(fetchData);
+      setShowResult(true)
+    } else {
+      setShowEmpty(true);
     }
   }
 
@@ -152,14 +156,19 @@ const SearchResult = ({classes}) => {
       urlParam += `str=${str}&page=${val}`
     }
     setCurrentPage(val);
+    setShowResult(false);
     router.push(`/searchResult${urlParam}`)
   }
 
   useEffect(() => {
-    let cpage = page ? +page : 1;
-    setCurrentPage(cpage);
+    loadSearchStr()
+    setShowResult(false);
+  }, [str, cat, page]);
+
+  useEffect(() => {
+    setCurrentPage(1);
     loadSearchStr();
-  }, [str, cat, page, showData])
+  }, [])
 
   return (
     <LayoutTemplate>
@@ -171,52 +180,50 @@ const SearchResult = ({classes}) => {
             </Typography>
             <Typography align="left" variant="h6" component="span" className={classes.mainTitleSub}>{totalCount} Resultados</Typography>
           </Grid>
-          {
-            showData ? data.length ? (
-                <>
-                <Grid item lg={12} xs={12} className={classes.pagination}>
-                  <Pagination onChange={onPageChange} page={currentPage} count={pageCount} variant="outlined" size="large" shape="rounded" />
-                </Grid>
-                <Grid item lg={12} xs={12} className={classes.itemsContainer}>
-                  <Grid container className={classes.itemsItemContainer}>
-                    {
-                      data.map((data, index) => {
-                        const prodImage = getImage(data);
-                        return (
-                          <Grid key={index} item lg={3} xs={12} className={classes.itemMain}>
-                            <Link href={`/product/${data.id}`} color="inherit" underline="none">
-                              <Grid container className={classes.cardRoot} >
-                                <Grid item xs={5} lg={12 } className={classes.itemImg}>
-                                  {
-                                    prodImage
-                                  }
-                                </Grid>
-                                <Grid item xs={7} lg={12} className={classes.itemInfo}>
-                                  <p className={classes.itemAmount}>US ${data.amount}</p>
-                                  <p align="center" variant="h4" component="h4" className={classes.itemTitle}>{data.name}</p>
-                                  <TextEllipsis text={data.description} limit={100} classes={classes.itemDesc}/>
-                                  <Rate className={classes.rateItem} data={0} disabled={true} />
-                                </Grid>
-                              </Grid>
-                            </Link>
-                          </Grid>     
-                        );
-                      })
-                    }
+          <Grid item lg={12} xs={12} className={classes.pagination}>
+            <Pagination onChange={onPageChange} page={currentPage} count={pageCount} variant="outlined" size="large" shape="rounded" />
+          </Grid>
+          <Grid item lg={12} xs={12} className={classes.itemsContainer}>
+            <Grid container className={classes.itemsItemContainer}>
+              {
+                showResult ? (
+                  data.map((data, index) => {
+                  const sort = getSortPriceRange(data);
+                  const prodImage = getImage(data);
+                  return (
+                    <Grid key={index} item lg={2} xs={12} className={classes.itemMain}>
+                      <Link href={`/product/${data.id}`} color="inherit" underline="none">
+                        <Grid container className={classes.cardRoot} >
+                          <Grid item xs={5} lg={12 } className={classes.itemImg}>
+                            {
+                              prodImage
+                            }
+                          </Grid>
+                          <Grid item xs={7} lg={12} className={classes.itemInfo}>
+                            <p className={classes.itemAmount}>{sort}</p>
+                            <p align="center" variant="h4" component="h4" className={classes.itemTitle}>{data.name}</p>
+                            <Rate className={classes.rateItem} data={0} disabled={true} />
+                          </Grid>
+                        </Grid>
+                      </Link>
+                    </Grid>     
+                  );
+                }) ) : (
+                  <ProgressBar />
+                )
+              }
+              {
+                showEmpty && (
+                  <Grid item lg={12} xs={12}>
+                    <Typography align="center" variant="h4" component="h4" >No Result Found</Typography>
                   </Grid>
-                </Grid>
-                <Grid item lg={12} xs={12} className={classes.pagination}>
-                  <Pagination onChange={onPageChange} count={pageCount} page={currentPage} variant="outlined" size="large" shape="rounded" />
-                </Grid>
-              </>
-              ) : (
-                <Grid item lg={12} xs={12}>
-                  <Typography align="center" variant="h4" component="h4" >No Result Found</Typography>
-                </Grid>
-              ) : (
-              <ProgressBar />
-            )
-          }
+                )
+              }
+            </Grid>
+          </Grid>
+          <Grid item lg={12} xs={12} className={classes.pagination}>
+            <Pagination onChange={onPageChange} count={pageCount} page={currentPage} variant="outlined" size="large" shape="rounded" />
+          </Grid>
         </Grid>
       </div>
     </LayoutTemplate>

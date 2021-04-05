@@ -182,6 +182,7 @@ const styles = (theme) => ({
     fontSize: '.8em',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'column',
   },
   variantTitles: {
     margin: '10px 0px',
@@ -211,7 +212,8 @@ const styles = (theme) => ({
     }
   },
   descriptionItem: {
-    margin: '10px 0px',
+    whiteSpace: 'pre-line',
+    lineHeight: '1.7',
   },
   descriptionTitle: {
     fontSize: '1.2em',
@@ -372,16 +374,16 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
             if (found && found.length) {
               if (selectedSize && selectedSize.id === size.id) {
                 return (
-                  <a key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}>{size.name}</div></a>
+                  <a key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`$${found[0].retailPrice}`}</span></div></a>
                 )
               } else {
                 return (
-                  <a href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}>{size.name}</div></a>
+                  <a href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`$${found[0].retailPrice}`}</span></div></a>
                 )
               }
             } else {
               return (
-                <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}</div></a>
+                <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}{size.retailPrice}</div></a>
               )
             }
         })
@@ -579,7 +581,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   </Grid>
                   <Grid item lg={12} xs={12}>
                     <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Description</Typography>
-                    <Typography align="left" variant="body1" component="p">{productInfo.description}</Typography>
+                    <Typography align="left" variant="body1" component="p" className={classes.descriptionItem}>{productInfo.description}</Typography>
                   </Grid>
                   {/* <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography className={classes.deliveryText} align="left" variant="body1" component="p">

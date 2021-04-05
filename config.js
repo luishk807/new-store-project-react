@@ -18,8 +18,40 @@ export const FORM_TYPE = {
 
 export const CATEGORY_ICONS = [
   {
+    name: 'Special',
+    value: 'special',
+  },
+  {
+    name: 'Manualidades',
+    value: 'manualidades',
+  },
+  {
+    name: 'Envases',
+    value: 'envases',
+  },
+  {
+    name: 'Fiestas',
+    value: 'fiestas',
+  },
+  {
+    name: 'Covid',
+    value: 'covid',
+  },
+  {
+    name: 'Accesorios',
+    value: 'accesorios',
+  },
+  {
     name: 'Car',
     value: 'car',
+  },
+  {
+    name: 'Car',
+    value: 'car',
+  },
+  {
+    name: 'Mask',
+    value: 'mask',
   },
   {
     name: 'Toy',
@@ -119,6 +151,18 @@ export const defaultCountry = {
   id: 165,
   name: 'Panama'
 }
+
+export const defaultPanama = {
+  province: {
+    id: 8,
+    name: 'Panama'
+  }, 
+  district: {
+    id: 49,
+    name: 'Panama'
+  }
+}
+
 
 export const RateLabels = {
   0.5: 'Useless',
@@ -256,6 +300,10 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.textArea,
     label: 'Message',
   },
+  note: {
+    type: FORM_TYPE.textArea,
+    label: 'Note',
+  },
   vendor: {
     type: FORM_TYPE.drop,
     label: 'Vendor',
@@ -267,6 +315,10 @@ export const FORM_SCHEMA = {
   address: {
     type: FORM_TYPE.text,
     label: 'Address',
+  },
+  addressB: {
+    type: FORM_TYPE.text,
+    label: 'Address 2',
   },
   province: {
     type: FORM_TYPE.drop,
@@ -300,6 +352,10 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.text,
     label: 'Phone',
   },
+  deliveryService: {
+    type: FORM_TYPE.drop,
+    label: 'Delivery service',
+  },
   country: {
     type: FORM_TYPE.drop,
     label: 'Country',
@@ -315,6 +371,10 @@ export const FORM_SCHEMA = {
   imageBoxType: {
     type: FORM_TYPE.drop,
     label: 'Image box type',
+  },
+  paymentOption: {
+    type: FORM_TYPE.drop,
+    label: 'Payment option',
   },
   products: {
     type: FORM_TYPE.linkItem,
@@ -392,6 +452,14 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.text,
     label: 'Shipping province',
   },
+  shipping_zone: {
+    type: FORM_TYPE.text,
+    label: 'Shipping zone',
+  },
+  shipping_note: {
+    type: FORM_TYPE.text,
+    label: 'Shipping note',
+  },
   deliveryId: {
     type: FORM_TYPE.text,
     label: 'Delivery',
@@ -440,6 +508,10 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.date,
     label: 'Expiration Date',
   },
+  zone: {
+    type: FORM_TYPE.drop,
+    label: 'Zone',
+  },
   productColor: {
     type: FORM_TYPE.drop,
     label: 'Color',
@@ -485,7 +557,7 @@ export const LIMIT = 30;
 
 export const IGNORE_FORM_FIELDS = ['useDate', 'saved'];
 
-export const ALLOW_FIELDS = ['saved', 'id', 'items', 'totalSaved'];
+export const ALLOW_FIELDS = ['saved', 'id', 'items', 'totalSaved', 'paymentOptionId', 'deliveryOptionId', 'deliveryServiceId'];
 
 export const config = {
   backEndUrl: process.env.BACKEND_URL,

@@ -34,18 +34,22 @@ const Add = ({
   type,
   hideEntry,
   ignoreForm,
+  disableFields,
   children,
   onSubmitAction,
   showTitle,
+  resetPanamaSection,
   showCancel,
   actionButtonName,
   actionCancelButtonName,
   onCancel,
+  forceRefresh,
   onFormChange,
 }) => {
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
   const [section, setSection] = useState({})
+  const [refresh, setRefresh] = useState({})
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -119,7 +123,7 @@ const Add = ({
 
   useEffect(() => {
     let newErrors = {}
-    if (entryForm) {
+    if (forceRefresh !== refresh) {
       setForm(entryForm);
       setSection(formSection);
   
@@ -129,10 +133,11 @@ const Add = ({
           text: '',
         }
       })
+      setRefresh(forceRefresh)
       setErrors(newErrors);
       setShowForm(true)
     }
-  }, [entryForm])
+  }, [forceRefresh])
 
   
   return showForm && (
@@ -146,6 +151,8 @@ const Add = ({
         onChange={formOnChange} 
         formSubmit={handleSubmit} 
         showCancelBtn={showCancel}
+        disableFields={disableFields}
+        resetPanamaSection={resetPanamaSection}
         snack={snack}
         ignoreForm={ignoreForm}
         hideEntry={hideEntry}
@@ -167,11 +174,14 @@ Add.protoTypes = {
   formSection: T.object,
   entryForm: T.object,
   showCancel: T.bool,
+  refresh: T.bool,
   actionButtonName: T.string,
   actionCancelButtonName: T.string,
   onSubmitAction: T.func,
   showTitle: T.bool,
+  resetPanamaSection: T.bool,
   type: T.string,
+  disableFields: T.array,
   hideEntry: T.array,
   children: T.node,
   customUrl: T.string,

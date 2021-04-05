@@ -36,6 +36,50 @@ export const getImage = (product) => {
   return image;
 }
 
+export const getSortPriceRange = (obj) => {
+  if (!obj || !obj.productProductItems) {
+    return obj;
+  }
+  const range = obj.productProductItems.sort((a, b) => parseFloat(a.retailPrice) > parseFloat(b.retailPrice) ? 1 : -1);
+
+  if (range && range.length > 1) {
+    return `USD $${range[0].retailPrice} - $${range[range.length - 1].retailPrice}`;
+  } else {
+    return `USD $${range[0].retailPrice}`;
+  }
+}
+
+export const sortOptions = (obj, neddle = null) => {
+  if (neddle) {
+    return obj.sort((a, b) => parseFloat(a[neddle]) > parseFloat(b[neddle]) ? 1 : -1);
+  } else {
+    return obj;
+  }
+}
+
+export const returnDefaultOption = (obj) => {
+  let getItem = null;
+
+  const findByDefault = obj.filter(item => item.default)[0];
+
+  if (findByDefault) {
+    getItem = findByDefault[0];
+  }
+  
+  if (!getItem) {
+    const findByPos = sortOptions(obj, 'position');
+    if (findByPos) {
+      getItem = findByPos[0];
+    }
+  }
+
+  if (!getItem) {
+    getItem = obj[0];
+  }
+
+  return getItem;
+}
+
 export const getImageBaseOnly = (product) => {
   const imageUrl = getImageUrlByType('product');
   
@@ -75,12 +119,22 @@ export const isImageAval = (product) => {
   return image;
 }
 
+export const getTotal = (obj) => {
+  let total = 0;
+
+  if (!isNaN(obj.quantity) && !isNaN(obj.retailPrice)) {
+    total = obj.quantity * obj.retailPrice;
+  }
+
+  return `$${total.toFixed(2)}`;
+}
+
 export const getCartTotal = (obj) => {
   let subtotal = 0;
   let taxes = 0;
   let grandTotal = 0;
   let savedGrandTotal = 0;
-  let delivery = obj.delivery ? parseFloat(obj.delivery) : 0;
+  let delivery = !obj.delivery || obj.delivery === -1 ? 0 : parseFloat(obj.delivery);
   let originalTotal = 0;
   let cart = obj.cart;
   if (cart) {

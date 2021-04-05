@@ -28,6 +28,7 @@ import { ADMIN_SECTIONS } from '../../../constants/admin';
 import { getImageUrlByType } from '../../../utils/form';
 import { removeCharacter } from '../../../utils';
 import Rate from '../../common/Rate/Rate';
+import { defaultPanama } from '../../../../config';
 import FileUploader from '../FileUploader';
 import Typography from '../Typography';
 import Snackbar from '../Snackbar';
@@ -171,8 +172,10 @@ const Form = ({
   formCancel: handleCancel,
   formDelete,
   onCloseSnack,
+  resetPanamaSection,
   onImageDelete,
   onImageBoxDelete,
+  disableFields,
   cancelCustonName,
   showTitle = true,
   hideEntry,
@@ -189,11 +192,12 @@ const Form = ({
   const [formTitle, setFormTitle] = useState('');
   const [cancelFormBtnTitle, setCancelFormBtnTitle] = useState('Cancel');
   const [formBtnTitle, setFormBtnTitle] = useState('');
+  const [forceRefreshPanama, setForceRefreshPanama] = useState(false)
   const [imageBoxImageItems, setImageBoxImageItems] = useState([{}]);
   const [panamaAddress, setPanamaAddress] = useState({})
   const userImages = fields['image'] && 'saved' in fields['image'] ? fields['image'].saved : null;
   const imageBoxImages = fields['imageBox'] && 'saved' in fields['imageBox'] ? fields['imageBox'].saved : null;
-  const panamaFlag = ['province', 'district', 'corregimiento'];
+  const panamaFlag = ['province', 'district', 'corregimiento', 'zone'];
   const [dialogContent, setDialogContent] = useState({
     open: false,
     value: null,
@@ -258,26 +262,66 @@ const Form = ({
       formOnChange({target:{name: field, value: val}})
     }
   }
-  
+
+  const resetPanamaDrop = (section) => {
+    if (section === 'province') {
+      fields['district'] = null;
+      fields['corregimiento'] = null;
+      fields['zone'] = null;
+      setPanamaAddress({
+        ...panamaAddress,
+        'sel_district': null,
+        'sel_corregimiento': null,
+        'sel_zone': null
+      })
+    } else if (section === 'district') {
+      fields['corregimiento'] = null;
+      fields['zone'] = null;
+      setPanamaAddress({
+        ...panamaAddress,
+        'sel_corregimiento': null,
+        'sel_zone': null
+      })
+    } else if (section === 'corregimiento') {
+      fields['zone'] = null;
+      setPanamaAddress({
+        ...panamaAddress,
+        'sel_zone': null
+      })
+    }
+  }
+
   const onDropDownChange = async(val) => {
     const options = formOptions;
     const panama = panamaAddress;
     let sel_name = '';
-    if (val.name === "province") {
-      const lists = panama.districts.filter((item) => item.province == val.value.id);
-      options['district'] = lists;
-      sel_name = 'sel_province';
-    } else if (val.name === "district") {
-      const lists = panama.corregimientos.filter((item) => item.province == panama.sel_province && item.district == val.value.id);
-      options['corregimiento'] = lists;
-    } else if (val.name === "corregimiento") {
-      sel_name = 'sel_corregimiento';
-    } 
-    setPanamaAddress({
-      ...panamaAddress,
-      [sel_name]: val.value.id
-    })
-    await setFormOptions(options)
+    if (val && val.value) {
+      if (val.name === "province") {
+        const lists = panama.districts.filter((item) => item.province == val.value.id);
+        options['district'] = lists;
+        sel_name = 'sel_province';
+        resetPanamaDrop('province');
+      } else if (val.name === "district") {
+        const lists = panama.corregimientos.filter((item) => item.district == val.value.id);
+        options['corregimiento'] = lists;
+        sel_name = 'sel_district';
+        resetPanamaDrop('district');
+      } else if (val.name === "corregimiento") {
+        const lists = panama.zones.filter((item) => item.corregimientoId == val.value.id);
+        options['zone'] = lists;
+        sel_name = 'sel_corregimiento';
+        resetPanamaDrop('corregimiento');
+      } else if (val.name === "zone") {
+        sel_name = 'sel_zone';
+      } 
+      setPanamaAddress({
+        ...panamaAddress,
+        [sel_name]: val.value.id
+      })
+      await setFormOptions(options); 
+    } else if (val && !val.value) {
+      resetPanamaDrop(val.name)
+    }
   }
 
   const deleteImageBox = async(index) => {
@@ -484,12 +528,6 @@ const Form = ({
                   className={classes.whiteBackground}
                   name={field}
                   options={formOptions[field]}
-                  onChange={(e, value) => {
-                    if (panamaFlag.includes(field)) {
-                      onDropDownChange({ name: field, value: value})
-                    }
-                    formOnChange(null, { name: field, value: value})
-                  }}
                   getOptionLabel={(option) => option.name}
                   value={fields[field]}
                   renderOption={(option, { selected }) => (
@@ -514,6 +552,7 @@ const Form = ({
                 <Autocomplete
                   className={classes.whiteBackground}
                   name={field}
+                  disabled={ disableFields && disableFields.includes(field) ? true : false}
                   options={formOptions[field]}
                   onChange={(e, value) => {
                     if (panamaFlag.includes(field)) {
@@ -632,34 +671,62 @@ const Form = ({
       }
     }
   });
+  const loadFormOption = async() => {
+    const section = ADMIN_SECTIONS;
+    const options = await loadMainOptions(isAdmin, basicParams);
+    const panama = {
+      provinces: [],
+      districts: [],
+      corregimientos: [],
+      zones: [],
+      sel_province: null,
+      sel_district: null,
+      sel_corregimiento: null,
+      sel_zone: null
+    };
+    if (options.province) {
+      panama.provinces = options.province
+    };
+    if (options.district) {
+      panama.districts = options.district
+    };
+    if (options.corregimiento) {
+      panama.corregimientos = options.corregimiento
+    };
+    if (options.zone) {
+      panama.zones = options.zone
+    };
+    setPanamaAddress(panama);
+    setFormOptions(options);
+    setUseFormOptions(true);
+  }
 
   useEffect(() => {
-    const loadFormOption = async() => {
-      const section = ADMIN_SECTIONS;
-      const options = await loadMainOptions(isAdmin, basicParams);
-      const panama = {
-        provinces: [],
-        districts: [],
-        corregimientos: [],
-        sel_province: null,
-        sel_district: null,
-        sel_corregimiento: null
-      };
-      if (options.province) {
-        panama.provinces = options.province
-      };
-      if (options.district) {
-        panama.districts = options.district
-      };
-      if (options.corregimiento) {
-        panama.corregimientos = options.corregimiento
-      };
-      setPanamaAddress(panama);
-      setFormOptions(options);
-      setUseFormOptions(true);
-    }
    loadFormOption();
   }, [useFormOption]);
+
+  useEffect(() => {
+    if (forceRefreshPanama != resetPanamaSection) {
+      const options = formOptions;
+      const panama = panamaAddress;
+
+      if(panama && Object.keys(panama).length) {
+        const district = panama.districts.filter((item) => item.province == defaultPanama.province.id);
+        options['district'] = district;
+
+        const corregi = panama.corregimientos.filter((item) => item.district == defaultPanama.district.id);
+        options['corregimiento'] = corregi;
+
+        setPanamaAddress({
+          ...panamaAddress,
+          'sel_province':  defaultPanama.province.id,
+          'sel_district':  defaultPanama.district.id
+        })
+        setFormOptions(options); 
+      }
+      setForceRefreshPanama(resetPanamaSection);
+    }
+  }, [resetPanamaSection])
 
   useEffect(() => {
     let newTitle = title;
@@ -747,21 +814,25 @@ const Form = ({
           }
           {
             showCancelBtn && (
-              <Grid item lg={4} xs={12} className={classes.formItem}>
+              <Grid item lg={ type === "edit" ? 4 : 6} xs={12} className={classes.formItem}>
                 <FormControl fullWidth>
                   <Button onClick={handleCancel} className={`mainButton`}>{cancelFormBtnTitle}</Button>
                 </FormControl>
               </Grid>
             )
           }
-          <Grid item lg={ showCancelBtn ? 4 : 6 } xs={12} className={classes.formItem}>
-            <FormControl fullWidth>
-              <Button onClick={handleDelete} className={`mainButton`}>Delete</Button>
-            </FormControl>
-          </Grid>
+           {
+            type === "edit" && (
+              <Grid item lg={ showCancelBtn ? 4 : 6 } xs={12} className={classes.formItem}>
+                <FormControl fullWidth>
+                  <Button onClick={handleDelete} className={`mainButton`}>Delete</Button>
+                </FormControl>
+              </Grid>
+            )
+          }
           {
             formBtnTitle && (
-              <Grid item lg={ showCancelBtn ? 4 : 6 } xs={12} className={classes.formItem}>
+              <Grid item lg={ showCancelBtn ? type === "edit" ? 4 : 6 : 6 } xs={12} className={classes.formItem}>
                 <FormControl fullWidth>
                   <Button onClick={handleSubmit} className={`mainButton`}> {formBtnTitle}</Button>
                 </FormControl>
@@ -789,6 +860,7 @@ Form.protoTypes = {
   imageBoxAddMore: T.func,
   id: T.number,
   isAdmin: T.bool,
+  resetPanamaSection: T.bool,
   showCancelBtn: T.bool,
   fileOnSave: T.func,
   fileLimit: T.bool,
@@ -803,6 +875,7 @@ Form.protoTypes = {
   snack: T.object,
   submitCustomName: T.string,
   onCloseSnack: T.func,
+  disableFields: T.array
 }
 
 export default withStyles(styles)(Form);

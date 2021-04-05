@@ -184,9 +184,37 @@ export const ADMIN_SECTIONS = {
     url: 'product-colors',
     option: 'productcolor'
   },
+  'deliveryOption': {
+    name: 'Delivery Option',
+    names: 'Delivery Options',
+    key: 'delivery',
+    url: 'delivery-options',
+    option: 'deliveryoption'
+  },
+  'deliveryOptionService': {
+    name: 'Delivery Option Service',
+    names: 'Delivery Option Services',
+    key: 'delivery',
+    url: 'delivery-option-services',
+    option: 'deliveryoptionservice'
+  },
+  'deliveryServiceCost': {
+    name: 'Delivery Service Cost',
+    names: 'Delivery Service Costs',
+    key: 'money',
+    url: 'delivery-service-costs',
+    option: 'deliveryservicecost'
+  },
+  'paymentOption': {
+    name: 'Payment Option',
+    names: 'Payment Options',
+    key: 'payment',
+    url: 'payment-options',
+    option: 'paymentoption'
+  },
 }
 
-export const SECTIONS = ['user','order','vendor','color','category','brand','product', 'imageBox', 'sweetbox']
+export const SECTIONS = ['user','order','vendor','color','category','brand','product', 'imageBox', 'sweetbox', 'deliveryOption', 'paymentOption',  'deliveryServiceCost']
 export const ADMIN_URL = {
   account: 'settings',
   home: 'home',

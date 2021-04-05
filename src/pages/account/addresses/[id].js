@@ -33,19 +33,22 @@ const Edit = ({classes}) => {
   const id = router.query.id;
   const form = {
     name: null,
-    address: null,
     phone: null,
     email: null,
     mobile: null,
+    address: null,
+    addressB: null,
     province: null,
     district: null,
     corregimiento: null,
+    zone: null,
     country: defaultCountry,
+    note: null,
   }
 
   return (
     <UserLayoutTemplate>
-      <EditForm ignoreForm={['email']} classes={{root: classes.formRoot}} userSection={USER_SECTIONS.userAddress} id={id} entryForm={form} />
+      <EditForm ignoreForm={['email', 'note', 'addressB']} classes={{root: classes.formRoot}} userSection={USER_SECTIONS.userAddress} id={id} entryForm={form} />
     </UserLayoutTemplate>
   );
 }

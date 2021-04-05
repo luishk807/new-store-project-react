@@ -12,7 +12,7 @@ import {
 import Typography from '../../../components/common/Typography';
 import CardIcon from '../../../components/common/CardIcon';
 import Icons from '../../../components/common/Icons';
-import { getAddresses, deleteAddress, updateAddress } from '../../../api/addresses';
+import { getAddressesByUser, deleteAddress, updateAddress } from '../../../api/addresses';
 import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
 import AddressBox from '../../../components/address/AddressBox';
 import Snackbar from '../../../components/common/Snackbar';
@@ -62,7 +62,7 @@ const Index = ({classes, userInfo}) => {
 
 
   const loadAddresses = async() => {
-    const getAddreseses = await getAddresses();
+    const getAddreseses = await getAddressesByUser();
     setAddresses(getAddreseses);
     setShowDate(true);
   }

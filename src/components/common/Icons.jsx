@@ -92,6 +92,8 @@ import Covid from '../../../public/images/svg/categories/covid.svg';
 import Accesorios from '../../../public/images/svg/categories/accesorios.svg';
 import PaymentIcon from '@material-ui/icons/Payment';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 
 import Typography from './Typography';
 
@@ -107,6 +109,12 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'special':
         return <Special className={classes.icon}/>
+      break;
+      case 'success':
+        return <CheckCircleOutlineIcon className={classes.icon}/>
+      break;
+      case 'error':
+        return <ErrorOutlineIcon className={classes.icon}/>
       break;
       case 'manualidades':
         return <Manualidades className={classes.icon}/>
@@ -128,6 +136,9 @@ const Icons = ({classes, name}) => {
       break;
       case 'mask':
         return <Mask className={classes.icon}/>
+      break;
+      case 'bag':
+        return <Bag className={classes.icon}/>
       break;
       case 'closeBag':
         return <CloseBag className={classes.icon}/>

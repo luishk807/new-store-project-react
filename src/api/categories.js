@@ -14,3 +14,8 @@ export const deleteCategeoryByUserId = async(data) => {
 export const getCategories = async(data) => {
   return Api.get(`categories`, data);
 }
+
+
+export const getAllCategories = async(data) => {
+  return Api.get(`categories`, data);
+}

@@ -8,6 +8,7 @@ import {
 
 import Typography from '../Typography';
 import Icons from '../../common/Icons';
+import { config } from '../../../../config';
 import { FooterSample } from '../../../constants/samples/FooterSample';
 
 const styles = (theme) => ({
@@ -228,7 +229,7 @@ const Footer = ({classes}) => {
               <Grid item lg={12} xs={12} className={classes.firstLineItems}>
                 <Grid container>
                   <Grid item lg={1} xs={7} className={classes.firstLineItemsCells}>
-                    <img className={`img-fluid`} src="/images/logo-all-white.svg" />
+                    <a href="/"><img className={`img-fluid`} src="/images/logo-all-white.svg" /></a>
                   </Grid>
                 </Grid>
               </Grid>
@@ -238,17 +239,17 @@ const Footer = ({classes}) => {
                   <Grid item lg={6} md={6} xs={12} className={classes.socialLineMain}>
                     <ul>
                       <li>
-                        <a href='/' className={classes.secondLastlineItems}>
+                        <a href={config.socialLinks.facebook} target="_blank" className={classes.secondLastlineItems}>
                           <Icons name="facebook" classes={{icon: classes.socialIcons}} />
                         </a>
                       </li>
                       <li>
-                        <a href='/' className={classes.secondLastlineItems}>
+                        <a href={config.socialLinks.instagram} target="_blank" className={classes.secondLastlineItems}>
                           <Icons name="instagram" classes={{icon: classes.socialIcons}} />
                         </a>
                       </li>
                       <li>
-                        <a href='/' className={classes.secondLastlineItems}>
+                        <a href={config.socialLinks.whatssap} target="_blank" className={classes.secondLastlineItems}>
                           <Icons name="whatssap" classes={{icon: classes.socialIcons}} />
                         </a>
                       </li>
@@ -264,22 +265,22 @@ const Footer = ({classes}) => {
               <Grid item lg={6} md={6} xs={12} className={classes.secondLastlineMain}>
                 <ul>
                   <li>
-                    <a href='/aboutus' className={classes.secondLastlineItems}>
+                    <a href="/aboutus" className={classes.secondLastlineItems}>
                     About Us
                     </a>
                   </li>
                   <li>
-                    <a href='/contactus' className={classes.secondLastlineItems}>
+                    <a href="/contactus" className={classes.secondLastlineItems}>
                     Contact Us
                     </a>
                   </li>
                   <li>
-                    <a href='/terms' className={classes.secondLastlineItems}>
+                    <a href="/terms" className={classes.secondLastlineItems}>
                     Terms & Privacy
                     </a>
                   </li>
                   <li>
-                    <a href='/order' className={classes.secondLastlineItems}>
+                    <a href="/order" className={classes.secondLastlineItems}>
                       Order Status
                     </a>
                   </li>
@@ -293,23 +294,23 @@ const Footer = ({classes}) => {
               <Grid item lg={12} xs={12} className={classes.localItemsCells}>
                 <ul className={classes.contactUL}>
                   <li className={classes.liList}>
-                    Phone: 6770-2400
+                    Phone: { config.phone }
                   </li>
                   <li className={classes.liList}>
-                    Whatssap: 6770-2400
+                    Whatssap: { config.whatssap }
                   </li>
                   <li className={classes.liList}>
-                    Direction: Plaza Dorado
+                    Direction: { config.address }
                   </li>
                   <li className={classes.liList}>
-                    Email: ventas@avenidaz.com
+                    Email: { config.emails.sales }
                   </li>
                 </ul>
               </Grid>
             </Grid>
           </Grid>
           <Grid item lg={12} xs={12} className={`${classes.lastLine}`}>
-              <Typography align="center" variant="body1" component="p" className={classes.lastLineItems}>&copy; {(new Date().getFullYear())} <a href="/" className={classes.footerLink}>AvenidaZ.com</a>  All right reserved.</Typography>
+              <Typography align="center" variant="body1" component="p" className={classes.lastLineItems}>&copy; {(new Date().getFullYear())} <a href="/" className={classes.footerLink}>AvenidaZ.com</a>  All rights reserved.</Typography>
           </Grid>
         </Grid>
       </div>

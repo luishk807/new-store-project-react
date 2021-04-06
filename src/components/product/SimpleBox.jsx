@@ -7,7 +7,7 @@ import {
 } from '@material-ui/core';
 
 import { formatNumber } from '../../utils';
-import { getImage } from '../../utils';
+import { getImage, getImageAsync, getImageBaseOnly} from '../../utils';
 import { noImageUrl } from '../../../config';
 import { getProductDiscountsByProductIds } from '../../api/productDiscounts';
 import { getProductItemByIds } from '../../api/productItems';
@@ -16,6 +16,12 @@ const styles = (theme) => ({
   root: {
     width: '100%',
   },
+  mainContainer: {
+    width: '100%',
+  },
+  item: {
+    width: '100%'
+  },
   itemProductImage: {
     padding: 10,
   },
@@ -23,14 +29,13 @@ const styles = (theme) => ({
     textAlign: 'left',
     padding: 10,
     '& p': {
-      lineHeight: '10px',
       [theme.breakpoints.down('sm')]: {
         lineHeight: 'normal',
       }
     }
   },
   saveTotal: {
-    color: 'red',
+    color: 'green',
   },
   originalPrice: { 
     textDecoration: 'line-through',
@@ -62,9 +67,25 @@ const SimpleBox = React.memo(({ classes, data }) => {
       return data
     })
 
+    for(const item of refactorData) {
+      const foundImg = item.productImages;
+      if (!foundImg || (foundImg && !foundImg.length)) {
+        const fImage = await getImageAsync(item);
+        if (fImage) {
+          await item.productImages.push(fImage);
+        }
+      } 
+    }
+
     setProducts(refactorData);
-    setShowData(true);
   }
+
+  useEffect(() => {
+    if (products && products.length) {
+      setShowData(true);
+    }
+  }, [products]);
+
 
   useEffect(() => {
     loadProducts();
@@ -72,19 +93,21 @@ const SimpleBox = React.memo(({ classes, data }) => {
 
   return showData && (
     <div className={classes.root}>
-      <Grid container>
+      <Grid container className={classes.mainContainer}>
       {
         products.map((item, indx) => {
-          const img = getImage(item)
+          const img = getImage(item);
+          const totalSaved = Number(item.savePrice);
+          const showSaved = totalSaved && totalSaved > 0 ? true : false;
           return (
-            <Grid key={indx} item>
+            <Grid key={indx} item className={classes.item}>
               <Grid container>
-                <Grid item lg={2} xs={6} className={classes.itemProductImage}>
+                <Grid item lg={3} xs={6} className={classes.itemProductImage}>
                   {
                     img
                   }
                 </Grid>
-                <Grid item lg={10} xs={6} className={classes.itemProductDescription}>
+                <Grid item lg={9} xs={6} className={classes.itemProductDescription}>
                   <p className={classes.itemName}><a href={`/product/${item.product}`}>{item.name}</a></p>
                   <p>Sku: <b>{item.sku}</b></p>
                   <p>Size: <b>{item.size}</b></p>
@@ -100,7 +123,7 @@ const SimpleBox = React.memo(({ classes, data }) => {
 
                   <p>Total: <b>${formatNumber(item.total)}</b></p>
                   {
-                    item.savePrice && (
+                    showSaved && (
                       <p className={classes.saveTotal}>You saved: <b>${formatNumber(item.savePrice)}</b></p>
                     )
                   }

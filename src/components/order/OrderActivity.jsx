@@ -73,14 +73,14 @@ const OrderActivity = ({classes, order}) => {
                 <Hidden smDown>
                   <Grid item lg={3} xs={3}>
                     {
-                      item.orderActivityUser ? `${item.orderActivityUser.first_name}(${userRole})` : 'Sytem'
+                      item.orderActivityUser ? `${item.orderActivityUser.first_name}(${userRole})` : 'System'
                     }
                   </Grid>
                 </Hidden>
                 <Hidden smUp>
                   <Grid item lg={3} xs={3}>
                     {
-                      item.orderActivityUser ? `${item.orderActivityUser.first_name}` : 'Sytem'
+                      item.orderActivityUser ? `${item.orderActivityUser.first_name}` : 'System'
                     }
                   </Grid>
                 </Hidden>

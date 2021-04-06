@@ -13,8 +13,6 @@ import SweetBoxProducts from '../sweetbox/Products';
   getSweetBoxesByType
  } from '../../api/sweetbox';
 
-import CardIcon from '../common/CardIcon';
-
 const styles = (theme) => ({
   root: {
     margin: '50px 0px',
@@ -38,7 +36,7 @@ const styles = (theme) => ({
   }
 });
 
-const SweetBox = React.memo(({classes, type}) => {
+const SweetBox = React.memo(({classes, type, plain}) => {
   const [sweetBoxes, setSweetBoxes] = useState([]);
   const [showData, setShowData] = useState(false);
 
@@ -59,18 +57,16 @@ const SweetBox = React.memo(({classes, type}) => {
     const otherSweetBoxes = sweetbox.sweetBoxSweetboxProduct.filter((item, index) => index !== 0)
     return (
       <div key={index} className={`container-fluid`} className={classes.root}>
-        <Grid container>
-          <Grid item lg={12} xs={12}>
-            <Typography className={classes.title}>{sweetbox.name}</Typography>
-          </Grid>
-        </Grid>
-        <Grid container>
-          <Grid item lg={12} xs={12}>
+        {
+          plain ? (
+            <>
             <Grid container>
-              <Grid item lg={4} xs={12} className={classes.featureBox}>
-                <SweetBoxProducts key={index} isFeature={true} id={featureSweetBox.product} />
+              <Grid item lg={12} xs={12}>
+                <Typography className={classes.title}>{sweetbox.name}</Typography>
               </Grid>
-              <Grid item lg={8} xs={12}>
+            </Grid>
+            <Grid container>
+              <Grid item lg={12} xs={12}>
                 <Grid container>
                   {
                     otherSweetBoxes.map((product, index) => {
@@ -84,14 +80,46 @@ const SweetBox = React.memo(({classes, type}) => {
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Grid>
+            </>
+          ) : (
+            <>
+            <Grid container>
+              <Grid item lg={12} xs={12}>
+                <Typography className={classes.title}>{sweetbox.name}</Typography>
+              </Grid>
+            </Grid>
+            <Grid container>
+              <Grid item lg={12} xs={12}>
+                <Grid container>
+                  <Grid item lg={4} xs={12} className={classes.featureBox}>
+                    <SweetBoxProducts key={index} isFeature={true} id={featureSweetBox.product} />
+                  </Grid>
+                  <Grid item lg={8} xs={12}>
+                    <Grid container>
+                      {
+                        otherSweetBoxes.map((product, index) => {
+                          return (
+                            <Grid key={index} item lg={3} xs={6}>
+                              <SweetBoxProducts key={index} isFeature={false} id={product.product} />
+                            </Grid>
+                          )
+                        })
+                      }
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+            </>
+          )
+        }
       </div>
     )
   })
 });
 
 SweetBox.protoTypes = {
+  plain: T.bool,
   classes: T.object,
   type: T.number.isRequired
 }

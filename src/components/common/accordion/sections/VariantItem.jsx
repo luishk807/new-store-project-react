@@ -27,7 +27,6 @@ const styles = (theme) => ({
     padding: 10,
     fontWeight: 'bold',
     '& p': {
-      lineHeight: '10px',
       [theme.breakpoints.down('sm')]: {
         lineHeight: 'normal',
       }
@@ -36,7 +35,6 @@ const styles = (theme) => ({
   itemProductDescription: {
     padding: 10,
     '& p': {
-      lineHeight: '10px',
       [theme.breakpoints.down('sm')]: {
         lineHeight: 'normal',
       }
@@ -50,7 +48,6 @@ const styles = (theme) => ({
     },
     padding: 10,
     '& p': {
-      lineHeight: '10px',
       [theme.breakpoints.down('sm')]: {
         lineHeight: 'normal',
       }

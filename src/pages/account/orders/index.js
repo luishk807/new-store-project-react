@@ -7,6 +7,7 @@ import {
   Link,
   Grid,
   Button,
+  Hidden,
 } from '@material-ui/core';
 import moment from 'moment';
 
@@ -28,9 +29,6 @@ const styles = (theme) => ({
   title: {
     textAlign: 'center',
     padding: '10px 0px',
-  },
-  actionBtn: {
-
   },
   mainContainer: {
 
@@ -64,14 +62,16 @@ const styles = (theme) => ({
     marginBottom: 10,
   },
   itemProduct: {
-
-  },
-  itemAction: {
-
+    width: '100%'
   },
   orderHeaderContainer: {
     display: 'flex',
     justifyContent: 'center'
+  },
+  orderHeaderTitle: {
+    fontSize: '1em',
+    color: 'grey',
+    padding: 5,
   },
   orderHeaderSubTitle: {
     fontSize: '1em',
@@ -104,21 +104,9 @@ const styles = (theme) => ({
     textAlign: 'right',
     padding: 5,
   },
-  itemProductContainer: {
-
+  orderStatus: {
+    fontWeight: 'bold'
   },
-  itemProductImage: {
-
-  },
-  itemProductDescription: {
-
-  },
-  itemActionContainer: {
-
-  },
-  itemActionItems: {
-
-  }
 });
 
 const Index = ({classes, userInfo}) => {
@@ -149,26 +137,36 @@ const Index = ({classes, userInfo}) => {
                   <>
                   {
                     orders && orders.map((order, index) => {
+                      const totalSaved = Number(order.totalSaved);
+                      const showSaved = totalSaved && totalSaved > 0 ? true : false;
                       return (
                         <Grid item key={index} lg={12} xs={12} className={classes.orderItems}>
                           <Grid container className={classes.orderContainer}>
+                            <Grid item lg={12} xs={12}>
+                              <span className={classes.orderHeaderTitle}>Order Number</span>:&nbsp;
+                              <a href={`/account/orders/${order.id}`}>{order.order_number}</a>
+                            </Grid>
                             <Grid item lg={12} xs={12} className={classes.itemHeader}>
                               <Grid container className={classes.orderHeaderContainer}>
-                                <Grid item lg={3} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem1}`}>
-                                  <p className={classes.orderHeaderSubTitle}>Date</p>
-                                  <p>{moment(order.createdAt).format('MMMM D, YYYY')}</p>
+                                <Grid item lg={3} xs={3} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem1}`}>
+                                  <span className={classes.orderHeaderSubTitle}>Date</span><br/>
+                                 {moment(order.createdAt).format('MMMM D, YYYY')}
                                 </Grid>
-                                <Grid item lg={3} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem2}`}>
-                                  <p className={classes.orderHeaderSubTitle}>GrandTotal</p>
-                                  <p>${formatNumber(order.grandtotal)}</p>
+                                <Grid item lg={3} xs={5} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem2}`}>
+                                  <span className={classes.orderHeaderSubTitle}>GrandTotal</span><br/>
+                                  {`$${formatNumber(order.grandtotal)}`}
                                 </Grid>
-                                <Grid item lg={3} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem3}`}>
-                                  <p className={classes.orderHeaderSubTitle}>Status</p>
-                                  <p>{order.orderStatuses.name}</p>
-                                </Grid>
-                                <Grid item lg={3} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
-                                  <p className={classes.orderHeaderSubTitle}>Order Number</p>
-                                  <p><a href={`/account/orders/${order.id}`}>{order.order_number}</a></p>
+                                <Hidden smDown>
+                                  <Grid item lg={3} xs={5} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem2}`}>
+                                    <span className={classes.orderHeaderSubTitle}>Total Saved</span><br/>
+                                    {
+                                      showSaved ? `$${order.totalSaved}` : 'N/A'
+                                    }
+                                  </Grid>
+                                </Hidden>
+                                <Grid item lg={3} xs={4} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
+                                  <span className={classes.orderHeaderSubTitle}>Status</span><br/>
+                                  <span className={classes.orderStatus}>{order.orderStatuses.name}</span>
                                 </Grid>
                               </Grid>
                             </Grid>

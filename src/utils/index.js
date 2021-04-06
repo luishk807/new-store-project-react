@@ -1,6 +1,7 @@
 import { getImageUrlByType } from './form';
 import { noImageUrl } from '../../config';
 import { getProductItemByIds } from '../api/productItems';
+import { getProductById } from '../api/products';
 
 export const removeCharacter = (str) => {
   return str.replace(/_/g, ' ')
@@ -8,9 +9,68 @@ export const removeCharacter = (str) => {
 
 export const formatNumber = (x) => x ? Number.parseFloat(x).toFixed(2) : 0.00;
 
+export const getDeliveryInfo = (order) => {
+  let delivery = null;
+  if (order.deliveryOptionId && order.deliveryOptionId === '1') {
+    const info = [];
+    if (isNull(order.shipping_name)) {
+      info.push(order.shipping_name);
+    }
+    if (isNull(order.shipping_email)) {
+      info.push(`Email: ${order.shipping_email}`);
+    }
+    if (isNull(order.shipping_phone)) {
+      info.push(`Phone: ${order.shipping_phone}`);
+    }
+    delivery = {
+      'title': 'Pick Up Info',
+      'info': info
+    }
+  } else {
+    const info = [];
+    if (isNull(order.shipping_name)) {
+      info.push(order.shipping_name);
+    }
+    if (isNull(order.shipping_address)) {
+      info.push(order.shipping_address);
+    }
+    let provDistrict = '';
+    if (isNull(order.shipping_province)) {
+      provDistrict += order.shipping_province;
+    }
+    if (isNull(order.shipping_corregimiento)) {
+      provDistrict += order.shipping_corregimiento;
+    }
+    if (isNull(order.shipping_district)) {
+      provDistrict += order.shipping_district;
+    }
+    if (provDistrict) {
+      info.push(provDistrict);
+    }
+    if (isNull(order.shipping_zone)) {
+      info.push(order.shipping_zone);
+    }
+    if (isNull(order.shipping_country)) {
+      info.push(order.shipping_country);
+    }
+    if (isNull(order.shipping_email)) {
+      info.push(`Email: ${order.shipping_email}`);
+    }
+    if (isNull(order.shipping_phone)) {
+      info.push(`Phone: ${order.shipping_phone}`);
+    }
+    delivery = {
+      'title': 'Shipping Address',
+      'info': info
+    }
+  }
+  return delivery
+}
+export const isNull = (str) => {
+  return !str || typeof str === 'undefined' || typeof str === 'null' || str == 'undefined' || str == 'null' ? null : str;
+}
 export const getImage = (product) => {
   const imageUrl = getImageUrlByType('product');
-  
   let image = <img className={`img-fluid`} src={`${noImageUrl.img}`} alt={`${noImageUrl.alt}`} />
 
   if (product.productImages && product.productImages.length) {
@@ -36,13 +96,56 @@ export const getImage = (product) => {
   return image;
 }
 
+
+export const getImageAsync = async(product) => {
+  const imageUrl = getImageUrlByType('product');
+  if (product.productImages && product.productImages.length) {
+    return product.productImages[0];
+  } else if (product.productProductItems && product.productProductItems.length) {
+    const ids = product.productProductItems.map(item => {
+      return Number(item.id);
+    })
+
+    if (ids && ids.length) {
+      const itemFetch = await getProductItemByIds(ids)
+      if (itemFetch) {
+        const imageSort = itemFetch.filter((item, index) => {
+          if (item.productImages && item.productImages.length) {
+            return item.item.productImages[0]
+          }
+        })
+        if (imageSort && imageSort.length) {
+          return imageSort[0];
+        }
+      }
+    }
+  } else if (product.product) {
+    const itemFetch = await getProductById(product.product)
+    if (itemFetch && itemFetch.productImages && itemFetch.productImages.length) {
+      return itemFetch.productImages[0]
+    }
+  }
+}
+
+export const getImageBaseOnly = (product) => {
+  const imageUrl = getImageUrlByType('product');
+  
+  let image = <img className={`img-fluid`} src={`${noImageUrl.img}`} alt={`${noImageUrl.alt}`} />
+
+  if (product.productImages && product.productImages.length) {
+    image = <img className={`img-fluid`} src={`${imageUrl}/${product.productImages[0].img_url}`} alt={`${product.name}`} />;
+  }
+  return image;
+}
+
+
 export const getSortPriceRange = (obj) => {
   if (!obj || !obj.productProductItems) {
     return obj;
   }
   const range = obj.productProductItems.sort((a, b) => parseFloat(a.retailPrice) > parseFloat(b.retailPrice) ? 1 : -1);
 
-  if (range && range.length > 1) {
+  if (range && range.length > 1 && (range[0].retailPrice !== range[range.length - 1].retailPrice)) {
     return `USD $${range[0].retailPrice} - $${range[range.length - 1].retailPrice}`;
   } else {
     return `USD $${range[0].retailPrice}`;
@@ -78,17 +181,6 @@ export const returnDefaultOption = (obj) => {
   }
 
   return getItem;
-}
-
-export const getImageBaseOnly = (product) => {
-  const imageUrl = getImageUrlByType('product');
-  
-  let image = <img className={`img-fluid`} src={`${noImageUrl.img}`} alt={`${noImageUrl.alt}`} />
-
-  if (product.productImages && product.productImages.length) {
-    image = <img className={`img-fluid`} src={`${imageUrl}/${product.productImages[0].img_url}`} alt={`${product.name}`} />;
-  }
-  return image;
 }
 
 export const isImageAval = (product) => {

@@ -1,4 +1,3 @@
-
 export const FORM_TYPE = {
   text: 'textfield',
   drop: 'dropdown',
@@ -7,6 +6,7 @@ export const FORM_TYPE = {
   email: 'email',
   pass: 'password',
   date: 'date',
+  dateFull: 'datefull',
   rate: 'rate',
   color: 'color',
   textArea: 'textarea',
@@ -505,7 +505,7 @@ export const FORM_SCHEMA = {
     label: 'Profit Percentage',
   },
   exp_date: {
-    type: FORM_TYPE.date,
+    type: FORM_TYPE.dateFull,
     label: 'Expiration Date',
   },
   zone: {
@@ -533,7 +533,7 @@ export const FORM_SCHEMA = {
     label: 'Percentage',
   },
   startDate: {
-    type: FORM_TYPE.date,
+    type: FORM_TYPE.dateFull,
     label: 'Start Date',
   },
   useDate: {
@@ -541,7 +541,7 @@ export const FORM_SCHEMA = {
     label: 'Enforce Date',
   },
   endDate: {
-    type: FORM_TYPE.date,
+    type: FORM_TYPE.dateFull,
     label: 'End Date',
   },
 }
@@ -561,5 +561,17 @@ export const ALLOW_FIELDS = ['saved', 'id', 'items', 'totalSaved', 'paymentOptio
 
 export const config = {
   backEndUrl: process.env.BACKEND_URL,
-  apiBaseUrl: process.env.API_BASE_URL
+  apiBaseUrl: process.env.API_BASE_URL,
+  socialLinks: {
+    instagram: 'https://www.instagram.com/avenida_z/',
+    facebook: 'https://www.facebook.com/Avenida-Z-109937764211160',
+    whatssap: 'https://wa.me/50767702400'
+  },
+  phone: '6770-2400',
+  whatssap: '6770-2400',
+  emails: {
+    email: 'info@avenidaz.com',
+    sales: 'ventas@avenidaz.com',
+  },
+  address: 'Plaza Dorado'
 }

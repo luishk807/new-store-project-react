@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 
 import { defaultCountry, defaultPanama } from '../../../config';
 import CartBox from '../../components/CartBlock';
+import Icons from '../../components/common/Icons';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import ActionForm from '../../components/common/Form/Action/Add';
 import Snackbar from '../../components/common/Snackbar';
@@ -58,11 +59,20 @@ const styles = (theme) => ({
     justifyContent: 'center',
     padding: 10,
   },
+  orderResultPageTitle: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    fontWeight: 'bold',
+    flexDirection: 'column',
+  },
   pageTitleContainer: {},
   pageContenContainer: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    margin: '0px auto',
   },
   subPageContainer: {
 
@@ -79,12 +89,29 @@ const styles = (theme) => ({
   addressBox: {
     padding: 10,
     margin: '10px 0px',
+  },
+  orderResultItemCont: {
+    textAlign: 'center'
+  },
+  linkStyle: {
+    paddingTop: 30,
+    display: 'inline-block',
+    '&:hover': {
+      textDecoration: 'underline'
+    }
+  },
+  orderResultIcon: {
+    width: 80,
+    height: 80,
+    fill: 'green',
   }
 });
 
 
 const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   const router = useRouter()
+  const [showThankyou, setThankyou] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
   const [showPlaceOrderLoader, setShowPlaceOrderLoader] = useState(false);
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState(null)
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null)
@@ -101,6 +128,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   const [address, setAddress] = useState({});
   const [showAddressLoader, setShowAddressLoader] = useState(false);
   const [guestAddress, setGuestAddress] = useState({});
+  const [orderResult, setOrderResult] = useState({});
   const [total, setTotal] = useState({});
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -203,6 +231,19 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   }
 
   const handlePlaceOrder = async() => {
+    if (!Object.entries(cart).length) {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: 'No items in cart',
+      });
+
+      setTimeout(() => {
+        handleCancel();
+      }, 1000);
+      return;
+    }
+
     let errorFound = true;
     let key = '';
     let ignoreFields = ['address', 'cart', 'userid'];
@@ -277,11 +318,16 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
 
       setShowPlaceOrderLoader(true);
       const confirm = await processOrderByUser(formSubmit)
+      setOrderResult(confirm.data);
+      setShowCheckout(false);
       const resp = handleFormResponse(confirm);
       setSnack(resp);
-      setTimeout(() => {
-        handleCancel() 
-      }, 1000);
+      // setTimeout(() => {
+      //   //handleCancel() 
+      //   emptyCart();
+      //   setShowCheckout(false);
+      //   setThankyou(true);
+      // }, 1000);
     }
   }
 
@@ -420,8 +466,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   useEffect(() => {
     let form = {
       userid: userInfo.id,
-      delivery: '1',
-      cart: cart,
+      delivery: '1'
     }
 
     setAddress({
@@ -453,13 +498,31 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     // loadServices();
     loadPayment();
     setForm(form);
-  }, [userInfo, cart])
+  }, [userInfo])
+
+  useEffect(() => {
+    if (Object.keys(cart).length) {
+      setForm({
+        ...form,
+        cart: cart,
+      });
+      setShowCheckout(true)
+    }
+  }, [cart])
+
+  useEffect(() => {
+    if (Object.entries(orderResult).length) {
+      emptyCart();
+      setShowCheckout(false);
+      setThankyou(true);
+    }
+  }, [orderResult])
 
   return (
     <LayoutTemplate>
      <div className={classes.root}>
       {
-          form && (
+          showCheckout && (
             <>
             <Grid container className={classes.pageTitleContainer}>
               <Grid className={classes.pageTitle} item lg={12} xs={12}>
@@ -467,7 +530,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
               </Grid>
             </Grid>
             <Grid container className={classes.pageContenContainer}>
-              <Grid item lg={8}>
+              <Grid item lg={8} xs={12}>
                 <Grid container className={classes.subPageContainer}>
                   <Grid className={classes.contentSection} item lg={7} xs={12}>
                     <Grid container>
@@ -535,6 +598,28 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
               </Grid>
             </Grid>
 
+            </>
+          )
+        }
+        {
+          showThankyou && orderResult && (
+            <>
+            <Grid container className={classes.pageTitleContainer}>
+              <Grid className={classes.orderResultPageTitle} item lg={12} xs={12}>
+                <div><Icons name="success" classes={{icon: classes.orderResultIcon}} /></div>
+                <h1>Gracias!</h1>
+              </Grid>
+            </Grid>
+            <Grid container className={classes.pageContenContainer}>
+              <Grid item lg={6} xs={12} className={classes.orderResultItemCont}>
+                <p>Hemos recibido su orden y su numero de confirmación es:<br/>
+                <b>{orderResult.order_num}</b>,<br/>le enviamos a su correo electrónico los datos para realizar el pago de acuerdo al método seleccionado</p>
+                <p>Recuerde realizar su pago dentro de las 24 horas, de lo contrario su orden será cancelada automáticamente</p>
+                <p>
+                  <a href="/" className={classes.linkStyle}>Regresar a la pagina principal</a>
+                </p>
+              </Grid>
+            </Grid>
             </>
           )
         }

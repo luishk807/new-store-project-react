@@ -8,7 +8,7 @@ export const getOrderProductsById = async(id) => {
   const data = {
     order: id
   }
-  return Api.get(`order-products`, data);
+  return Api.get(`order-products/${id}`);
 }
 
 export const getOrderProductsByIds = async(ids) => {

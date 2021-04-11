@@ -10,7 +10,7 @@ import moment from 'moment';
 import Icons from '../common/Icons';
 import OrderItem from './OrderItem';
 import { canceled_status, statusAllowedCancellation } from '../../../config';
-import { formatNumber } from '../../utils';
+import { formatNumber, isNull, getDeliveryInfo } from '../../utils';
 
 const styles = (theme) => ({
   root: {
@@ -51,6 +51,10 @@ const styles = (theme) => ({
   itemProduct: {
 
   },
+  orderFlexColumn: {
+    display: 'flex',
+    flexDirection: 'column'
+  },
   orderHeaderContainer: {
     display: 'flex',
     margin: '10px 0px',
@@ -62,7 +66,6 @@ const styles = (theme) => ({
   },
   orderHeaderItem: {
     '& p': {
-      lineHeight: '3px',
       [theme.breakpoints.down('sm')]: {
         lineHeight: 'normal',
       }
@@ -132,12 +135,32 @@ const styles = (theme) => ({
 
 const View = ({classes, order, isAdmin = false}) => {
   const [isCancelled, setIsCancelled] = useState(false);
+  const [deliveryInfo, setDeliveryInfo] = useState({});
+  const [showDelivery, setShowDelivery] = useState(false);
+  const [showTotalSaved, setShowTotalSaved] = useState(false);
+
+  useEffect(() => {
+    const totalSaved = Number(order.totalSaved);
+    const showSaved = totalSaved && totalSaved > 0 ? true : false;
+    setShowTotalSaved(showSaved);
+  }, []);
+
   useEffect(() => {
     const status = parseInt(order.orderStatuses.id);
     if (canceled_status.indexOf(status) > -1) {
       setIsCancelled(true);
     }
+    const delivery_info = getDeliveryInfo(order);
+    setDeliveryInfo(delivery_info);
   }, []);
+
+  useEffect(() => {
+    if (Object.keys(deliveryInfo).length) {
+      setShowDelivery(true)
+    } else {
+      setShowDelivery(false)
+    }
+  }, [deliveryInfo])
   
   return (
     <Grid item lg={12} xs={12} className={classes.root}>
@@ -181,16 +204,16 @@ const View = ({classes, order, isAdmin = false}) => {
         }
         <Grid item lg={12} xs={12} className={classes.itemHeader}>
           <Grid container className={classes.orderHeaderContainer}>
-            <Grid item lg={4} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem1}`}>
-              <p className={classes.orderHeaderSubTitle}>Date</p>
-              <p>{moment(order.createdAt).format('MMMM D, YYYY')}</p>
+            <Grid item lg={4} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem1}`}>
+              <span className={classes.orderHeaderSubTitle}>Date</span>
+              <span>{moment(order.createdAt).format('MMMM D, YYYY')}</span>
             </Grid>
-            <Grid item lg={3} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem2}`}>
-              <p className={classes.orderHeaderSubTitle}>Delivery Method:</p><p>{order.deliveryOrder ? order.deliveryOrder.name : 'N/A'}</p>
+            <Grid item lg={3} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem2}`}>
+              <span className={classes.orderHeaderSubTitle}>Delivery Method:</span><span>{order.deliveryOrder ? order.deliveryOrder.name : 'N/A'}</span>
             </Grid>
-            <Grid item lg={5} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
-              <p className={classes.orderHeaderSubTitle}>Order Number</p>
-              <p>{order.order_number}</p>
+            <Grid item lg={5} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
+              <span className={classes.orderHeaderSubTitle}>Order Number</span>
+              <span>{order.order_number}</span>
             </Grid>
             {/* <Grid item lg={2} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
               <Button><Icons name="print" classes={{icon: classes.icon}} /></Button>
@@ -199,19 +222,28 @@ const View = ({classes, order, isAdmin = false}) => {
         </Grid>
         <Grid item lg={12} xs={12} className={classes.orderSummary}>
           <Grid container className={classes.orderHeaderContainer}>
-            <Grid item lg={4} xs={6} className={`${classes.orderHeaderItem} ${classes.orderSummaryItem1}`}>
-              <p className={classes.orderHeaderSubTitle}>Shipping Address</p>
-              <p>{order.shipping_name}</p>
-              <p>{order.shipping_address}</p>
-              <p>{`${order.shipping_province} ${order.shipping_corregimiento} ${order.shipping_district}`}</p>
-              <p>{`${order.shipping_country}`}</p>
+            <Grid item lg={4} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderSummaryItem1}`}>
+              {
+                showDelivery && (
+                  <span className={classes.orderHeaderSubTitle}>{ deliveryInfo.title }</span>
+                )
+              }
+              {
+                showDelivery && deliveryInfo.info.map((item, index) => {
+                  return (<span key={index}>{item}</span>)
+                })
+              }
             </Grid>
-            <Grid item lg={3} xs={6} className={`${classes.orderHeaderItem} ${classes.orderSummaryItem2}`}>
-              <p className={classes.orderHeaderSubTitle}>Payment Method</p>
-              <p>N/A</p>
+            <Grid item lg={3} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderSummaryItem2}`}>
+              <span className={classes.orderHeaderSubTitle}>Payment Method</span>
+              <span>
+                {
+                  order.paymentOption
+                }
+              </span>
             </Grid>
             <Grid item lg={5} xs={12} className={`${classes.orderHeaderItem} ${classes.orderSummaryItem3}`}>
-              <p className={classes.orderHeaderSubTitle}>Order Summary</p>
+              <span className={classes.orderHeaderSubTitle}>Order Summary</span>
               <Grid container>
                 <Grid item lg={12} xs={12}>
                   <Grid container>
@@ -257,7 +289,7 @@ const View = ({classes, order, isAdmin = false}) => {
                   </Grid>
                 </Grid>
                 {
-                  order.totalSaved && (
+                  showTotalSaved && (
                     <Grid item lg={12} xs={12}>
                       <Grid container>
                         <Grid item lg={6} xs={6}>

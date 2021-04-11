@@ -14,11 +14,11 @@ const styles = (theme) => ({
 
 const OrderItem = ({classes, order, isAdmin = false}) => {
   return (
-    <Grid container>
-      <Grid item lg={9} xs={9}>
+    <Grid container className={classes.root}>
+      <Grid item lg={12} xs={12}>
         <SimpleBox data={order.orderOrderProduct} />
       </Grid>
-      <Grid item lg={3} xs={3}>
+      {/* <Grid item lg={3} xs={3}>
         {
           !isAdmin && (
             <>
@@ -30,7 +30,7 @@ const OrderItem = ({classes, order, isAdmin = false}) => {
             </>
           )
         }
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }

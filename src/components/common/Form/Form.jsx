@@ -159,6 +159,7 @@ const Form = ({
   fields,
   snack,
   isAdmin,
+  allowDelete = true,
   id,
   submitCustomName,
   children,
@@ -837,7 +838,7 @@ const Form = ({
           }
           {
             showCancelBtn && (
-              <Grid item lg={ type === "edit" ? 4 : 6} xs={12} className={classes.formItem}>
+              <Grid item lg={ type === "edit"  && allowDelete ? 4 : 6} xs={12} className={classes.formItem}>
                 <FormControl fullWidth>
                   <Button onClick={handleCancel} className={`mainButton`}>{cancelFormBtnTitle}</Button>
                 </FormControl>
@@ -845,7 +846,7 @@ const Form = ({
             )
           }
            {
-            type === "edit" && (
+            type === "edit" && allowDelete && (
               <Grid item lg={ showCancelBtn ? 4 : 6 } xs={12} className={classes.formItem}>
                 <FormControl fullWidth>
                   <Button onClick={handleDelete} className={`mainButton`}>Delete</Button>
@@ -855,7 +856,7 @@ const Form = ({
           }
           {
             formBtnTitle && (
-              <Grid item lg={ showCancelBtn ? type === "edit" ? 4 : 6 : 6 } xs={12} className={classes.formItem}>
+              <Grid item lg={ showCancelBtn ? type === "edit"  && allowDelete ? 4 : 6 : 6 } xs={12} className={classes.formItem}>
                 <FormControl fullWidth>
                   <Button onClick={handleSubmit} className={`mainButton`}> {formBtnTitle}</Button>
                 </FormControl>
@@ -882,6 +883,7 @@ Form.protoTypes = {
   imageBoxOnSave: T.func,
   imageBoxAddMore: T.func,
   id: T.number,
+  allowDelete: T.bool,
   isAdmin: T.bool,
   resetPanamaSection: T.bool,
   showCancelBtn: T.bool,

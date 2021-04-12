@@ -28,6 +28,10 @@ const styles = (theme) => ({
     padding: '10px 0px',
     width: '100%',
   },
+  terms: {
+    fontSize: '1em',
+    textAlign: 'center !important',
+  }
 });
 
 const Register = ({classes, data, showRegister}) => {
@@ -39,14 +43,10 @@ const Register = ({classes, data, showRegister}) => {
     phone: null,
     gender: null,
     date_of_birth: null,
-    mobile: null,
-    image: {
-      values: [],
-      open: false,
-    }
+    mobile: null
   }
   
-  const ignoreEntry=['image', 'mobile']
+  const ignoreEntry=['mobile']
 
   return (
     <LayoutTemplate>
@@ -66,6 +66,9 @@ const Register = ({classes, data, showRegister}) => {
                   entryForm={form}
                   showTitle={false}
                 />
+              </Grid>
+              <Grid item lg={12} xs={12} className={classes.terms}>
+               <Typography align="center" component="p">Al abrir tu cuenta, aceptas las <a target="_blank" href="/terms">Condiciones de uso</a> y el <a target="_blank" href="/terms">Aviso de privacidad</a> de AvenidaZ.</Typography>
               </Grid>
               <Grid item lg={12} xs={12}>
                 <Grid container spacing={2}>

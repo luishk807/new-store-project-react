@@ -35,6 +35,7 @@ const EditForm = ({
   userSection, 
   hideEntry,
   children,
+  allowDelete,
   customUrl = null
 }) => {
   const router = useRouter()
@@ -300,6 +301,7 @@ const EditForm = ({
         showTitle={showTitle}
         errors={errors} 
         id={id}
+        allowDelete={allowDelete}
         isAdmin={isAdmin}
         hideEntry={hideEntry}
         basicParams={basicParams}
@@ -323,6 +325,7 @@ const EditForm = ({
 EditForm.protoTypes = {
   classes: T.object,
   id: T.number,
+  allowDelete: T.bool,
   name: T.string,
   customUrl: T.string,
   adminSection: T.object, 

@@ -44,7 +44,6 @@ const styles = (theme) => ({
 
 const MobileFooter = ({classes}) => {
   const [openCategory, setOpenCategory] = useState(false);
-  const child = React.createRef();
 
   return ( 
     <>

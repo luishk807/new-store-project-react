@@ -18,6 +18,10 @@ $screen-md-max: ($screen-lg-min - 1);
   -ms-transition: $type 1s;
 }
 
+a {
+ color: #0066c0;
+}
+
 html {
   position: relative;
   min-height: 100%;

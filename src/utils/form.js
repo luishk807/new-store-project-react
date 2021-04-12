@@ -76,6 +76,7 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
   switch(FORM_SCHEMA[name].type){
     case "textfield":
     case "password":
+    case "repassword":
     case "date":
     case "datefull":
     case "color":

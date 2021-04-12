@@ -7,9 +7,9 @@ import {
   Button,  
 } from '@material-ui/core';
 
-import { validateForm } from '../../../utils/form';
-import Snackbar from '../Snackbar';
-import Typography from '../Typography';
+import { validateForm } from '../../../../utils/form';
+import Snackbar from '../../Snackbar';
+import ProgressBar from '../../ProgressBar';
 
 const styles = (theme) => ({
   root: {
@@ -24,20 +24,22 @@ const styles = (theme) => ({
   },
 });
 
-const Login = ({classes, onSubmit, inStatus}) => {
+const ResetPassword = ({classes, onSubmit, inStatus}) => {
+  const [showForm, setShowForm] = useState(false);
   const [errors, setErrors] = useState(null);
-  const [hasAccess, setHasAccess] = useState(true)
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
     text: '',
   });
-  const [form, setForm] = useState({})
-  const formOnChange = (e, edrop = null) => {
+  const [form, setForm] = useState({});
+  
+  const formOnChange = (e) => {
     if (e.keyCode === 13) { // Enter
       handleSubmit()
     } else {
-      const { name, value } = edrop ? edrop : e.target;
+      const { name, value } = e.target;
+      console.log(name, value, 'je')
       if(name in form && validateForm(name, value)){
         setForm({
           ...form,
@@ -64,10 +66,18 @@ const Login = ({classes, onSubmit, inStatus}) => {
       setSnack({
         severity: 'error',
         open: true,
-        text: `Unable to login, ${i} is required`
+        text: `Unable to send reset, ${i} is required`
       })
     } else {
-      onSubmit(form);
+      if (form.password !== form.repassword) {
+        setSnack({
+          severity: 'error',
+          open: true,
+          text: `Password must match`
+        })
+      } else {
+        onSubmit(form);
+      }
     }
   }
 
@@ -98,66 +108,64 @@ const Login = ({classes, onSubmit, inStatus}) => {
   }
 
   useEffect(() => {
-    setHasAccess(inStatus);
-    if (!hasAccess && typeof inStatus !== "undefined") {
-      setSnack({
-        severity: 'error',
-        open: true,
-        text: `ERROR: Please login to access page`,
-       })
-    }
     const fields = {
-      email: null,
       password: null,
+      repassword: null
     }
     configureError(fields)
     setForm(fields)
-  }, [hasAccess])
+  }, [])
 
-
+  useEffect(() => {
+    setShowForm(true);
+  }, [form]);
+  
   return errors && (
       <div className={classes.root}>
-        <form className={classes.formFoot} noValidate autoComplete="off">
-          <Grid container spacing={2}>
-            <Grid item lg={12} xs={12}>
-              <TextField
-                error={errors.email.error}
-                name="email"
-                onChange={formOnChange}
-                id="filled-error"
-                label="Email"
-                className={classes.formTextField}
-              />
-            </Grid>
-            <Grid item lg={12} xs={12}>
-              <TextField
-                error={errors.password.error}
+        {
+          showForm ? (
+            <form className={classes.formFoot} noValidate autoComplete="off">
+            <Grid container spacing={2}>
+              <Grid item lg={12} xs={12}>
+                <TextField
+                  error={errors.password.error}
                   name="password"
                   onChange={formOnChange}
-                  type="password"
                   id="filled-error"
+                  type="password"
+                  label="Contraseña"
                   className={classes.formTextField}
-                  label="Password"
-                  onKeyUp={formOnChange}
                 />
+              </Grid>
+              <Grid item lg={12} xs={12}>
+                <TextField
+                  error={errors.repassword.error}
+                  name="repassword"
+                  onChange={formOnChange}
+                  id="filled-error"
+                  type="password"
+                  label="Re-escriba Contraseña"
+                  className={classes.formTextField}
+                />
+              </Grid>
+              <Grid item lg={12} xs={12} className={classes.formTextField}>
+                <Button className={`mainButton`} onClick={handleSubmit}>Continuar</Button>
+              </Grid>
             </Grid>
-            <Grid item lg={12} xs={12}>
-              <Typography align="right" variant="subtitle1" component="p"><a href="/forgotpassword">Olvidaste tu contraseña?</a></Typography>
-            </Grid>
-            <Grid item lg={12} xs={12} className={classes.formTextField}>
-              <Button className={`mainButton`} onClick={handleSubmit}>Continuar</Button>
-            </Grid>
-          </Grid>
-        </form>
+          </form>
+          ) : (
+            <ProgressBar />
+          )
+        }
         <Snackbar open={snack.open} severity={snack.severity} onClose={()=>setSnack({...snack,'open':false})} content={snack.text} />
       </div>
   );
 }
 
-Login.protoTypes = {
+ResetPassword.protoTypes = {
   classes: T.object,
   onSubmit: T.func,
   inStatus: T.object,
 }
 
-export default withStyles(styles)(Login);
+export default withStyles(styles)(ResetPassword);

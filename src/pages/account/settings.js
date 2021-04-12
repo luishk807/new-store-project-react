@@ -20,6 +20,13 @@ const styles = (theme) => ({
     width: '100%',
     textAlign: 'center',
   },
+  formRoot: {
+    width: '50%',
+    margin: '0px auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
+  }
 });
 
 const Settings = ({classes, userInfo}) => {
@@ -35,13 +42,7 @@ const Settings = ({classes, userInfo}) => {
     phone: null,
     gender: null,
     date_of_birth: null,
-    mobile: null,
-    status: null,
-    userRole: null,
-    image: {
-      values: [],
-      open: false,
-    }
+    mobile: null
   }
   
   const ignoreEntry=['image', 'mobile', 'password']
@@ -54,7 +55,7 @@ const Settings = ({classes, userInfo}) => {
   }, [])
   return (
     <UserLayoutTemplate>
-        <EditForm showTitle={false} userSection={USER_SECTIONS.user} ignoreForm={ignoreEntry} id={user} entryForm={form} />
+        <EditForm allowDelete={false} classes={{root: classes.formRoot}} showTitle={false} userSection={USER_SECTIONS.user} ignoreForm={ignoreEntry} id={user} entryForm={form} />
     </UserLayoutTemplate>
   );
 }

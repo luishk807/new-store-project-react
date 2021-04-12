@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { 
   withStyles,
   Grid,
+  Button,
 } from '@material-ui/core';
 
 import UserLayoutTemplate from '../../components/common/Layout/UserLayoutTemplate';
@@ -11,8 +12,10 @@ import { deleteWishlistByUserId } from '../../api/wishlist';
 import { updateCart,addCart } from '../../redux/actions/main';
 import { getWishlistByUserId } from '../../api/wishlist';
 import { handleFormResponse } from '../../utils/form';
+import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
 import WishlistBox from '../../components/WishlistBox';
+import ProgressBar from '../../components/common/ProgressBar';
 
 const styles = (theme) => ({
   root: {
@@ -22,6 +25,10 @@ const styles = (theme) => ({
     alignItems: 'center',
     width: '100%',
     textAlign: 'center',
+  },
+  icon: {
+    width: 30,
+    height: 30
   },
   wishlistContainer: {
     display: 'flex',
@@ -33,12 +40,30 @@ const styles = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     }
+  },
+  backBtnContainer: {
+    margin: 10
+  },
+  empty: {
+    margin: '15px auto'
+  },
+  emptyTitle: {
+    fontSize: '1.5em',
+  },
+  linkP: {
+    margin: '10px auto'
+  },
+  emptyLink: {
+    '&:hover': {
+      textDecoration: 'underline'
+    }
   }
 });
 
 const Wishlists = ({classes, userInfo, cart, addCart}) => {
   const [showData, setShowData] = useState(false);
   const [wishlists, setWishlists] = useState({});
+  const [showEmpty, setShowEmpty] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -73,20 +98,33 @@ const Wishlists = ({classes, userInfo, cart, addCart}) => {
   const loadWishlist = async() => {
     const getWishlist = await getWishlistByUserId();
     setWishlists(getWishlist)
-    setShowData(true);
   }
+
+  useEffect(() => {
+    setShowData(true);
+  }, [wishlists]);
 
   useEffect(()=>{
     loadWishlist()
-  }, [])
+  }, []);
 
   return (
     <UserLayoutTemplate>
       <div className={classes.root}>
         <Grid container>
+          <Grid item className={classes.backBtnContainer}>
+            <Button href="/account">
+              <Icons name="backArrow" classes={{icon: classes.icon}} />&nbsp;Return
+            </Button>
+          </Grid>
           <Grid item lg={12} xs={12} className={classes.wishlistContainer} align="center">
             {
-              showData && wishlists.map((wishlist, index) => {
+              showData ? !wishlists.length ? (
+                <div className={classes.empty}>
+                  <span className={classes.emptyTitle}>Tu lista de deseos esta vacio</span>
+                  <p className={classes.linkP}><a href='/account' className={classes.emptyLink}>Regresar a pagina anterior</a></p>
+                </div>
+              ) : wishlists.map((wishlist, index) => {
                 return (
                   <WishlistBox 
                     key={index}
@@ -96,7 +134,9 @@ const Wishlists = ({classes, userInfo, cart, addCart}) => {
                     onDeleteItem={deleteWishlist} 
                   />
                 )
-              })
+              }) : (
+                <ProgressBar />
+              )
             }
           </Grid>
         </Grid>

@@ -9,7 +9,6 @@ import {
 import Typography from '../Typography';
 import Icons from '../../common/Icons';
 import { config } from '../../../../config';
-import { FooterSample } from '../../../constants/samples/FooterSample';
 
 const styles = (theme) => ({
   root: {
@@ -217,8 +216,6 @@ const styles = (theme) => ({
 });
 
 const Footer = ({classes}) => {
-  const data = FooterSample; 
-
   return (
     <footer className={`footer ${classes.footerMain}`}>
       <div className={classes.root}>

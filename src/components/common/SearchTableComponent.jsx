@@ -20,7 +20,7 @@ const createColumnObject = (fieldName) => {
     return null;
 }
 
-const SearchTableComponent = ({ onSearchValue, dataRowUniqueIdField, dataGridHeight = '400px' }) => {
+const SearchTableComponent = ({ onSearchValue, dataRowUniqueIdField, dataGridHeight = '400px', onResultRowClick }) => {
     const classes  = useStyles();
     const [allColumns, setAllColumns] = useState([]);
     const [tableColumns, setTableColumns] = useState([]);
@@ -101,6 +101,12 @@ const SearchTableComponent = ({ onSearchValue, dataRowUniqueIdField, dataGridHei
         setHideFilterColumns(!hideFilterColumns)
     }
 
+    const onDataRowClick = (dataRowParams) => {
+        if (onResultRowClick) {
+            onResultRowClick(dataRowParams)
+        }
+    }
+
     return (
         <div className={classes.root}>
             <div>
@@ -112,6 +118,7 @@ const SearchTableComponent = ({ onSearchValue, dataRowUniqueIdField, dataGridHei
                 columns={tableColumns}
                 rows={tableRows}
                 height={dataGridHeight}
+                onDataRowClick={onDataRowClick}
             />
         </div>
     )
@@ -120,7 +127,8 @@ const SearchTableComponent = ({ onSearchValue, dataRowUniqueIdField, dataGridHei
 SearchTableComponent.propTypes = {
     onSearchValue: PropTypes.func.isRequired,
     dataRowUniqueIdField: PropTypes.string,
-    dataGridHeight: PropTypes.string
+    dataGridHeight: PropTypes.string,
+    onResultRowClick: PropTypes.func
 }
 
 export default SearchTableComponent;

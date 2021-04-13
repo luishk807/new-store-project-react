@@ -26,7 +26,7 @@ const SearchAdminProductsUnified = () => {
     return (
         <AdminLayoutTemplate>
             <div className={classes.root}>
-                <SearchTableComponent onSearchValue={onSearchValue} dataRowUniqueIdField="productItemId" />
+                <SearchTableComponent onSearchValue={onSearchValue} dataRowUniqueIdField="productItemId" dataGridHeight="600px" />
             </div>
         </AdminLayoutTemplate>
     )

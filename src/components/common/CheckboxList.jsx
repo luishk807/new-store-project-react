@@ -11,7 +11,7 @@ const CheckboxList = ({ items = [], hidden = false, onCheckboxListChanges }) => 
         const checkboxObject = {}
         if (!!items.length) {
             items.forEach(c => {
-                checkboxObject[c.name] = { label: c.label || c.name, checked: true }
+                checkboxObject[c.name] = { label: c.label || c.name, checked: c.checked }
             })
         }
         setCheckboxes(checkboxObject);

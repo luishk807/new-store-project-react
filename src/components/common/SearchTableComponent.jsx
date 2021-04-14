@@ -13,14 +13,14 @@ const useStyles = makeStyles(theme => ({
 }));
 
 /** Creates a Material-UI DataGrid column object */
-const createColumnObject = (fieldName) => {
+const createColumnObject = (fieldName, hide = false) => {
     if (fieldName) {
-        return { field: fieldName, headerName: capitalize(fieldName), hide: false }
+        return { field: fieldName, headerName: capitalize(fieldName), width: 150, hide: hide }
     }
     return null;
 }
 
-const SearchTableComponent = ({ onSearchValue, dataRowUniqueIdField, dataGridHeight = '400px', onResultRowClick }) => {
+const SearchTableComponent = ({ onSearchValue, dataRowUniqueIdField, dataGridHeight = '400px', onResultRowClick, defaultUnhiddenColumns }) => {
     const classes  = useStyles();
     const [allColumns, setAllColumns] = useState([]);
     const [tableColumns, setTableColumns] = useState([]);
@@ -34,7 +34,7 @@ const SearchTableComponent = ({ onSearchValue, dataRowUniqueIdField, dataGridHei
                 columns.push({
                     name: c.field,
                     label: c.headerName,
-                    checked: true
+                    checked: !c.hide
                 })
             })
         }
@@ -45,7 +45,13 @@ const SearchTableComponent = ({ onSearchValue, dataRowUniqueIdField, dataGridHei
         const columns = [];
         if (!!data.length) {
             Object.keys(data[0]).forEach(field => {
-                columns.push(createColumnObject(field));
+                let colHidden = false;
+                if (defaultUnhiddenColumns) { // If default unhidden columns array defined, then use different logic, set everything else apart from list to be hidden
+                    if (!defaultUnhiddenColumns.includes(field)) {
+                        colHidden = true;
+                    }
+                }
+                columns.push(createColumnObject(field, colHidden));
             });
         }
         setFilteringColumns(columns);
@@ -128,7 +134,8 @@ SearchTableComponent.propTypes = {
     onSearchValue: PropTypes.func.isRequired,
     dataRowUniqueIdField: PropTypes.string,
     dataGridHeight: PropTypes.string,
-    onResultRowClick: PropTypes.func
+    onResultRowClick: PropTypes.func,
+    defaultUnhiddenColumns: PropTypes.arrayOf(PropTypes.string)
 }
 
 export default SearchTableComponent;

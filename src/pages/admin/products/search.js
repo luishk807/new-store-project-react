@@ -2,7 +2,6 @@ import { makeStyles } from '@material-ui/core';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import SearchTableComponent from '../../../components/common/SearchTableComponent';
 import { search } from '../../../services/productUnified';
-import { useRouter } from 'next/router'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -17,9 +16,12 @@ const useStyles = makeStyles(theme => ({
 
 const SearchAdminProductsUnified = () => {
     const classes = useStyles();
-    const router = useRouter();
     let prevClickObject = null;
     let prevClickTime = null;
+    const defaultUnhiddenColumns = [
+        'name', 'stock', 'categoryName', 'brandName', 'productItemStock', 'productItemModel',
+        'unitCost', 'unitPrice', 'productItemSku', 'productColorName', 'productSizeName'
+    ]
 
     const onSearchValue = async (value) => {
         const result = await search(value);
@@ -53,6 +55,7 @@ const SearchAdminProductsUnified = () => {
                     dataRowUniqueIdField="productItemId"
                     dataGridHeight="600px"
                     onResultRowClick={onResultRowClick}
+                    defaultUnhiddenColumns={defaultUnhiddenColumns}
                     />
             </div>
         </AdminLayoutTemplate>

@@ -3,7 +3,6 @@ import * as T from 'prop-types';
 import {
   withStyles,
   Grid,
-  Button,
 } from '@material-ui/core';
 
 import Typography from '../common/Typography';

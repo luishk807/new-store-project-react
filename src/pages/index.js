@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import fetch from 'isomorphic-unfetch';
 import { 
   Grid,
   withStyles,

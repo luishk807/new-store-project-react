@@ -212,6 +212,10 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.pass,
     label: 'Password',
   },
+  repassword: {
+    type: FORM_TYPE.pass,
+    label: 'Re-type Password',
+  },
   email: {
     type: FORM_TYPE.email,
     label: 'Email',

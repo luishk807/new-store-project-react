@@ -31,11 +31,14 @@ const Add = ({classes}) => {
     country: defaultCountry,
   }
 
+  const ignoreEntry=['zone', 'corregimiento']
+
   return (
     <AdminLayoutTemplate>
       <AddForm 
         adminSection={ADMIN_SECTIONS.deliveryServiceCost} 
         entryForm={form}
+        ignoreForm={ignoreEntry} 
         customUrl={`/admin/${ADMIN_SECTIONS.deliveryServiceCost.url}`}  
       />
     </AdminLayoutTemplate>

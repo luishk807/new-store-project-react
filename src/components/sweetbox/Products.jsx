@@ -5,15 +5,12 @@ import {
   Grid,
   Button,
 } from '@material-ui/core';
-import NumberFormat from 'react-number-format';
 
-import { getImageUrlByType } from '../../utils/form';
-import { getImage } from '../../utils';
+import { getImage, getSortPriceRange } from '../../utils';
 
 import {
   getProductById
 } from '../../api/products';
-import CardIcon from '../common/CardIcon';
 import Rate from '../common/Rate/Rate';
 
 const styles = (theme) => ({
@@ -29,13 +26,15 @@ const styles = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     },
+  },
+  textCenter: {
+    textAlign: 'center'
   }
 });
 
 const SweetBoxProducts = ({classes, id, isFeature}) => {
   const [product, setProduct] = useState({});
   const [showData, setShowData] = useState(false);
-  const imageUrl = getImageUrlByType('product');
 
   const getProduct = async() => {
     const fetchProduct = await getProductById(id);
@@ -47,7 +46,7 @@ const SweetBoxProducts = ({classes, id, isFeature}) => {
 
   const loadCardIcons = () => {
     const img = getImage(product);
-
+    const priceRange = getSortPriceRange(product);
     if (isFeature) {
       return (
           <Button className={classes.cardBtn}  href={`product/${product.id}`}>
@@ -72,17 +71,17 @@ const SweetBoxProducts = ({classes, id, isFeature}) => {
                   img
                 }
               </Grid>
-              <Grid item lg={12} xs={12}>
+              <Grid item lg={12} xs={12} className={`${classes.textCenter}`}>
                {product.name}
               </Grid>
-              <Grid item lg={12} xs={12}>
+              <Grid item lg={12} xs={12} className={`${classes.textCenter}`}>
                 <Rate 
                   data={0} 
                   disabled={true} 
                 />
               </Grid>
-              <Grid item lg={12} xs={12}>
-                <NumberFormat value={product.amount} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+              <Grid item lg={12} xs={12} className={`${classes.textCenter}`}>
+                {priceRange}
               </Grid>
             </Grid>
           </Button>

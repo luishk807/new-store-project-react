@@ -56,12 +56,12 @@ const WishListIcon = ({classes, product, onMouseOver, onClick}) => {
         }
         snackRep = handleFormResponse(resp);
       } else {
-        resp = await saveWishlist({product: pid});
+        resp = await saveWishlist({productId: pid});
         if (resp.data.status) {
           setIsSaved(true)
           setWishlistIcon(icon)
         }
-        snackRep = handleFormResponse(resp.data);
+        snackRep = handleFormResponse(resp);
       }
       setSnack(snackRep);
     }

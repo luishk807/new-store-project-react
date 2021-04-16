@@ -28,6 +28,17 @@ export const adminLogin = async(data) => {
   return result;
 }
 
+export const requestResetPassword = async(form) => {
+  const data = {
+    email: form.email
+  }
+  return await Api.rawPost(`login/reset/request/password`, data);
+}
+
+export const resetPassword = async(data) => {
+  return await Api.rawPost(`login/reset/password`, data);
+}
+
 export const logout = () => {
   removeCookie();
   return true

@@ -8,8 +8,8 @@ export const getDeliveryServiceCostById = async(id) => {
   return Api.get(`delivery-service-costs/${id}`);
 }
 
-export const getDeliveryServiceCostByFilter = async(zone, service) => {
-  return Api.get(`delivery-service-costs/zone/${zone}/${service}`);
+export const getDeliveryServiceCostByFilter = async(data) => {
+  return Api.get(`delivery-service-costs/filter/search/cost`, data);
 }
 
 export const deleteDeliveryServiceCostById = async(id) => {

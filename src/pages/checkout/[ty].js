@@ -117,6 +117,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null)
   const [selectedDeliveryService, setSelectedDeliveryService] = useState(null)
   const [selectedZone, setSelectedZone] = useState(null)
+  const [selectedCorregimiento, setSelectedCorregimiento] = useState(null)
   const [deliveryOptions, setDeliveryOptions] = useState([])
   const [deliveryServices, setDeliveryServices] = useState([])
   const [forceAddressRefresh, setForceAdddressRefresh] = useState(null);
@@ -128,7 +129,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   const [address, setAddress] = useState({});
   const [showAddressLoader, setShowAddressLoader] = useState(false);
   const [guestAddress, setGuestAddress] = useState({});
-  const [orderResult, setOrderResult] = useState({});
+  const [orderResult, setOrderResult] = useState(null);
   const [total, setTotal] = useState({});
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -175,8 +176,13 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   }
 
   const getDeliveryCost = async() => {
-    if (selectedZone && form.delivery == 3 && form.deliveryService) {
-      const foundPrice = await getDeliveryServiceCostByFilter(selectedZone.id, form.deliveryService)
+    if (form && form.delivery == 3 && form.deliveryService) {
+      const foundPrice = await getDeliveryServiceCostByFilter({
+        zone: selectedZone ? selectedZone.id : null, 
+        corregimiento: selectedCorregimiento ? selectedCorregimiento.id  : null,
+        service: form.deliveryService
+      });
+
       if (foundPrice) {
         await setTotal({
           ...total,
@@ -193,9 +199,11 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
 
   const handleFormChange = async(add) => {
     if (add && add.key && 'val' in add) {
-      console.log(add)
       if (add.key && add.key === "zone") {
         setSelectedZone(add.val)
+      }
+      if (add.key && add.key === "corregimiento") {
+        setSelectedCorregimiento(add.val)
       }
       setGuestAddress({
         ...guestAddress,
@@ -221,6 +229,10 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
 
     if (fetchedAddress.zone) {
       setSelectedZone(fetchedAddress.zone)
+    }
+
+    if (evt.addressCorregimient) {
+      setSelectedCorregimiento(fetchedAddress.corregimiento)
     }
 
     await setAddress(fetchedAddress)
@@ -318,16 +330,12 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
 
       setShowPlaceOrderLoader(true);
       const confirm = await processOrderByUser(formSubmit)
-      setOrderResult(confirm.data);
+      if (confirm && confirm.data && confirm.data.data) {
+        setOrderResult(confirm.data.data);
+      }
       setShowCheckout(false);
       const resp = handleFormResponse(confirm);
       setSnack(resp);
-      // setTimeout(() => {
-      //   //handleCancel() 
-      //   emptyCart();
-      //   setShowCheckout(false);
-      //   setThankyou(true);
-      // }, 1000);
     }
   }
 
@@ -448,7 +456,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
 
   useEffect(() => {
     getDeliveryCost();
-  }, [selectedZone, selectedDeliveryService]);
+  }, [selectedZone, selectedDeliveryService, selectedCorregimiento]);
 
   useEffect(() => {
     if (selectedPaymentOption) {
@@ -511,7 +519,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   }, [cart])
 
   useEffect(() => {
-    if (Object.entries(orderResult).length) {
+    if (orderResult && Object.entries(orderResult).length) {
       emptyCart();
       setShowCheckout(false);
       setThankyou(true);

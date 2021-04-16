@@ -16,6 +16,13 @@ const styles = (theme) => ({
   root: {
     padding: 20,
   },
+  terms: {
+    fontSize: '1em',
+    textAlign: 'center',
+  },
+  formRoot: {
+    padding: 0,
+  }
 });
 
 const Login = ({classes, inStatus, showRegister, onCancel}) => {
@@ -67,20 +74,23 @@ const Login = ({classes, inStatus, showRegister, onCancel}) => {
           <Grid item lg={4}  xs={12}>
             <Grid container spacing={2} alignItems="center" justify="center" direction="row">
               <Grid item lg={12} xs={12}>
-                <Typography align="center" variant="h6" component="p">Sign in to your account</Typography>
+                <Typography align="center" variant="h6" component="p">Iniciar sesión</Typography>
               </Grid>
               <Grid item lg={12} xs={12}>
-                <LoginForm inStatus={inStatus} onSubmit={handleSubmit} />
+                <LoginForm classes={{root: classes.formRoot}} inStatus={inStatus} onSubmit={handleSubmit} />
+              </Grid>
+              <Grid item lg={12} xs={12} className={classes.terms}>
+               <Typography align="center" variant="subtitle1" component="p">Al continuar, aceptas las <a target="_blank" href="/terms">Condiciones de uso</a> y el <a target="_blank" href="/terms">Aviso de privacidad</a> de AvenidaZ.</Typography>
               </Grid>
               {
                 showRegister && (
                   <Grid item lg={12} xs={12}>
                     <Grid container spacing={2}>
                       <Grid item lg={12} xs={12} className={`mt-5`}>
-                        <Typography align="center" variant="h6" component="p">Don't have an account?</Typography>
+                        <Typography align="center" variant="h6" component="p">Eres nuevo en AvenidaZ</Typography>
                       </Grid>
                       <Grid item lg={12} xs={12}>
-                        <Button className={`secondButton`} href="/register">Create Account</Button>
+                        <Button className={`secondButton`} href="/register">Crea tu cuenta de AvenidaZ</Button>
                       </Grid>
                     </Grid>
                   </Grid>

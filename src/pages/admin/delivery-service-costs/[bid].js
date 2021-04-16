@@ -35,12 +35,15 @@ const Edit = ({classes}) => {
     country: null,
   }
 
+  const ignoreEntry=['zone', 'corregimiento']
+
   return (
     <AdminLayoutTemplate>
       <EditForm 
         adminSection={ADMIN_SECTIONS.deliveryServiceCost} 
         customUrl={`/admin/${ADMIN_SECTIONS.deliveryServiceCost.url}`} 
         id={id} 
+        ignoreForm={ignoreEntry} 
         entryForm={form} 
       />
     </AdminLayoutTemplate>

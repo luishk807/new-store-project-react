@@ -6,13 +6,9 @@ import {
   Link,
   Button,
 } from '@material-ui/core';
-import NumberFormat from 'react-number-format';
 
 import { getProducts } from '../../api/products';
-// import { getImageUrlByType } from '../../utils/form';
-// import { noImageUrl } from '../../../config';
-import { getImageBaseOnly } from '../../utils';
-import Icons from '../common/Icons';
+import { getImageBaseOnly, getSortPriceRange } from '../../utils';
 import Rate from '../common/Rate/Rate';
 import ProgressBar from '../common/ProgressBar';
 
@@ -151,6 +147,7 @@ const ProductScroller = ({classes}) => {
         {
           showData && products.map((product, index) => {
             const image = getImageBaseOnly(product);
+            const rangePrice = getSortPriceRange(product)
             return (
               <Grid key={index} item className={classes.item}>
                 <Link href={`/product/${product.id}`} className={classes.linkItem}>
@@ -166,7 +163,7 @@ const ProductScroller = ({classes}) => {
                       }
                     </p>
                     <p className={classes.amount}>
-                      <NumberFormat value={product.amount} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                      {rangePrice}
                     </p>
                     <Rate data={0} disabled={true} />
                   </div>

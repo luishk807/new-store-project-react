@@ -1,3 +1,5 @@
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import PropTypes from 'prop-types'
 import { fade, makeStyles } from '@material-ui/core/styles'
 import SearchIcon from '@material-ui/icons/Search'
@@ -49,6 +51,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SearchInput = ({ onSearchEnterKey, onSearchIconClick }) => {
 
+    const router = useRouter();
     const [query, setQuery] = useState('')
     const classes = useStyles()
 
@@ -75,20 +78,30 @@ const SearchInput = ({ onSearchEnterKey, onSearchIconClick }) => {
         }
     }
 
+    
+    useEffect(() => {
+        const searchText = router.query.q;
+        if (searchText) {
+            setQuery(searchText)
+            onSearchEnterKey(searchText);
+        }
+    },[]);
+
     return (
         <div className={classes.search}>
             <div className={classes.searchIcon}>
                 <SearchIcon onClick={searchClick} />
             </div>
             <InputBase
-            placeholder={ 'Search...'}
-            classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-            }}
-            inputProps={{ 'aria-label': 'search' }}
-            onChange={onSearchChange}
-            onKeyUp={onSearchKeyUp}
+                placeholder={ 'Search...'}
+                classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                }}
+                value={query ? query : ''}
+                inputProps={{ 'aria-label': 'search' }}
+                onChange={onSearchChange}
+                onKeyUp={onSearchKeyUp}
             />
         </div>
     )

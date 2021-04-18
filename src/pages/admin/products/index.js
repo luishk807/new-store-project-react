@@ -112,7 +112,6 @@ const Index = () => {
   const [paginationHtml, setPaginationHtml] = useState(null);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
   const router = useRouter();
   const [dialogContent, setDialogContent] = useState({
     open: false,
@@ -198,6 +197,10 @@ const Index = () => {
     }
   }
 
+  const handleSearchEnterKey = (searchText) => {
+    window.location.href=`/admin/products/search?q=${searchText}`
+  }
+
   useEffect(() => {
     loadPagination();
   }, [totalCount]);
@@ -231,7 +234,7 @@ const Index = () => {
           <Button className={`mainButton`} href={`/admin/products/import`}>Import</Button>
         </Grid>
         <Grid item lg={12} xs={12}>
-          <SearchBarPlain />
+          <SearchBarPlain onEnterKeyPress={handleSearchEnterKey}/>
         </Grid>
       </Grid>
       {

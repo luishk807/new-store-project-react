@@ -37,15 +37,16 @@ export const getProductById = async(id) => {
   return Api.get(`products/${id}`);
 }
 
-export const getProductByIds = async(ids) => {
+export const getProductByIds = async(ids, page = null) => {
   if (!ids) {
     return;
   }
   const data = {
-    ids: ids
+    ids: ids,
+    page: page
   }
   
-  return Api.get(`products`, data);
+  return Api.get(`products/bulk`, data);
 }
 
 export const createProduct = async(data) => {

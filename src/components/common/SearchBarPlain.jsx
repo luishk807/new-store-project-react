@@ -50,7 +50,7 @@ const styles = (theme) => ({
   }
 });
 
-const SearchBarPlain = ({classes}) => {
+const SearchBarPlain = ({classes, onEnterKeyPress}) => {
   const router = useRouter()
   const [showData, setShowData] = useState(false);
   const [showNotFound, setShowNotFound] = useState(false);
@@ -84,6 +84,12 @@ const SearchBarPlain = ({classes}) => {
         setShowNoResult()
       }
     })
+  }
+  
+  const onKeyUp = (e) => {
+    if (e.keyCode === 13 && resultText) {
+      onEnterKeyPress(resultText)
+    }
   }
 
   const setShowNoResult = () => {
@@ -172,6 +178,7 @@ const SearchBarPlain = ({classes}) => {
                   variant="outlined" 
                   className={classes.inputColor}
                   onChange={onFormChange}
+                  onKeyUp={onKeyUp}
                   value={resultText}
                   name="search-product"
                   label={`Search for product`} 
@@ -229,7 +236,8 @@ const SearchBarPlain = ({classes}) => {
 }
 
 SearchBarPlain.protoTypes = {
-  classes: T.object
+  classes: T.object,
+  onEnterKeyPress: T.func,
 }
 
 export default withStyles(styles)(SearchBarPlain);

@@ -167,7 +167,8 @@ const EditForm = ({
       setSnack(resp);
       if (confirm.data.status) {
         setTimeout(() => {
-          handleCancel() 
+          const url = `${customUrl}/${id}`;
+          router.push(url);
         }, 1000);
       }
     }

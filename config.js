@@ -571,11 +571,13 @@ export const config = {
     facebook: 'https://www.facebook.com/Avenida-Z-109937764211160',
     whatssap: 'https://wa.me/50767702400'
   },
+  name: 'Avenida Z',
   phone: '6770-2400',
   whatssap: '6770-2400',
   emails: {
     email: 'info@avenidaz.com',
     sales: 'ventas@avenidaz.com',
   },
+  web: 'www.avenidaz.com',
   address: 'Plaza Dorado'
 }

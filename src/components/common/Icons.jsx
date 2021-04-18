@@ -12,6 +12,7 @@ import {
 } from '@material-ui/core';
 
 import LogoWhite from '../../../public/images/logo-white.svg';
+import Logo from '../../../public/images/logo.svg';
 import Order from '../../../public/images/svg/order.svg';
 import Wishlist from '../../../public/images/svg/wishlist.svg';
 import AddressBook from '../../../public/images/svg/notebook.svg';
@@ -218,6 +219,9 @@ const Icons = ({classes, name}) => {
       break;
       case 'logo':
         return <LogoIcon className={classes.icon}/>
+      break;
+      case 'logoFull':
+        return <Logo className={classes.icon}/>
       break;
       case 'logoNameWhite':
         return <LogoWhite className={classes.icon}/>

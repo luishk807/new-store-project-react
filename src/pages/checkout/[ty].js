@@ -301,7 +301,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
       const cart = formSubmit.cart;
       let country = copyFormCheck.country;
       if (typeof country !== "string") {
-        country = copyFormCheck.name;
+        country = defaultCountry.name;
       }
 
       formSubmit['shipping_name'] = copyFormCheck.name;
@@ -561,7 +561,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                                 resetPanamaSection={forceAddressRefresh}
                                 forceRefresh={forceAddressRefresh}
                                 onFormChange={handleFormChange}
-                                ignoreForm={['email']}
+                                ignoreForm={['email', 'addressB']}
                                 entryForm={address} 
                                 onSubmitAction={handleDeliveryForm}
                                 showCancel={false}

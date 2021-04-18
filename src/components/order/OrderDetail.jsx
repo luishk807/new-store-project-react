@@ -7,10 +7,10 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import Icons from '../common/Icons';
 import OrderItem from './OrderItem';
 import { canceled_status, statusAllowedCancellation } from '../../../config';
 import { formatNumber, isNull, getDeliveryInfo } from '../../utils';
+import PrintButton from '../common/Print/PrintButton';
 
 const styles = (theme) => ({
   root: {
@@ -211,13 +211,13 @@ const View = ({classes, order, isAdmin = false}) => {
             <Grid item lg={3} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem2}`}>
               <span className={classes.orderHeaderSubTitle}>Delivery Method:</span><span>{order.deliveryOrder ? order.deliveryOrder.name : 'N/A'}</span>
             </Grid>
-            <Grid item lg={5} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
+            <Grid item lg={3} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
               <span className={classes.orderHeaderSubTitle}>Order Number</span>
               <span>{order.order_number}</span>
             </Grid>
-            {/* <Grid item lg={2} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
-              <Button><Icons name="print" classes={{icon: classes.icon}} /></Button>
-            </Grid> */}
+            <Grid item lg={2} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
+              <PrintButton data={order} />
+            </Grid>
           </Grid>
         </Grid>
         <Grid item lg={12} xs={12} className={classes.orderSummary}>

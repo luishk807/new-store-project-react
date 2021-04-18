@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
   Grid,
   Button,
 } from '@material-ui/core';
+
+import ProgressBar from '../common/ProgressBar';
 import SimpleBox from '../product/SimpleBox';
 const styles = (theme) => ({
   root: {
@@ -13,7 +15,13 @@ const styles = (theme) => ({
 });
 
 const OrderItem = ({classes, order, isAdmin = false}) => {
-  return (
+  const [showData, setShowData] = useState(false);
+
+  useEffect(() => {
+    setShowData(true);
+  }, [order]);
+
+  return showData ? (
     <Grid container className={classes.root}>
       <Grid item lg={12} xs={12}>
         <SimpleBox data={order.orderOrderProduct} />
@@ -32,6 +40,8 @@ const OrderItem = ({classes, order, isAdmin = false}) => {
         }
       </Grid> */}
     </Grid>
+  ) : (
+    <ProgressBar />
   );
 }
  

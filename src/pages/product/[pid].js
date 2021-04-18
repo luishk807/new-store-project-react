@@ -18,7 +18,7 @@ import moment from 'moment';
 
 import { getImageUrlByType } from '../../utils/form';
 import { checkDiscountPrice } from '../../utils/products';
-import { formatNumber, isAroundTime } from '../../utils';
+import { formatNumber, isAroundTime, capitalize } from '../../utils';
 import { noImageUrl } from '../../../config';
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
@@ -374,11 +374,11 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
             if (found && found.length) {
               if (selectedSize && selectedSize.id === size.id) {
                 return (
-                  <a key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`$${found[0].retailPrice}`}</span></div></a>
+                  <a title={`Select ${capitalize(size.name)} for $${found[0].retailPrice}`} key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`$${found[0].retailPrice}`}</span></div></a>
                 )
               } else {
                 return (
-                  <a href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`$${found[0].retailPrice}`}</span></div></a>
+                  <a title={`Select ${capitalize(size.name)} for $${found[0].retailPrice}`} href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`$${found[0].retailPrice}`}</span></div></a>
                 )
               }
             } else {
@@ -529,7 +529,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                             {
                               colors.map((item, index) => {
                                 return (
-                                  <a key={index} href="#" className={selectedColor.id === item.id ? classes.productColorLinkSelected : classes.productColorLink} onClick={(e) => handleColorChange(e, item)}><div className={classes.productColorBox} style={{backgroundColor: item.color}}></div></a>
+                                  <a title={`Select ${capitalize(item.name)}`} key={index} href="#" className={selectedColor.id === item.id ? classes.productColorLinkSelected : classes.productColorLink} onClick={(e) => handleColorChange(e, item)}><div className={classes.productColorBox} style={{backgroundColor: item.color}}></div></a>
                                 )
                               })
                             }

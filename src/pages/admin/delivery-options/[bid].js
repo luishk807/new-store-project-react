@@ -40,6 +40,8 @@ const Edit = ({classes}) => {
         ignoreForm={ignoreEntry}
         adminSection={ADMIN_SECTIONS.deliveryOption} 
         customUrl={`/admin/${ADMIN_SECTIONS.deliveryOption.url}`} 
+        cancelUrl={`/admin/${ADMIN_SECTIONS.deliveryOption.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.deliveryOption.url}`} 
         id={id} 
         entryForm={form} 
       />

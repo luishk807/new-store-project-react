@@ -40,6 +40,8 @@ const Add = ({classes}) => {
         entryForm={form}
         ignoreForm={ignoreEntry} 
         customUrl={`/admin/${ADMIN_SECTIONS.deliveryServiceCost.url}`}  
+        cancelUrl={`/admin/${ADMIN_SECTIONS.deliveryServiceCost.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.deliveryServiceCost.url}`} 
       />
     </AdminLayoutTemplate>
   );

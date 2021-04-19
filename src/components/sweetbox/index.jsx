@@ -7,17 +7,23 @@ import {
 
 import Typography from '../common/Typography';
 import SweetBoxProducts from '../sweetbox/Products';
+import ProgressBar from '../common/ProgressBar';
 
  import {
   getSweetBoxesByType
  } from '../../api/sweetbox';
 
+ import {
+  getProductByIds
+ } from '../../api/products';
+
 const styles = (theme) => ({
   root: {
     margin: '50px 0px',
   },
-  cardBtn: {
-    width: 'inherit'
+  cartBtn: {
+    width: 'inherit',
+    width: '50%'
   },
   title: {
     fontWeight: 'bold',
@@ -32,26 +38,57 @@ const styles = (theme) => ({
     [theme.breakpoints.down('md')]: {
       display: 'none',
     }
+  },
+  cardSingle: {
+    alignItems: 'center'
+  },
+  cardSingleText: {
+    textAlign: 'left'
   }
 });
 
 const SweetBox = React.memo(({classes, type, plain}) => {
   const [sweetBoxes, setSweetBoxes] = useState([]);
   const [showData, setShowData] = useState(false);
+  const [showEmpty, setShowEmpty] = useState(false);
+
+  const sweetClasses = {
+    cartBtn: classes.cardBtn, 
+    cardSingle: classes.cardSingle, 
+    cardSingleText: classes.cardSingleText
+  }
 
   const getSweetBox = async() => {
     const fetchSweetBox = await getSweetBoxesByType(type);
     if (fetchSweetBox.length) {
-      setSweetBoxes(fetchSweetBox);
-      setShowData(true);
+      fetchSweetBox.forEach(async(sweetbox) => {
+        let item = Object.assign({}, sweetbox);
+        const ids = sweetbox.sweetBoxSweetboxProduct.map(item => item.product);
+        const getProd = await getProductByIds(ids)
+        item.sweetBoxSweetboxProduct = getProd;
+        setSweetBoxes(prev => [
+          ...prev,
+          item
+        ])
+      });      
+    } else {
+      setSweetBoxes([])
     }
   }
 
   useEffect(() => {
-    getSweetBox();
-  }, [showData])
+    if (sweetBoxes && sweetBoxes.length) {
+      setShowData(true);
+    } else {
+      setShowEmpty(true);
+    }
+  }, [sweetBoxes]);
 
-  return showData && sweetBoxes.map((sweetbox, index) => {
+  useEffect(() => {
+    getSweetBox();
+  }, [])
+
+  return showData ? sweetBoxes.map((sweetbox, index) => {
     const featureSweetBox = sweetbox.sweetBoxSweetboxProduct[0];
     const otherSweetBoxes = sweetbox.sweetBoxSweetboxProduct.filter((item, index) => index !== 0)
     return (
@@ -71,7 +108,7 @@ const SweetBox = React.memo(({classes, type, plain}) => {
                     otherSweetBoxes.map((product, index) => {
                       return (
                         <Grid key={index} item lg={3} xs={6}>
-                          <SweetBoxProducts key={index} isFeature={false} id={product.product} />
+                          <SweetBoxProducts classes={{...sweetClasses}} key={index} id={product.product} />
                         </Grid>
                       )
                     })
@@ -91,15 +128,15 @@ const SweetBox = React.memo(({classes, type, plain}) => {
               <Grid item lg={12} xs={12}>
                 <Grid container>
                   <Grid item lg={4} xs={12} className={classes.featureBox}>
-                    <SweetBoxProducts key={index} isFeature={true} id={featureSweetBox.product} />
+                    <SweetBoxProducts classes={{...sweetClasses}} key={index} type="feature" data={featureSweetBox} />
                   </Grid>
                   <Grid item lg={8} xs={12}>
                     <Grid container>
                       {
-                        otherSweetBoxes.map((product, index) => {
+                        otherSweetBoxes && otherSweetBoxes.map((product, index) => {
                           return (
                             <Grid key={index} item lg={3} xs={6}>
-                              <SweetBoxProducts key={index} isFeature={false} id={product.product} />
+                              <SweetBoxProducts key={index} data={product} />
                             </Grid>
                           )
                         })
@@ -114,7 +151,8 @@ const SweetBox = React.memo(({classes, type, plain}) => {
         }
       </div>
     )
-  })
+  }) : !showEmpty && (<ProgressBar />) 
+
 });
 
 SweetBox.protoTypes = {

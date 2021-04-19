@@ -476,6 +476,10 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.text,
     label: 'User',
   },
+  key: {
+    type: FORM_TYPE.text,
+    label: 'Key',
+  },
   flete: {
     type: FORM_TYPE.number,
     label: 'Flete',
@@ -483,6 +487,10 @@ export const FORM_SCHEMA = {
   fleteTotal: {
     type: FORM_TYPE.number,
     label: 'Flete Total',
+  },
+  total: {
+    type: FORM_TYPE.number,
+    label: 'Total',
   },
   billingCost: {
     type: FORM_TYPE.number,

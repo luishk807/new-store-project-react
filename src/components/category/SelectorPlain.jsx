@@ -168,7 +168,7 @@ const CategorySelectorPlain = ({classes, data, type}) => {
             {
               categories.map((data, index) => {
                 return (
-                  <Grid item lg={3} xs={12} className={classes.cubeItems}>
+                  <Grid item key={index} lg={3} xs={12} className={classes.cubeItems}>
                     <Button key={index} className={classes.cubeBtn} >
                       <Icons name={data.icon} classes={{icon: classes.cubeIcon}} />
                       {

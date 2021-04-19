@@ -34,6 +34,8 @@ const Edit = ({classes}) => {
       <EditForm 
         customUrl={`/admin/categories`} 
         adminSection={ADMIN_SECTIONS.category} 
+        cancelUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 
         id={id} entryForm={form} 
       />
     </AdminLayoutTemplate>

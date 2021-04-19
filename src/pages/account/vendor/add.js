@@ -53,6 +53,8 @@ const Add = ({classes, userInfo, vendorInfo}) => {
       <div className={classes.root}>
         <AddForm 
           customUrl={`/account/vendor/products`} 
+          cancelUrl={`/account/vendor/products`} 
+          successUrl={`/account/vendor/products`} 
           ignoreForm={ignoreEntry} 
           userSection={USER_SECTIONS.vendor.product} 
           entryForm={form} 

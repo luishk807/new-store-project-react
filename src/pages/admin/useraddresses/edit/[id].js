@@ -44,7 +44,14 @@ const Edit = ({classes}) => {
     <AdminLayoutTemplate>
       <Grid container>
         <Grid item lg={12}>
-          <EditForm customUrl={`/admin/useraddresses/${id}`} adminSection={ADMIN_SECTIONS.address} id={id} entryForm={form} />
+          <EditForm 
+            customUrl={`/admin/useraddresses/${id}`} 
+            cancelUrl={`/admin/useraddresses/${id}`} 
+            successUrl={`/admin/useraddresses/${id}`} 
+            adminSection={ADMIN_SECTIONS.address} 
+            id={id} 
+            entryForm={form} 
+          />
         </Grid>
       </Grid>
     </AdminLayoutTemplate>

@@ -51,6 +51,8 @@ const Edit = ({classes, userInfo, vendorInfo}) => {
       <div className={classes.root}>
         <EditForm 
           customUrl={`/account/vendor/products`} 
+          cancelUrl={`/account/vendor/products`} 
+          successUrl={`/account/vendor/products`} 
           ignoreForm={ignoreEntry} 
           name="product" 
           userSection={USER_SECTIONS.vendor.product} 

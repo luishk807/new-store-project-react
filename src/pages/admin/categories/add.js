@@ -30,6 +30,8 @@ const Add = ({classes}) => {
       <AddForm 
         adminSection={ADMIN_SECTIONS.category} 
         customUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 
+        cancelUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.cateogy.url}`} 
         entryForm={form} 
       />
     </AdminLayoutTemplate>

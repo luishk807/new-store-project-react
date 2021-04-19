@@ -50,6 +50,8 @@ const Edit = ({classes}) => {
         adminSection={ADMIN_SECTIONS.product} 
         id={id} 
         customUrl={`/admin/${ADMIN_SECTIONS.product.url}`} 
+        cancelUrl={`/admin/${ADMIN_SECTIONS.product.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.product.url}/${id}`} 
         entryForm={form} 
       />
     </AdminLayoutTemplate>

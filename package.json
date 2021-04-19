@@ -40,6 +40,7 @@
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
+    "react-device-detect": "^1.17.0",
     "react-dom": "^16.13.1",
     "react-image-gallery": "^1.0.8",
     "react-material-ui-carousel": "^2.1.1",
@@ -48,11 +49,13 @@
     "react-number-format": "^4.4.1",
     "react-redux": "^7.2.1",
     "react-scroll": "^1.8.1",
+    "react-slick": "^0.28.1",
     "react-to-print": "^2.12.4",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "sass": "^1.26.8",
     "simple-oauth2": "^4.2.0",
+    "slick-carousel": "^1.8.1",
     "styled-components": "^5.1.1"
   },
   "devDependencies": {

@@ -43,7 +43,13 @@ const Add = ({classes}) => {
     <AdminLayoutTemplate>
       <Grid container>
         <Grid item lg={12}>
-          <AddForm customUrl={`/admin/useraddresses/${id}`} name={ADMIN_SECTIONS.address.key} id={id} entryForm={form} />
+          <AddForm 
+            customUrl={`/admin/useraddresses/${id}`} 
+            cancelUrl={`/admin/useraddresses/${id}`} 
+            successUrl={`/admin/useraddresses/${id}`} 
+            name={ADMIN_SECTIONS.address.key} 
+            id={id} 
+            entryForm={form} />
         </Grid>
       </Grid>
     </AdminLayoutTemplate>

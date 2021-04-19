@@ -67,9 +67,14 @@ const styles = (theme) => ({
     color: 'white',
     fontSize: '.8em',
   },
+  cardBlockHolders: {
+    '& span': {
+      flexDirection: 'column'
+    }
+  }
 });
 
-const CategorySelector = ({classes}) => {
+const CategorySelector = ({classes, cubeSize, showTitle}) => {
   const router = useRouter();
   const [categories, setCategories] = useState([]);
   const [open, setOpen] = useState(true);
@@ -90,15 +95,19 @@ const CategorySelector = ({classes}) => {
 
   return categories && (
     <div className={classes.root}>
-      <Grid container className={`${classes.cubeTitleContainer}`}>
-        <Grid item lg={12} className={classes.cubeMainTitle}>Categories</Grid>
-      </Grid>
+      {
+        showTitle && (
+          <Grid container className={`${classes.cubeTitleContainer}`}>
+            <Grid item lg={12} className={classes.cubeMainTitle}>Categories</Grid>
+          </Grid>
+        )
+      }
       <Grid container className={`${classes.cubeCategoryContainer}`}>
         {
           categories && categories.map((data, index) => {
             return (
-              <Grid item lg={6} key={index} className={classes.cubeItems}>
-                <Button onClick={() => goToSearch(data)} className={`cardRoot2`}>
+              <Grid item lg={cubeSize ? Number(cubeSize) : 12} key={index} className={classes.cubeItems}>
+                <Button onClick={() => goToSearch(data)} className={`cardRoot2 ${classes.cardBlockHolders}`}>
                   <div className={classes.cubeIconHolder}>
                     <Icons name={data.icon} classes={{icon: classes.cubeIcon}} />
                   </div>
@@ -119,6 +128,8 @@ const CategorySelector = ({classes}) => {
 
 CategorySelector.propTypes = {
   classes: T.object,
+  cubeSize: T.string,
+  showTitle: T.bool
 };
 
 export default withStyles(styles)(CategorySelector);

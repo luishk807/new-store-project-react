@@ -70,6 +70,8 @@ const Add = ({classes}) => {
             hideEntry={hideEntry}
             ignoreForm={ignoreForm}
             customUrl={`/admin/products/items/${product.id}`}  
+            cancelUrl={`/admin/products/items/${product.id}`}  
+            successUrl={`/admin/products/items/${product.id}`}  
           />
         ) : (
           <ProgressBar />

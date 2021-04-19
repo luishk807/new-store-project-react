@@ -1,0 +1,19 @@
+{
+    "order_detail": "Detalle de Orden",
+    "back": "Regresar",
+    "search": "Buscar",
+    "order_number": "Número de Orden",
+    "total_saved": "Total Ahorrado",
+    "order_page": "Sección de Órdenes",
+    "unit_total": "Total Unitario",
+
+    "reason": "Razón",
+    "cancel_order": "Cancelar Orden",
+    "order_summary": "Resumen de la Orden",
+
+    "message": {
+        "no_order_found": "No existe la orden",
+        "search_order": "Buscar su orden",
+        "order_number_to_find_status": "Introduzca su número de orden para encontrar el estado"
+    }
+}

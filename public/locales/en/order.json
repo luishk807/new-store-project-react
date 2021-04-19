@@ -1,0 +1,22 @@
+{
+    "order_detail": "Order Detail",
+    "back": "Back",
+    "search": "Search",
+    "order_number": "Order Number",
+    "total_saved": "Total Saved",
+    "order_page": "Order Page",
+    "unit_total": "Unit Total",
+
+    "reason": "Reason",
+    "cancel_order": "Cancel Order",
+    "order_summary": "Order Summary",
+    
+    "message": {
+        "no_order_found": "No order found",
+        "search_order": "Search order",
+        "order_number_to_find_status": "Type your order number to find the status",
+        "order_cancel_request_sent": "Order cancel request sent",
+        "order_cancel_confirmation": "Are you sure you want to cancel this order?",
+        "order_cancelation_reason": "Please select a reason for cancelation"
+    }
+}

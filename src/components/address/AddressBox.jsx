@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import Icons from '../common/Icons';
 import Typography from '../common/Typography';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -41,6 +42,7 @@ const styles = (theme) => ({
 });
 
 const AddressBox = ({classes, data, onClickEdit, onClickRemove, onClickSet}) => {
+  const { t } = useTranslation(['common', 'addresses'])
     return (
       <div className={classes.root}>
         <Grid container className={classes.addressContainer} spacing={2}>
@@ -68,8 +70,8 @@ const AddressBox = ({classes, data, onClickEdit, onClickRemove, onClickSet}) => 
               {`${data.addressDistrict.name} ${data.addressCorregimiento.name}`}</Grid>
           <Grid item lg={12} className={classes.content}>{data.addressProvince.name}</Grid>
           <Grid item lg={12} className={classes.content}>{data.addressCountry.nicename}</Grid>
-          <Grid item lg={12} className={classes.content}>Phone: {data.phone}</Grid>
-          <Grid item lg={12} className={classes.content}>Mobile: {data.mobile}</Grid>
+          <Grid item lg={12} className={classes.content}>{ t('addresses:phone') }: {data.phone}</Grid>
+          <Grid item lg={12} className={classes.content}>{ t('addresses:mobile') }: {data.mobile}</Grid>
           {
             data.note && (
               <Grid item lg={12} className={classes.content}>Note: {data.note}</Grid>
@@ -79,12 +81,12 @@ const AddressBox = ({classes, data, onClickEdit, onClickRemove, onClickSet}) => 
             <Grid container className={classes.btnCont}>
              <Grid item lg={5} xs={5}>
                 <Button className={`mainButton`} onClick={ () => onClickEdit(data.id)}>
-                  <Typography>Edit</Typography>
+                  <Typography>{ t('common:edit') }</Typography>
                 </Button>
               </Grid>
               <Grid item lg={5} xs={5}>
                 <Button className={`mainButton`} onClick={ () => onClickRemove(data.id)}>
-                    <Typography>Remove</Typography>
+                    <Typography>{ t('common:remove') }</Typography>
                 </Button>
               </Grid>
             </Grid>

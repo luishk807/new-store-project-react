@@ -18,6 +18,8 @@ import AddressBox from '../../../components/address/AddressBox';
 import Snackbar from '../../../components/common/Snackbar';
 import { handleFormResponse } from '../../../utils/form';
 import ProgressBar from '../../../components/common/ProgressBar';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -59,7 +61,7 @@ const Index = ({classes, userInfo}) => {
     open: false,
     text: '',
   });
-
+  const { t } = useTranslation(['addresses'])
 
   const loadAddresses = async() => {
     const getAddreseses = await getAddressesByUser();
@@ -119,7 +121,7 @@ const Index = ({classes, userInfo}) => {
       <div className={classes.root}>
         <Grid container>
           <Grid item lg={12} xs={12} className={classes.headerItem}>
-            <Typography align="left" variant="h4" component="h3">My Addresses</Typography>
+            <Typography align="left" variant="h4" component="h3">{ t('my_addresses') }</Typography>
             &nbsp;&nbsp;<Button href={`addresses/add`}>
               <Icons name="addCircle" classes={{icon: classes.addIcon}}/>
             </Button>
@@ -158,5 +160,12 @@ Index.protoTypes = {
 const mapStateToProps = state => ({
   userInfo: state.user
 }) // add reducer access to props
+
+/** This section is mandatory for next-18next translation to work, only inside /pages */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'addresses', 'footer']),
+  },
+})
 
 export default connect(mapStateToProps)(withStyles(styles)(Index));

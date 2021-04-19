@@ -9,6 +9,7 @@ import {
 
 import Rate from './Rate';
 import { getRatingAvg } from '../../../utils';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -70,6 +71,7 @@ const RateBoxBreakdown = ({classes, data}) => {
   const [totalAverage, setTotalAverage] = useState(0);
   const [breakdown, setBreakdown] = useState({});
   const [showRates, setShowRates] = useState(false);
+  const { t } = useTranslation('product')
 
   useEffect(()=>{
     let rateFetch = {
@@ -109,14 +111,14 @@ const RateBoxBreakdown = ({classes, data}) => {
               <Rate className={classes.ratingStyle} data={totalAverage} disabled={true} />
             </Grid>
             <Grid item lg={12} xs={12} className={classes.mainRateSubText}>
-              <b>{totalRate}</b> Reviews
+              <b>{totalRate}</b> { t('reviews') }
             </Grid>
           </Grid>
         </Grid>
       </Grid>
       <Grid container>
         <Grid item lg={12}>
-          <Typography  className={classes.rateBreakDownTitle}>Rating breakdown</Typography>
+          <Typography  className={classes.rateBreakDownTitle}>{ t('rating_breakdown') }</Typography>
         </Grid>
         {
           breakdown && Object.keys(breakdown).reverse().map((item, index) => {

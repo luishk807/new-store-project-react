@@ -1,5 +1,11 @@
 {
-    "appName": "InventarioZ",
-    "search": "Buscar",
-    "departments": "Departamentos"
+    "price": "Precio",
+    "color": "Color",
+    "colors": "Colores",
+    "size": "Tamaño",
+    "sizes": "Tamaños",
+    "items": "Artículos",
+    "quantity": "Cantidad",
+
+    "edit": "Editar"
 }

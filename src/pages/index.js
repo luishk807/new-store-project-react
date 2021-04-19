@@ -13,6 +13,7 @@ import ProductScroller from '../components/product/Scroller';
 import HomeCarrousel from '../components/home/Carrousel';
 import ImageBox from '../components/home/ImageBox';
 import ProductCategory from '../components/home/ProductCategory';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -81,5 +82,12 @@ class ClassComponent extends Component {
     )
   }
 }
+
+/** This section is mandatory for next-18next translation to work, only inside /pages */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['home', 'footer']),
+  },
+})
 
 export default withStyles(styles, {withTheme: true})(ClassComponent);

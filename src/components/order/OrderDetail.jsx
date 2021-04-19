@@ -11,6 +11,7 @@ import OrderItem from './OrderItem';
 import { canceled_status, statusAllowedCancellation } from '../../../config';
 import { formatNumber, isNull, getDeliveryInfo } from '../../utils';
 import PrintButton from '../common/Print/PrintButton';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -138,6 +139,7 @@ const View = ({classes, order, isAdmin = false}) => {
   const [deliveryInfo, setDeliveryInfo] = useState({});
   const [showDelivery, setShowDelivery] = useState(false);
   const [showTotalSaved, setShowTotalSaved] = useState(false);
+  const { t } = useTranslation(['common', 'order'])
 
   useEffect(() => {
     const totalSaved = Number(order.totalSaved);
@@ -168,7 +170,7 @@ const View = ({classes, order, isAdmin = false}) => {
         {
           isAdmin && isCancelled && (
             <Grid item lg={12} xs={12} className={classes.cancelReason}>
-              <p>Reason:</p>
+              <p>{ t('reason') }:</p>
               { order.orderCancelReasons && `${order.orderCancelReasons.name}` }
             </Grid>
           )
@@ -184,14 +186,14 @@ const View = ({classes, order, isAdmin = false}) => {
                 !isAdmin && (
                   <>
                     <Grid item lg={10} xs={6} className={classes.itemHeaderDelivery}>
-                      <p className={classes.orderHeaderSubTitle}>Status</p>
+                      <p className={classes.orderHeaderSubTitle}>{ t('common:status')}</p>
                       <p><b>{order.orderStatuses.name}</b></p>
                     </Grid>
                     {
                       statusAllowedCancellation.includes(Number(order.orderStatus)) && (
                         <Grid item lg={2} xs={6} className={classes.itemHeaderCancel}>
                           <Button href={`cancel/${order.id}`} className={`mainButton`}>
-                              Cancel Order
+                              { t('order:cancel_order') }
                           </Button>
                         </Grid>
                       )
@@ -205,14 +207,14 @@ const View = ({classes, order, isAdmin = false}) => {
         <Grid item lg={12} xs={12} className={classes.itemHeader}>
           <Grid container className={classes.orderHeaderContainer}>
             <Grid item lg={4} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem1}`}>
-              <span className={classes.orderHeaderSubTitle}>Date</span>
+              <span className={classes.orderHeaderSubTitle}>{ t('common:date') }</span>
               <span>{moment(order.createdAt).format('MMMM D, YYYY')}</span>
             </Grid>
             <Grid item lg={3} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem2}`}>
-              <span className={classes.orderHeaderSubTitle}>Delivery Method:</span><span>{order.deliveryOrder ? order.deliveryOrder.name : 'N/A'}</span>
+              <span className={classes.orderHeaderSubTitle}>{ t('common:delivery_method') }:</span><span>{order.deliveryOrder ? order.deliveryOrder.name : 'N/A'}</span>
             </Grid>
             <Grid item lg={3} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
-              <span className={classes.orderHeaderSubTitle}>Order Number</span>
+              <span className={classes.orderHeaderSubTitle}>{ t('order:order_number') }</span>
               <span>{order.order_number}</span>
             </Grid>
             <Grid item lg={2} xs={6} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
@@ -235,7 +237,7 @@ const View = ({classes, order, isAdmin = false}) => {
               }
             </Grid>
             <Grid item lg={3} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderSummaryItem2}`}>
-              <span className={classes.orderHeaderSubTitle}>Payment Method</span>
+              <span className={classes.orderHeaderSubTitle}>{ t('common:payment_method') }</span>
               <span>
                 {
                   order.paymentOption
@@ -243,12 +245,12 @@ const View = ({classes, order, isAdmin = false}) => {
               </span>
             </Grid>
             <Grid item lg={5} xs={12} className={`${classes.orderHeaderItem} ${classes.orderSummaryItem3}`}>
-              <span className={classes.orderHeaderSubTitle}>Order Summary</span>
+              <span className={classes.orderHeaderSubTitle}>{ t('order:order_summary') }</span>
               <Grid container>
                 <Grid item lg={12} xs={12}>
                   <Grid container>
                     <Grid item lg={6} xs={6}>
-                      Subtotal
+                      { t('common:subtotal') }
                     </Grid>
                     <Grid item lg={6} xs={6}>
                       ${formatNumber(order.subtotal)}
@@ -259,7 +261,7 @@ const View = ({classes, order, isAdmin = false}) => {
                 <Grid item lg={12} xs={12}>
                   <Grid container>
                     <Grid item lg={6} xs={6}>
-                      ITBMS 7%
+                      { t('common:tax') } 7%
                     </Grid>
                     <Grid item lg={6} xs={6}>
                       ${formatNumber(order.tax)}
@@ -270,7 +272,7 @@ const View = ({classes, order, isAdmin = false}) => {
                 <Grid item lg={12} xs={12}>
                   <Grid container>
                     <Grid item lg={6} xs={6}>
-                      Delivery
+                      { t('common:delivery') }
                     </Grid>
                     <Grid item lg={6} xs={6}>
                       ${formatNumber(order.delivery)}
@@ -281,7 +283,7 @@ const View = ({classes, order, isAdmin = false}) => {
                 <Grid item lg={12} xs={12}>
                   <Grid container>
                     <Grid item lg={6} xs={6}>
-                      GrandTotal
+                      { t('common:grand_total') }
                     </Grid>
                     <Grid item lg={6} xs={6}>
                       <b>${formatNumber(order.grandtotal)}</b>
@@ -293,7 +295,7 @@ const View = ({classes, order, isAdmin = false}) => {
                     <Grid item lg={12} xs={12}>
                       <Grid container>
                         <Grid item lg={6} xs={6}>
-                          You saved
+                          { t('order:you_saved') }
                         </Grid>
                         <Grid item lg={6} xs={6}>
                           - ${formatNumber(order.totalSaved)}

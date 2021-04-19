@@ -5,12 +5,11 @@ import {
   Grid,
   Button
 } from '@material-ui/core';
-import Icons from './common/Icons';
 import { connect } from 'react-redux';
-import { formatNumber, getCartTotal, getTotal, getImage } from '../utils';
+import { getCartTotal, getTotal, getImage } from '../utils';
 import { getImageUrlByType } from '../utils/form';
-import { noImageUrl } from '../../config';
-import TextEllipsis from './common/TextEllipsis';
+import { useTranslation } from 'next-i18next'
+
 const styles = (theme) => ({
   root: {
     width: '100%',
@@ -105,6 +104,7 @@ const Index = React.memo(({
   const imageUrl = getImageUrlByType('product');
   const [products, setProducts] = useState([]);
   const [totals, setTotals] = useState({});
+  const { t } = useTranslation('common')
 
   const setDelivery = (val) => {
     setTotal({
@@ -147,10 +147,10 @@ const Index = React.memo(({
         showHeader && (
           <Grid container className={classes.itemHeader}>
             <Grid item lg={6} xs={6} className={classes.itemHeaderTitle}>
-              Items: {products.length}
+              { t('items') }: {products.length}
             </Grid>
             <Grid item lg={6} xs={6} className={classes.itemHeaderButton}>
-              <a href="/cart">Edit</a>
+              <a href="/cart">{ t('edit') }</a>
             </Grid>
           </Grid>
         )
@@ -172,17 +172,17 @@ const Index = React.memo(({
                       </Grid>
                       <Grid item lg={8} xs={8} className={classes.itemItemsContent}>
                         <p>{product.productItemProduct.name}</p>
-                        <p>Color: {product.productItemColor.name}</p>
-                        <p>Size: {product.productItemSize.name}</p>
-                        <p>Cantidad: {product.quantity}</p>
+                        <p>{ t('color') }: {product.productItemColor.name}</p>
+                        <p>{ t('size') }: {product.productItemSize.name}</p>
+                        <p>{ t('quantity') }: {product.quantity}</p>
                         {
                           product.save_price ? (
-                            <p>Price: <span className={classes.originalPrice}>${product.originalPrice}&nbsp; </span>${product.retailPrice}</p>
+                            <p>{ t('price') }: <span className={classes.originalPrice}>${product.originalPrice}&nbsp; </span>${product.retailPrice}</p>
                           ) : (
-                            <p>Price: ${product.retailPrice}</p>
+                            <p>{ t('price') }: ${product.retailPrice}</p>
                           )
                         }
-                        <p>Total: {`${itemTotal}`}</p>
+                        <p>{ t('total') }: {`${itemTotal}`}</p>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -196,7 +196,7 @@ const Index = React.memo(({
         <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
           <Grid container className={classes.totalTotalContainer}>
             <Grid item className={classes.totalTotalTitle}>
-              Subtotal
+              { t('subtotal') }
             </Grid>
             <Grid item className={classes.totalTotalTotal}>
               ${totals.subtotal}
@@ -207,7 +207,7 @@ const Index = React.memo(({
         <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
           <Grid container className={classes.totalTotalContainer}>
             <Grid item className={classes.totalTotalTitle}>
-              ITBMS 7%
+              { t('tax') } 7%
             </Grid>
             <Grid item className={classes.totalTotalTotal}>
             ${totals.taxes}
@@ -218,7 +218,7 @@ const Index = React.memo(({
         <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
           <Grid container className={classes.totalTotalContainer}>
             <Grid item className={classes.totalTotalTitle}>
-              Delivery
+              { t('delivery') }
             </Grid>
             <Grid item className={classes.totalTotalTotal}>
               ${totals.delivery}
@@ -230,7 +230,7 @@ const Index = React.memo(({
             <Grid item className={`${showCheckout && 'borderTopMain'} ${classes.totalTotalitemsCheckout}`} lg={12} xs={12}>
               <Grid container className={classes.totalTotalContainer}>
                 <Grid item className={classes.totalTotalTitle}>
-                  GrandTotal
+                  { t('grand_total') }
                 </Grid>
                 <Grid item className={classes.totalTotalTotal}>
                   ${totals.grandTotal}
@@ -241,7 +241,7 @@ const Index = React.memo(({
             <Grid item className={`${classes.totalTotalitems}`} lg={12} xs={12}>
               <Grid container className={classes.totalTotalContainer}>
                 <Grid item className={classes.totalTotalTitle}>
-                  <b>GrandTotal</b>
+                  <b>{ t('grand_total') }</b>
                 </Grid>
                 <Grid item className={classes.totalTotalTotal}>
                   <b>${totals.grandTotal}</b>
@@ -255,7 +255,7 @@ const Index = React.memo(({
             <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
               <Grid container className={classes.totalTotalContainer}>
                 <Grid item className={classes.totalTotalTitle}>
-                  You Saved
+                  { t('message.you_saved') }
                 </Grid>
                 <Grid item className={classes.totalTotalTotal}>
                   - ${totals.saved}
@@ -267,7 +267,7 @@ const Index = React.memo(({
         {
           showCheckout && (
             <Grid item lg={12} xs={12} >
-              <Button href={`${userInfo.id ? '/checkout/f=e' : '/checkout'}`} className={`mainButton`}>Checkout</Button>
+              <Button href={`${userInfo.id ? '/checkout/f=e' : '/checkout'}`} className={`mainButton`}>{ t('checkout') }</Button>
             </Grid>
           )
         }

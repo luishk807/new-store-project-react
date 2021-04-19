@@ -9,6 +9,8 @@ import {
 import Typography from '../Typography';
 import Icons from '../../common/Icons';
 import { config } from '../../../../config';
+import { FooterSample } from '../../../constants/samples/FooterSample';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -216,6 +218,9 @@ const styles = (theme) => ({
 });
 
 const Footer = ({classes}) => {
+  const data = FooterSample; 
+  const { t } = useTranslation('footer')
+
   return (
     <footer className={`footer ${classes.footerMain}`}>
       <div className={classes.root}>
@@ -263,22 +268,22 @@ const Footer = ({classes}) => {
                 <ul>
                   <li>
                     <a href="/aboutus" className={classes.secondLastlineItems}>
-                    About Us
+                    { t('about_us') }
                     </a>
                   </li>
                   <li>
                     <a href="/contactus" className={classes.secondLastlineItems}>
-                    Contact Us
+                    { t('contact_us') }
                     </a>
                   </li>
                   <li>
                     <a href="/terms" className={classes.secondLastlineItems}>
-                    Terms & Privacy
+                    { t('terms_privacy') }
                     </a>
                   </li>
                   <li>
                     <a href="/order" className={classes.secondLastlineItems}>
-                      Order Status
+                      { t('order_status') }
                     </a>
                   </li>
                 </ul>
@@ -291,23 +296,23 @@ const Footer = ({classes}) => {
               <Grid item lg={12} xs={12} className={classes.localItemsCells}>
                 <ul className={classes.contactUL}>
                   <li className={classes.liList}>
-                    Phone: { config.phone }
+                    { t('phone') }: { config.phone }
                   </li>
                   <li className={classes.liList}>
                     Whatssap: { config.whatssap }
                   </li>
                   <li className={classes.liList}>
-                    Direction: { config.address }
+                    { t('address') }: { config.address }
                   </li>
                   <li className={classes.liList}>
-                    Email: { config.emails.sales }
+                    { t('email') }: { config.emails.sales }
                   </li>
                 </ul>
               </Grid>
             </Grid>
           </Grid>
           <Grid item lg={12} xs={12} className={`${classes.lastLine}`}>
-              <Typography align="center" variant="body1" component="p" className={classes.lastLineItems}>&copy; {(new Date().getFullYear())} <a href="/" className={classes.footerLink}>AvenidaZ.com</a>  All rights reserved.</Typography>
+              <Typography align="center" variant="body1" component="p" className={classes.lastLineItems}>&copy; {(new Date().getFullYear())} <a href="/" className={classes.footerLink}>AvenidaZ.com</a>  { t('all_rights_reserved') }.</Typography>
           </Grid>
         </Grid>
       </div>

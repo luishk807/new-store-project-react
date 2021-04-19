@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import Link from 'next/link'
 import * as T from 'prop-types';
 import { connect } from 'react-redux';
 import { fade } from '@material-ui/core/styles';
@@ -10,11 +9,6 @@ import {
   Link,
   Button,
   Grid,
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
 } from '@material-ui/core';
 import Icon from '../../../components/common/Icons';
 import Typography from '../Typography';

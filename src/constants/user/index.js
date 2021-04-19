@@ -11,21 +11,25 @@
 
 export const USER_ACCOUNT_SECTIONS = [
   {
+    tKey: 'your_orders', // Translation key
     name: 'order',
     label: 'Your Orders',
     url: 'orders',
   },
   {
+    tKey: 'wishlist',
     name: 'wishlist',
     label: 'Wish List',
     url: 'wishlists',
   },
   {
+    tKey: 'address_book',
     name: 'address',
     label: 'Address Book',
     url: 'addresses',
   },
   {
+    tKey: 'security_login',
     name: 'security',
     label: 'Security and Login',
     url: 'settings',

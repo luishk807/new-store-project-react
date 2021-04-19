@@ -15,6 +15,8 @@ import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import { searchProductsByFilter } from '../api/products';
 import ProgressBar from '../components/common/ProgressBar';
 import TextEllipsis from '../components/common/TextEllipsis';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -128,6 +130,7 @@ const SearchResult = ({classes}) => {
   const [showResult, setShowResult] = useState(false);
   const [showEmpty, setShowEmpty] = useState(false);
   const { str, cat, catn, page } = router.query;
+  const { t } = useTranslation('search')
 
   const loadSearchStr = async() => {
     const pageIndex = page ? +page : 1;
@@ -176,9 +179,9 @@ const SearchResult = ({classes}) => {
         <Grid container>
           <Grid item lg={12} xs={12} className={classes.mainTitle}>
             <Typography align="left" variant="h4" component="span" className={classes.mainTitleTitle}>
-              Searching for &ldquo;{str || catn}&rdquo;
+              { t('searching_for') } &ldquo;{str || catn}&rdquo;
             </Typography>
-            <Typography align="left" variant="h6" component="span" className={classes.mainTitleSub}>{totalCount} Resultados</Typography>
+            <Typography align="left" variant="h6" component="span" className={classes.mainTitleSub}>{totalCount} { t('results') }</Typography>
           </Grid>
           <Grid item lg={12} xs={12} className={classes.pagination}>
             <Pagination onChange={onPageChange} page={currentPage} count={pageCount} variant="outlined" size="large" shape="rounded" />
@@ -215,7 +218,7 @@ const SearchResult = ({classes}) => {
               {
                 showEmpty && (
                   <Grid item lg={12} xs={12}>
-                    <Typography align="center" variant="h4" component="h4" >No Result Found</Typography>
+                    <Typography align="center" variant="h4" component="h4" >{ t('message.no_results_found') }</Typography>
                   </Grid>
                 )
               }
@@ -233,5 +236,12 @@ const SearchResult = ({classes}) => {
 SearchResult.protoTypes = {
   classes: T.object,
 };
+
+/** This section is mandatory for next-18next translation to work, only inside /pages */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['search', 'footer']),
+  },
+})
 
 export default withStyles(styles)(SearchResult);

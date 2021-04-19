@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
-import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 import {
   withStyles,
@@ -10,17 +9,14 @@ import {
   Hidden,
 } from '@material-ui/core';
 import moment from 'moment';
-
-import CardIcon from '../../../components/common/CardIcon';
-import Icons from '../../../components/common/Icons';
 import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
 import ProgressBar from '../../../components/common/ProgressBar';
 import LeftOrderColumn from '../../../components/common/Layout/Left/account/OrderLeftColumn';
 import OrderItem from '../../../components/order/OrderItem';
 import { getOrderByUser } from '../../../api/orders';
-import { getImageUrlByType } from '../../../utils/form';
-import { noImageUrl } from '../../../../config';
 import { formatNumber } from '../../../utils';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -112,7 +108,7 @@ const styles = (theme) => ({
 const Index = ({classes, userInfo}) => {
   const [orders, setOrders] = useState([]);
   const [showData, setShowData] = useState(false);
-  const router = useRouter();
+  const { t } = useTranslation(['common', 'order'])
 
   const getOrders = async() => {
     const gdata = await getOrderByUser();
@@ -128,7 +124,7 @@ const Index = ({classes, userInfo}) => {
       <div className={classes.root}> 
         <Grid container className={classes.mainContainer}>
           <Grid className={classes.title} item lg={12} xs={12}>
-            <h3>Order page</h3>
+            <h3>{ t('order:order_page') }</h3>
           </Grid>
           <Grid item lg={12} xs={12}>
             <LeftOrderColumn>
@@ -143,29 +139,29 @@ const Index = ({classes, userInfo}) => {
                         <Grid item key={index} lg={12} xs={12} className={classes.orderItems}>
                           <Grid container className={classes.orderContainer}>
                             <Grid item lg={12} xs={12}>
-                              <span className={classes.orderHeaderTitle}>Order Number</span>:&nbsp;
+                              <span className={classes.orderHeaderTitle}>{ t('order:order_number') }</span>:&nbsp;
                               <a href={`/account/orders/${order.id}`}>{order.order_number}</a>
                             </Grid>
                             <Grid item lg={12} xs={12} className={classes.itemHeader}>
                               <Grid container className={classes.orderHeaderContainer}>
                                 <Grid item lg={3} xs={3} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem1}`}>
-                                  <span className={classes.orderHeaderSubTitle}>Date</span><br/>
+                                  <span className={classes.orderHeaderSubTitle}>{ t('date') }</span><br/>
                                  {moment(order.createdAt).format('MMMM D, YYYY')}
                                 </Grid>
                                 <Grid item lg={3} xs={5} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem2}`}>
-                                  <span className={classes.orderHeaderSubTitle}>GrandTotal</span><br/>
+                                  <span className={classes.orderHeaderSubTitle}>{ t('grand_total') }</span><br/>
                                   {`$${formatNumber(order.grandtotal)}`}
                                 </Grid>
                                 <Hidden smDown>
                                   <Grid item lg={3} xs={5} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem2}`}>
-                                    <span className={classes.orderHeaderSubTitle}>Total Saved</span><br/>
+                                    <span className={classes.orderHeaderSubTitle}>{ t('order:total_saved') }</span><br/>
                                     {
                                       showSaved ? `$${order.totalSaved}` : 'N/A'
                                     }
                                   </Grid>
                                 </Hidden>
                                 <Grid item lg={3} xs={4} className={`${classes.orderHeaderItem} ${classes.orderHeaderItem4}`}>
-                                  <span className={classes.orderHeaderSubTitle}>Status</span><br/>
+                                  <span className={classes.orderHeaderSubTitle}>{ t('status') }</span><br/>
                                   <span className={classes.orderStatus}>{order.orderStatuses.name}</span>
                                 </Grid>
                               </Grid>
@@ -198,5 +194,12 @@ Index.protoTypes = {
 const mapStateToProps = state => ({
   userInfo: state.user
 }) // add reducer access to props
+
+/** This section is mandatory for next-18next translation to work */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'order', 'footer']),
+  },
+})
 
 export default connect(mapStateToProps)(withStyles(styles)(Index));

@@ -3,6 +3,7 @@ import NextApp from 'next/app'
 import React from 'react'
 import '../../styles.scss'
 import { wrapper } from '../redux/store';
+import { appWithTranslation } from 'next-i18next'
 
 class App extends NextApp {
   componentDidMount() {
@@ -18,4 +19,4 @@ class App extends NextApp {
   }
 }
 
-export default wrapper.withRedux(App)
+export default wrapper.withRedux(appWithTranslation(App))

@@ -3,6 +3,8 @@ import * as T from 'prop-types';
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { updateCart, deleteCart } from '../redux/actions/main'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import {
   Grid,
@@ -155,6 +157,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     grandTotal: 0,
   })
   const [showCart, setShowCart] = useState(false);
+  const { t } = useTranslation('common')
 
   const handleSelectChange = async(resp) => {
     const index = resp.id.split("-")[1]
@@ -186,7 +189,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
             <Grid container>
               <Grid item lg={12} xs={12} className={classes.cartTitleCont}>
                 <Typography variant="h5" component="p">
-                  Cart View
+                  { t('cart_view') }
                 </Typography>
               </Grid>
               {
@@ -220,7 +223,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                 <>
                                 <Grid item lg={12} xs={12} className={classes.cartPrice}>
                                   <Typography align="left" component="p" className={classes.productPriceScratch}>
-                                    Precio Unitario: ${item.originalPrice}
+                                    { t('unit_price') }: ${item.originalPrice}
                                   </Typography>
                                 </Grid>
                                 <Grid item lg={12} xs={12} className={`${classes.cartPrice} ${classes.cartPriceSave}`}>
@@ -230,14 +233,14 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                 </Grid>
                                 <Grid item lg={12} xs={12}  className={classes.cartPrice}>
                                   <Typography align="left" component="p" className={classes.priceSave}>
-                                    Ahorras: {`$${item.save_price} (${item.save_percentag_show})`}
+                                    { t('unit_price') }: {`$${item.save_price} (${item.save_percentag_show})`}
                                   </Typography>
                                 </Grid>
                                 </>
                               ) : (
                                 <Grid item lg={12} xs={12} className={classes.cartPrice}>
                                   <Typography align="left" component="p">
-                                    Price: ${item.retailPrice}
+                                    { t('price') }: ${item.retailPrice}
                                   </Typography>
                                 </Grid>
                               )
@@ -249,18 +252,18 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                             </Grid>
                             <Grid item lg={12} xs={12} className={classes.cartPrice}>
                               <Typography align="left" component="p">
-                                Color: {item.productItemColor.name}
+                                { t('color') }: {item.productItemColor.name}
                               </Typography>
                             </Grid>
                             <Grid item lg={12} xs={12} className={classes.cartPrice}>
                               <Typography align="left" component="p">
-                                Size: {item.productItemSize.name}
+                                { t('size') }: {item.productItemSize.name}
                               </Typography>
                             </Grid>
                             {
                               item.discount && (
                                 <Grid item lg={12} xs={12}>
-                                  Discount Applied: { item.discount.name }
+                                  { t('message.discount_applied') }: { item.discount.name }
                                 </Grid>
                               )
                             }
@@ -278,7 +281,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                         </Hidden>
                         <Grid item lg={12} align="right" xs={3} className={classes.cartActionCont}>
                           <Hidden xsDown>
-                            <Button onClick={ () => handleDelete(index)} className={`${classes.deleteBtn} smallMainButton my-2`}>Delete</Button>
+                            <Button onClick={ () => handleDelete(index)} className={`${classes.deleteBtn} smallMainButton my-2`}>{ t('delete') }</Button>
                           </Hidden>
                           <Hidden lgUp>
                             <a href="#" onClick={ (e) => handleDelete(index, e) }>
@@ -297,7 +300,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                 </Grid>
                 <Grid item lg={12} xs={12}>
                     <Typography variant="body1" align="right" component="p"  className={classes.firstSubTotal}>
-                       Subtotal ${total.subtotal}
+                       { t('subtotal') } ${total.subtotal}
                     </Typography>
                 </Grid>
               </Hidden>
@@ -313,7 +316,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
             <Grid container>
               <Grid item lg={12} xs={12} className={classes.cartTitleCont}>
                 <Typography variant="h5" align="center" component="p">
-                  Su carrito esta vacio
+                  { t('message.cart_empty') }
                 </Typography>
               </Grid>
             </Grid>
@@ -333,4 +336,12 @@ const mapDispatchToProps = {
   updateCart: updateCart,
   deleteCart: deleteCart
 }
+
+/** This section is mandatory for next-18next translation to work */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'footer']),
+  },
+})
+
 export default connect(mapStateToProps,mapDispatchToProps)(withWidth()(Cart));

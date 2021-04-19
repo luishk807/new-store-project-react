@@ -11,6 +11,7 @@ import { getImage, getImageAsync, getImageBaseOnly} from '../../utils';
 import { noImageUrl } from '../../../config';
 import { getProductDiscountsByProductIds } from '../../api/productDiscounts';
 import { getProductItemByIds } from '../../api/productItems';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -49,6 +50,7 @@ const styles = (theme) => ({
 const SimpleBox = React.memo(({ classes, data }) => {
   const [products, setProducts] = useState([]);
   const [showData, setShowData] = useState(false);
+  const { t } = useTranslation(['common', 'order'])
   const loadProducts = async() => {
     const itemIds = data.map((item) => item.productItemId);
     const getProduct = await getProductItemByIds(itemIds);
@@ -110,26 +112,26 @@ const SimpleBox = React.memo(({ classes, data }) => {
                 <Grid item lg={9} xs={6} className={classes.itemProductDescription}>
                   <p className={classes.itemName}><a href={`/product/${item.product}`}>{item.name}</a></p>
                   <p>Sku: <b>{item.sku}</b></p>
-                  <p>Size: <b>{item.size}</b></p>
-                  <p>Color: <b>{item.color}</b></p>
-                  <p>Quantity: <b>{item.quantity}</b></p>
+                  <p>{ t('common:size') }: <b>{item.size}</b></p>
+                  <p>{ t('common:color') }: <b>{item.color}</b></p>
+                  <p>{ t('common:quantity') }: <b>{item.quantity}</b></p>
                   {
                     item.savePrice ? (
-                      <p>Unit Total: <b><span className={classes.originalPrice}>{item.originalPrice}</span>&nbsp; ${formatNumber(item.unit_total)}</b></p>
+                      <p>{ t('order:unit_total') }: <b><span className={classes.originalPrice}>{item.originalPrice}</span>&nbsp; ${formatNumber(item.unit_total)}</b></p>
                     ) : (
-                      <p>Unit Total: <b>${formatNumber(item.unit_total)}</b></p>
+                      <p>{ t('order:unit_total') }: <b>${formatNumber(item.unit_total)}</b></p>
                     )
                   }
 
-                  <p>Total: <b>${formatNumber(item.total)}</b></p>
+                  <p>{ t('common:total') }: <b>${formatNumber(item.total)}</b></p>
                   {
                     showSaved && (
-                      <p className={classes.saveTotal}>You saved: <b>${formatNumber(item.savePrice)}</b></p>
+                      <p className={classes.saveTotal}>{ t('order:you_saved') }: <b>${formatNumber(item.savePrice)}</b></p>
                     )
                   }
                   {
                     item.productDiscount && (
-                      <p className={classes.itemTotal}>Discount: <b>{item.productDiscount}</b></p>
+                      <p className={classes.itemTotal}>{ t('common:discount') }: <b>{item.productDiscount}</b></p>
                     )
                   }
                 </Grid>

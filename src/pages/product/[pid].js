@@ -37,6 +37,8 @@ import RateBox from '../../components/rate/Simple';
 import RateFullView from '../../components/rate/FullView';
 import VendorBox from '../../components/vendorBox';
 import { getDisplayName } from 'next/dist/next-server/lib/utils';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -245,6 +247,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     open: false,
     text: '',
   });
+  const { t } = useTranslation(['common', 'product'])
 
   const handQuantitySelect = async(resp) => {
       const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem, resp.value);
@@ -478,19 +481,19 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     selectedProductItem.discount ? (
                       <Grid container className={classes.productPriceInContainer}>
                         <Grid item lg={4} xs={4} className={classes.productPrice}>
-                          <span>Precio Unitario:</span>
+                          <span>{ t('unit_price') }:</span>
                         </Grid>
                         <Grid item lg={8} xs={8} className={classes.productPriceScratch}>
                           <span>&nbsp;${selectedProductItem.originalPrice}</span>
                         </Grid>
                         <Grid item lg={4} xs={4} className={classes.productPriceDeal}>
-                          <span>Precio con Desc.:</span>
+                          <span>{ t('price_with_discount') }:</span>
                         </Grid>
                         <Grid item lg={8} xs={8}  className={classes.productPriceDeal}>
                           <span>&nbsp;${dealPrice}</span>
                         </Grid>
                         <Grid item lg={4} xs={4} className={classes.productPrice}>
-                          <span>Ahorras:</span>
+                          <span>{ t('savings') }:</span>
                         </Grid>
                         <Grid item lg={8} xs={8} className={classes.priceSave}>
                           <span>&nbsp;${selectedProductItem.save_price} ({selectedProductItem.save_percentag_show})</span>
@@ -499,7 +502,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     ) : (
                       <Grid container className={classes.productPriceInContainer}>
                         <Grid item lg={4} xs={4} className={classes.productPrice}>
-                          <span>Precio Unitario:</span>
+                          <span>{ t('unit_price') }:</span>
                         </Grid>
                         <Grid item lg={8} xs={8}>
                         < span>&nbsp;${selectedProductItem.retailPrice}</span>
@@ -511,7 +514,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   {
                       showDiscount && (
                       <Grid item lg={12} xs={12}>
-                        <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Deals</Typography>
+                        <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>{ t('deals') }</Typography>
                         <ul>
                           {
                             discountHtml && discountHtml
@@ -524,7 +527,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     colors && (
                       <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
                         <Grid container>
-                          <Grid item lg={12} xs={12} className={classes.variantTitles}>Colors</Grid>
+                          <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('colors') }</Grid>
                           <Grid item lg={12} xs={12}>
                             {
                               colors.map((item, index) => {
@@ -542,7 +545,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     sizeBlocks && (
                       <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
                         <Grid container>
-                          <Grid item lg={12} xs={12} className={classes.variantTitles}>Sizes</Grid>
+                          <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('sizes') }</Grid>
                           <Grid item lg={12} xs={12} >
                             {
                               sizeBlocks
@@ -560,9 +563,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                       <Grid item lg={6} xs={6}>
                         {
                           outOfStock ? (
-                            <Typography align="left" variant="h5" component="h5" className={classes.productOutStock}>Agotado</Typography>
+                            <Typography align="left" variant="h5" component="h5" className={classes.productOutStock}>{ t('outofstock') }</Typography>
                           ) : (
-                            <Typography align="left" variant="h5" component="h5" className={classes.productStock}>Disponible</Typography>
+                            <Typography align="left" variant="h5" component="h5" className={classes.productStock}>{ t('available') }</Typography>
                           )
                         }
 
@@ -572,15 +575,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     {
                       outOfStock ? (
-                        <Button disabled className={`cartButtonDisabled ${classes.addCartBtn}`}>Add To Cart</Button>
+                        <Button disabled className={`cartButtonDisabled ${classes.addCartBtn}`}>{ t('add_to_cart') }</Button>
                       ) : (
-                        <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>
+                        <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>{ t('add_to_cart') }</Button>
                       )
                     }
                     <WishListIcon product={productInfo.id} />
                   </Grid>
                   <Grid item lg={12} xs={12}>
-                    <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Description</Typography>
+                    <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>{ t('description') }</Typography>
                     <Typography align="left" variant="body1" component="p" className={classes.descriptionItem}>{productInfo.description}</Typography>
                   </Grid>
                   {/* <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
@@ -631,5 +634,15 @@ const mapDispatchToProps = {
   updateCart: updateCart,
   addCart: addCart
 }
+
+/**
+ * This section is mandatory for next-18next translation to work, only inside /pages.
+ * Use get ServerSideProps instead of getStaticProps because it's a dinamic route
+ */
+export const getServerSideProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'product', 'footer']),
+  },
+})
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Index));

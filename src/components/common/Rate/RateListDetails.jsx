@@ -11,7 +11,6 @@ import { useRouter } from 'next/router';
 
 import Typography from '../Typography';
 import Rate from './Rate';
-import { deepPurple } from '@material-ui/core/colors';
 
 const styles = (theme) => ({
   root: {
@@ -109,7 +108,7 @@ const RateListDetails = ({classes, data, id}) => {
                     {item.comment}
                   </Grid>
                   <Grid item lg={12} xs={12} align="left" className={classes.rateOwner}>
-                    <Typography variant="caption">By {item.rateUsers.first_name}</Typography>
+                    <Typography variant="caption">{ t('by') } {item.rateUsers.first_name}</Typography>
                   </Grid>
                   <Grid item lg={12} xs={12} className={classes.rateDivider}>
                     <Divider className={classes.qaDivider} />
@@ -122,10 +121,10 @@ const RateListDetails = ({classes, data, id}) => {
         <Grid item lg={12} xs={12}>
           <Grid container className={classes.rateBtnContainer}>
             <Grid item lg={5} xs={12} align="left">
-              <Button onClick={setRateLimit} className={`mainButton ${classes.rateBtn}`}>Ver mas</Button>
+              <Button onClick={setRateLimit} className={`mainButton ${classes.rateBtn}`}>{ t('view_more') }</Button>
             </Grid>
             <Grid item lg={5} xs={12} align="right">
-              <Button onClick={() => router.push(`review/create/${id}`)} className={`mainButton ${classes.rateBtn}`}>Agregar rate</Button>
+              <Button onClick={() => router.push(`review/create/${id}`)} className={`mainButton ${classes.rateBtn}`}>{ t('rate_product') }</Button>
             </Grid>
           </Grid>
         </Grid>

@@ -17,7 +17,8 @@ import { canceled_status } from '../../../../../config';
 import LeftOrderColumn from '../../../../components/common/Layout/Left/account/OrderLeftColumn';
 import Snackbar from '../../../../components/common/Snackbar';
 import { cancelOrder, getOrderById } from '../../../../api/orders';
-
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -76,6 +77,7 @@ const CancelOrder = ({classes, userInfo, id}) => {
     open: false,
     text: '',
   });
+  const { t } = useTranslation('order');
 
   const handleCancel = () => {
     router.push("/account/orders")
@@ -102,7 +104,7 @@ const CancelOrder = ({classes, userInfo, id}) => {
       setSnack({
         severity: 'success',
         open: true,
-        text: `Order cancel request send`,
+        text: t('order:message.order_cancel_request_sent'),
       })
       setTimeout(() => {
         handleCancel() 
@@ -138,7 +140,7 @@ const CancelOrder = ({classes, userInfo, id}) => {
       <div className={classes.root}> 
         <Grid container className={classes.mainContainer}>
           <Grid className={classes.title} item lg={12} xs={12}>
-            <h3>Order Cancel Confirm</h3>
+            <h3>{ t('order:message.order_cancel_confirm') }</h3>
           </Grid>
           <Grid item lg={12} xs={12}>
             <LeftOrderColumn>
@@ -150,18 +152,18 @@ const CancelOrder = ({classes, userInfo, id}) => {
                       <Grid item lg={7} xs={12}>
                         <Grid container>
                           <Grid item lg={12} xs={12} className={classes.subTitle}>
-                            Are you sure you want to cancel this order?
+                            { t('order:message.order_cancel_confirmation') }
                           </Grid>
                           <Grid item lg={12} xs={12} className={classes.subTitle}>
-                            Please select a reason for cancelation
+                            { t('order:message.order_cancelation_reason') }
                           </Grid>
                           <Grid item lg={12} xs={12}>
                             <ActionForm 
                               classes={{root: classes.formRoot}}
                               onFormChange={handleFormChange}
                               entryForm={form} 
-                              actionButtonName="Yes"
-                              actionCancelButtonName="No"
+                              actionButtonName={ t('common:yes') }
+                              actionCancelButtonName={ t('common:no') }
                               showTitle={false}
                               onSubmitAction={handleConfirm}
                               onCancel={handleCancel}
@@ -181,8 +183,7 @@ const CancelOrder = ({classes, userInfo, id}) => {
                         )
                       : (
                       <Grid item lg={7} xs={12}>
-                        <div> Unable to find order
-                        </div>
+                        <div>{ t('order:message.no_order_found') }</div>
                       </Grid>
                     )
                   }
@@ -205,5 +206,15 @@ CancelOrder.protoTypes = {
 const mapStateToProps = state => ({
   userInfo: state.user
 }) // add reducer access to props
+
+/**
+ * This section is mandatory for next-18next translation to work, only inside /pages.
+ * Use get ServerSideProps instead of getStaticProps because it's a dinamic route
+ */
+export const getServerSideProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'order', 'footer']),
+  },
+})
 
 export default connect(mapStateToProps)(withStyles(styles)(CancelOrder));

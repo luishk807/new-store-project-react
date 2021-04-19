@@ -12,6 +12,7 @@ import {
   getProductById
 } from '../../api/products';
 import Rate from '../common/Rate/Rate';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   featureBtn: {

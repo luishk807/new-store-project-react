@@ -11,6 +11,7 @@ import { getProducts } from '../../api/products';
 import { getImageBaseOnly, getSortPriceRange } from '../../utils';
 import Rate from '../common/Rate/Rate';
 import ProgressBar from '../common/ProgressBar';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -82,6 +83,7 @@ const ProductScroller = ({classes}) => {
   const [showData, setShowData] = useState(false);
   const [page, setPage] = useState(1);
   const [endData, setEndData] = useState(false);
+  const { t } = useTranslation('home')
 
   const loadProducts = async() => {
     setShowData(false);
@@ -142,7 +144,7 @@ const ProductScroller = ({classes}) => {
    <div className={classes.root}>
       <Grid container className={classes.mainContainer} spacing={1}>
         <Grid item lg={12} xs={12} className={classes.sectionTitle}>
-          Product you might like
+          { t('message.products_you_might_like') }
         </Grid>
         {
           showData && products.map((product, index) => {

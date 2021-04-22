@@ -60,7 +60,6 @@ const Order = ({classes}) => {
   }
 
   const handleDeliveryForm = async(subform) => {
-    console.log("handle", subform)
     if (subform) {
       const confirm = await getOrderByOrderNumber({
         order_number: subform.order,
@@ -71,7 +70,7 @@ const Order = ({classes}) => {
         setSnack({
           severity: 'error',
           open: true,
-          text: t('no_order_found')
+          text: t('message.no_order_found')
         })
       }
       setOrder(confirm);
@@ -102,7 +101,7 @@ const Order = ({classes}) => {
                ) : (
                 <ActionForm 
                     formSection={{
-                      name: t('search_order'),
+                      name: t('message.search_order'),
                     }}
                     actionButtonName={ t('search') }
                     entryForm={form} 
@@ -110,7 +109,7 @@ const Order = ({classes}) => {
                     onSubmitAction={handleDeliveryForm}
                     type="action"
                   >
-                  <p>{ t('order_number_to_find_status') }</p>
+                  <p>{ t('message.order_number_to_find_status') }</p>
                 </ActionForm>
                )
             }

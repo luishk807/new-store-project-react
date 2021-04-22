@@ -14,6 +14,8 @@ import Icon from '../../../components/common/Icons';
 import Typography from '../Typography';
 import loadMain from '../../../redux/reducers'
 import SearchBar from '../SearchBar';
+import { useRouter } from 'next/router'
+import Locale from './Locale';
 
 const styles = (theme) => ({
   root: {
@@ -152,6 +154,7 @@ const styles = (theme) => ({
 
 const Header = ({classes, data, userInfo, loadMain, cart}) => {
   const [openCategory, setOpenCategory] = useState(false);
+  const router = useRouter()
 
   useEffect(() => {
     loadMain()
@@ -200,6 +203,9 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
                     )
                   }
                 </Button>
+              </Grid>
+              <Grid item>
+                <Locale className="d-none d-sm-block" />
               </Grid>
             </Grid>
           </Grid>

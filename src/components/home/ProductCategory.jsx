@@ -3,23 +3,33 @@ import * as T from 'prop-types';
 import { 
   withStyles,
   Grid,
-  List,
-  ListItem,
-  Button,
-  ListItemIcon,
-  ListItemText,
 } from '@material-ui/core';
-import Carousel from 'react-material-ui-carousel'
+import {isMobile} from 'react-device-detect';
+import Slider from "react-slick";
 
-import SweetBox from '../sweetbox';
 import { getAllCategories } from '../../api/categories';
-import ProgressBar from '../common/ProgressBar';
-import Icons from '../common/Icons';
-import SelectorPlan from '../category/SelectorPlain';
+import { getProductByIds } from '../../api/products';
+import SweetBoxProducts from '../sweetbox/Products';
+import ImageBox from './ImageBox';
+
+import {
+  getSweetBoxesByType
+ } from '../../api/sweetbox';
+ import CategorySelector from '../category/Selector';
 
 const styles = (theme) => ({
   root: {
     position: 'relative',
+    background: 'rgba(0,0,0,.04)',
+    paddingBottom: 17,
+    [theme.breakpoints.down('sm')]: {
+      background: 'white',
+      paddingBottom: 5,
+    }
+  },
+  mainContainer: {
+    width: '100%',
+    margin: '0px auto'
   },
   categoryIconSection: {
     [theme.breakpoints.down('md')]: {
@@ -33,7 +43,7 @@ const styles = (theme) => ({
   catContainer: {
     display: 'flex',
     alignItems: 'center',
-    backgroundColor: 'white'
+    backgroundColor: 'transparent'
   },
   icon: {
     width: 60,
@@ -68,6 +78,13 @@ const styles = (theme) => ({
       flexDirection: 'row'
     }
   },
+  sliderMainItem: {
+    // padding: 20,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    padding: '32px 0px',
+  },
   catItem: {
     margin: 5,
     display: 'flex',
@@ -82,42 +99,160 @@ const styles = (theme) => ({
       },
       background: '#f8be15 !important',
     }
+  },
+  sweetContainer: {
+    // margin: '20px 0px',
+    background: 'white',
+    padding: 15
+  },
+  sweetbox: {
+    width: '100%'
+  },
+  sliderStyle: {
+    padding: 50
+  },
+  sliderName: {
+    fontSize: '1.5em',
+    fontWeight: 'bold'
+  },
+  categoryIconSection: {
+    position: 'relative',
+    [theme.breakpoints.down('md')]: {
+      display: 'none',
+    }
+  },
+  categorySelectorItems: {
+    backgroundColor: 'black',
+    width: '100%'
+  },
+  categoryCubeCategoryContainer: {
+    backgroundColor: 'black',
+  },
+  categorySelectorRoot: {
+    backgroundColor: 'transparent',
+    padding: '30px 0px',
+  },
+  imageItem: {
+    padding: '6px 40px',
+    display: 'flex',
+    [theme.breakpoints.down('sm')]: {
+      padding: '6px 15px',
+    }
+  },
+  sweetBoxesItems: {
+    display: 'flex',
   }
 });
 
 const ProductCategory = ({classes}) => {
   const [categories, setCategories] = useState([]);
+  const [sweetBoxes, setSweetBoxes] = useState([]);
   const [showCategories, setShowCategories] = useState(false);
-  const loadCategories = async() => {
-    const gCat = await getAllCategories();
+  const [showSweetBox, setShowSweetBox] = useState(false);
+
+  const loadAll = async() => {
+    const [gCat, gSweeBox] = await Promise.all([
+      getAllCategories(),
+      getSweetBoxesByType(4)
+    ]);
+
     if (gCat) {
       setCategories(gCat)
     }
+
+    if (gSweeBox) {
+      setSweetBoxes([])
+      gSweeBox.forEach(async(sweetbox) => {
+        let item = Object.assign({}, sweetbox);
+        const ids = sweetbox.sweetBoxSweetboxProduct.map(item => item.product);
+        const getProd = await getProductByIds(ids)
+        item.sweetBoxSweetboxProduct = getProd;
+        setSweetBoxes(prev => [
+          ...prev,
+          item
+        ])
+      });   
+
+    }
   }
+
+  useEffect(() => {
+    if (sweetBoxes && sweetBoxes.length) {
+      setShowSweetBox(true);
+    }
+  }, [sweetBoxes])
 
   useEffect(() => {
     setShowCategories(true);
   }, [categories])
 
   useEffect(() => {
-    loadCategories();
+    loadAll();
   }, [])
+
+  const categorySelectorClasses = {
+    cubeItems: classes.categorySelectorItems,
+    root: classes.categorySelectorRoot,
+    cubeCategoryContainer: classes.categoryCubeCategoryContainer
+  }
 
   return (
     <div className={classes.root}>
-      <Grid container>
-        <Grid item lg={6} xs={12}>
-          <SelectorPlan type="button" classes={{
-            cubeContainer: classes.catContainer, 
-            root: classes.catRoot,
-            cubeItems: classes.catItem, 
-            icon: classes.icon, 
-            cubeBtn: classes.catBtn
-          }}/>
-         
+      <Grid container className={classes.mainContainer}>
+        <Grid item lg={2} className={classes.categoryIconSection} >
+          <CategorySelector showTitle={false} classes={{...categorySelectorClasses}} cubeSize="6"/>
         </Grid>
-        <Grid item lg={6} xs={12} className={classes.categoryIconSection} >
-          <SweetBox type={4} plain={false}/>
+        <Grid item lg={6} xs={12} className={classes.imageItem}>
+          <ImageBox name="home-rect" isSlider={true} />
+        </Grid>
+        <Grid item lg={4} xs={12} className={classes.sweetBoxesItems}>
+          <Grid container>
+            <Grid item lg={12} xs={12} className={classes.sliderMainItem}>
+            {
+                showSweetBox && sweetBoxes.map((items, mIndex) => {
+                  const isSingle = items.sweetBoxSweetboxProduct.length === 1;
+                  return (
+                    <Grid container key={mIndex} className={classes.sweetContainer}>
+                      <Grid item lg={12} xs={12} className={classes.sliderName}>
+                        {
+                          items.name
+                        }
+                      </Grid>
+                      <Grid item lg={12} xs={12}  className={!isSingle ? classes.sliderStyle : null}>
+                        {
+                          isSingle ? (
+                            <Grid item lg={12} xs={12}>
+                              <SweetBoxProducts classes={{cardBtn: classes.sweetbox}} isPlain={true} type="single" data={items.sweetBoxSweetboxProduct[0]} />
+                            </Grid>
+                          ) : (
+                            <Slider 
+                              dots={false}
+                              infinite={true}
+                              accessibility={true}
+                              speed={500}
+                              slidesToShow={isMobile ? 1 : 2}
+                              slidesToScroll={1}
+                            >
+                              {
+                                items.sweetBoxSweetboxProduct.map((product, index) => {
+                                  return (
+                                    <Grid key={index} item lg={12} xs={12}>
+                                      <SweetBoxProducts classes={{cardBtn: classes.sweetbox}} key={index} type="plain" data={product} />
+                                    </Grid>
+                                  )
+                                })
+                              }
+                            </Slider>
+                          )
+                        }
+
+                      </Grid>
+                    </Grid>
+                  )
+                })
+            }
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </div>

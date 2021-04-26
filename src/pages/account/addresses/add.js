@@ -44,7 +44,15 @@ const Add = ({classes}) => {
   }
   return (
     <UserLayoutTemplate classes={{root: classes.templateRoot}}>
-      <AddForm classes={{root: classes.formRoot}} ignoreForm={['email', 'note', 'addressB']} userSection={USER_SECTIONS.userAddress} customUrl={`/account/addresses`} entryForm={form} />
+      <AddForm 
+        classes={{root: classes.formRoot}} 
+        ignoreForm={['email', 'note', 'addressB']} 
+        userSection={USER_SECTIONS.userAddress} 
+        customUrl={`/account/addresses`} 
+        cancelUrl={`/account/addresses`} 
+        successUrl={`/account/addresses`} 
+        entryForm={form} 
+      />
     </UserLayoutTemplate>
   );
 }

@@ -51,6 +51,8 @@ const Edit = ({classes}) => {
         <Grid item lg={12}>
           <EditForm  
             customUrl={`/admin/${ADMIN_SECTIONS.user.url}`} 
+            cancelUrl={`/admin/${ADMIN_SECTIONS.user.url}`} 
+            successUrl={`/admin/${ADMIN_SECTIONS.user.url}`} 
             ignoreForm={ignoreEntry} 
             adminSection={ADMIN_SECTIONS.user} 
             id={id} 

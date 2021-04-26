@@ -76,7 +76,7 @@ export const formatFormData = (form) => {
             formData.append('image', data)
           })
         }
-      } else if (FORM_SCHEMA[i] === "imgurl") {
+      } else if (FORM_SCHEMA[i].type === "imgurl") {
         if (form[i] && form[i].length) {
           form[i].forEach((data) => {
             let item = data.values;

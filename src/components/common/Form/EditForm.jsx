@@ -36,7 +36,9 @@ const EditForm = ({
   hideEntry,
   children,
   allowDelete,
-  customUrl = null
+  customUrl = null,
+  cancelUrl = null,
+  successUrl = null
 }) => {
   const router = useRouter()
   const [errors, setErrors] = useState({});
@@ -106,8 +108,8 @@ const EditForm = ({
   }
 
   const handleCancel = () => {
-    if (customUrl) {
-      const url = customUrl ? customUrl : `/account`;
+    if (cancelUrl) {
+      const url = cancelUrl ? cancelUrl : `/`;
       router.push(url);
     } else {
       router.back()
@@ -155,20 +157,18 @@ const EditForm = ({
           delete formSubmit.imageBox.saved
         }
         let imageBox = [];
-        for(const test in formSubmit.imageBox) {
-          imageBox.push(formSubmit.imageBox[test])
+        for(const imgBox in formSubmit.imageBox) {
+          imageBox.push(formSubmit.imageBox[imgBox])
         }
         formSubmit['imageBox'] = imageBox;
         formSubmit['saved'] = imageBoxDelete;
       }
-
       const confirm = await saveItem(section.url, id, formSubmit)
       const resp = handleFormResponse(confirm);
       setSnack(resp);
       if (confirm.data.status) {
         setTimeout(() => {
-          const url = `${customUrl}/${id}`;
-          router.push(url);
+          router.push(successUrl);
         }, 1000);
       }
     }
@@ -331,6 +331,8 @@ EditForm.protoTypes = {
   customUrl: T.string,
   adminSection: T.object, 
   userSection: T.object, 
+  cancelUrl: T.string,
+  successUrl: T.string,
   basicParams: T.object,
   showTitle: T.bool,
   entryForm: T.object,

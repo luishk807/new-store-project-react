@@ -34,6 +34,8 @@ const Add = ({classes}) => {
         adminSection={ADMIN_SECTIONS.paymentOption} 
         entryForm={form}
         customUrl={`/admin/${ADMIN_SECTIONS.paymentOption.url}`}  
+        cancelUrl={`/admin/${ADMIN_SECTIONS.paymentOption.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.paymentOption.url}`} 
       />
     </AdminLayoutTemplate>
   );

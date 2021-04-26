@@ -42,6 +42,8 @@ const Edit = ({classes}) => {
         ignoreForm={ignoreEntry} 
         adminSection={ADMIN_SECTIONS.brand} 
         customUrl={`/admin/${ADMIN_SECTIONS.brand.url}`} 
+        cancelUrl={`/admin/${ADMIN_SECTIONS.brand.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.brand.url}`} 
         id={id} 
         entryForm={form} 
       />

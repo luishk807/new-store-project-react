@@ -8,8 +8,9 @@ import {
   Paper,
   Link,
 } from '@material-ui/core';
+import Slider from "react-slick";
 
-import { getImageBoxesByType } from '../../api/imageBoxes';
+import { getImageBoxesByType, getActiveImageBoxesByKey } from '../../api/imageBoxes';
 
 const styles = (theme) => ({
   root: {
@@ -19,13 +20,13 @@ const styles = (theme) => ({
     padding: 5,
     display: 'inline-block'
   },
-  table: {
-    display: 'table'
-  },
-  row: {
-    display: 'table-row',
-    textAlign: 'center',
-  },
+  // table: {
+  //   display: 'table'
+  // },
+  // row: {
+  //   display: 'table-row',
+  //   textAlign: 'center',
+  // },
   rowTitle: {
     display: 'flex',
     alignItems: 'center',
@@ -62,82 +63,137 @@ const styles = (theme) => ({
   }
 });
 
-const ImageBox = ({classes, type, showTitle = false}) => {
+
+const ImageBox = ({classes, name, showTitle = false, isSlider = false}) => {
   const imageUrl = `${process.env.IMAGE_URL}/slideImages`;
   const [imageBoxes, setImageBoxes] = useState([]);
   const [showData, setShowData] = useState(false);
 
   const loadImageBoxes = async() => {
-    const data = await getImageBoxesByType(type);
+    const data = await getActiveImageBoxesByKey(name);
     if (data) {
       setImageBoxes(data)
       setShowData(true);
     }
   }
 
+  const sliderSetting = {
+    dots: true,
+    infinite: true,
+    accessibility: true,
+    autoplay: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+  };
   useEffect(() => {
     loadImageBoxes();
   }, [showData]);
 
   return showData && (
-    <div className={classes.root}>
-      <div className={classes.table}>
+    <Grid container className={classes.root}>
         {
           showTitle && (
-            <div className={`${classes.row} ${classes.rowTitle}`}>
+            <Grid item lg={12} xs={12} className={`${classes.row} ${classes.rowTitle}`}>
               {
                 imageBoxes.name
               }
-            </div>
+            </Grid>
           )
         }
-        <div className={classes.row}>
+        <Grid item lg={12} xs={12}>
         {
-          imageBoxes.productImages.map((imageBox, index) => {
-            let imageBoxUrl = `${imageUrl}/${imageBox.img_url}`;
-            switch(type) {
-              case 2: {
-                return (
-                  <div key={index} className={classes.columnMiniImageBox}>
-                    <Link href={imageBox.url}>
-                      <img className='img-fluid' src={imageBoxUrl} alt=""/>
-                    </Link>
-                  </div>
-                )
-                break;
+          isSlider ? (
+            <Slider {...sliderSetting}>
+              {
+                imageBoxes.productImages.map((imageBox, index) => {
+                  const imageBoxUrl = `${imageUrl}/${imageBox.img_url}`;
+                  const sweetBoxType = Number(imageBoxes.imageBoxType);
+                  switch(sweetBoxType) {
+                    case 2:
+                    case 1: {
+                      return (
+                        <div key={index} className={classes.columnMiniImageBox}>
+                          <Link href={imageBox.url}>
+                            <img className='img-fluid' src={imageBoxUrl} alt=""/>
+                          </Link>
+                        </div>
+                      )
+                      break;
+                    }
+                    case 3: {
+                      return (
+                        <div key={index} className={classes.columnBrandImageBox}>
+                          <Link href={imageBox.url}>
+                            <img className='img-fluid' src={imageBoxUrl} alt=""/>
+                          </Link>
+                        </div>
+                      )
+                      break;
+                    }
+                    case 4: {
+                      return (
+                        <div key={index} className={classes.columnStoreImageBox}>
+                          <Link href={imageBox.url}>
+                            <img className='img-fluid' src={imageBoxUrl} alt=""/>
+                          </Link>
+                        </div>
+                      )
+                      break;
+                    }
+                  }
+                })
               }
-              case 3: {
-                return (
-                  <div key={index} className={classes.columnBrandImageBox}>
-                    <Link href={imageBox.url}>
-                      <img className='img-fluid' src={imageBoxUrl} alt=""/>
-                    </Link>
-                  </div>
-                )
-                break;
+            </Slider>
+          ) : (
+            imageBoxes.productImages.map((imageBox, index) => {
+              const imageBoxUrl = `${imageUrl}/${imageBox.img_url}`;
+              const sweetBoxType = Number(imageBoxes.imageBoxType);
+              switch(sweetBoxType) {
+                case 2:
+                case 1: {
+                  return (
+                    <Grid key={index} className={classes.columnMiniImageBox}>
+                      <Link href={imageBox.url}>
+                        <img className='img-fluid' src={imageBoxUrl} alt=""/>
+                      </Link>
+                    </Grid>
+                  )
+                  break;
+                }
+                case 3: {
+                  return (
+                    <Grid key={index} className={classes.columnBrandImageBox}>
+                      <Link href={imageBox.url}>
+                        <img className='img-fluid' src={imageBoxUrl} alt=""/>
+                      </Link>
+                    </Grid>
+                  )
+                  break;
+                }
+                case 4: {
+                  return (
+                    <Grid key={index} className={classes.columnStoreImageBox}>
+                      <Link href={imageBox.url}>
+                        <img className='img-fluid' src={imageBoxUrl} alt=""/>
+                      </Link>
+                    </Grid>
+                  )
+                  break;
+                }
               }
-              case 4: {
-                return (
-                  <div key={index} className={classes.columnStoreImageBox}>
-                    <Link href={imageBox.url}>
-                      <img className='img-fluid' src={imageBoxUrl} alt=""/>
-                    </Link>
-                  </div>
-                )
-                break;
-              }
-            }
-          })
+            })
+          )
         }
-        </div>
-      </div>
-    </div>
+        </Grid>
+    </Grid>
   );
 }
 
 ImageBox.protoTypes = {
   classes: T.object,
-  type: T.number,
+  isSlider: T.bool,
+  name: T.string,
   showTitle: T.bool,
 }
 

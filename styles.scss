@@ -38,6 +38,12 @@ div {
   scrollbar-width: thin;
 }
 
+/* react-slick */
+.slick-next:before, .slick-prev:before {
+  color: $main_color;
+}
+/* end of react slick */
+
 div::-webkit-scrollbar-track {
   background-color: #F5F5F5;
 }

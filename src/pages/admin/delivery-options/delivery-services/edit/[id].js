@@ -53,6 +53,8 @@ const Edit = ({classes}) => {
           <EditForm  
             id={router.query.id} 
             customUrl={`/admin/delivery-options/delivery-services/${deliveryOptionService.deliveryOptionId}`}  
+            cancelUrl={`/admin/delivery-options/delivery-services/${deliveryOptionService.deliveryOptionId}`}  
+            successUrl={`/admin/delivery-options/delivery-services/${deliveryOptionService.deliveryOptionId}`}  
             adminSection={ADMIN_SECTIONS.deliveryOptionService} 
             entryForm={form}
             basicParams={basicParams}

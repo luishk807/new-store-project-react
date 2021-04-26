@@ -257,7 +257,7 @@ const Index = () => {
     <AdminLayoutTemplate>
       <Grid container className={classes.headerContainer}>
         <Grid item lg={9} xs={8}>
-          <h3><Button href={`/admin/sweet-boxes/${sweetbox.id}`}><Icons classes={{icon: classes.icon}} name="backArrow" /></Button>Products for {sweetbox.name}</h3>
+          <h3><Button href={`/admin/sweet-boxes/${router.query.id}`}><Icons classes={{icon: classes.icon}} name="backArrow" /></Button>Products for {sweetbox.name}</h3>
         </Grid>
         <Grid item lg={3} xs={4} className={classes.headerBtn}>
           <Button className={`mainButton`} onClick={submitSweetBox}>Add To {sweetbox.name}</Button>

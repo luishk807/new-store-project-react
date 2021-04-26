@@ -36,6 +36,8 @@ const Edit = ({classes}) => {
       <EditForm 
         adminSection={ADMIN_SECTIONS.color} 
         customUrl={`/admin/${ADMIN_SECTIONS.color.url}`} 
+        cancelUrl={`/admin/${ADMIN_SECTIONS.color.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.color.url}`} 
         id={id} 
         entryForm={form} 
       />

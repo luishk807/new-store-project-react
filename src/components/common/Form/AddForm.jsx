@@ -41,7 +41,9 @@ const AddForm = ({
   fileLimit,
   ignoreForm, 
   children, 
-  customUrl = null
+  customUrl = null,
+  cancelUrl = null,
+  successUrl = null
 }) => {
   const router = useRouter()
   const [section, setSection] = useState({});
@@ -100,7 +102,7 @@ const AddForm = ({
   }
 
   const handleCancel = () => {
-    const url =customUrl ? customUrl : `/${section.url}`
+    const url = cancelUrl ? cancelUrl : `/${section.url}`
     setTimeout(()=>{
       router.push(url);
     }, 1000)
@@ -140,7 +142,7 @@ const AddForm = ({
       setSnack(resp);
       if (confirm.data.status) {
         setTimeout(() => {
-          handleCancel() 
+          router.push(successUrl);
         }, 1000);
       }
     }
@@ -282,6 +284,8 @@ AddForm.protoTypes = {
   adminSection: T.object,
   userSection: T.object,
   entryForm: T.object,
+  cancelUrl: T.string,
+  successUrl: T.string,
   title: T.string,
   fileLimit: T.bool,
   showTitle: T.bool,

@@ -42,6 +42,8 @@ const Edit = ({classes}) => {
       <EditForm 
         adminSection={ADMIN_SECTIONS.deliveryServiceCost} 
         customUrl={`/admin/${ADMIN_SECTIONS.deliveryServiceCost.url}`} 
+        cancelUrl={`/admin/${ADMIN_SECTIONS.deliveryServiceCost.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.deliveryServiceCost.url}`} 
         id={id} 
         ignoreForm={ignoreEntry} 
         entryForm={form} 

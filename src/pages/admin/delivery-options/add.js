@@ -34,7 +34,9 @@ const Add = ({classes}) => {
         ignoreForm={ignoreEntry}
         adminSection={ADMIN_SECTIONS.deliveryOption} 
         entryForm={form}
-        customUrl={`/admin/${ADMIN_SECTIONS.deliveryOption.url}`}  
+        customUrl={`/admin/${ADMIN_SECTIONS.deliveryOption.url}`} 
+        cancelUrl={`/admin/${ADMIN_SECTIONS.deliveryOption.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.deliveryOption.url}`} 
       />
     </AdminLayoutTemplate>
   );

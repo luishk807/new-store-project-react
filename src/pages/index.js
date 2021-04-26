@@ -62,19 +62,18 @@ const styles = (theme) => ({
 class ClassComponent extends Component {
   render () {
     const { classes } = this.props;
-    
     return (
       <LayoutTemplate classes={{root: classes.layoutClass}}>
         <Grid container className="main-section">
-          {/* <Grid item lg={12} xs={12}>
+          <Grid item lg={12} xs={12}>
             <ProductCategory />
-          </Grid> */}
+          </Grid>
           <Grid item lg={12} xs={12}>
             <SweetBox type={1} />
-            <ImageBox type={2} />
-            <ImageBox type={4} showTitle={true} />
+            <ImageBox name="mini-slider" />
+            <ImageBox name="main-slider" showTitle={true} />
             <SweetBox type={2} />
-            <ImageBox type={3} showTitle={true} />
+            <ImageBox name="marcas" showTitle={true} />
             <ProductScroller />
           </Grid>
         </Grid>

@@ -64,7 +64,9 @@ const Edit = ({classes}) => {
             title={`discount ${discount.name}`}
             entryForm={form} 
             ignoreForm={ignoreForm}
-            customUrl={`/admin/products/discounts/${discount.productId}`}  
+            customUrl={`/admin/products/discounts/${discount.productId}`}
+            cancelUrl={`/admin/products/discounts/${discount.productId}`}
+            successUrl={`/admin/products/discounts/${discount.productId}`}  
           />
         ) : (
           <ProgressBar />

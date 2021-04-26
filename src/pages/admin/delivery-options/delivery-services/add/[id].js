@@ -60,7 +60,9 @@ const Add = ({classes}) => {
             basicParams={basicParams}
             hideEntry={hideEntry}
             ignoreForm={ignoreForm}
-            customUrl={`/admin/delivery-options/delivery-services/${deliveryOption.id}`}  
+            customUrl={`/admin/delivery-options/delivery-services/${deliveryOption.id}`} 
+            cancelUrl={`/admin/delivery-options/delivery-services/${deliveryOption.id}`} 
+            successUrl={`/admin/delivery-options/delivery-services/${deliveryOption.id}`}  
           />
         ) : (
           <ProgressBar />

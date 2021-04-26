@@ -56,7 +56,13 @@ const Index = ({classes, data}) => {
   const ignoreEntry=['product'];
 
   return showData && (
-    <AddForm userSection={MAIN_SECTIONS.rate} customUrl={`/product/${id}`} ignoreForm={ignoreEntry} entryForm={form} >
+    <AddForm 
+      userSection={MAIN_SECTIONS.rate} 
+      customUrl={`/product/${id}`} 
+      cancelUrl={`/product/${id}`} 
+      successUrl={`/product/${id}`} 
+      ignoreForm={ignoreEntry} 
+      entryForm={form} >
       <Grid container>
         <Grid item lg={3} xs={12} align="center">
           <img src={`${images[0].original}`}  className={`img-fluid`} />

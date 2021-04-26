@@ -79,10 +79,12 @@ const styles = (theme) => ({
     backgroundColor: 'rgba(0,0,0,.03)',
     overflowY: 'auto',
     width: '30%',
+    paddingBottom: 50,
   },
   productsContainer: {
     overflowY: 'auto',
     width: '70%',
+    paddingBottom: 50,
   },
   iconContainer: {
     display: 'flex',

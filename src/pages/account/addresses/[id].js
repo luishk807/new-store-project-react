@@ -48,7 +48,13 @@ const Edit = ({classes}) => {
 
   return (
     <UserLayoutTemplate>
-      <EditForm ignoreForm={['email', 'note', 'addressB']} classes={{root: classes.formRoot}} userSection={USER_SECTIONS.userAddress} id={id} entryForm={form} />
+      <EditForm 
+        ignoreForm={['email', 'note', 'addressB']} 
+        classes={{root: classes.formRoot}} 
+        userSection={USER_SECTIONS.userAddress} 
+        id={id} 
+        entryForm={form} 
+      />
     </UserLayoutTemplate>
   );
 }

@@ -29,6 +29,7 @@ const Edit = ({classes}) => {
     name: null,
     status: null,
     imageBoxType: null,
+    key: null,
     imageBox: [
       {
         url: '',
@@ -47,6 +48,8 @@ const Edit = ({classes}) => {
         fileLimit={true}
         adminSection={ADMIN_SECTIONS.imageBox} 
         customUrl={`/admin/${ADMIN_SECTIONS.imageBox.url}`} 
+        cancelUrl={`/admin/${ADMIN_SECTIONS.imageBox.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.imageBox.url}`} 
         id={id} 
         entryForm={form} 
       />

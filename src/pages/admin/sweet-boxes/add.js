@@ -25,6 +25,7 @@ const Add = ({classes}) => {
     name: null,
     sweetBoxType: null,
     key: null,
+    maxItems: null
   }
 
   return (

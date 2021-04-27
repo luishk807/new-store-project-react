@@ -133,6 +133,16 @@ const Index = () => {
     } else {
       value =  event.target.checked;
     }
+
+    if (value && checkedProducts && sweetbox && checkedProducts.length >= sweetbox.maxItems) {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `ERROR: Maximum number of items reached. Only ${sweetbox.maxItems} items allowed`,
+      })
+      return;
+    }
+
     if (checkedProducts && checkedProducts.length) 
     {
       setShowProductBoxes(false);
@@ -260,7 +270,7 @@ const Index = () => {
           <h3><Button href={`/admin/sweet-boxes/${router.query.id}`}><Icons classes={{icon: classes.icon}} name="backArrow" /></Button>Products for {sweetbox.name}</h3>
         </Grid>
         <Grid item lg={3} xs={4} className={classes.headerBtn}>
-          <Button className={`mainButton`} onClick={submitSweetBox}>Add To {sweetbox.name}</Button>
+          <Button className={`mainButton`} onClick={submitSweetBox}>Save To {sweetbox.name}</Button>
         </Grid>
       </Grid>
       {

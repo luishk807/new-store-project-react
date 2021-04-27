@@ -492,6 +492,10 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.number,
     label: 'Total',
   },
+  maxItems: {
+    type: FORM_TYPE.number,
+    label: 'Max items',
+  },
   billingCost: {
     type: FORM_TYPE.number,
     label: 'Billing Cost',

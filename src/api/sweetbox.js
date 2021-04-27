@@ -38,5 +38,5 @@ export const getSweetBoxById = async(id) => {
   const data = {
     id: id
   }
-  return Api.get(`sweet-boxes`, data);
+  return Api.get(`sweet-boxes/${id}`);
 }

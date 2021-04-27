@@ -30,6 +30,7 @@ const Edit = ({classes}) => {
     sweetBoxType: null,
     products: null,
     key: null,
+    maxItems: null
   }
   const ignoreEntry=['products'];
 

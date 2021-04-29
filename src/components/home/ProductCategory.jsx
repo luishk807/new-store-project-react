@@ -79,7 +79,6 @@ const styles = (theme) => ({
     }
   },
   sliderMainItem: {
-    // padding: 20,
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'space-between',
@@ -101,19 +100,18 @@ const styles = (theme) => ({
     }
   },
   sweetContainer: {
-    // margin: '20px 0px',
     background: 'white',
-    padding: 15
+    [theme.breakpoints.down('sm')]: {
+      padding: '0px !important',
+    }
   },
   sweetbox: {
     width: '100%'
   },
-  sliderStyle: {
-    padding: 50
-  },
   sliderName: {
     fontSize: '1.5em',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    padding: 15,
   },
   categoryIconSection: {
     position: 'relative',
@@ -127,13 +125,14 @@ const styles = (theme) => ({
   },
   categoryCubeCategoryContainer: {
     backgroundColor: 'black',
+    height: '100%',
   },
   categorySelectorRoot: {
     backgroundColor: 'transparent',
-    padding: '30px 0px',
+    padding: '32px 0px 35px',
   },
   imageItem: {
-    padding: '6px 40px',
+    padding: '5px 10px',
     display: 'flex',
     [theme.breakpoints.down('sm')]: {
       padding: '6px 15px',
@@ -165,12 +164,14 @@ const ProductCategory = ({classes}) => {
       gSweeBox.forEach(async(sweetbox) => {
         let item = Object.assign({}, sweetbox);
         const ids = sweetbox.sweetBoxSweetboxProduct.map(item => item.product);
-        const getProd = await getProductByIds(ids)
-        item.sweetBoxSweetboxProduct = getProd;
-        setSweetBoxes(prev => [
-          ...prev,
-          item
-        ])
+        if (ids && ids.length) {
+          const getProd = await getProductByIds(ids)
+          item.sweetBoxSweetboxProduct = getProd;
+          setSweetBoxes(prev => [
+            ...prev,
+            item
+          ])
+        }
       });   
 
     }
@@ -199,7 +200,7 @@ const ProductCategory = ({classes}) => {
   return (
     <div className={classes.root}>
       <Grid container className={classes.mainContainer}>
-        <Grid item lg={2} className={classes.categoryIconSection} >
+        <Grid item lg={2} md={2} className={classes.categoryIconSection} >
           <CategorySelector showTitle={false} classes={{...categorySelectorClasses}} cubeSize="6"/>
         </Grid>
         <Grid item lg={6} xs={12} className={classes.imageItem}>
@@ -218,10 +219,10 @@ const ProductCategory = ({classes}) => {
                           items.name
                         }
                       </Grid>
-                      <Grid item lg={12} xs={12}  className={!isSingle ? classes.sliderStyle : null}>
+                      <Grid item lg={12} md={5} xs={12}  className={!isSingle ? `home-banner-slider`: null}>
                         {
                           isSingle ? (
-                            <Grid item lg={12} xs={12}>
+                            <Grid item lg={12} xs={12} className={`home-banner-single`}>
                               <SweetBoxProducts classes={{cardBtn: classes.sweetbox}} isPlain={true} type="single" data={items.sweetBoxSweetboxProduct[0]} />
                             </Grid>
                           ) : (
@@ -231,7 +232,8 @@ const ProductCategory = ({classes}) => {
                               accessibility={true}
                               speed={500}
                               slidesToShow={isMobile ? 1 : 2}
-                              slidesToScroll={1}
+                              slidesToScroll={1} 
+                              adaptiveHeight={true}
                             >
                               {
                                 items.sweetBoxSweetboxProduct.map((product, index) => {

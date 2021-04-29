@@ -9,6 +9,7 @@ import {
   Link,
 } from '@material-ui/core';
 import Slider from "react-slick";
+import {isMobile} from 'react-device-detect';
 
 import { getImageBoxesByType, getActiveImageBoxesByKey } from '../../api/imageBoxes';
 
@@ -60,6 +61,14 @@ const styles = (theme) => ({
       width: '30%',
       padding: 10,
     }
+  },
+  sliderItem: {
+    height: '100%',
+  },
+  sliderClass: {
+    '& li button:before': {
+      fontSize: '12px'
+    }
   }
 });
 
@@ -85,6 +94,9 @@ const ImageBox = ({classes, name, showTitle = false, isSlider = false}) => {
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    arrows: false,
+    adaptiveHeight: true,
+    className: classes.sliderClass
   };
   useEffect(() => {
     loadImageBoxes();
@@ -101,7 +113,7 @@ const ImageBox = ({classes, name, showTitle = false, isSlider = false}) => {
             </Grid>
           )
         }
-        <Grid item lg={12} xs={12}>
+        <Grid item lg={12} xs={12} className={classes.sliderItem}>
         {
           isSlider ? (
             <Slider {...sliderSetting}>

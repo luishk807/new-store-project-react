@@ -13,7 +13,8 @@ const useStyles = makeStyles(theme => ({
         width: 40,
         height: 40,
         fill: 'white',
-        border: 'none'
+        border: 'none',
+        padding: 0,
     }
 }));
 

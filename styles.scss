@@ -78,6 +78,12 @@ div::-moz-scrollbar-thumb {
   .main-section {
     padding: 0px 10px 0px;
   }
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+  .home-banner-single {
+    padding: 0px;
+  }
 }
 /* Extra Small Devices, Phones */ 
 @media only screen and (min-width : 480px) {
@@ -87,11 +93,20 @@ div::-moz-scrollbar-thumb {
   .main-section {
     padding: 0px 10px 0px;
   }
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+  .home-banner-single {
+    padding: 0px;
+  }
 }
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
   body {
     margin-bottom: $stickyFooterLimitMobile; /* Margin bottom by footer height */
+  }
+  .home-banner-slider {
+    padding: 10px 50px;
   }
 }
 /* Medium Devices, Desktops */
@@ -99,13 +114,47 @@ div::-moz-scrollbar-thumb {
   body {
     margin-bottom: $stickyFooterLimit; /* Margin bottom by footer height */
   }
+  .home-banner-slider {
+    padding: 50px;
+  }
+  .home-banner-single {
+    padding: 20px;
+  }
 }
 /* Large Devices, Wide Screens */
 @media only screen and (min-width : 1200px) {
   body {
     margin-bottom: $stickyFooterLimit; /* Margin bottom by footer height */
   }
+  .home-banner-slider {
+    padding: 50px;
+  }
+  .home-banner-single {
+    padding: 20px;
+  }
 }
+
+/* For laptops 1024 Resolution */  
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) { 
+  /* STYLES GO HERE */
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+  .home-banner-single {
+    padding: 5px;
+  }
+}  
+
+/* For laptops 1366 Resolution */  
+@media only screen and (min-width: 1030px) and (max-width: 1366px) { 
+  /* STYLES GO HERE */
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+  .home-banner-single {
+    padding: 5px;
+  }
+}  
 
 a:hover {
   text-decoration: none;

@@ -20,6 +20,8 @@ import ProgressBar from '../../../components/common/ProgressBar';
 import { loadMainOptions, validateForm, handleFormResponse } from '../../../utils/form';
 import { getOrderById, saveOrderStatus } from '../../../api/orders';
 import OrderActivity from '../../../components/order/OrderActivity';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -68,6 +70,7 @@ const Edit = ({classes}) => {
     open: false,
     text: '',
   });
+  const { t } = useTranslation(['common', 'order'])
 
   const formOnChange = (evt, field) => {
     setForm({
@@ -178,10 +181,10 @@ const Edit = ({classes}) => {
                   </FormControl>
               </Grid>
               <Grid item lg={6} xs={6} className={classes.formInput}>
-                <Button onClick={handleCancel} className={`mainButton`}>Back</Button>
+                <Button onClick={handleCancel} className={`mainButton`}>{ t('common:back') }</Button>
               </Grid>
               <Grid item lg={6} xs={6} className={classes.formInput}>
-                <Button className={`mainButton`} onClick={handleSubmit}>Save Order</Button>
+                <Button className={`mainButton`} onClick={handleSubmit}>{ t('order:save_order') }</Button>
               </Grid>
             </Grid>
           ) : (
@@ -198,5 +201,15 @@ const Edit = ({classes}) => {
 Edit.protoTypes = {
   classes: T.object
 }
+
+/**
+ * This section is mandatory for next-18next translation to work, only inside /pages.
+ * Use get ServerSideProps instead of getStaticProps because it's a dinamic route
+ */
+export const getServerSideProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'order', 'footer']),
+  },
+})
 
 export default withStyles(styles)(Edit);

@@ -137,7 +137,7 @@ Login.protoTypes = {
 /** This section is mandatory for next-18next translation to work */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['checkout', 'footer']),
+    ...await serverSideTranslations(locale, ['common', 'checkout', 'footer']),
   },
 })
 

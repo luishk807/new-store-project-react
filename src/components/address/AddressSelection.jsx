@@ -19,6 +19,7 @@ import ActionForm from '../common/Form/Action/Add';
 import RadioBox from '../common/RadioBox';
 import { defaultCountry } from '../../../config';
 import { finished } from 'stream';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -67,6 +68,7 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
     open: false,
     text: '',
   });
+  const { t } = useTranslation('common')
 
 
   const changeContent = async(action) => {
@@ -148,11 +150,11 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
         return (
           <Grid container className={classes.headerContainer}>
             <Grid item lg={9} xs={9} className={classes.headerTitleItem}>
-                Direccion de entrega
+              { t('shipping_address') }
             </Grid>
             <Grid item lg={3} xs={3} className={classes.headerBtnItem}>
               <Button onClick={() => changeContent(null)} className={`mainButton`}>
-                  Cancel
+              { t('cancel') }
               </Button>
             </Grid>
             <Grid item lg={12} xs={12} className={classes.addressBox}>
@@ -160,7 +162,7 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
             </Grid>
             <Grid item lg={5} xs={12} className={classes.headerBtnItem}>
               <Button onClick={() => changeContent('add')} className={`mainButton`}>
-                  Add
+                { t('add') }
               </Button>
             </Grid>
           </Grid>
@@ -190,11 +192,11 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
         return (
           <Grid container className={classes.headerContainer}>
             <Grid item lg={9} xs={9} className={classes.headerTitleItem}>
-                Direccion de entrega
+                { t('shipping_address') }
             </Grid>
             <Grid item lg={3} xs={3} className={classes.headerBtnItem}>
               <Button onClick={() => changeContent('list')} className={`mainButton`}>
-                  Change
+                { t('change') }
               </Button>
             </Grid>
             {

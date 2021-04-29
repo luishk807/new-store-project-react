@@ -31,6 +31,10 @@
     "yes": "Sí",
     "no": "No",
     "checkout": "Pagar",
+    "change": "Cambiar",
+    "shipping_address": "Dirección de entrega",
+    "cancel": "Cancelar",
+    "add": "Añadir",
 
     "message": {
         "you_saved": "Ahorraste",

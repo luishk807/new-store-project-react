@@ -31,6 +31,10 @@
     "yes": "Yes",
     "no": "No",
     "checkout": "Checkout",
+    "change": "Change",
+    "shipping_address": "Shipping Address",
+    "cancel": "Cancel",
+    "add": "Add",
 
     "message": {
         "you_saved": "You Saved",

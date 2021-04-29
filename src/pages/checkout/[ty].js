@@ -26,6 +26,8 @@ import { processOrderByUser } from '../../api/orders';
 import { getDeliveryOptions } from '../../api/deliveryOptions';
 import { getActivePaymentOptions } from '../../api/paymentOptions';
 import { emptyCart } from '../../redux/actions/main'
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -136,6 +138,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     open: false,
     text: '',
   });
+  const { t } = useTranslation('checkout')
 
   const handleDeliveryForm = (getForm) => {
     setForm({
@@ -590,7 +593,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                               showPlaceOrderLoader ? (
                                 <CircularProgress color='inherit' />
                               ) : (
-                                `Place your order`
+                                t('place_your_order')
                               )
                             }
                         </Button>
@@ -648,4 +651,15 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   emptyCart: emptyCart
 }
+
+/**
+ * This section is mandatory for next-18next translation to work, only inside /pages.
+ * Use get ServerSideProps instead of getStaticProps because it's a dinamic route
+ */
+export const getServerSideProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'checkout', 'footer']),
+  },
+})
+
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Home));

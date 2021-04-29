@@ -214,7 +214,11 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                           <Grid container>
                             <Grid item lg={12} xs={12}>
                               <Typography align="left" component="h4" className={classes.cardDescTitle}>
-                                <Link href={`/product/${item.productItemProduct.id}`}>{item.productItemProduct.name}</Link>
+                                { // If there is an productItemProduct, or it will crash page
+                                  item.productItemProduct ? (
+                                  <Link href={`/product/${item.productItemProduct.id}`}>{item.productItemProduct.name}</Link>
+                                ) : <></>
+                                }
                               </Typography>
                             </Grid>
                             {
@@ -250,16 +254,24 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                 Sku: {item.sku}
                               </Typography>
                             </Grid>
-                            <Grid item lg={12} xs={12} className={classes.cartPrice}>
-                              <Typography align="left" component="p">
-                                { t('color') }: {item.productItemColor.name}
-                              </Typography>
-                            </Grid>
-                            <Grid item lg={12} xs={12} className={classes.cartPrice}>
-                              <Typography align="left" component="p">
-                                { t('size') }: {item.productItemSize.name}
-                              </Typography>
-                            </Grid>
+                            {
+                              item.productItemColor ? (
+                              <Grid item lg={12} xs={12} className={classes.cartPrice}>
+                                <Typography align="left" component="p">
+                                  { t('color') }: {item.productItemColor.name}
+                                </Typography>
+                              </Grid>
+                              ) : <></>
+                            }
+                            {
+                              item.productItemSize ? (
+                                <Grid item lg={12} xs={12} className={classes.cartPrice}>
+                                  <Typography align="left" component="p">
+                                    { t('size') }: {item.productItemSize.name}
+                                  </Typography>
+                                </Grid>
+                              ) : <></>
+                            }
                             {
                               item.discount && (
                                 <Grid item lg={12} xs={12}>

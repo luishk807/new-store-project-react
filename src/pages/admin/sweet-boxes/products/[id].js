@@ -134,7 +134,7 @@ const Index = () => {
       value =  event.target.checked;
     }
 
-    if (value && checkedProducts && sweetbox && checkedProducts.length >= sweetbox.maxItems) {
+    if (value && sweetbox.maxItems && checkedProducts && sweetbox && checkedProducts.length >= sweetbox.maxItems) {
       setSnack({
         severity: 'error',
         open: true,
@@ -151,15 +151,7 @@ const Index = () => {
       if (itemFound > -1 && !value) {
         items.splice(itemFound, 1);
       } else if (itemFound === -1 && value) { 
-        if (checkedProducts.length > 8) {
-          setSnack({
-            severity: 'error',
-            open: true,
-            text: `You can only add 9 items`,
-          })
-        } else {
-          items.push(prod.id);
-        }
+        items.push(prod.id);
       }
       setCheckedProducts(items);
    } else {

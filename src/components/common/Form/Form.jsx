@@ -552,6 +552,9 @@ const Form = ({
                   className={classes.whiteBackground}
                   name={field}
                   options={formOptions[field]}
+                  onChange={(e, value) => {
+                    formOnChange(null, { name: field, value: value})
+                  }}
                   getOptionLabel={(option) => option.name}
                   value={fields[field]}
                   renderOption={(option, { selected }) => (

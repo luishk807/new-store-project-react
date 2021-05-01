@@ -59,6 +59,9 @@ export const getDeliveryInfo = (order) => {
     if (isNull(order.shipping_phone)) {
       info.push(`Phone: ${order.shipping_phone}`);
     }
+    if (isNull(order.shipping_note)) {
+      info.push(`Note: ${order.shipping_note}`);
+    }
     delivery = {
       'title': 'Shipping Address',
       'info': info

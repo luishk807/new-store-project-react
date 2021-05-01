@@ -95,6 +95,8 @@ import PaymentIcon from '@material-ui/icons/Payment';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
 import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
+import Christmas from '../../../public/images/svg/categories/christmas.svg';
+import Others from '../../../public/images/svg/categories/others.svg';
 
 import Typography from './Typography';
 
@@ -110,6 +112,12 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'special':
         return <Special className={classes.icon}/>
+      break;
+      case 'christmas':
+        return <Christmas className={classes.icon}/>
+      break;
+      case 'others':
+        return <Others className={classes.icon}/>
       break;
       case 'success':
         return <CheckCircleOutlineIcon className={classes.icon}/>

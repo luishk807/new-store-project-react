@@ -22,6 +22,18 @@ export const CATEGORY_ICONS = [
     value: 'special',
   },
   {
+    name: 'Hogar',
+    value: 'home',
+  },
+  {
+    name: 'Otros',
+    value: 'others',
+  },
+  {
+    name: 'Navidad',
+    value: 'christmas',
+  },
+  {
     name: 'Manualidades',
     value: 'manualidades',
   },

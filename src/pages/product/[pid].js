@@ -29,6 +29,8 @@ import Snackbar from '../../components/common/Snackbar';
 import QuantitySelectorB from '../../components/common/QuantitySelectorB';
 import { getItemById } from '../../api';
 import { getProductById } from '../../api/products';
+import { getSizesByProductId } from '../../api/sizes';
+import { getColorsByProductId } from '../../api/productColors';
 import { getProductItemById } from '../../api/productItems';
 import ProgressBar from '../../components/common/ProgressBar';
 import WishListIcon from '../../components/common/WishListIcon';
@@ -206,6 +208,7 @@ const styles = (theme) => ({
     }
   },
   productSizeLinkDisabled: {
+    textAlign: 'center',
     display: 'inline-block',
     color: 'rgba(0,0,0,.1)',
     cursor: 'not-allowed',
@@ -229,18 +232,22 @@ const styles = (theme) => ({
 const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const router = useRouter()
   const id = router.query.pid;
+  const [showData, setShowData] = useState(false);
+  const [showDiscount, setShowDiscount] = useState(false);
+  const [showColors, setShowColors] = useState(false);
+  const [showSizes, setShowSizes] = useState(false);
+  const [showProduct, setShowProduct] = useState(false);
   const [forceRefresh, setForceRefresh] = useState(false);
   const [images, setImages] = useState({});
-  const [productInfo, setProductInfo] = useState({});
-  const [showData, setShowData] = useState(false);
+  const [productInfo, setProductInfo] = useState(null);
   const [discountHtml, setDiscountHtml] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
-  const [showDiscount, setShowDiscount] = useState(false);
   const [selectedSize, setSelectedSize] = useState(null);
   const [sizeBlocks, setSizeBlock] = useState(null);
   const [dealPrice, setDealPrice] = useState(0);
   const [selectedProductItem, setSelectedProductItem] = useState({});
   const [colors, setColors] = useState(null)
+  const [sizes, setSizes] = useState(null)
   const [outOfStock, setOutofStock] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -250,9 +257,11 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const { t } = useTranslation(['common', 'product'])
 
   const handQuantitySelect = async(resp) => {
-      const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem, resp.value);
-      setDealPrice(getDiscountItem.retailPrice);
-      setProductItem(getDiscountItem);
+      if (Object.keys(selectedProductItem).length) {
+        const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem, resp.value);
+        setDealPrice(getDiscountItem.retailPrice);
+        setProductItem(getDiscountItem);
+      }
   };
 
   const setProductItem = async(item) => {
@@ -283,11 +292,17 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         });
       } else {
         imgs.push({
-          original: `${noImageUrl.img}`,
-          thumbnail: `${noImageUrl.img}`,
+          original: `${noImageUrl.svg}`,
+          thumbnail: `${noImageUrl.svg}`,
         })
       }
 
+      setImages(imgs);
+    } else {
+      imgs.push({
+        original: `${noImageUrl.svg}`,
+        thumbnail: `${noImageUrl.svg}`,
+      });
       setImages(imgs);
     }
   }
@@ -327,12 +342,12 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   const handleDefaultSize = () => {
-    if (productInfo && selectedColor) {
+    if (showData && selectedColor) {
       const items = productInfo.productProductItems;
       if (items && items.length) {
         const getItem = items.filter(item => item.productColor === selectedColor.id)
         if (getItem && getItem.length) {
-          const getSize = productInfo.productSizes.filter(size => size.id === getItem[0].productSize)
+          const getSize = sizes.filter(size => size.id === getItem[0].productSize)
           handleSizeChange(null, getSize[0])
         }
       }
@@ -367,39 +382,42 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
   }
 
-  const createSizeBlock = (color) => {
-    if (showData) {
-      if(productInfo.productSizes && color) {
-        const blocks = productInfo.productSizes.map((size, index) => {
+  const createSizeBlock = (color = null) => {
+    //if (showData) {
+      if(sizes && color) {
+        const blocks = sizes.map((size, index) => {
             const found = productInfo.productProductItems.filter(item => {
               return item.productSize === size.id && item.productColor == color.id;
             })
             if (found && found.length) {
+              const foundPrice = found[0].retailPrice ? `$${found[0].retailPrice}` : `N/A`;
               if (selectedSize && selectedSize.id === size.id) {
                 return (
-                  <a title={`Select ${capitalize(size.name)} for $${found[0].retailPrice}`} key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`$${found[0].retailPrice}`}</span></div></a>
+                  <a title={`Select ${capitalize(size.name)} for ${foundPrice}`} key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`${foundPrice}`}</span></div></a>
                 )
               } else {
                 return (
-                  <a title={`Select ${capitalize(size.name)} for $${found[0].retailPrice}`} href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`$${found[0].retailPrice}`}</span></div></a>
+                  <a title={`Select ${capitalize(size.name)} for ${foundPrice}`} href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`${foundPrice}`}</span></div></a>
                 )
               }
             } else {
               return (
-                <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}{size.retailPrice}</div></a>
+                <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}<br/>{size.retailPrice ? size.retailPrice : `N/A`}</div></a>
               )
             }
         })
         setSizeBlock(blocks);
       } else {
-        const blocks = productInfo.productSizes.map((size, index) => {
-            return (
-              <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}</div></a>
-            )
-        })
-        setSizeBlock(blocks);
+        if (sizes && sizes.length) {
+          const blocks = sizes.map((size, index) => {
+              return (
+                <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}</div></a>
+              )
+          })
+          setSizeBlock(blocks);
+        }
       }
-    }
+    // }
   }
 
   const getDiscountHtml = (product) => {
@@ -426,21 +444,54 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   const loadProductInfo = async() => {
-    const getProductInfo = await getProductById(id)
-    await setProductInfo(getProductInfo);
-    if (getProductInfo.productColors && getProductInfo.productColors.length) {
-      if (getProductInfo.productProductDiscount && getProductInfo.productProductDiscount.length) {
-        setShowDiscount(true)
-      }
-      setColors(getProductInfo.productColors);
+    const [getProductInfo, getProductColor, getProductSizes] = await Promise.all([
+      getProductById(id),
+      getColorsByProductId(id),
+      getSizesByProductId(id)
+    ])
+
+    if (getProductInfo.productProductDiscount && getProductInfo.productProductDiscount.length) {
+      setShowDiscount(true);
       getDiscountHtml(getProductInfo);
-      handleColorChange(null, getProductInfo.productColors[0])
     }
-    setShowData(true);
+
+    if (getProductInfo) {
+      setProductInfo(getProductInfo);
+    }
+
+    if (getProductColor && getProductColor.length) {
+      setColors(getProductColor);
+    }
+
+    if (getProductSizes && getProductSizes.length) {
+      setSizes(getProductSizes);
+    }
   }
   
   useEffect(() => {
-    createSizeBlock(selectedColor);
+    if (sizes && colors) {
+       setShowData(true);
+    }
+  }, [sizes, colors]);
+
+  useEffect(() => {
+    if (colors && colors.length) {
+      handleColorChange(null, colors[0])
+      setShowColors(true)
+    }
+  }, [colors]);
+
+  useEffect(() => {
+    if (sizes && sizes.length) {
+      createSizeBlock();
+      setShowSizes(true)
+    }
+  }, [sizes]);
+
+  useEffect(() => {
+    if (selectedColor || selectedSize) {
+      createSizeBlock(selectedColor);
+    }
   }, [selectedColor, selectedSize]);
 
   useEffect(() => {
@@ -448,15 +499,20 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }, [selectedProductItem]);
 
   useEffect(() => {
+    if (productInfo) {
+      setShowProduct(true);
+    }
+  }, [productInfo]);
+
+  useEffect(() => {
     handleDefaultSize()
-  }, [productInfo, selectedColor]);
+  }, [selectedColor]);
 
   useEffect(()=>{
-
     loadProductInfo();
   }, [id, showData])
 
-  return showData && (
+  return showProduct && (
     <LayoutTemplate>
       <div className={classes.root}>
         <Grid container>
@@ -478,7 +534,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   </Grid>
                   <Grid item lg={12} xs={12}  className={classes.productPriceContainer}>
                     {
-                    selectedProductItem.discount ? (
+                     selectedProductItem.discount ? (
                       <Grid container className={classes.productPriceInContainer}>
                         <Grid item lg={4} xs={4} className={classes.productPrice}>
                           <span>{ t('unit_price') }:</span>
@@ -505,7 +561,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                           <span>{ t('unit_price') }:</span>
                         </Grid>
                         <Grid item lg={8} xs={8}>
-                        < span>&nbsp;${selectedProductItem.retailPrice}</span>
+                        < span>&nbsp;${selectedProductItem.retailPrice ? selectedProductItem.retailPrice : `0.00`}</span>
                         </Grid>
                       </Grid>
                     )
@@ -524,7 +580,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     )
                   }
                   {
-                    colors && (
+                    showColors ? (
                       <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
                         <Grid container>
                           <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('colors') }</Grid>
@@ -539,10 +595,14 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                           </Grid>
                         </Grid>
                       </Grid>
+                    ) : (
+                      <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
+                        No colors available
+                      </Grid>
                     )
                   }
                   {
-                    sizeBlocks && (
+                    showSizes ? (
                       <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
                         <Grid container>
                           <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('sizes') }</Grid>
@@ -553,34 +613,44 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                           </Grid>
                         </Grid>
                       </Grid>
+                    ) : (
+                      <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
+                        No Sizes available
+                      </Grid>
                     )
                   }
-                  <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
-                    <Grid container className={classes.infoRowContentQuantity}>
-                      <Grid item lg={6} xs={6}>
-                        <QuantitySelectorB stock={selectedProductItem.stock} refresh={forceRefresh} onChange={handQuantitySelect} id="quant-select"/>
+                  {
+                    Object.keys(selectedProductItem).length ? (
+                      <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
+                        <Grid container className={classes.infoRowContentQuantity}>
+                          <Grid item lg={6} xs={6}>
+                            <QuantitySelectorB stock={selectedProductItem.stock} refresh={forceRefresh} onChange={handQuantitySelect} id="quant-select"/>
+                          </Grid>
+                          <Grid item lg={6} xs={6}>
+                            {
+                              outOfStock ? (
+                                <Typography align="left" variant="h5" component="h5" className={classes.productOutStock}>{ t('outofstock') }</Typography>
+                              ) : (
+                                <Typography align="left" variant="h5" component="h5" className={classes.productStock}>{ t('available') }</Typography>
+                              )
+                            }
+    
+                          </Grid>
+                        </Grid>
                       </Grid>
-                      <Grid item lg={6} xs={6}>
-                        {
-                          outOfStock ? (
-                            <Typography align="left" variant="h5" component="h5" className={classes.productOutStock}>{ t('outofstock') }</Typography>
-                          ) : (
-                            <Typography align="left" variant="h5" component="h5" className={classes.productStock}>{ t('available') }</Typography>
-                          )
-                        }
-
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
+                    ) : (
+                      <Grid item lg={12} xs={12}  className={classes.infoRowContent}></Grid>
+                    )
+                  }
+                  <Grid item lg={10}  xs={12} className={classes.infoRowContent}>
                     {
-                      outOfStock ? (
+                      outOfStock || !Object.keys(selectedProductItem).length ? (
                         <Button disabled className={`cartButtonDisabled ${classes.addCartBtn}`}>{ t('add_to_cart') }</Button>
                       ) : (
                         <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>{ t('add_to_cart') }</Button>
                       )
                     }
-                    <WishListIcon product={productInfo.id} />
+                    {/* <WishListIcon product={productInfo.id} /> */}
                   </Grid>
                   <Grid item lg={12} xs={12}>
                     <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>{ t('description') }</Typography>

@@ -16,12 +16,12 @@ export const USER_ACCOUNT_SECTIONS = [
     label: 'Your Orders',
     url: 'orders',
   },
-  {
-    tKey: 'wishlist',
-    name: 'wishlist',
-    label: 'Wish List',
-    url: 'wishlists',
-  },
+  // {
+  //   tKey: 'wishlist',
+  //   name: 'wishlist',
+  //   label: 'Wish List',
+  //   url: 'wishlists',
+  // },
   {
     tKey: 'address_book',
     name: 'address',

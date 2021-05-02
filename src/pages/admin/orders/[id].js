@@ -47,7 +47,10 @@ const styles = (theme) => ({
     textAlign: 'left',
     fontSize: '1.5em',
     fontWeight: 'bold',
-    padding: 15,
+    padding: 5,
+    [theme.breakpoints.down('sm')]: {
+      padding: 15
+    }
   },
   mainContainer: {
     justifyContent: 'space-between',

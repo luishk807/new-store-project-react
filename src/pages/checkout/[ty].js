@@ -22,6 +22,7 @@ import { validateForm, handleFormResponse } from '../../utils/form';
 import { returnDefaultOption } from '../../utils';
 import { getDeliveryServiceCostByFilter } from '../../api/deliveryServiceCosts';
 import { getActiveDeliveryServicesByDeliveryOption } from '../../api/deliveryOptionServices';
+import { getDeliveryServiceGroupCostByDeliveryOption } from '../../api/deliveryServiceGroupCosts';
 import { processOrderByUser } from '../../api/orders';
 import { getDeliveryOptions } from '../../api/deliveryOptions';
 import { getActivePaymentOptions } from '../../api/paymentOptions';
@@ -153,51 +154,56 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   }
 
   const handleServiceOption = async(val) => {
+    if (val && val[0].amount) {
+      setTotal({
+        ...total,
+        delivery: val[0].amount
+      })
+    } else {
+      setTotal({
+        ...total,
+        delivery: 0
+      })
+    }
+
     setSelectedDeliveryService(val[0])
     if (val[0] && val[0].id) {
       setForm({
         ...form,
-        'deliveryService': val[0].id
+        'deliveryService': Number(val[0].id)
       })
     }
   }
 
   const handleDeliveryOption = async(val) => {
-    await setTotal({
-      ...total,
-      delivery: val[0].deliveryOptionDeliveryServiceOptions && val[0].deliveryOptionDeliveryServiceOptions.length ? 0 : val[0].total
-    })
-    await setForm({
-      ...form,
-      delivery: val[0].id
-    })
+    const deliveryOptionCost = val.deliveryOptionDeliveryServiceGroupCost && val.deliveryOptionDeliveryServiceGroupCost.length ? val.deliveryOptionDeliveryServiceGroupCost[0] : null;
+    setShowDeliveryServices(false);
+    setSelectedDeliveryService(deliveryOptionCost)
+    if (deliveryOptionCost) {
+      setTotal({
+        ...total,
+        delivery: deliveryOptionCost.amount
+      })
+      setForm({
+        ...form,
+        delivery:  deliveryOptionCost.amount
+      })
+    } else {
+      setTotal({
+        ...total,
+        delivery: 0
+      })
+      setForm({
+        ...form,
+        delivery: 0
+      })
+    }
+
     setSelectedDeliveryOption(val[0])
   }
 
   const handlePaymentOption = (val) => {
     setSelectedPaymentOption(val[0]);
-  }
-
-  const getDeliveryCost = async() => {
-    if (form && form.delivery == 3 && form.deliveryService) {
-      const foundPrice = await getDeliveryServiceCostByFilter({
-        zone: selectedZone ? selectedZone.id : null, 
-        corregimiento: selectedCorregimiento ? selectedCorregimiento.id  : null,
-        service: form.deliveryService
-      });
-
-      if (foundPrice) {
-        await setTotal({
-          ...total,
-          delivery: foundPrice.amount
-        })
-      } else {
-        setTotal({
-          ...total,
-          delivery: 0
-        })
-      }
-    }
   }
 
   const handleFormChange = async(add) => {
@@ -270,8 +276,12 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     copyFormCheck['deliveryOption'] = selectedDeliveryOption;
     copyFormCheck['deliveryService'] = selectedDeliveryService;
     const useAddress = isUser ? Object.assign({}, address) : Object.assign({}, guestAddress)
-    if (form.delivery == 2 || form.delivery == 3) {
+    if (selectedDeliveryOption.id == 2 || selectedDeliveryOption.id == 3) {
+      isUserPickUp = false;
       ignoreFields = ignoreFields.concat(['addressB', 'zone', 'note']);
+      if (!selectedDeliveryService) {
+        ignoreFields = ignoreFields.concat(['deliveryService']);
+      }
       saveAddress = true;
       for(const key in useAddress) {
         copyFormCheck[key] = useAddress[key];
@@ -330,7 +340,6 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
       formSubmit['delivery'] = total.delivery;
       formSubmit['deliveryService'] = !isUserPickUp && selectedDeliveryService ? selectedDeliveryService.name : null;
       formSubmit['deliveryServiceId'] = !isUserPickUp && selectedDeliveryService ? selectedDeliveryService.id : null;
-
       setShowPlaceOrderLoader(true);
       const confirm = await processOrderByUser(formSubmit)
       if (confirm && confirm.data && confirm.data.data) {
@@ -357,14 +366,16 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
 
   const loadServices = useCallback(async(serviceOption) => {
     if (serviceOption) {
-      const data = await getActiveDeliveryServicesByDeliveryOption(serviceOption.id);
+      const data = await getDeliveryServiceGroupCostByDeliveryOption(serviceOption.id);
       if (data) {
-        const getServices = data.map(item => {
-          return item.deliveryOptionServiceDeliveryService;
-        })
+        const getServices = data
         setDeliveryServices(getServices);
         const loadDefault = returnDefaultOption(getServices);
         if (loadDefault) {
+          await setTotal({
+            ...total,
+            delivery: loadDefault.amount
+          })
           setSelectedDeliveryService(loadDefault);
         }
       } else {
@@ -392,23 +403,28 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   
   const resetAddress = useCallback(() => {
     setShowAddressLoader(true);
+    setShowDeliveryServices(false);
     if (selectedDeliveryOption) {
-      loadServices(selectedDeliveryOption)
       if (selectedDeliveryOption.id == 1) {
-
         if (!isUser) {
           setAddress({
             name: null,
-            // address: null,
             email: null,
             phone: null,
           })
         }
         setForm({
           ...form,
-          'deliveryService': null
+          'deliveryService': null,
+          'delivery': 0
         })
-        setShowDeliveryServices(false);
+
+        setTotal({
+          ...total,
+          delivery: 0
+        })
+
+        setSelectedDeliveryService(null);
         setForceAdddressRefresh(selectedDeliveryOption.id)
       } else {
         const address = {
@@ -424,6 +440,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
           country: defaultCountry,
           note: null,
         }
+        loadServices(selectedDeliveryOption)
         if (selectedDeliveryOption.id == 2) {
           setDisabledFields(['province', 'district']);
           address.province = defaultPanama.province;
@@ -437,11 +454,6 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
           setAddress(address)
           setGuestAddress(address)
         }
-        setForm({
-          ...form,
-          'deliveryService': 1
-        })
-        setShowDeliveryServices(true);
         setForceAdddressRefresh(selectedDeliveryOption.id)
       }
     }
@@ -454,12 +466,14 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   }, [address])
 
   useEffect(() => {
+    if (selectedDeliveryService) {
+      setShowDeliveryServices(true);
+    }
+  }, [selectedDeliveryService]);
+  
+  useEffect(() => {
     resetAddress();
   }, [selectedDeliveryOption]);
-
-  useEffect(() => {
-    getDeliveryCost();
-  }, [selectedZone, selectedDeliveryService, selectedCorregimiento]);
 
   useEffect(() => {
     if (selectedPaymentOption) {
@@ -476,8 +490,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
 
   useEffect(() => {
     let form = {
-      userid: userInfo.id,
-      delivery: '1'
+      userid: userInfo.id
     }
 
     setAddress({
@@ -506,7 +519,6 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     )
 
     loadDelivery();
-    // loadServices();
     loadPayment();
     setForm(form);
   }, [userInfo])
@@ -576,7 +588,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                       {
                         showDeliveryServices && (
                           <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
-                            <RadioBox selected={form.deliveryService} onSelected={handleServiceOption} options={deliveryServices} name="deliveryOption" type="deliveryService" title="Opciones de Service de Envio" />
+                            <RadioBox selected={selectedDeliveryService.id} onSelected={handleServiceOption} options={deliveryServices} name="deliveryOption" type="deliveryServiceList" title="Opciones de Servicio de Envio" />
                           </Grid>                       
                         )
                       }

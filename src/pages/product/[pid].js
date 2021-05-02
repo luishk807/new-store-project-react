@@ -29,6 +29,8 @@ import Snackbar from '../../components/common/Snackbar';
 import QuantitySelectorB from '../../components/common/QuantitySelectorB';
 import { getItemById } from '../../api';
 import { getProductById } from '../../api/products';
+import { getSizesByProductId } from '../../api/sizes';
+import { getColorsByProductId } from '../../api/productColors';
 import { getProductItemById } from '../../api/productItems';
 import ProgressBar from '../../components/common/ProgressBar';
 import WishListIcon from '../../components/common/WishListIcon';
@@ -206,6 +208,7 @@ const styles = (theme) => ({
     }
   },
   productSizeLinkDisabled: {
+    textAlign: 'center',
     display: 'inline-block',
     color: 'rgba(0,0,0,.1)',
     cursor: 'not-allowed',
@@ -231,7 +234,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const id = router.query.pid;
   const [forceRefresh, setForceRefresh] = useState(false);
   const [images, setImages] = useState({});
-  const [productInfo, setProductInfo] = useState({});
+  const [productInfo, setProductInfo] = useState(null);
   const [showData, setShowData] = useState(false);
   const [discountHtml, setDiscountHtml] = useState(null);
   const [selectedColor, setSelectedColor] = useState(null);
@@ -241,6 +244,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [dealPrice, setDealPrice] = useState(0);
   const [selectedProductItem, setSelectedProductItem] = useState({});
   const [colors, setColors] = useState(null)
+  const [sizes, setSizes] = useState(null)
   const [outOfStock, setOutofStock] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -327,12 +331,12 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   const handleDefaultSize = () => {
-    if (productInfo && selectedColor) {
+    if (showData && selectedColor) {
       const items = productInfo.productProductItems;
       if (items && items.length) {
         const getItem = items.filter(item => item.productColor === selectedColor.id)
         if (getItem && getItem.length) {
-          const getSize = productInfo.productSizes.filter(size => size.id === getItem[0].productSize)
+          const getSize = sizes.filter(size => size.id === getItem[0].productSize)
           handleSizeChange(null, getSize[0])
         }
       }
@@ -369,24 +373,25 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
   const createSizeBlock = (color) => {
     if (showData) {
-      if(productInfo.productSizes && color) {
-        const blocks = productInfo.productSizes.map((size, index) => {
+      if(sizes && color) {
+        const blocks = sizes.map((size, index) => {
             const found = productInfo.productProductItems.filter(item => {
               return item.productSize === size.id && item.productColor == color.id;
             })
             if (found && found.length) {
+              const foundPrice = found[0].retailPrice ? `$${found[0].retailPrice}` : `N/A`;
               if (selectedSize && selectedSize.id === size.id) {
                 return (
-                  <a title={`Select ${capitalize(size.name)} for $${found[0].retailPrice}`} key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`$${found[0].retailPrice}`}</span></div></a>
+                  <a title={`Select ${capitalize(size.name)} for ${foundPrice}`} key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`${foundPrice}`}</span></div></a>
                 )
               } else {
                 return (
-                  <a title={`Select ${capitalize(size.name)} for $${found[0].retailPrice}`} href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`$${found[0].retailPrice}`}</span></div></a>
+                  <a title={`Select ${capitalize(size.name)} for ${foundPrice}`} href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`${foundPrice}`}</span></div></a>
                 )
               }
             } else {
               return (
-                <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}{size.retailPrice}</div></a>
+                <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}<br/>{size.retailPrice ? size.retailPrice : `N/A`}</div></a>
               )
             }
         })
@@ -426,19 +431,37 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   const loadProductInfo = async() => {
-    const getProductInfo = await getProductById(id)
-    await setProductInfo(getProductInfo);
-    if (getProductInfo.productColors && getProductInfo.productColors.length) {
-      if (getProductInfo.productProductDiscount && getProductInfo.productProductDiscount.length) {
-        setShowDiscount(true)
-      }
-      setColors(getProductInfo.productColors);
+    const [getProductInfo, getProductColor, getProductSizes] = await Promise.all([
+      getProductById(id),
+      getColorsByProductId(id),
+      getSizesByProductId(id)
+    ])
+
+    if (getProductInfo.productProductDiscount && getProductInfo.productProductDiscount.length) {
+      setShowDiscount(true);
       getDiscountHtml(getProductInfo);
-      handleColorChange(null, getProductInfo.productColors[0])
     }
-    setShowData(true);
+
+    if (getProductInfo) {
+      setProductInfo(getProductInfo);
+    }
+
+    if (getProductColor && getProductColor.length) {
+      handleColorChange(null, getProductColor[0])
+      setColors(getProductColor);
+    }
+
+    if (getProductSizes && getProductSizes.length) {
+      setSizes(getProductSizes);
+    }
   }
   
+  useEffect(() => {
+    if (sizes && colors && productInfo) {
+       setShowData(true);
+    }
+  }, [sizes, colors, productInfo]);
+
   useEffect(() => {
     createSizeBlock(selectedColor);
   }, [selectedColor, selectedSize]);

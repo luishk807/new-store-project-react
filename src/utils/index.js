@@ -150,8 +150,10 @@ export const getSortPriceRange = (obj) => {
 
   if (range && range.length > 1 && (range[0].retailPrice !== range[range.length - 1].retailPrice)) {
     return `USD $${range[0].retailPrice} - $${range[range.length - 1].retailPrice}`;
-  } else {
+  } else if (range && range.length === 1) {
     return `USD $${range[0].retailPrice}`;
+  } else {
+    return `Invalid Price`;
   }
 }
 

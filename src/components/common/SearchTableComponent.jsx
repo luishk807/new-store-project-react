@@ -60,10 +60,13 @@ const SearchTableComponent = ({ onSearchValue, dataRowUniqueIdField, dataGridHei
 
     const createRowsIdFromData = (data) => {
         let adjustedData = [];
+        let noIdCounter = 0;
         if (dataRowUniqueIdField) {
             data.forEach(d => {
+                // In case the given field does not have values, so it will create its own id
+                const id = d[dataRowUniqueIdField] ? d[dataRowUniqueIdField] : `no-id-${noIdCounter++}`;
                 adjustedData.push({
-                    id: d[dataRowUniqueIdField], ...d
+                    id: id, ...d
                 })
             });
         } else {

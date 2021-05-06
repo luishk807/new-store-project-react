@@ -54,7 +54,7 @@ const Login = ({classes, inStatus, showRegister, onCancel}) => {
     open: false,
     text: '',
   });
-  const { t } = useTranslation('checkout')
+  const { t } = useTranslation(['checkout', 'common'])
 
   const handleResponse = () => {
     if (onCancel) {
@@ -98,23 +98,20 @@ const Login = ({classes, inStatus, showRegister, onCancel}) => {
           <Grid item lg={8} xs={12}>
             <Grid container className={classes.itemContainer} spacing={2} justify="center" direction="row">
               <Grid item lg={12} xs={12}>
-                <Typography className={classes.mainTitle} align="center" variant="h3" component="p">{ t('message.sign_in_to_your_account') }</Typography>
+                <Typography className={classes.mainTitle} align="center" variant="h3" component="p">{ t('checkout:message.sign_in_to_your_account') }</Typography>
               </Grid>
               <Grid item lg={5} xs={12} className={classes.loginItem}>
-                <Typography className={classes.subtitle} variant="h4" component="p">{ t('returning_customer') }</Typography>
+                <Typography className={classes.subtitle} variant="h4" component="p">{ t('checkout:returning_customer') }</Typography>
                 <LoginFrom classes={{root: classes.loginForm}} inStatus={inStatus} onSubmit={handleSubmit} />
               </Grid>
 
               <Grid item lg={5} xs={12} className={classes.guestItem}>
                 <Grid container spacing={2} className={classes.guestItemContainer}>
                   <Grid item lg={12} xs={12}>
-                    <Typography className={classes.subtitle} align="center" variant="h4" component="p">Don't have an account?</Typography>
+                    <Typography className={classes.subtitle} align="center" variant="h4" component="p">{ t('common:message.no_account') }</Typography>
                   </Grid>
                   <Grid item lg={12} xs={12}>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati autem ad alias.</p>
-                  </Grid>
-                  <Grid item lg={12} xs={12}>
-                    <Button className={`mainButton`} href="/checkout/g">{ t('continue_as_guest') }</Button>
+                    <Button className={`mainButton`} href="/checkout/g">{ t('checkout:continue_as_guest') }</Button>
                   </Grid>
                 </Grid>
               </Grid>

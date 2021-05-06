@@ -35,10 +35,14 @@
     "shipping_address": "Dirección de entrega",
     "cancel": "Cancelar",
     "add": "Añadir",
+    "create_account": "Crear Cuenta",
 
     "message": {
         "you_saved": "Ahorraste",
         "discount_applied": "Descuento Aplicado",
-        "cart_empty": "Su carrito esta vacío"
+        "cart_empty": "Su carrito esta vacío",
+        "no_account": "¿No tiene una cuenta?",
+        "sign_into_your_account": "Ingrese a su cuenta",
+        "forgot_password": "Olvidó su contraseña"
     }
 }

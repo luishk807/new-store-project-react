@@ -147,10 +147,11 @@ export const getSortPriceRange = (obj) => {
     return obj;
   }
   const range = obj.productProductItems.sort((a, b) => parseFloat(a.retailPrice) > parseFloat(b.retailPrice) ? 1 : -1);
+  console.log('productProductItems', [obj.productProductItems, range])
 
-  if (range && range.length > 1 && (range[0].retailPrice !== range[range.length - 1].retailPrice)) {
+  if (range.length > 1 && (range[0].retailPrice !== range[range.length - 1].retailPrice)) {
     return `USD $${range[0].retailPrice} - $${range[range.length - 1].retailPrice}`;
-  } else if (range && range.length === 1) {
+  } else if (range.length > 0) {
     return `USD $${range[0].retailPrice}`;
   } else {
     return `Invalid Price`;

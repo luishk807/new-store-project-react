@@ -576,6 +576,7 @@ export const FORM_SCHEMA = {
 
 export const noImageUrl = {
   img: '/images/no-image.jpg',
+  svg: '/images/svg/noimage.svg',
   alt: 'no image',
 }
 

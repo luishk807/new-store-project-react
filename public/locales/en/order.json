@@ -7,9 +7,10 @@
     "order_page": "Order Page",
     "unit_total": "Unit Total",
     "save_order": "Save Order",
-
+    "delivery_service": "Delivery Service Selected",
     "reason": "Reason",
     "cancel_order": "Cancel Order",
+    "shipping_address": "Shipping Address",
     "order_summary": "Order Summary",
     
     "message": {

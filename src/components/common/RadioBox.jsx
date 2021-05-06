@@ -39,6 +39,23 @@ const styles = (theme) => ({
     paddingTop: 6,
     textAlign: 'right',
   },
+  gridRadioContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  gridRadioItemRadio: {
+    width: '10%',
+  },
+  gridRadioItemContent: {
+    width: '90%',
+  },
+  gridRadioItemAmount: {
+    textAlign: 'right'
+  },
+  gridRadioItemName: {
+    textAlign: 'left'
+  }
 });
 
 const RadioBox = React.memo(({
@@ -73,10 +90,13 @@ const RadioBox = React.memo(({
       if (!useSelected) {
         useSelected = data;
       }
-    }
+    } 
 
     const opts = sortOptions(options, 'position');
 
+    if (!opts) {
+      opts = options
+    }
     const checkOpts = {}
     
     opts.forEach(item => {
@@ -89,7 +109,7 @@ const RadioBox = React.memo(({
 
   useEffect(() => {
     loadContent();
-  }, [checkedOptions])
+  }, [checkedOptions, selected])
 
   const loadContent = () => {
     let content = null;
@@ -161,6 +181,31 @@ const RadioBox = React.memo(({
                 </div>
                 <div className={classes.radioItemContent}>
                   <p className={classes.radioTitle}>{option.name}</p>
+                </div>
+              </Grid>
+            </Grid>
+          )
+        })
+        break;
+      }
+      case 'deliveryServiceList': {
+        content = itemOptions && itemOptions.map((option, index) => {
+          return (
+            <Grid container key={index}>
+              <Grid item lg={12} xs={12} className={classes.gridRadioContainer}>
+                <div className={classes.gridRadioItemRadio}>
+                  <Radio
+                    checked={checkedOptions[option.id]}
+                    onChange={handleSelect}
+                    value={option.id}
+                    name={name}
+                  />
+                </div>
+                <div className={classes.gridRadioItemContent}>
+                  <Grid container>
+                    <Grid item lg={6} xs={6} className={`${classes.radioTitle} ${classes.gridRadioItemName}`}>{option.name}</Grid>
+                    <Grid item lg={6} xs={6} className={`${classes.radioTitle} ${classes.gridRadioItemAmount}`}>{option.amount}</Grid>
+                  </Grid>
                 </div>
               </Grid>
             </Grid>

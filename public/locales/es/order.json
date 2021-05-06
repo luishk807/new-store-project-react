@@ -7,8 +7,9 @@
     "order_page": "Sección de Órdenes",
     "unit_total": "Total Unitario",
     "save_order": "Guardar Orden",
-
+    "delivery_service": "Servicio de entrega seleccionado",
     "reason": "Razón",
+    "shipping_address": "Dirección de Envío",
     "cancel_order": "Cancelar Orden",
     "order_summary": "Resumen de la Orden",
 

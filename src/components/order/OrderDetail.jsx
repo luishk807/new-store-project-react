@@ -132,6 +132,14 @@ const styles = (theme) => ({
     padding: '15px 0px',
     margin: '15px 0px',
   },
+  deliveryServiceItemName: {
+    padding: 5,
+    textAlign: 'left'
+  },
+  deliveryServiceItemAmount: {
+    padding: 5,
+    textAlign: 'right'
+  }
 });
 
 const View = ({classes, order, isAdmin = false}) => {
@@ -222,6 +230,23 @@ const View = ({classes, order, isAdmin = false}) => {
             </Grid>
           </Grid>
         </Grid>
+        {
+          isAdmin && order.deliveryService && (
+            <Grid item lg={12} xs={12} className={classes.itemHeader}>
+              <Grid container className={classes.orderHeaderContainer}>
+                <Grid item lg={12} xs={12} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem1}`}>
+                  <span className={classes.orderHeaderSubTitle}>{ t('order:delivery_service') }</span>
+                </Grid>
+                <Grid item lg={8} xs={8} className={classes.deliveryServiceItemName}>
+                  <span>{ order.deliveryService }</span>
+                </Grid>
+                <Grid item lg={4} xs={4} className={classes.deliveryServiceItemAmount}>
+                  <span>${ order.delivery }</span>
+                </Grid>
+              </Grid>
+            </Grid>
+          )
+        }
         <Grid item lg={12} xs={12} className={classes.orderSummary}>
           <Grid container className={classes.orderHeaderContainer}>
             <Grid item lg={4} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderSummaryItem1}`}>

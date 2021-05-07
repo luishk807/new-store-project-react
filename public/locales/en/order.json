@@ -18,6 +18,7 @@
         "search_order": "Search order",
         "order_number_to_find_status": "Type your order number to find the status",
         "order_cancel_request_sent": "Order cancel request sent",
+        "order_cancel_confirm": "Order cancel confirm",
         "order_cancel_confirmation": "Are you sure you want to cancel this order?",
         "order_cancelation_reason": "Please select a reason for cancelation"
     }

@@ -50,7 +50,7 @@ const styles = (theme) => ({
   }
 });
 
-const SearchBarPlain = ({classes, onEnterKeyPress}) => {
+const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
   const router = useRouter()
   const [showData, setShowData] = useState(false);
   const [showNotFound, setShowNotFound] = useState(false);
@@ -65,10 +65,12 @@ const SearchBarPlain = ({classes, onEnterKeyPress}) => {
     Promise.all(
       [
         searchProductItemByFilter({
-          search: value
+          search: value,
+          fullDetail: isAdmin ? true : false
         }),
         searchProductsByFilter({
-          search: value
+          search: value,
+          fullDetail: isAdmin ? true : false
         }),
       ]
     ).then(async(value) => {
@@ -238,6 +240,7 @@ const SearchBarPlain = ({classes, onEnterKeyPress}) => {
 SearchBarPlain.protoTypes = {
   classes: T.object,
   onEnterKeyPress: T.func,
+  isAdmin: T.bool
 }
 
 export default withStyles(styles)(SearchBarPlain);

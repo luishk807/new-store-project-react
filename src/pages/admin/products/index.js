@@ -131,7 +131,8 @@ const Index = () => {
 
   const loadProducts = async() => {
     const getProducts = await getAdminProducts({
-      page: page
+      page: page,
+      fullDetail: true
     });
     if (getProducts) {
       setProducts(getProducts.rows);

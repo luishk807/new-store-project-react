@@ -18,6 +18,7 @@
         "search_order": "Buscar su orden",
         "order_number_to_find_status": "Introduzca su número de orden para encontrar el estado",
         "order_cancel_request_sent": "Petición de cancelación de orden enviada",
+        "order_cancel_confirm": "Confirmación de cancelación de orden",
         "order_cancel_confirmation": "¿Está seguro que desea cancelar esta orden?",
         "order_cancelation_reason": "Favor seleccionar la razón de cancelación"
     }

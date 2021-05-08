@@ -13,6 +13,7 @@ import { ADMIN_SECTIONS } from '../../../constants/admin';
 import { sendQuestion, getQuestionById } from '../../../api/questions';
 import { getItemById } from '../../../api';
 import AnswerProductQuestionsForm from '../../../components/common/AnswerProductQuestionsForm';
+import { getThumbnail } from '../../../utils/helpers/image'
 
 const styles = (theme) => ({
   root: {
@@ -57,7 +58,7 @@ const Index = ({classes, data}) => {
     const imgs = data.productImages.map((img) => {
         return {
           original: `${imageUrl}/${img.img_url}`,
-          thumbnail: `${imageUrl}/${img.img_url}`,
+          thumbnail: `${imageUrl}/${getThumbnail(img)}`,
         }
     });
     setImages(imgs);

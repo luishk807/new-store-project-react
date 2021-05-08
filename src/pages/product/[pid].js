@@ -446,7 +446,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
   const loadProductInfo = async() => {
     const [getProductInfo, getProductColor, getProductSizes] = await Promise.all([
-      getProductById(id),
+      getProductById(id, {
+        isFullDetail: true
+      }),
       getColorsByProductId(id),
       getSizesByProductId(id)
     ])

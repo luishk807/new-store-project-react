@@ -10,6 +10,7 @@ import { getImageUrlByType } from '../../../../utils/form';
 import AddForm from '../../../../components/common/Form/AddForm';
 import { MAIN_SECTIONS } from '../../../../constants';
 import { getItemById } from '../../../../api';
+import { getThumbnail } from '../../../../utils/helpers/image'
 
 const styles = (theme) => ({
   root: {
@@ -36,7 +37,7 @@ const Index = ({classes, data}) => {
     const imgs = data.productImages.map((img) => {
         return {
           original: `${imageUrl}/${img.img_url}`,
-          thumbnail: `${imageUrl}/${img.img_url}`,
+          thumbnail: `${imageUrl}/${getThumbnail(img)}`,
         }
     });
     setImages(imgs);

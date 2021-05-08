@@ -41,6 +41,7 @@ import VendorBox from '../../components/vendorBox';
 import { getDisplayName } from 'next/dist/next-server/lib/utils';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { getThumbnail } from '../../utils/helpers/image'
 
 const styles = (theme) => ({
   root: {
@@ -280,14 +281,14 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         imgs = data.productImages.map((img) => {
           return {
             original: `${imageUrl}/${img.img_url}`,
-            thumbnail: `${imageUrl}/${img.img_url}`,
+            thumbnail: `${imageUrl}/${getThumbnail(img)}`,
           }
         });
       } else if (productInfo.productImages && productInfo.productImages.length) {
         imgs = productInfo.productImages.map((img) => {
           return {
             original: `${imageUrl}/${img.img_url}`,
-            thumbnail: `${imageUrl}/${img.img_url}`,
+            thumbnail: `${imageUrl}/${getThumbnail(img)}`,
           }
         });
       } else {

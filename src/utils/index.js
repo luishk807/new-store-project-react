@@ -2,6 +2,7 @@ import { getImageUrlByType } from './form';
 import { noImageUrl } from '../../config';
 import { getProductItemByIds } from '../api/productItems';
 import { getProductById } from '../api/products';
+import { getThumbnail } from '../utils/helpers/image'
 
 export const removeCharacter = (str) => {
   return str.replace(/_/g, ' ')
@@ -141,6 +142,16 @@ export const getImageBaseOnly = (product) => {
   return image;
 }
 
+export const getImageBaseThumbnail =  (product) => {
+  const imageUrl = getImageUrlByType('product');
+  
+  let image = <img className={`img-fluid`} src={`${noImageUrl.img}`} alt={`${noImageUrl.alt}`} />
+
+  if (product.productImages && product.productImages.length) {
+    image = <img className={`img-fluid`} src={`${imageUrl}/${getThumbnail(product.productImages[0])}`} alt={`${product.name}`} />;
+  }
+  return image;
+}
 
 export const getSortPriceRange = (obj) => {
   if (!obj || !obj.productProductItems) {

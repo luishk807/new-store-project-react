@@ -11,7 +11,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 import { searchProductItemByFilter } from '../../api/productItems';
 import { searchProductsByFilter } from '../../api/products';
-import { getImageBaseOnly } from '../../utils';
+import { getImageBaseThumbnail } from '../../utils';
 import ProgressBar from '../common/ProgressBar';
 
 const styles = (theme) => ({
@@ -190,7 +190,7 @@ const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
                     <Grid container className={classes.resultPanel}>
                     {
                       products.map((product, index) => {
-                        const img = getImageBaseOnly(product);
+                        const img = getImageBaseThumbnail(product);
                         return (
                           <Grid item key={index} className={classes.resultItems} lg={12} xs={12}>
                             <a href={product.productItemProduct ? `/admin/products/items/edit/${product.id}` : `/admin/products/${product.id}`}>

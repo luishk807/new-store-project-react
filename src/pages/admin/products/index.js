@@ -15,7 +15,7 @@ import Snackbar from '../../../components/common/Snackbar';
 import ProgressBar from '../../../components/common/ProgressBar';
 import MobileMenu from '../../../components/common/MobileMenu';
 import DialogModal from '../../../components/common/DialogModal';
-import { getImageBaseOnly } from '../../../utils';
+import { getImageBaseThumbnail } from '../../../utils';
 import { deleteProduct, getAdminProducts } from '../../../api/products';
 import AccordionBox from '../../../components/common/accordion/AccordionBox';
 
@@ -279,7 +279,7 @@ const Index = () => {
             </Hidden>
             {
               products.map((product, index) => {
-                const img = getImageBaseOnly(product);
+                const img = getImageBaseThumbnail(product);
                 const options = [
                   {
                     name: `Items (${product.productProductItems ? product.productProductItems.length: 0})`,

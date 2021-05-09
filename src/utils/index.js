@@ -25,6 +25,7 @@ export const getDeliveryInfo = (order) => {
     }
     delivery = {
       'title': 'Pick Up Info',
+      'translate_key': 'pick_up',
       'info': info
     }
   } else {
@@ -65,6 +66,7 @@ export const getDeliveryInfo = (order) => {
     }
     delivery = {
       'title': 'Shipping Address',
+      'translate_key': 'shipping_address',
       'info': info
     }
   }

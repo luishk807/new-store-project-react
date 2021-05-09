@@ -11,6 +11,7 @@
     "reason": "Reason",
     "cancel_order": "Cancel Order",
     "shipping_address": "Shipping Address",
+    "pick_up": "Pick up info",
     "order_summary": "Order Summary",
     
     "message": {

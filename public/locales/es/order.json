@@ -10,6 +10,7 @@
     "delivery_service": "Servicio de entrega seleccionado",
     "reason": "Razón",
     "shipping_address": "Dirección de Envío",
+    "pick_up": "Para Recoger",
     "cancel_order": "Cancelar Orden",
     "order_summary": "Resumen de la Orden",
 

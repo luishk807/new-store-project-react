@@ -252,7 +252,7 @@ const View = ({classes, order, isAdmin = false}) => {
             <Grid item lg={4} xs={6} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderSummaryItem1}`}>
               {
                 showDelivery && (
-                  <span className={classes.orderHeaderSubTitle}>{ deliveryInfo.title }</span>
+                  <span className={classes.orderHeaderSubTitle}>{ t(`order:${deliveryInfo.translate_key}`) }</span>
                 )
               }
               {

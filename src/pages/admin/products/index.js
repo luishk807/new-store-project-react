@@ -16,8 +16,9 @@ import ProgressBar from '../../../components/common/ProgressBar';
 import MobileMenu from '../../../components/common/MobileMenu';
 import DialogModal from '../../../components/common/DialogModal';
 import { getImageBaseThumbnail } from '../../../utils';
-import { deleteProduct, getAdminProducts } from '../../../api/products';
+import { deleteProduct, getAdminProducts, searchProductsByFilter } from '../../../api/products';
 import AccordionBox from '../../../components/common/accordion/AccordionBox';
+import { CollectionsOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,9 +35,6 @@ const useStyles = makeStyles((theme) => ({
   },
   actionBtn: {
     margin: 2,
-  },
-  mainContainer: {
-    padding: 5,
   },
   headerTitle: {
     padding: 20
@@ -62,6 +60,7 @@ const useStyles = makeStyles((theme) => ({
   mainItems: {
     textAlign: 'center',
     margin: '10px 0px',
+    padding: 5
     // borderTop: '1px solid rgba(0,0,0,.08)',
     // '&:last-child': {
     //   borderBottom: '1px solid rgba(0,0,0,.08)',
@@ -102,12 +101,30 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     fontWeight: 'bold',
     borderBottom: '1px solid rgba(0,0,0,.08)',
+  },
+  searchParams: {
+    padding: '5px 15px',
+    border: '1px solid orange',
+    color: 'orange',
+    background: 'white',
+    '&:hover': {
+      background: 'orange',
+      color: 'white !important'
+    }
+  },
+  searchParamItem: {
+    padding: 10,
+  },
+  itemHeaderFixed: {
+    width: '100%',
+    background: 'white',
   }
 }));
 
 const Index = () => {
   const classes = useStyles();
   const [products, setProducts] = useState([]);
+  const [searchParams, setSearchParams] = useState(null);
   const [showData, setShowData] = useState(false);
   const [paginationHtml, setPaginationHtml] = useState(null);
   const [page, setPage] = useState(1);
@@ -130,12 +147,24 @@ const Index = () => {
   });
 
   const loadProducts = async() => {
-    const getProducts = await getAdminProducts({
-      page: page,
-      fullDetail: true
-    });
+    const search = router.query.search;
+    let getProducts = null;
+    if (search) {
+      setSearchParams(search);
+      getProducts = await searchProductsByFilter({
+        page: page,
+        search: search,
+        isFullDetail: true
+      });
+    } else {
+      setSearchParams(null);
+      getProducts = await getAdminProducts({
+        page: page,
+        isFullDetail: true
+      });
+    }
     if (getProducts) {
-      setProducts(getProducts.rows);
+      setProducts('rows' in getProducts ? getProducts.rows : getProducts.items);
       setTotalCount(getProducts.count)
     }
 
@@ -199,7 +228,13 @@ const Index = () => {
   }
 
   const handleSearchEnterKey = (searchText) => {
-    window.location.href=`/admin/products/search?q=${searchText}`
+    setShowData(false);
+    if (searchText) {
+      window.location.href=`/admin/products?search=${searchText}`
+    } else {
+      window.location.href=`/admin/products`
+    }
+   
   }
 
   useEffect(() => {
@@ -237,15 +272,28 @@ const Index = () => {
         <Grid item lg={12} xs={12}>
           <SearchBarPlain onEnterKeyPress={handleSearchEnterKey}/>
         </Grid>
+        {
+          searchParams && (
+            <Grid item lg={12} xs={12} className={classes.searchParamItem}>
+              Searching For:&nbsp;&nbsp;<Button onClick={() => handleSearchEnterKey()} className={classes.searchParams}>
+              {
+                searchParams
+              }
+              &nbsp;
+              &#10005;
+              </Button>
+            </Grid>
+          )
+        }
       </Grid>
       {
         paginationHtml && paginationHtml
       }
       {
         showData ? (
-          <Grid container className={classes.mainContainer}>
+          <Grid container>
             <Hidden smDown>
-              <Grid item lg={12} xs={12} className={classes.mainHeader}>
+              <Grid item lg={12} xs={12} className={`${classes.itemHeaderFixed} adminProductStickyHeader`}>
                 <Grid container className={classes.itemContainer}>
                   <Grid item lg={3} className={classes.itemColumn}>
                     Name

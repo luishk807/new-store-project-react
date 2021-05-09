@@ -29,8 +29,8 @@ export const searchProductsByFilter = async(filter) => {
   return Api.get(`products/search`, filter);
 }
 
-export const getProductById = async(id) => {  
-  return Api.get(`products/${id}`);
+export const getProductById = async(id, filter = null) => {  
+  return Api.get(`products/${id}`, filter);
 }
 
 export const getProductByIds = async(ids, page = null) => {

@@ -109,20 +109,8 @@ div::-moz-scrollbar-thumb {
     padding: 10px 50px;
   }
 }
-/* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-  body {
-    margin-bottom: $stickyFooterLimit; /* Margin bottom by footer height */
-  }
-  .home-banner-slider {
-    padding: 50px;
-  }
-  .home-banner-single {
-    padding: 20px;
-  }
-}
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
+@media only screen and (min-width : 1400px) {
   body {
     margin-bottom: $stickyFooterLimit; /* Margin bottom by footer height */
   }
@@ -155,6 +143,21 @@ div::-moz-scrollbar-thumb {
     padding: 5px;
   }
 }  
+
+.adminProductStickyHeader {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  top: 72px;
+  text-align: center;
+  padding: 8px 5px;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  width: 100%;
+}
 
 a:hover {
   text-decoration: none;

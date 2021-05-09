@@ -168,7 +168,9 @@ const EditForm = ({
       setSnack(resp);
       if (confirm.data.status) {
         setTimeout(() => {
-          router.push(successUrl);
+          if (successUrl) {
+            router.push(successUrl);
+          }
         }, 1000);
       }
     }

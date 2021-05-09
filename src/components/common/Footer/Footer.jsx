@@ -131,7 +131,6 @@ const styles = (theme) => ({
       display: 'block',
       padding: 0,
       [theme.breakpoints.down('sm')]: {
-        display: 'flex',
         listStyleType: 'none',
       },
     },
@@ -141,6 +140,7 @@ const styles = (theme) => ({
       padding: '2px 50px',
       [theme.breakpoints.down('sm')]: {
         padding: 10,
+        display: 'inline-block',
       },
     },
     '& ul li:not(:last-child)': {
@@ -148,7 +148,7 @@ const styles = (theme) => ({
       [theme.breakpoints.down('sm')]: {
         borderRight: 'none',
       },
-    }
+    },
   },
   secondLastlineItems: {
     padding: 5,
@@ -264,7 +264,7 @@ const Footer = ({classes}) => {
 
           <Grid item lg={12} xs={12} className={`${classes.secondLastline}`}>
             <Grid container>
-              <Grid item lg={6} md={6} xs={12} className={classes.secondLastlineMain}>
+              <Grid item lg={8} md={8} xs={12} className={classes.secondLastlineMain}>
                 <ul>
                   <li>
                     <a href="/aboutus" className={classes.secondLastlineItems}>

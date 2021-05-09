@@ -7,6 +7,7 @@ import {
   Button
 } from '@material-ui/core';
 import Snackbar from './Snackbar';
+import { createProductItem } from '../../api/productItems';
 
 const styles = (theme) => ({
   root: {
@@ -42,7 +43,7 @@ const styles = (theme) => ({
   },
 });
 
-const QuantitySelectorB = React.memo(({refresh, data = 1, stock, classes, id, onChange}) => {
+const QuantitySelectorB = React.memo(({refresh, data = 1, jump = 0, stock, classes, id, onChange}) => {
   const [total, setTotal] = useState(0);
   const [currectRefresh, setCurrentRefresh] = useState(null)
   const [showData, setShowData] = useState(false);
@@ -70,13 +71,16 @@ const QuantitySelectorB = React.memo(({refresh, data = 1, stock, classes, id, on
       value = resp.target.value
     }
 
-    if (stock && value > stock) {
+    let totalCheck = jump ? Number(value) * Number(jump) : Number(value);
+
+    if (stock && totalCheck > stock) {
       setSnack({
         severity: 'error',
         open: true,
         text: 'Cantidad maxima del producto disponible',
       })
     } else {
+      console.log("other")
       setTotal(value);
       if (value) {
         onChange({
@@ -87,12 +91,18 @@ const QuantitySelectorB = React.memo(({refresh, data = 1, stock, classes, id, on
     }
   };
 
+  
   useEffect(()=> {
-    if (currectRefresh !== refresh) {
-      setCurrentRefresh(refresh)
-      setTotal(data)
+    let unmounted = false;
+
+    if (!unmounted) {
+      if (currectRefresh !== refresh) {
+        setCurrentRefresh(refresh)
+        setTotal(data)
+      }
+      setShowData(true);
     }
-    setShowData(true)
+    return () => { unmounted = true };
   }, [refresh])
 
   return showData && ( 
@@ -105,7 +115,15 @@ const QuantitySelectorB = React.memo(({refresh, data = 1, stock, classes, id, on
           </div>
 
       </FormControl>
-      <Snackbar open={snack.open} severity={snack.severity} onClose={()=>{setSnack({...snack,open:false})}} content={snack.text} />
+      <Snackbar open={snack.open} severity={snack.severity} onClose={()=>{
+        setSnack(
+          {
+            ...snack,
+            open:false
+          }
+        )
+      }
+      } content={snack.text} />
     </div>
   );
 })
@@ -117,6 +135,7 @@ QuantitySelectorB.protoTypes = {
   refresh: T.bool,
   data: T.number,
   id: T.string,
+  jump: T.number,
   onChange: T.func,
 };
 

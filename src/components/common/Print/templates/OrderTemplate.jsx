@@ -284,7 +284,7 @@ class OrderTemplate extends Component {
                           <td>
                             { item.name }
                             <br/>
-                            Model: { item.model }
+                            SKU: { item.sku }
                             <br/>
                             Color:&nbsp;{ item.color }
                             <br/>

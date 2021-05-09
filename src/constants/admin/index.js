@@ -177,6 +177,13 @@ export const ADMIN_SECTIONS = {
     url: 'colors',
     option: 'color'
   },
+  'productBundle': {
+    name: 'Product Bundle',
+    names: 'Product Bundles',
+    key: 'productbundle',
+    url: 'product-bundles',
+    option: 'productbundle'
+  },
   'productColor': {
     name: 'Product Color',
     names: 'Product Colors',

@@ -771,7 +771,7 @@ const Form = ({
     switch(type) {
       case "submit": {
         setFormTitle(`Add ${newTitle}`);
-        setFormBtnTitle(`${submitCustomName ? submitCustomName : `Add ${newTitle}`}`);
+        setFormBtnTitle(`${submitCustomName ? submitCustomName : `Add`}`);
         break
       }
       case "edit": {

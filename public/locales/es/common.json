@@ -35,9 +35,14 @@
     "shipping_address": "Dirección de entrega",
     "cancel": "Cancelar",
     "add": "Añadir",
+    "bundles": "Paquetes",
+    "bundle": "Paquete",
     "create_account": "Crear Cuenta",
     "continue": "Continuar",
 
+    "no_sizes": "No hay tamaños disponibles",
+    "no_colors": "No hay colores disponibles",
+    "no_bundles": "No hay paquete disponible",
     "message": {
         "you_saved": "Ahorraste",
         "discount_applied": "Descuento Aplicado",

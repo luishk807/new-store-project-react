@@ -48,6 +48,7 @@ const Edit = ({classes}) => {
             customUrl={`/admin/useraddresses/${id}`} 
             cancelUrl={`/admin/useraddresses/${id}`} 
             successUrl={`/admin/useraddresses/${id}`} 
+            ignoreForm={['mobile','phone', 'province', 'district', 'corregimiento', 'addressB', 'zone', 'country']}
             adminSection={ADMIN_SECTIONS.address} 
             id={id} 
             entryForm={form} 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import * as T from 'prop-types';
 import { 
   Grid,
@@ -14,15 +14,26 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const SnackBar = ({ severity="success", open, onClose, content}) => {
+const SnackBar = React.memo(({ severity="success", open, onClose, content}) => {
+  const [doOpen, setDoOpen] = useState(false);
+
+  useEffect(() => {
+    let unmounted = false;
+
+    if (!unmounted) {
+      setDoOpen(open)
+    }
+    return () => { unmounted = true };
+  }, [content]);
+
   return (
-    <Snack open={open} onClose={onClose} autoHideDuration={6000}>
-      <Alert onClose={onClose} severity={severity}>
+    <Snack open={doOpen} onClose={onClose} autoHideDuration={6000}>
+      <Alert onClose={() => setDoOpen(false)} severity={severity}>
         {content}
       </Alert>
     </Snack>
   );
-}
+});
 
 SnackBar.protoTypes = {
   severity: T.string,

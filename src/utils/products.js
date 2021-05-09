@@ -22,7 +22,6 @@ export const formatForm = (form) => {
 }
 
 export const checkDiscountPrice = async(product, selectedItem, quantity) => {
-  const finalPrice = {};
   const currProduct = Object.assign({}, selectedItem);
 
   if (!product || !selectedItem || !quantity) {
@@ -61,6 +60,43 @@ export const checkDiscountPrice = async(product, selectedItem, quantity) => {
           currProduct['save_price'] =  0
       }
     })
+  }
+  return currProduct;
+}
+
+export const checkBundlePrice = async(product, selectedItem, quantity) => {
+  const currProduct = Object.assign({}, selectedItem);
+
+  if (!product || !selectedItem || !quantity) {
+    return;
+  }
+  
+  currProduct['quantity'] = quantity;
+
+  console.log("curre", currProduct)
+  return currProduct;
+}
+
+export const setBundleDiscount = async(product, selectedItem, bundle) => {
+  const currProduct = Object.assign({}, selectedItem);
+
+  const originalItem = product.productProductItems.filter(item => item.id === selectedItem.id)[0];
+
+  currProduct['retailPrice'] = originalItem.retailPrice;
+  currProduct['discount'] = null;
+
+  if (bundle) {
+      const newTotal = Number(bundle.retailPrice);
+      const originPrice = originalItem.retailPrice * Number(bundle.quantity);
+      currProduct['retailPrice'] = newTotal.toFixed(2);
+      currProduct['originalPrice'] = originPrice.toFixed(2);
+      currProduct['bundle'] = bundle;
+      currProduct['save_price'] =  (originPrice - newTotal).toFixed(2)
+
+  } else {
+    currProduct['bundle'] = null;
+    currProduct['save_price'] = 0;
+    currProduct['originalPrice'] = null;
   }
   return currProduct;
 }

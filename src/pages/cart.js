@@ -3,8 +3,6 @@ import * as T from 'prop-types';
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { updateCart, deleteCart } from '../redux/actions/main'
-import { useTranslation } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import {
   Grid,
@@ -15,17 +13,19 @@ import {
   withWidth,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
-import { getProductById } from '../api/products';
 import QuantitySelectorB from '../components/common/QuantitySelectorB';
-import { formatNumber, getCartTotal, getImage } from '../utils';
-import { checkDiscountPrice } from '../utils/products';
-import { getImageUrlByType } from '../utils/form';
 import TextEllipsis from '../components/common/TextEllipsis';
 import CartBox from '../components/CartBlock';
 import Icons from '../components/common/Icons';
+import { getProductById } from '../api/products';
+import { formatNumber, getCartTotal, getImage } from '../utils';
+import { checkDiscountPrice, checkBundlePrice } from '../utils/products';
+import { getImageUrlByType } from '../utils/form';
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -162,8 +162,14 @@ const Cart = ({cart, updateCart, deleteCart}) => {
   const handleSelectChange = async(resp) => {
     const index = resp.id.split("-")[1]
     const mainProduct = await getProductById(cart[index].productId);
-    cart[index] = await checkDiscountPrice(mainProduct, cart[index], resp.value);
-    await updateCart(cart[index])
+    const currItem = cart[index];
+    if (currItem.bundle) {
+      const getDiscountItem = await checkBundlePrice(mainProduct, currItem, resp.value);
+      await updateCart(getDiscountItem)
+    } else {
+      const getDiscountItem = await checkDiscountPrice(mainProduct, currItem, resp.value);
+      await updateCart(getDiscountItem)
+    }
   }
 
   const handleDelete = (index, e) => {
@@ -171,6 +177,58 @@ const Cart = ({cart, updateCart, deleteCart}) => {
       e.preventDefault();
     }
     deleteCart(cart[index])
+  }
+
+  const loadPriceInfo = (data) => {
+    if (data.discount) {
+      return (
+        <>
+        <Grid item lg={12} xs={12} className={classes.cartPrice}>
+          <Typography align="left" component="p" className={classes.productPriceScratch}>
+            { t('unit_price') }: ${data.originalPrice}
+          </Typography>
+        </Grid>
+        <Grid item lg={12} xs={12} className={`${classes.cartPrice} ${classes.cartPriceSave}`}>
+          <Typography align="left" component="p">
+            { t('price_with_discount') }: ${data.retailPrice}
+          </Typography>
+        </Grid>
+        <Grid item lg={12} xs={12}  className={classes.cartPrice}>
+          <Typography align="left" component="p" className={classes.priceSave}>
+            { t('saves') }: {`$${data.save_price} (${data.save_percentag_show})`}
+          </Typography>
+        </Grid>
+        </>
+      )
+    } else if (data.bundle) {
+      return (
+        <>
+        <Grid item lg={12} xs={12} className={classes.cartPrice}>
+          <Typography align="left" component="p" className={classes.productPriceScratch}>
+            { t('unit_price') }: ${data.originalPrice}
+          </Typography>
+        </Grid>
+        <Grid item lg={12} xs={12} className={`${classes.cartPrice} ${classes.cartPriceSave}`}>
+          <Typography align="left" component="p">
+            { t('price_with_discount') }: ${data.retailPrice}
+          </Typography>
+        </Grid>
+        <Grid item lg={12} xs={12}  className={classes.cartPrice}>
+          <Typography align="left" component="p" className={classes.priceSave}>
+            { t('saves') }: {`$${data.save_price}`}
+          </Typography>
+        </Grid>
+        </>
+      )
+    } else {
+      return (    
+        <Grid item lg={12} xs={12} className={classes.cartPrice}>
+          <Typography align="left" component="p">
+            { t('price') }: ${data.retailPrice}
+          </Typography>
+        </Grid>
+      )
+    }
   }
 
   useEffect(() => {
@@ -222,32 +280,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                               </Typography>
                             </Grid>
                             {
-
-                              item.discount ? (
-                                <>
-                                <Grid item lg={12} xs={12} className={classes.cartPrice}>
-                                  <Typography align="left" component="p" className={classes.productPriceScratch}>
-                                    { t('unit_price') }: ${item.originalPrice}
-                                  </Typography>
-                                </Grid>
-                                <Grid item lg={12} xs={12} className={`${classes.cartPrice} ${classes.cartPriceSave}`}>
-                                  <Typography align="left" component="p">
-                                    Precio con Desc.: ${item.retailPrice}
-                                  </Typography>
-                                </Grid>
-                                <Grid item lg={12} xs={12}  className={classes.cartPrice}>
-                                  <Typography align="left" component="p" className={classes.priceSave}>
-                                    { t('unit_price') }: {`$${item.save_price} (${item.save_percentag_show})`}
-                                  </Typography>
-                                </Grid>
-                                </>
-                              ) : (
-                                <Grid item lg={12} xs={12} className={classes.cartPrice}>
-                                  <Typography align="left" component="p">
-                                    { t('price') }: ${item.retailPrice}
-                                  </Typography>
-                                </Grid>
-                              )
+                              loadPriceInfo(item)
                             }
                             <Grid item lg={12} xs={12} className={classes.cartPrice}>
                               <Typography align="left" component="p">
@@ -279,10 +312,29 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                 </Grid>
                               )
                             }
+                            {
+                              item.bundle && (
+                                <Grid item lg={12} xs={12}>
+                                  { t('message.discount_applied') }: { item.bundle.name }
+                                </Grid>
+                              )
+                            }
+                            <Hidden smUp>
+                              <strong>Total</strong>: {
+                                `$${formatNumber(item.retailPrice * parseInt(item.quantity))}`
+                              }
+                            </Hidden>
                           </Grid>
                         </Grid>
                         <Grid item lg={2} xs={9} className={classes.cartSelectCont}>
-                          <QuantitySelectorB stock={item.stock} data={item.quantity} classes={{ root: classes.cartDropRoot}} onChange={handleSelectChange} id={`select-${key}`} />
+                          <QuantitySelectorB
+                             jump={item.bundle ? item.bundle.quantity : 0}  
+                             stock={item.stock} 
+                             data={item.quantity} 
+                             classes={{ root: classes.cartDropRoot}} 
+                             onChange={handleSelectChange} 
+                             id={`select-${key}`} 
+                          />
                         </Grid>
                         <Hidden xsDown>
                           <Grid item lg={2} xs={12} >

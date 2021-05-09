@@ -183,6 +183,16 @@ const Index = React.memo(({
                           )
                         }
                         <p>{ t('total') }: {`${itemTotal}`}</p>
+                        {
+                          product.bundle && (
+                            <p>{ t('bundle') }:&nbsp;{`${product.bundle.name}`}</p>   
+                          )
+                        }
+                        {
+                          product.discount && (
+                            <p>{ t('discount') }:&nbsp;{`${product.discount.name}`}</p>   
+                          )
+                        }
                       </Grid>
                     </Grid>
                   </Grid>

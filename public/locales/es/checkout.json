@@ -2,7 +2,9 @@
     "returning_customer": "Soy Cliente",
     "continue_as_guest": "Continuar como Invitado",
     "place_your_order": "Haga su Pedido",
-
+    "delivery_option_delivery": "Direccion de Entrega",
+    "delivery_option_pickup": "Informacion del Cliente",
+    
     "message": {
         "sign_in_to_your_account": "Entre a su cuenta"
     }

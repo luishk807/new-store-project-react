@@ -4,9 +4,9 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
-
 import Login from '../../components/common/Form/Admin/Login';
 import { verifyAuth } from '../../api/auth';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({});
 
@@ -26,5 +26,12 @@ const Index = ({classes}) => {
 Index.protoTypes = {
   classes: T.object
 }
+
+/** This section is mandatory for next-18next translation to work */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['forms', 'common', 'footer']),
+  },
+})
 
 export default withStyles(styles)(Index);

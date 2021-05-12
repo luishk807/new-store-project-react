@@ -76,7 +76,9 @@ const ColorItem = React.memo(({ classes, data }) => {
   }
 
   useEffect(() => {
-    loadProducts();
+    if (data) {
+      loadProducts();
+    }
   }, [data]);
 
   return showData && (

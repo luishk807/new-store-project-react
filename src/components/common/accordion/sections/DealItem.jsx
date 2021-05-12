@@ -64,7 +64,9 @@ const VariantItem = React.memo(({ classes, data }) => {
   }
 
   useEffect(() => {
-    loaddItems();
+    if (data) {
+      loaddItems();
+    }
   }, [data]);
 
   return showData && (

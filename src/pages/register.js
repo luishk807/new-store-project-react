@@ -100,7 +100,7 @@ Register.protoTypes = {
 /** This section is mandatory for next-18next translation to work */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['register', 'footer']),
+    ...await serverSideTranslations(locale, ['register', 'forms', 'footer']),
   },
 })
  

@@ -387,28 +387,28 @@ const Index = () => {
                         <Grid item lg={1} xs={6} className={classes.itemColumn}>
                           <a href={`/admin/products/colors/${product.id}`}>
                           {
-                            product.productColors.length
+                            (product.productColors) ? product.productColors.length : 0
                           }
                           </a>
                         </Grid>
                         <Grid item lg={1} xs={6} className={classes.itemColumn}>
                           <a href={`/admin/products/sizes/${product.id}`}>
                           {
-                            product.productSizes.length
+                            (product.productSizes) ? product.productSizes.length : 0
                           }
                           </a>
                         </Grid>
                         <Grid item lg={1} xs={6} className={classes.itemColumn}>
                           <a href={`/admin/products/items/${product.id}`}>
                           {
-                            product.productProductItems.length
+                            (product.productProductItems) ? product.productProductItems.length : 0
                           }
                           </a>
                         </Grid>
                         <Grid item lg={1} xs={6} className={classes.itemColumn}>
                           <a href={`/admin/products/discounts/${product.id}`}>
                           {
-                            product.productProductDiscount.length
+                            (product.productProductDiscount) ? product.productProductDiscount.length : 0
                           }
                           </a>
                         </Grid>
@@ -429,16 +429,16 @@ const Index = () => {
                         </Grid>
                       </Hidden>
                       <Grid item lg={12} xs={12}>
-                        <AccordionBox section="variant" title={`Variantes [${product.productProductItems.length}]`} options={product.productProductItems}/>
+                        <AccordionBox section="variant" title={`Variantes [${(product.productProductItems) ? product.productProductItems.length : 0}]`} options={product.productProductItems}/>
                       </Grid>
                       <Grid item lg={12} xs={12}>
-                        <AccordionBox section="size" title={`Tamaños [${product.productSizes.length}]`}  options={product.productSizes} />
+                        <AccordionBox section="size" title={`Tamaños [${(product.productSizes) ? product.productSizes.length : 0}]`}  options={product.productSizes} />
                       </Grid>
                       <Grid item lg={12} xs={12}>
-                        <AccordionBox section="color"title={`Colores [${product.productColors.length}]`} options={product.productColors}/>
+                        <AccordionBox section="color"title={`Colores [${(product.productColors) ? product.productColors.length : 0}]`} options={product.productColors}/>
                       </Grid>
                       <Grid item lg={12} xs={12}>
-                        <AccordionBox section="deal" title={`Descuentos [${product.productProductDiscount.length}]`} options={product.productProductDiscount}/>
+                        <AccordionBox section="deal" title={`Descuentos [${(product.productProductDiscount) ? product.productProductDiscount.length : 0}]`} options={product.productProductDiscount}/>
                       </Grid>
                     </Grid>
                   </Grid>

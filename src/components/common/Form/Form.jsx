@@ -20,6 +20,7 @@ import {
   Autocomplete,
 } from '@material-ui/lab';
 import moment from 'moment'
+import { useTranslation } from 'next-i18next'
 import ColorPicker from 'material-ui-color-picker'
 
 import { loadMainOptions } from '../../../utils/form';
@@ -183,6 +184,7 @@ const Form = ({
   fileLimit = false,
   showCancelBtn = true
 }) => {
+  const { t } = useTranslation('forms')
   const [formOptions, setFormOptions] = useState({
     vendors: {},
     brands: {},
@@ -390,7 +392,7 @@ const Form = ({
                 name={field} 
                 defaultValue={fields[field]}
                 onChange={formOnChange}
-                label={removeCharacter(FORM_SCHEMA[field].label)} 
+                label={removeCharacter( t(FORM_SCHEMA[field].tKey) )} 
               />
             </FormControl>
           </Grid>
@@ -425,7 +427,7 @@ const Form = ({
                   name={field}
                 />
               }
-              label={FORM_SCHEMA[field].label}
+              label={ t(FORM_SCHEMA[field].tKey) }
             />
           </Grid>
         )
@@ -443,7 +445,7 @@ const Form = ({
                   name={field}
                 /> 
               }
-              label={FORM_SCHEMA[field].label}
+              label={ t(FORM_SCHEMA[field].tKey) }
             />
           </Grid>
         )
@@ -461,7 +463,7 @@ const Form = ({
                 name={field} 
                 defaultValue={fields[field]}
                 onChange={formOnChange}
-                label={removeCharacter(FORM_SCHEMA[field].label)} 
+                label={removeCharacter( t(FORM_SCHEMA[field].tKey) )} 
               />
             </FormControl>
           </Grid>
@@ -490,7 +492,7 @@ const Form = ({
                 type="password"
                 defaultValue={fields[field]}
                 onChange={formOnChange}
-                label={removeCharacter(FORM_SCHEMA[field].label)} 
+                label={removeCharacter( t(FORM_SCHEMA[field].tKey) )} 
               />
             </FormControl>
           </Grid>
@@ -513,7 +515,7 @@ const Form = ({
                 InputLabelProps={{
                   shrink: true,
                 }}
-                label={removeCharacter(FORM_SCHEMA[field].label)} 
+                label={removeCharacter( t(FORM_SCHEMA[field].tKey) )} 
               />
             </FormControl>
           </Grid>
@@ -536,7 +538,7 @@ const Form = ({
                 InputLabelProps={{
                   shrink: true,
                 }}
-                label={removeCharacter(FORM_SCHEMA[field].label)} 
+                label={removeCharacter( t(FORM_SCHEMA[field].tKey) )} 
               />
             </FormControl>
           </Grid>
@@ -566,9 +568,9 @@ const Form = ({
                       }
                     </React.Fragment>
                   )}
-                  renderInput={(params) => <TextField {...params} label={FORM_SCHEMA[field].label} variant="outlined" />}
+                  renderInput={(params) => <TextField {...params} label={ t(FORM_SCHEMA[field].tKey) } variant="outlined" />}
                 />
-                <FormHelperText name={field}>{`Select your ${FORM_SCHEMA[field].label}`}</FormHelperText>
+                <FormHelperText name={field}>{`Select your ${ t(FORM_SCHEMA[field].tKey) }`}</FormHelperText>
               </FormControl>
             </Grid>
           )
@@ -589,9 +591,9 @@ const Form = ({
                   }}
                   getOptionLabel={(option) => 'name' in option ? option.name : option.first_name + " " + option.last_name}
                   value={fields[field]}
-                  renderInput={(params) => <TextField {...params} label={FORM_SCHEMA[field].label} variant="outlined" />}
+                  renderInput={(params) => <TextField {...params} label={ t(FORM_SCHEMA[field].tKey) } variant="outlined" />}
                 />
-                <FormHelperText name={field}>{`Select your ${FORM_SCHEMA[field].label}`}</FormHelperText>
+                <FormHelperText name={field}>{`Select your ${ t(FORM_SCHEMA[field].tKey) }`}</FormHelperText>
               </FormControl>
             </Grid>
           ) 

@@ -29,6 +29,7 @@ import { getActivePaymentOptions } from '../../api/paymentOptions';
 import { emptyCart } from '../../redux/actions/main'
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { CompareSharp } from '@material-ui/icons';
 
 const styles = (theme) => ({
   root: {
@@ -198,7 +199,6 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
         delivery: 0
       })
     }
-
     setSelectedDeliveryOption(val[0])
   }
 
@@ -264,7 +264,6 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
       }, 1000);
       return;
     }
-
     let errorFound = true;
     let key = '';
     let ignoreFields = ['address', 'cart', 'userid'];
@@ -310,6 +309,11 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
         text: `Unable to process order, ${key} is required`
       })
     } else {
+      setSnack({
+        severity: 'error',
+        open: false,
+        text: null
+      })
       const formSubmit = Object.assign({}, form);
       const cart = formSubmit.cart;
       let country = copyFormCheck.country;
@@ -570,13 +574,13 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                               <ActionForm 
                                 classes={{root: classes.formRoot}}
                                 formSection={{
-                                  name: 'Direccion de entrega',
+                                  name: selectedDeliveryOption && selectedDeliveryOption.id == 1 ? t('delivery_option_pickup') :  t('delivery_option_delivery') ,
                                 }} 
                                 disableFields={disableFields}
                                 resetPanamaSection={forceAddressRefresh}
                                 forceRefresh={forceAddressRefresh}
                                 onFormChange={handleFormChange}
-                                ignoreForm={['email', 'addressB']}
+                                ignoreForm={['province', 'district', 'corregimiento', 'email', 'note', 'addressB', 'zone', 'phone', 'country']}
                                 entryForm={address} 
                                 onSubmitAction={handleDeliveryForm}
                                 showCancel={false}
@@ -647,7 +651,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
           )
         }
       </div>
-      <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false})} content={snack.text} />
+      <Snackbar open={snack.open} severity={snack.severity} content={snack.text} />
     </LayoutTemplate>
   );
 })

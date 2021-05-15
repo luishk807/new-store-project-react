@@ -52,8 +52,7 @@ const Edit = ({classes}) => {
             title={`size for ${size.name}`}
             entryForm={form} 
             customUrl={`/admin/products/sizes/${size.productId}`}  
-            cancelUrl={`/admin/products/sizes/${size.productId}`}  
-            successUrl={`/admin/products/sizes/${size.productId}`}  
+            cancelUrl={`/admin/products/sizes/${size.productId}`}
           />
         ) : (
           <ProgressBar />

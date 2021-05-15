@@ -50,11 +50,28 @@ const styles = (theme) => ({
   gridRadioItemContent: {
     width: '90%',
   },
+  deliveryServiceListContainer: {
+    alignItems: 'start',
+    padding: '10px 0px',
+    borderTop: 'none',
+    [theme.breakpoints.down('sm')]: {
+      borderTop: '1px solid rgba(0,0,0,.09)',
+    }
+  },
+  gridRadioItemRadio: {
+    textAlign: 'left'
+  },
+  gridRadioItemRadioRoot: {
+    padding: 0,
+  },
   gridRadioItemAmount: {
     textAlign: 'right'
   },
   gridRadioItemName: {
-    textAlign: 'left'
+    textAlign: 'left',
+    [theme.breakpoints.down('sm')]:{
+      fontSize: '.9em',
+    }
   }
 });
 
@@ -193,7 +210,39 @@ const RadioBox = React.memo(({
           return (
             <Grid container key={index}>
               <Grid item lg={12} xs={12} className={classes.gridRadioContainer}>
-                <div className={classes.gridRadioItemRadio}>
+                <Grid container className={classes.deliveryServiceListContainer}>
+                  <Grid item lg={1} xs={2} className={classes.gridRadioItemRadio}>
+                    <Radio
+                      checked={checkedOptions[option.id]}
+                      onChange={handleSelect}
+                      classes={{root: classes.gridRadioItemRadioRoot}}
+                      value={option.id}
+                      name={name}
+                    />
+                  </Grid>
+                  <Grid item lg={9} xs={8} className={`${classes.radioTitle} ${classes.gridRadioItemName}`}>
+                    {option.name}
+                  </Grid>
+                  <Grid item lg={2} xs={2} className={`${classes.radioTitle} ${classes.gridRadioItemAmount}`}>
+                    {`$${option.amount}`}
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+          )
+        })
+        break;
+      }
+      case 'deliveryOption': {
+        content = itemOptions && itemOptions.map((option, index) => {
+          let optionTotal = null;
+          if (option.id == 1) {
+            optionTotal = `FREE`;
+          }
+          return (
+            <Grid container key={index}>
+              <Grid item lg={10} xs={9} className={classes.radioRadio}>
+                <div className={classes.radioItemRadio}>
                   <Radio
                     checked={checkedOptions[option.id]}
                     onChange={handleSelect}
@@ -201,12 +250,13 @@ const RadioBox = React.memo(({
                     name={name}
                   />
                 </div>
-                <div className={classes.gridRadioItemContent}>
-                  <Grid container>
-                    <Grid item lg={6} xs={6} className={`${classes.radioTitle} ${classes.gridRadioItemName}`}>{option.name}</Grid>
-                    <Grid item lg={6} xs={6} className={`${classes.radioTitle} ${classes.gridRadioItemAmount}`}>{option.amount}</Grid>
-                  </Grid>
+                <div className={classes.radioItemContent}>
+                  <p className={classes.radioTitle}>{option.name}</p>
+                  <p className={classes.radioDescription}>{option.description}</p>
                 </div>
+              </Grid>
+              <Grid item lg={2} xs={3} className={classes.radioTotal}>
+                {optionTotal}
               </Grid>
             </Grid>
           )

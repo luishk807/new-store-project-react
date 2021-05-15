@@ -47,6 +47,7 @@ const Add = ({classes}) => {
             customUrl={`/admin/useraddresses/${id}`} 
             cancelUrl={`/admin/useraddresses/${id}`} 
             successUrl={`/admin/useraddresses/${id}`} 
+            ignoreForm={['mobile','phone', 'province', 'district', 'corregimiento', 'addressB', 'zone', 'country']}
             name={ADMIN_SECTIONS.address.key} 
             id={id} 
             entryForm={form} />

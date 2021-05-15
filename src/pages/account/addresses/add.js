@@ -46,7 +46,7 @@ const Add = ({classes}) => {
     <UserLayoutTemplate classes={{root: classes.templateRoot}}>
       <AddForm 
         classes={{root: classes.formRoot}} 
-        ignoreForm={['email', 'note', 'addressB']} 
+        ignoreForm={['phone','mobile','province','district','email', 'note', 'addressB', 'zone','corregimiento','country']} 
         userSection={USER_SECTIONS.userAddress} 
         customUrl={`/account/addresses`} 
         cancelUrl={`/account/addresses`} 

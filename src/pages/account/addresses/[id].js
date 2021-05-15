@@ -49,7 +49,7 @@ const Edit = ({classes}) => {
   return (
     <UserLayoutTemplate>
       <EditForm 
-        ignoreForm={['email', 'note', 'addressB']} 
+        ignoreForm={['phone','mobile','province','district','email', 'note', 'addressB', 'zone','corregimiento','country']} 
         classes={{root: classes.formRoot}} 
         userSection={USER_SECTIONS.userAddress} 
         id={id} 

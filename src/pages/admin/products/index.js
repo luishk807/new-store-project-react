@@ -413,9 +413,7 @@ const Index = () => {
                           </a>
                         </Grid>
                         <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                          {
-                            product.productBrand && product.productBrand.name
-                          }
+                          { product.productBrand && product.productBrand.name }
                         </Grid>
                         <Grid item lg={1} xs={6} className={classes.itemColumn}>
                           {
@@ -435,7 +433,7 @@ const Index = () => {
                         <AccordionBox section="size" title={`Tamaños [${(product.productSizes) ? product.productSizes.length : 0}]`}  options={product.productSizes} />
                       </Grid>
                       <Grid item lg={12} xs={12}>
-                        <AccordionBox section="color"title={`Colores [${(product.productColors) ? product.productColors.length : 0}]`} options={product.productColors}/>
+                        <AccordionBox section="color" title={`Colores [${product.productColors.length}]`} options={product.productColors}/>
                       </Grid>
                       <Grid item lg={12} xs={12}>
                         <AccordionBox section="deal" title={`Descuentos [${(product.productProductDiscount) ? product.productProductDiscount.length : 0}]`} options={product.productProductDiscount}/>

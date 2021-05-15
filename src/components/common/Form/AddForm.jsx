@@ -237,16 +237,20 @@ const AddForm = ({
   }
 
   useEffect(() => {
+    let unmounted = false;
     let newErrors = {}
 
-    Object.keys(form).map((field, index) => {
-      newErrors[field] = {
-        error: false,
-        text: '',
-      }
-    })
-    setErrors(newErrors);
-   loadFormOption()
+    if (!unmounted) {
+      Object.keys(form).map((field, index) => {
+        newErrors[field] = {
+          error: false,
+          text: '',
+        }
+      })
+      setErrors(newErrors);
+      loadFormOption()
+    }
+    return () => { unmounted = true };
   }, [entryForm])
   
   return showForm && (

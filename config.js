@@ -392,6 +392,10 @@ export const FORM_SCHEMA = {
     label: 'Product Id',
     tKey: "productId"
   },
+  productItemId: {
+    type: FORM_TYPE.number,
+    label: 'Product Item Id',
+  },
   colorId: {
     type: FORM_TYPE.number,
     label: 'Color Id',
@@ -636,6 +640,10 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.number,
     label: 'Price',
     tKey: "price"
+  },
+  quantity: {
+    type: FORM_TYPE.number,
+    label: 'Quantity',
   },
   minQuantity: {
     type: FORM_TYPE.number,

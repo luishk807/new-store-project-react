@@ -17,17 +17,17 @@ import {
 import moment from 'moment';
 
 import { getImageUrlByType } from '../../utils/form';
-import { checkDiscountPrice } from '../../utils/products';
-import { formatNumber, isAroundTime, capitalize } from '../../utils';
+import { checkDiscountPrice, setBundleDiscount, checkBundlePrice } from '../../utils/products';
+import { formatNumber, isAroundTime, capitalize, sortOptions } from '../../utils';
 import { noImageUrl } from '../../../config';
 import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../../constants/samples/ProductSample';
-import Select from '../../components/common/QuantitySelector';
 import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
 import QuantitySelectorB from '../../components/common/QuantitySelectorB';
 import { getItemById } from '../../api';
+import { getActiveProductBundlesByProductItemId } from '../../api/productBundles';
 import { getProductById } from '../../api/products';
 import { getSizesByProductId } from '../../api/sizes';
 import { getColorsByProductId } from '../../api/productColors';
@@ -118,6 +118,11 @@ const styles = (theme) => ({
   },
   variantRowContent: {
     margin: 0,
+    display: 'flex',
+    alignItems: 'center',
+  },
+  variantRowContentNoShow: {
+    margin: '10px 0px',
     display: 'flex',
     alignItems: 'center',
   },
@@ -233,22 +238,31 @@ const styles = (theme) => ({
 const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const router = useRouter()
   const id = router.query.pid;
+  const [forceRefresh, setForceRefresh] = useState(false);
+
   const [showData, setShowData] = useState(false);
   const [showDiscount, setShowDiscount] = useState(false);
   const [showColors, setShowColors] = useState(false);
   const [showSizes, setShowSizes] = useState(false);
   const [showProduct, setShowProduct] = useState(false);
-  const [forceRefresh, setForceRefresh] = useState(false);
-  const [images, setImages] = useState({});
-  const [productInfo, setProductInfo] = useState(null);
-  const [discountHtml, setDiscountHtml] = useState(null);
+  const [showBundles, setShowBundles] = useState(false);
+
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [sizeBlocks, setSizeBlock] = useState(null);
-  const [dealPrice, setDealPrice] = useState(0);
+  const [selectedBundle, setSelectedBundle] = useState(null);
   const [selectedProductItem, setSelectedProductItem] = useState({});
-  const [colors, setColors] = useState(null)
-  const [sizes, setSizes] = useState(null)
+
+  const [discountHtml, setDiscountHtml] = useState(null);
+  const [sizeBlocks, setSizeBlock] = useState(null);
+  const [bundleBlocks, setBundleBlock] = useState(null);
+  const [priceBlock, setPriceBlock] = useState(null);
+
+  const [images, setImages] = useState({});
+  const [productInfo, setProductInfo] = useState(null);
+  const [dealPrice, setDealPrice] = useState(0);
+  const [colors, setColors] = useState(null);
+  const [bundles, setBundles] = useState(null);
+  const [sizes, setSizes] = useState(null);
   const [outOfStock, setOutofStock] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -259,9 +273,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
   const handQuantitySelect = async(resp) => {
       if (Object.keys(selectedProductItem).length) {
-        const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem, resp.value);
-        setDealPrice(getDiscountItem.retailPrice);
-        setProductItem(getDiscountItem);
+        if (!selectedProductItem.bundle) {
+          const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem, resp.value);
+          setDealPrice(getDiscountItem.retailPrice);
+          setProductItem(getDiscountItem);
+        } else if (selectedProductItem.bundle) {
+          const getDiscountItem = await checkBundlePrice(productInfo, selectedProductItem, resp.value);
+          setDealPrice(getDiscountItem.retailPrice);
+          setProductItem(getDiscountItem);
+        }
       }
   };
 
@@ -328,7 +348,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         text: 'Please choose size',
       })
     } else {
-      await addCart(selectedProductItem);
+     await addCart(selectedProductItem);
     }
   }
 
@@ -342,6 +362,13 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     setProductItem({})
   }
 
+  const loadBundles = async() => {
+    const getBundles = await getActiveProductBundlesByProductItemId(selectedProductItem.id)
+    if (getBundles) {
+      setBundles(getBundles);
+    }
+  }
+
   const handleDefaultSize = () => {
     if (showData && selectedColor) {
       const items = productInfo.productProductItems;
@@ -349,9 +376,48 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         const getItem = items.filter(item => item.productColor === selectedColor.id)
         if (getItem && getItem.length) {
           const getSize = sizes.filter(size => size.id === getItem[0].productSize)
-          handleSizeChange(null, getSize[0])
         }
       }
+    }
+  }
+
+  const handleBundleChange = async(e, bundle) => {
+    console.log("selected bundle,", bundle)
+    if (e) {
+      e.preventDefault();
+    }
+
+    let currBundle = bundle;
+
+    if (selectedBundle && selectedBundle.id === currBundle.id) {
+      setSelectedBundle(null);
+      currBundle = null;
+    } else {
+      setSelectedBundle(currBundle);
+    }
+
+    setForceRefresh(!forceRefresh)
+    console.log("selected", selectedProductItem)
+    if (selectedProductItem) {
+         const searchItem = selectedProductItem;
+        searchItem['quantity'] = 1;
+
+        // const getTotal = formatNumber(Number(bundle.retailPrice));
+        // setProductItem(searchItem);
+        // setDealPrice(getTotal)
+
+        console.log("pass in set bundle")
+        const getDiscountItem = await setBundleDiscount(productInfo, selectedProductItem, currBundle);
+        setDealPrice(getDiscountItem.retailPrice);
+        setProductItem(getDiscountItem);
+
+
+        //check if variant is out of stock
+        if (!selectedProductItem.stock) {
+          setOutofStock(true);
+        } else {
+          setOutofStock(false);
+        }
     }
   }
 
@@ -362,14 +428,18 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
     setSelectedSize(size)
     
+    setShowBundles(false)
+
     const itemsAvailable = productInfo.productProductItems;
+
+    setForceRefresh(!forceRefresh)
 
     if (itemsAvailable && itemsAvailable.length) {
       const getItem = productInfo.productProductItems.filter(item => item.productColorId === selectedColor.id && item.productSizeId === size.id)
       if (getItem && getItem.length) {
         const searchItem = await getProductItemById(getItem[0].id);
         searchItem['quantity'] = 1;
-        setForceRefresh(!forceRefresh)
+
         const getTotal = formatNumber(searchItem.retailPrice);
         setProductItem(searchItem);
         setDealPrice(getTotal)
@@ -383,31 +453,74 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
   }
 
+  const createBundleBlock = () => {
+    console.log("bundle", bundles)
+
+   // setShowBundles(false)
+    if(bundles && selectedProductItem) {
+      let sizesArry = [];
+      console.log("imte", selectedProductItem)
+      let stock = selectedProductItem.stock;
+
+      const reservedStock = stock;
+      const blocks = bundles.map((bundle, index) => {
+        if (stock >= bundle.quantity) {
+          stock -= bundle.quantity;
+          if (selectedBundle && selectedBundle.id === bundle.id) {
+            return (
+              <a title={`Select ${capitalize(bundle.name)} for ${bundle.retailPrice}`} href="#" key={index} className={classes.productSizeLinkSelected} onClick={(e) => handleBundleChange(e, bundle)}><div className={classes.productSizeBox}><span>{bundle.name}</span><span>{`$${bundle.retailPrice}`}</span></div></a>
+            )
+          } else {
+            return (
+              <a title={`Select ${capitalize(bundle.name)} for ${bundle.retailPrice}`} href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleBundleChange(e, bundle)}><div className={classes.productSizeBox}><span>{bundle.name}</span><span>{`$${bundle.retailPrice}`}</span></div></a>
+            )
+          }
+        }
+      })
+      // if (!selectedBundle) {
+      //   handleBundleChange(null, bundles[0])
+      // }
+      setBundleBlock(blocks);
+    }
+  }
+
   const createSizeBlock = (color = null) => {
-    //if (showData) {
+    //  setShowSizes(false)
       if(sizes && color) {
-        const blocks = sizes.map((size, index) => {
+        let sizesArry = [];
+        sizes.forEach((size) => {
+            let sizeArry = size;
             const found = productInfo.productProductItems.filter(item => {
               return item.productSize === size.id && item.productColor == color.id;
             })
             if (found && found.length) {
-              const foundPrice = found[0].retailPrice ? `$${found[0].retailPrice}` : `N/A`;
-              if (selectedSize && selectedSize.id === size.id) {
-                return (
-                  <a title={`Select ${capitalize(size.name)} for ${foundPrice}`} key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`${foundPrice}`}</span></div></a>
-                )
-              } else {
-                return (
-                  <a title={`Select ${capitalize(size.name)} for ${foundPrice}`} href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`${foundPrice}`}</span></div></a>
-                )
-              }
+              // only get valid variants
+              sizeArry['price'] = found[0].retailPrice ? Number(found[0].retailPrice) : 0;
+              sizesArry.push(sizeArry);
+            }
+
+        })
+        const sizesAndPrices = sortOptions(sizesArry, 'price');
+
+        if (!selectedSize) {
+          handleSizeChange(null, sizesArry[0])
+        }
+
+        const blocks = sizesAndPrices.map((size, index) => {
+            const foundPrice = size.price ? `$${formatNumber(size.price)}` : `N/A`;
+            if (selectedSize && selectedSize.id === size.id) {
+              return (
+                <a title={`Select ${capitalize(size.name)} for ${foundPrice}`} key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`${foundPrice}`}</span></div></a>
+              )
             } else {
               return (
-                <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}<br/>{size.retailPrice ? size.retailPrice : `N/A`}</div></a>
+                <a title={`Select ${capitalize(size.name)} for ${foundPrice}`} href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`${foundPrice}`}</span></div></a>
               )
             }
         })
+
         setSizeBlock(blocks);
+
       } else {
         if (sizes && sizes.length) {
           const blocks = sizes.map((size, index) => {
@@ -418,7 +531,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           setSizeBlock(blocks);
         }
       }
-    // }
   }
 
   const getDiscountHtml = (product) => {
@@ -432,6 +544,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       }
     })
 
+    console.log("disocunt", discounts)
+    console.log("selected", selectedProductItem)
     if (discounts) {
       const discountBlocks = discounts.map((item, index) => {
         let hitem = <li key={index}>{item.name}</li>;
@@ -487,9 +601,32 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   useEffect(() => {
     if (sizes && sizes.length) {
       createSizeBlock();
-      setShowSizes(true)
     }
   }, [sizes]);
+
+  useEffect(() => {
+    if (bundles && bundles.length) {
+      createBundleBlock();
+    }
+  }, [bundles]);
+
+  useEffect(() => {
+  //  if (selectedBundle) {
+      createBundleBlock();
+   // }
+  }, [selectedBundle]);
+
+  useEffect(() => {
+    if (bundleBlocks && bundleBlocks.length) {
+      setShowBundles(true)
+    }
+  }, [bundleBlocks]);
+
+  useEffect(() => {
+    if (sizeBlocks && sizeBlocks.length) {
+      setShowSizes(true)
+    }
+  }, [sizeBlocks]);
 
   useEffect(() => {
     if (selectedColor || selectedSize) {
@@ -499,6 +636,68 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
   useEffect(() => {
     loadImages(selectedProductItem)
+    if (selectedProductItem && Object.keys(selectedProductItem).length) {
+      loadBundles()
+    }
+    if (selectedProductItem) {
+      console.log("here")
+      if (selectedProductItem.discount) {
+        setPriceBlock(
+          <Grid container className={classes.productPriceInContainer}>
+          <Grid item lg={4} xs={4} className={classes.productPrice}>
+            <span>{ t('unit_price') }:</span>
+          </Grid>
+          <Grid item lg={8} xs={8} className={classes.productPriceScratch}>
+            <span>&nbsp;${selectedProductItem.originalPrice}</span>
+          </Grid>
+          <Grid item lg={4} xs={4} className={classes.productPriceDeal}>
+            <span>{ t('price_with_discount') }:</span>
+          </Grid>
+          <Grid item lg={8} xs={8}  className={classes.productPriceDeal}>
+            <span>&nbsp;${dealPrice}</span>
+          </Grid>
+          <Grid item lg={4} xs={4} className={classes.productPrice}>
+            <span>{ t('savings') }:</span>
+          </Grid>
+          <Grid item lg={8} xs={8} className={classes.priceSave}>
+            <span>&nbsp;${selectedProductItem.save_price} ({selectedProductItem.save_percentag_show})</span>
+          </Grid>
+        </Grid>)
+      } else if (selectedProductItem.bundle) {
+        setPriceBlock(
+          <Grid container className={classes.productPriceInContainer}>
+          <Grid item lg={4} xs={4} className={classes.productPrice}>
+            <span>{ t('unit_price') }:</span>
+          </Grid>
+          <Grid item lg={8} xs={8} className={classes.productPriceScratch}>
+            <span>&nbsp;${selectedProductItem.originalPrice}</span>
+          </Grid>
+          <Grid item lg={4} xs={4} className={classes.productPriceDeal}>
+            <span>{ t('price_with_discount') }:</span>
+          </Grid>
+          <Grid item lg={8} xs={8}  className={classes.productPriceDeal}>
+            <span>&nbsp;${dealPrice}</span>
+          </Grid>
+          <Grid item lg={4} xs={4} className={classes.productPrice}>
+            <span>{ t('savings') }:</span>
+          </Grid>
+          <Grid item lg={8} xs={8} className={classes.priceSave}>
+            <span>&nbsp;${selectedProductItem.save_price}</span>
+          </Grid>
+        </Grid>)
+      } else {
+        setPriceBlock(    
+         <Grid container className={classes.productPriceInContainer}>
+          <Grid item lg={4} xs={4} className={classes.productPrice}>
+            <span>{ t('unit_price') }:</span>
+          </Grid>
+          <Grid item lg={8} xs={8}>
+          < span>&nbsp;${selectedProductItem.retailPrice ? selectedProductItem.retailPrice : `0.00`}</span>
+          </Grid>
+        </Grid>
+        )
+      }
+    }
   }, [selectedProductItem]);
 
   useEffect(() => {
@@ -537,37 +736,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   </Grid>
                   <Grid item lg={12} xs={12}  className={classes.productPriceContainer}>
                     {
-                     selectedProductItem.discount ? (
-                      <Grid container className={classes.productPriceInContainer}>
-                        <Grid item lg={4} xs={4} className={classes.productPrice}>
-                          <span>{ t('unit_price') }:</span>
-                        </Grid>
-                        <Grid item lg={8} xs={8} className={classes.productPriceScratch}>
-                          <span>&nbsp;${selectedProductItem.originalPrice}</span>
-                        </Grid>
-                        <Grid item lg={4} xs={4} className={classes.productPriceDeal}>
-                          <span>{ t('price_with_discount') }:</span>
-                        </Grid>
-                        <Grid item lg={8} xs={8}  className={classes.productPriceDeal}>
-                          <span>&nbsp;${dealPrice}</span>
-                        </Grid>
-                        <Grid item lg={4} xs={4} className={classes.productPrice}>
-                          <span>{ t('savings') }:</span>
-                        </Grid>
-                        <Grid item lg={8} xs={8} className={classes.priceSave}>
-                          <span>&nbsp;${selectedProductItem.save_price} ({selectedProductItem.save_percentag_show})</span>
-                        </Grid>
-                      </Grid>
-                    ) : (
-                      <Grid container className={classes.productPriceInContainer}>
-                        <Grid item lg={4} xs={4} className={classes.productPrice}>
-                          <span>{ t('unit_price') }:</span>
-                        </Grid>
-                        <Grid item lg={8} xs={8}>
-                        < span>&nbsp;${selectedProductItem.retailPrice ? selectedProductItem.retailPrice : `0.00`}</span>
-                        </Grid>
-                      </Grid>
-                    )
+                      priceBlock
                     }
                   </Grid>
                   {
@@ -583,7 +752,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     )
                   }
                   {
-                    showColors ? (
+                    showColors && (
                       <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
                         <Grid container>
                           <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('colors') }</Grid>
@@ -598,14 +767,10 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                           </Grid>
                         </Grid>
                       </Grid>
-                    ) : (
-                      <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
-                        No colors available
-                      </Grid>
                     )
                   }
                   {
-                    showSizes ? (
+                    showSizes && (
                       <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
                         <Grid container>
                           <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('sizes') }</Grid>
@@ -616,9 +781,19 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                           </Grid>
                         </Grid>
                       </Grid>
-                    ) : (
+                    )
+                  }
+                  {
+                    showBundles && (
                       <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
-                        No Sizes available
+                        <Grid container>
+                          <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('bundles') }</Grid>
+                          <Grid item lg={12} xs={12} >
+                            {
+                              bundleBlocks
+                            }
+                          </Grid>
+                        </Grid>
                       </Grid>
                     )
                   }
@@ -627,7 +802,13 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                       <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
                         <Grid container className={classes.infoRowContentQuantity}>
                           <Grid item lg={6} xs={6}>
-                            <QuantitySelectorB stock={selectedProductItem.stock} refresh={forceRefresh} onChange={handQuantitySelect} id="quant-select"/>
+                            <QuantitySelectorB 
+                              jump={selectedProductItem.bundle ? selectedProductItem.bundle.quantity : 0} 
+                              stock={selectedProductItem.stock} 
+                              refresh={forceRefresh} 
+                              onChange={handQuantitySelect} 
+                              id="quant-select"
+                            />
                           </Grid>
                           <Grid item lg={6} xs={6}>
                             {

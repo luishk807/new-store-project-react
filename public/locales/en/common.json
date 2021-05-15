@@ -35,8 +35,16 @@
     "shipping_address": "Shipping Address",
     "cancel": "Cancel",
     "add": "Add",
+    "bundles": "Bundles",
+    "bundle": "Bundle",
     "create_account": "Create Account",
     "continue": "Continue",
+
+    "no_sizes": "No Sizes available",
+    "no_colors": "No colors available",
+    "no_bundles": "No Bundle available",
+    "continue": "Continue",
+    "saves": "Saves",
 
     "message": {
         "you_saved": "You Saved",

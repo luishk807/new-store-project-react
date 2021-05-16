@@ -93,5 +93,6 @@
     "start_date": "Start Date",
     "use_date": "Enforce Date",
     "end_date": "End Date",
-    "quantity": "Quantity"
+    "quantity": "Quantity",
+    "selectYour": "Select your"
 }

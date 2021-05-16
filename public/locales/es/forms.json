@@ -93,5 +93,6 @@
     "start_date": "Fecha de Inicio",
     "use_date": "Fecha de Uso",
     "end_date": "Fecha Final",
-    "quantity": "Cantidad"
+    "quantity": "Cantidad",
+    "selectYour": "Seleccione su"
 }

@@ -609,7 +609,7 @@ export const FORM_SCHEMA = {
   retailPrice: {
     type: FORM_TYPE.number,
     label: 'Retail Price',
-    tKey: "retailPrice"
+    tKey: "retail_price"
   },
   profitPercentage: {
     type: FORM_TYPE.number,
@@ -643,12 +643,13 @@ export const FORM_SCHEMA = {
   },
   quantity: {
     type: FORM_TYPE.number,
-    label: 'Quantity',
+    label: 'quantity',
+    tKey: "quantity"
   },
   minQuantity: {
     type: FORM_TYPE.number,
     label: 'Minimun quantity',
-    tKey: "minQuantity"
+    tKey: "min_quantity"
   },
   percentage: {
     type: FORM_TYPE.number,
@@ -658,17 +659,17 @@ export const FORM_SCHEMA = {
   startDate: {
     type: FORM_TYPE.dateFull,
     label: 'Start Date',
-    tKey: "startDate"
+    tKey: "start_date"
   },
   useDate: {
     type: FORM_TYPE.bool,
     label: 'Enforce Date',
-    tKey: "useDate"
+    tKey: "use_date"
   },
   endDate: {
     type: FORM_TYPE.dateFull,
     label: 'End Date',
-    tKey: "endDate"
+    tKey: "end_date"
   }
 }
 

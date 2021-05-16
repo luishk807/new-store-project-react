@@ -570,7 +570,7 @@ const Form = ({
                   )}
                   renderInput={(params) => <TextField {...params} label={ t(FORM_SCHEMA[field].tKey) } variant="outlined" />}
                 />
-                <FormHelperText name={field}>{`Select your ${ t(FORM_SCHEMA[field].tKey) }`}</FormHelperText>
+                <FormHelperText name={field}>{`${t('selectYour')} ${ t(FORM_SCHEMA[field].tKey) }`}</FormHelperText>
               </FormControl>
             </Grid>
           )
@@ -593,7 +593,7 @@ const Form = ({
                   value={fields[field]}
                   renderInput={(params) => <TextField {...params} label={ t(FORM_SCHEMA[field].tKey) } variant="outlined" />}
                 />
-                <FormHelperText name={field}>{`Select your ${ t(FORM_SCHEMA[field].tKey) }`}</FormHelperText>
+                <FormHelperText name={field}>{`${t('selectYour')} ${ t(FORM_SCHEMA[field].tKey) }`}</FormHelperText>
               </FormControl>
             </Grid>
           ) 

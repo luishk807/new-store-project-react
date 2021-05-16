@@ -82,7 +82,7 @@ const mapStateToProps = state => ({
 /** This section is mandatory for next-18next translation to work, only inside /pages */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['account', 'footer']),
+    ...await serverSideTranslations(locale, ['forms', 'common', 'account', 'footer']),
   },
 })
 

@@ -445,7 +445,7 @@ const Form = ({
                   name={field}
                 /> 
               }
-              label={ t(FORM_SCHEMA[field].tKey) }
+              label={ removeCharacter(t(FORM_SCHEMA[field].tKey)) }
             />
           </Grid>
         )

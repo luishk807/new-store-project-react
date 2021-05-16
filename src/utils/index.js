@@ -5,7 +5,7 @@ import { getProductById } from '../api/products';
 import { getThumbnail } from '../utils/helpers/image'
 
 export const removeCharacter = (str) => {
-  return str.replace(/_/g, ' ')
+  return str ? str.replace(/_/g, ' ') : str
 }
 
 export const formatNumber = (x) => x ? Number.parseFloat(x).toFixed(2) : 0.00;

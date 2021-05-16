@@ -7,6 +7,7 @@ import {
   InputBase,
   Grid,
   Hidden,
+  Button
 } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Icons from './Icons';
@@ -52,7 +53,6 @@ const styles = (theme) => ({
     padding: theme.spacing(0, 2),
     height: '100%',
     position: 'absolute',
-    pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -60,6 +60,7 @@ const styles = (theme) => ({
     top: 0,
     borderRadius: '0px 4px 4px 0px',
     border: '1px solid white',
+    outline: 'none'
   },
   inputRoot: {
     color: 'inherit',
@@ -157,6 +158,12 @@ const SearchBar = ({classes}) => {
     }
   }
 
+  const onSearchIconClick = () => {
+    if (currentValue.length > 3) {
+      window.location.href = `/searchResult?str=${currentValue}`;
+    }
+  }
+
   const clearInput = () => {
     setCurrentValue('')
     resetTab()
@@ -215,7 +222,9 @@ const SearchBar = ({classes}) => {
           </Hidden>
           <div className={classes.searchBarInputContent}>
             <div className={`AppBarBackColor ${classes.searchIcon}`}>
-              <Icons classes={{icon: classes.icon}} name="search"/>
+              <Button onClick={onSearchIconClick}>
+                <Icons classes={{icon: classes.icon}} name="search"/>
+              </Button>
             </div>
             <InputBase
               value={currentValue}

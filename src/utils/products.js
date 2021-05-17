@@ -72,8 +72,7 @@ export const checkBundlePrice = async(product, selectedItem, quantity) => {
   }
   
   currProduct['quantity'] = quantity;
-
-  console.log("curre", currProduct)
+  
   return currProduct;
 }
 

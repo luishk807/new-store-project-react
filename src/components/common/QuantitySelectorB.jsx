@@ -80,7 +80,6 @@ const QuantitySelectorB = React.memo(({refresh, data = 1, jump = 0, stock, class
         text: 'Cantidad maxima del producto disponible',
       })
     } else {
-      console.log("other")
       setTotal(value);
       if (value) {
         onChange({
@@ -110,7 +109,7 @@ const QuantitySelectorB = React.memo(({refresh, data = 1, jump = 0, stock, class
       <FormControl variant="outlined" className={classes.productSelectDrop}>
           <div className={classes.quantityBox}>
             <Button className={`mainButtonNaked ${classes.quantityButton}`} onClick={ () => onHandleDropDown(false)}>-</Button>
-            <input className={classes.quantityInput} onChange={onHandleDropDown} value={total} type="number" title="quant" id={id}/>
+            <input className={classes.quantityInput} onFocus={(event) => event.target.select()} onChange={onHandleDropDown} value={total} type="number" title="quant" id={id}/>
             <Button className={`mainButtonNaked ${classes.quantityButton}`} onClick={ () => onHandleDropDown(true)}>+</Button>
           </div>
 

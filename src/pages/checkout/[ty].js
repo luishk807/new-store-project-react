@@ -25,6 +25,7 @@ import { getActiveDeliveryServicesByDeliveryOption } from '../../api/deliveryOpt
 import { getDeliveryServiceGroupCostByDeliveryOption } from '../../api/deliveryServiceGroupCosts';
 import { processOrderByUser } from '../../api/orders';
 import { getDeliveryOptions } from '../../api/deliveryOptions';
+import { getProductItemByIds } from '../../api/productItems';
 import { getActivePaymentOptions } from '../../api/paymentOptions';
 import { emptyCart } from '../../redux/actions/main'
 import { useTranslation } from 'next-i18next'
@@ -251,7 +252,22 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     setTotal(evt);
   }
 
+
+  const checkStock = async(cart) => {
+    const productItemIds = Object.keys(cart).map(key => Number(cart[key].id));
+    if (productItemIds) {
+      const getProductItems = await getProductItemByIds(productItemIds);
+      Object.keys(cart).forEach((key) => {
+        const currProd = getProductItems.filter(item => item.id === cart[key].id)[0];
+        if (currProd && cart[key].stock > currProd.stock) {
+           window.location.href="/cart";
+        }
+      })
+    }
+  }
+
   const handlePlaceOrder = async() => {
+    checkStock(cart);
     if (!Object.entries(cart).length) {
       setSnack({
         severity: 'error',

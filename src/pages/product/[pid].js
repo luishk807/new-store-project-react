@@ -382,7 +382,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   const handleBundleChange = async(e, bundle) => {
-    console.log("selected bundle,", bundle)
     if (e) {
       e.preventDefault();
     }
@@ -397,16 +396,10 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
 
     setForceRefresh(!forceRefresh)
-    console.log("selected", selectedProductItem)
     if (selectedProductItem) {
          const searchItem = selectedProductItem;
         searchItem['quantity'] = 1;
 
-        // const getTotal = formatNumber(Number(bundle.retailPrice));
-        // setProductItem(searchItem);
-        // setDealPrice(getTotal)
-
-        console.log("pass in set bundle")
         const getDiscountItem = await setBundleDiscount(productInfo, selectedProductItem, currBundle);
         setDealPrice(getDiscountItem.retailPrice);
         setProductItem(getDiscountItem);
@@ -454,16 +447,12 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   const createBundleBlock = () => {
-    console.log("bundle", bundles)
-
-   // setShowBundles(false)
     if(bundles && selectedProductItem) {
-      let sizesArry = [];
-      console.log("imte", selectedProductItem)
       let stock = selectedProductItem.stock;
-
-      const reservedStock = stock;
-      const blocks = bundles.map((bundle, index) => {
+      const validBundles = bundles.filter((bundle) => {
+        return stock >= bundle.quantity
+      })
+      const blocks = validBundles.map((bundle, index) => {
         if (stock >= bundle.quantity) {
           stock -= bundle.quantity;
           if (selectedBundle && selectedBundle.id === bundle.id) {
@@ -477,15 +466,11 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           }
         }
       })
-      // if (!selectedBundle) {
-      //   handleBundleChange(null, bundles[0])
-      // }
       setBundleBlock(blocks);
     }
   }
 
   const createSizeBlock = (color = null) => {
-    //  setShowSizes(false)
       if(sizes && color) {
         let sizesArry = [];
         sizes.forEach((size) => {
@@ -543,9 +528,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         return item
       }
     })
-
-    console.log("disocunt", discounts)
-    console.log("selected", selectedProductItem)
     if (discounts) {
       const discountBlocks = discounts.map((item, index) => {
         let hitem = <li key={index}>{item.name}</li>;
@@ -611,9 +593,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }, [bundles]);
 
   useEffect(() => {
-  //  if (selectedBundle) {
       createBundleBlock();
-   // }
   }, [selectedBundle]);
 
   useEffect(() => {
@@ -640,7 +620,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       loadBundles()
     }
     if (selectedProductItem) {
-      console.log("here")
       if (selectedProductItem.discount) {
         setPriceBlock(
           <Grid container className={classes.productPriceInContainer}>

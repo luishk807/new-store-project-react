@@ -48,6 +48,7 @@
         "discount_applied": "Descuento Aplicado",
         "cart_empty": "Su carrito esta vacío",
         "no_account": "¿No tiene una cuenta?",
+        "cart_updated": "Carrito cambiado: uno o más artículos han cambiado. Hemos proporcionado un carrito actualizado",
         "sign_into_your_account": "Ingrese a su cuenta",
         "forgot_password": "Olvidó su contraseña"
     }

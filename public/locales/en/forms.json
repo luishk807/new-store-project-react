@@ -94,5 +94,6 @@
     "use_date": "Enforce Date",
     "end_date": "End Date",
     "quantity": "Quantity",
-    "selectYour": "Select your"
+    "selectYour": "Select your",
+    "promoCode": "Promotional Code"
 }

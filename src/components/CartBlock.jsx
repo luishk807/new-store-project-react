@@ -5,10 +5,12 @@ import {
   Grid,
   Button
 } from '@material-ui/core';
+import {isMobile} from 'react-device-detect';
 import { connect } from 'react-redux';
+import { useTranslation } from 'next-i18next'
+
 import { getCartTotal, getTotal, getImage } from '../utils';
 import { getImageUrlByType } from '../utils/form';
-import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -99,7 +101,8 @@ const Index = React.memo(({
   showCheckout = false,
   onCartTotal,
   userInfo,
-  deliveryOption
+  deliveryOption,
+  promotionCode
 }) => {
   const imageUrl = getImageUrlByType('product');
   const [products, setProducts] = useState([]);
@@ -129,7 +132,8 @@ const Index = React.memo(({
 
       const obj = {
         cart: cart,
-        delivery: deliveryOption ? deliveryOption : 0
+        delivery: deliveryOption ? deliveryOption : 0,
+        coupon: promotionCode ? promotionCode.percentage : 0
       }
       const total = dispathGetTotal(obj);
 
@@ -139,10 +143,10 @@ const Index = React.memo(({
       setTotals(total)
       setProducts(prods);
     }
-  }, [data, deliveryOption]);
+  }, [data, deliveryOption, promotionCode]);
 
   return (
-    <div className={classes.root}>
+    <div className={isMobile ? classes.root : `${classes.root} checkoutStickyTotalBox`}>
       {
         showHeader && (
           <Grid container className={classes.itemHeader}>
@@ -236,6 +240,20 @@ const Index = React.memo(({
           </Grid>
         </Grid>
         {
+          totals.coupon > 0 && (
+            <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
+              <Grid container className={classes.totalTotalContainer}>
+                <Grid item className={classes.totalTotalTitle}>
+                  { t('discount_with_coupon')}
+                </Grid>
+                <Grid item className={classes.totalTotalTotal}>
+                  - ${totals.coupon}
+                </Grid>
+              </Grid>
+            </Grid>
+          )
+        }
+        {
           showCheckout ? (
             <Grid item className={`${showCheckout && 'borderTopMain'} ${classes.totalTotalitemsCheckout}`} lg={12} xs={12}>
               <Grid container className={classes.totalTotalContainer}>
@@ -292,6 +310,7 @@ Index.protoTypes = {
   showItems: T.bool,
   onCartTotal: T.func,
   showHeader: T.bool,
+  promotionCode: T.object,
   deliveryOption: T.Object,
   showCheckout: T.bool,
 }

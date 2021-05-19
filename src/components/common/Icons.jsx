@@ -98,6 +98,7 @@ import ErrorOutlineIcon from '@material-ui/icons/ErrorOutline';
 import Christmas from '../../../public/images/svg/categories/christmas.svg';
 import Others from '../../../public/images/svg/categories/others.svg';
 import NoImages from '../../../public/images/svg/noimage.svg';
+import Coupon from '../../../public/images/svg/coupon.svg';
 
 import Typography from './Typography';
 
@@ -113,6 +114,9 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'special':
         return <Special className={classes.icon}/>
+      break;
+      case 'coupon':
+        return <Coupon className={classes.icon}/>
       break;
       case 'noimages':
         return <NoImages className={classes.icon}/>

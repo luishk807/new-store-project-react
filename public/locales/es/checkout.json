@@ -4,7 +4,14 @@
     "place_your_order": "Haga su Pedido",
     "delivery_option_delivery": "Direccion de Entrega",
     "delivery_option_pickup": "Informacion del Cliente",
-    
+    "discount_with_coupon": "Descuento con cupon",
+    "promotional_code":{
+        "title":  "Informacion del Cliente",
+        "label":  "Introduzca el código",
+        "button": "Aplicar",
+        "error": "Codigo invalido",
+        "success": "Código aplicado"
+    },
     "message": {
         "sign_in_to_your_account": "Entre a su cuenta"
     }

@@ -147,7 +147,7 @@ const View = ({classes, order, isAdmin = false}) => {
   const [deliveryInfo, setDeliveryInfo] = useState({});
   const [showDelivery, setShowDelivery] = useState(false);
   const [showTotalSaved, setShowTotalSaved] = useState(false);
-  const { t } = useTranslation(['common', 'order'])
+  const { t } = useTranslation(['common', 'order', 'checkout'])
 
   useEffect(() => {
     const totalSaved = Number(order.totalSaved);
@@ -231,6 +231,23 @@ const View = ({classes, order, isAdmin = false}) => {
           </Grid>
         </Grid>
         {
+          isAdmin && order.orderPromotion && (
+            <Grid item lg={12} xs={12} className={classes.itemHeader}>
+              <Grid container className={classes.orderHeaderContainer}>
+                <Grid item lg={12} xs={12} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem1}`}>
+                  <span className={classes.orderHeaderSubTitle}>{ t('checkout:discount_with_coupon') }</span>
+                </Grid>
+                <Grid item lg={8} xs={8} className={classes.deliveryServiceItemName}>
+                  <span>{ order.orderPromotion.name }</span>
+                </Grid>
+                <Grid item lg={4} xs={4} className={classes.deliveryServiceItemAmount}>
+                  <span>${ order.coupon }</span>
+                </Grid>
+              </Grid>
+            </Grid>
+          )
+        }
+        {
           isAdmin && order.deliveryService && (
             <Grid item lg={12} xs={12} className={classes.itemHeader}>
               <Grid container className={classes.orderHeaderContainer}>
@@ -304,6 +321,21 @@ const View = ({classes, order, isAdmin = false}) => {
                     </Grid>
                   </Grid>
                 </Grid>
+
+                {
+                  order.coupon && (
+                    <Grid item lg={12} xs={12}>
+                      <Grid container>
+                        <Grid item lg={6} xs={6}>
+                          { t('checkout:discount_with_coupon') }
+                        </Grid>
+                        <Grid item lg={6} xs={6}>
+                          ${formatNumber(order.coupon)}
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  )
+                }
 
                 <Grid item lg={12} xs={12}>
                   <Grid container>

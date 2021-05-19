@@ -238,7 +238,6 @@ const EditForm = ({
     if (id) {
       Api.get(`${sect.url}/${id}`).then((res) => {
         let info = res;
-        console.log("info", info)
         for(var field in form){
           let value = info[field];
           if (FORM_SCHEMA[field].type == "dropdown") {

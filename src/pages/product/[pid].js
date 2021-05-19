@@ -297,14 +297,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     let imgs = [];
 
     if (data && data.productImages) {
-      if (data.productImages.length) {
-        imgs = data.productImages.map((img) => {
-          return {
-            original: `${imageUrl}/${img.img_url}`,
-            thumbnail: `${imageUrl}/${getThumbnail(img)}`,
-          }
-        });
-      } else if (productInfo.productImages && productInfo.productImages.length) {
+      imgs = data.productImages.map((img) => {
+        return {
+          original: `${imageUrl}/${img.img_url}`,
+          thumbnail: `${imageUrl}/${getThumbnail(img)}`,
+        }
+      });
+      setImages(imgs);
+    } else {
+      if (productInfo && productInfo.productImages && productInfo.productImages.length) {
         imgs = productInfo.productImages.map((img) => {
           return {
             original: `${imageUrl}/${img.img_url}`,
@@ -315,15 +316,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         imgs.push({
           original: `${noImageUrl.svg}`,
           thumbnail: `${noImageUrl.svg}`,
-        })
+        });
       }
-
-      setImages(imgs);
-    } else {
-      imgs.push({
-        original: `${noImageUrl.svg}`,
-        thumbnail: `${noImageUrl.svg}`,
-      });
       setImages(imgs);
     }
   }
@@ -403,7 +397,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         const getDiscountItem = await setBundleDiscount(productInfo, selectedProductItem, currBundle);
         setDealPrice(getDiscountItem.retailPrice);
         setProductItem(getDiscountItem);
-
 
         //check if variant is out of stock
         if (!selectedProductItem.stock) {

@@ -94,5 +94,6 @@
     "use_date": "Fecha de Uso",
     "end_date": "Fecha Final",
     "quantity": "Cantidad",
-    "selectYour": "Seleccione su"
+    "selectYour": "Seleccione su",
+    "promoCode": "Codigo promocional"
 }

@@ -226,9 +226,16 @@ export const ADMIN_SECTIONS = {
     url: 'payment-options',
     option: 'paymentoption'
   },
+  'promotionCode': {
+    name: 'Promotion Code',
+    names: 'Promotion Codes',
+    key: 'coupon',
+    url: 'promotion-codes',
+    option: 'promotioncode'
+  },
 }
 
-export const SECTIONS = ['user','order','vendor','color','category','brand','product', 'imageBox', 'sweetbox', 'deliveryOption', 'paymentOption',  'deliveryServiceGroupCost']
+export const SECTIONS = ['user','order','vendor','color','category','brand','product', 'imageBox', 'sweetbox', 'deliveryOption', 'paymentOption',  'deliveryServiceGroupCost', 'promotionCode']
 export const ADMIN_URL = {
   account: 'settings',
   home: 'home',

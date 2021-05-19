@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import Login from '../components/common/Form/Users/Login';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const LoginPage = () => {
   const router = useRouter();
-
-  useEffect(() => {
-    console.log(router)
-    console.log('lol')
-  }, []);
 
   const handleCancel = () => {
     router.back();

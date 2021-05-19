@@ -159,6 +159,20 @@ div::-moz-scrollbar-thumb {
   width: 100%;
 }
 
+.checkoutStickyTotalBox {
+  position: sticky;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background: white;
+  top: 100px;
+  text-align: center;
+  padding: 8px 5px;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  width: 100%;
+}
+
+
 a:hover {
   text-decoration: none;
   color: inherit,

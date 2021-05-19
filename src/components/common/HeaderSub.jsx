@@ -29,8 +29,15 @@ const styles = (theme) => ({
 
 const HeaderSub = ({ classes, name, previousUrl, addUrl }) => {
   const [urlName, setUrlName] = useState(name);
+  const [title, setTitle] = useState(name);
 
   useEffect(() => {
+    if (name.includes('-')) {
+      let new_name = name.replace(/-/g, " ");
+      setTitle(new_name);
+    } else {
+      setTitle(name);
+    }
     const pName = pluralize.plural(name);
     setUrlName(pName)
   }, []);
@@ -38,10 +45,10 @@ const HeaderSub = ({ classes, name, previousUrl, addUrl }) => {
   return (
     <Grid container className={classes.headerContainer}>
       <Grid item className={classes.headerTitle} lg={10} xs={7}>
-        <h3><Button href={previousUrl ? previousUrl : `/admin/home`}><Icons classes={{icon: classes.icon}} name="backArrow" /></Button>&nbsp; {name}</h3>
+        <h3><Button href={previousUrl ? previousUrl : `/admin/home`}><Icons classes={{icon: classes.icon}} name="backArrow" /></Button>&nbsp; {title}</h3>
       </Grid>
       <Grid item className={classes.headerTitle} lg={2} xs={5}>
-        <Button className={`mainButton`} href={addUrl ? addUrl : `/admin/${urlName}/add`}>Add {name}</Button>
+        <Button className={`mainButton`} href={addUrl ? addUrl : `/admin/${urlName}/add`}>Add {title}</Button>
       </Grid>
     </Grid>
   );

@@ -354,6 +354,18 @@ class OrderTemplate extends Component {
                                 {`$${formatNumber(data.delivery)}`}
                               </td>
                             </tr>
+                            {
+                              data.coupon && (
+                                <tr>
+                                  <th>
+                                    Discuento con cupon
+                                  </th>
+                                  <td>
+                                    {`$${formatNumber(data.coupon)}`}
+                                  </td>
+                                </tr>
+                              )
+                            }
                             <tr>
                               <th>
                                 <b>Grand Total</b>

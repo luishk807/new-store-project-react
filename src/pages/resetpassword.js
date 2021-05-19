@@ -51,7 +51,6 @@ const ResetPasswordForm = ({classes, inStatus, showRegister, onCancel}) => {
         auth: token,
         key: userId
       });
-      console.log(resp)
       if (resp.data.status) {
         setSnack({
           severity: 'success',

@@ -39,11 +39,7 @@ export const saveOrder = async(data, id) => {
 }
 
 export const saveOrderStatus = async(data, id) => {
-  const sendInfo = {
-    orderStatus: data.status
-  }
-
-  return Api.save(`orders/${id}`, sendInfo);
+  return Api.save(`orders/${id}`, data);
 }
 
 export const deleteOrderById = async(id) => {

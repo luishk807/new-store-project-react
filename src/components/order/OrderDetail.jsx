@@ -63,7 +63,18 @@ const styles = (theme) => ({
   },
   orderHeaderSubTitle: {
     fontSize: '1em',
-    color: 'grey'
+    color: 'grey',
+  },
+  orderHeaderItemClose: {
+    textAlign: 'right',
+    display: 'flex',
+    alignItems: 'flex-end;',
+    justifyContent: 'center',
+    padding: 0,
+  },
+  orderHeaderItemTitle: {
+    alignItems: 'start',
+    justifyContent: 'center',
   },
   orderHeaderItem: {
     '& p': {
@@ -139,10 +150,10 @@ const styles = (theme) => ({
   deliveryServiceItemAmount: {
     padding: 5,
     textAlign: 'right'
-  }
+  },
 });
 
-const View = ({classes, order, isAdmin = false}) => {
+const View = ({classes, order, onRemoveDelivery, isAdmin = false}) => {
   const [isCancelled, setIsCancelled] = useState(false);
   const [deliveryInfo, setDeliveryInfo] = useState({});
   const [showDelivery, setShowDelivery] = useState(false);
@@ -251,14 +262,37 @@ const View = ({classes, order, isAdmin = false}) => {
           isAdmin && order.deliveryService && (
             <Grid item lg={12} xs={12} className={classes.itemHeader}>
               <Grid container className={classes.orderHeaderContainer}>
-                <Grid item lg={12} xs={12} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem1}`}>
+                <Grid item lg={11} xs={11} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem1} ${classes.orderHeaderItemTitle}`}>
                   <span className={classes.orderHeaderSubTitle}>{ t('order:delivery_service') }</span>
+                </Grid>
+                <Grid item lg={1} xs={1} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem1} ${classes.orderHeaderItemClose}`}>
+                  <Button className={`secondButtonSmall`} onClick={onRemoveDelivery}>&#10005;</Button>
                 </Grid>
                 <Grid item lg={8} xs={8} className={classes.deliveryServiceItemName}>
                   <span>{ order.deliveryService }</span>
                 </Grid>
                 <Grid item lg={4} xs={4} className={classes.deliveryServiceItemAmount}>
-                  <span>${ order.delivery }</span>
+                  <span>${ deliveryServiceFee ? deliveryServiceFee : order.delivery }</span>
+                </Grid>
+              </Grid>
+            </Grid>
+          )
+        }
+        {
+          isAdmin && order.deliveryServiceFee && (
+            <Grid item lg={12} xs={12} className={classes.itemHeader}>
+              <Grid container className={classes.orderHeaderContainer}>
+                <Grid item lg={11} xs={11} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem1} ${classes.orderHeaderItemTitle}`}>
+                  <span className={classes.orderHeaderSubTitle}>{ t('order:delivery_service') }</span>
+                </Grid>
+                <Grid item lg={1} xs={1} className={`${classes.orderFlexColumn} ${classes.orderHeaderItem} ${classes.orderHeaderItem1} ${classes.orderHeaderItemClose}`}>
+                  <Button className={`secondButtonSmall`} onClick={onRemoveDelivery}>&#10005;</Button>
+                </Grid>
+                <Grid item lg={8} xs={8} className={classes.deliveryServiceItemName}>
+                  <span>N/A</span>
+                </Grid>
+                <Grid item lg={4} xs={4} className={classes.deliveryServiceItemAmount}>
+                  <span>${ order.deliveryServiceFee }</span>
                 </Grid>
               </Grid>
             </Grid>
@@ -377,6 +411,7 @@ View.protoTypes = {
   classes: T.object,
   order: T.object,
   isAdmin: T.bool,
+  onRemoveDelivery: T.func,
 }
 
 export default withStyles(styles)(View);

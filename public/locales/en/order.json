@@ -13,7 +13,7 @@
     "shipping_address": "Shipping Address",
     "pick_up": "Pick up info",
     "order_summary": "Order Summary",
-    
+
     "message": {
         "no_order_found": "No order found",
         "search_order": "Search order",

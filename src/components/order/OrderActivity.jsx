@@ -23,7 +23,7 @@ const styles = (theme) => ({
   }
 });
 
-const OrderActivity = ({classes, order}) => {
+const OrderActivity = React.memo(({classes, order}) => {
   const [activiy, setActivity] = useState([]);
   const [showData, setShowData] = useState(false);
   
@@ -91,7 +91,7 @@ const OrderActivity = ({classes, order}) => {
       }
     </Grid>
   );
-}
+})
  
 OrderActivity.protoTypes = {
   classes: T.object,

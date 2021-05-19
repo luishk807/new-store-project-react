@@ -312,6 +312,11 @@ export const FORM_SCHEMA = {
     label: 'Zip code',
     tKey: "zip"
   },
+  promoCode: {
+    type: FORM_TYPE.text,
+    label: 'Promotional Code',
+    tKey: "promoCode"
+  },
   city: {
     type: FORM_TYPE.text,
     label: 'City',
@@ -685,7 +690,7 @@ export const LIMIT = 30;
 
 export const IGNORE_FORM_FIELDS = ['useDate', 'saved'];
 
-export const ALLOW_FIELDS = ['saved', 'id', 'items', 'totalSaved', 'paymentOptionId', 'deliveryOptionId', 'deliveryServiceId'];
+export const ALLOW_FIELDS = ['saved', 'id', 'items', 'totalSaved', 'paymentOptionId', 'deliveryOptionId', 'deliveryServiceId', 'promotionCodeId', 'promotionCode'];
 
 export const config = {
   backEndUrl: process.env.BACKEND_URL,

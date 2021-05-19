@@ -3,8 +3,15 @@
     "continue_as_guest": "Continue as Guest",
     "place_your_order": "Place Your Order",
     "delivery_option_delivery": "Direccion de Entrega",
-    "delivery_option_pickup": "Informacion del Cliente",
-    
+    "delivery_option_pickup": "Client Information",
+    "discount_with_coupon": "Discount with coupon",
+    "promotional_code":{
+        "title":  "Informacion del Cliente",
+        "label":  "Enter code",
+        "button": "Apply",
+        "error": "Invalid Code",
+        "success": "Code Applied"
+    },
     "message": {
         "sign_in_to_your_account": "Sign in to your account"
     }

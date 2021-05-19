@@ -40,7 +40,6 @@ const ForgotPasswordForm = ({classes, inStatus, showRegister, onCancel}) => {
   const handleSubmit = async (form) => {
     try{
       const resp = await requestResetPassword(form);
-      console.log(resp)
       if (resp.data.status) {
         setSnack({
           severity: 'success',

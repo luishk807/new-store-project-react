@@ -4,10 +4,14 @@ import {
   withStyles,
   Grid,
   Button,
+  TextField,
   CircularProgress,
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
+import { CompareSharp } from '@material-ui/icons';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { defaultCountry, defaultPanama } from '../../../config';
 import CartBox from '../../components/CartBlock';
@@ -17,20 +21,21 @@ import ActionForm from '../../components/common/Form/Action/Add';
 import Snackbar from '../../components/common/Snackbar';
 import AddressSelection from '../../components/address/AddressSelection';
 import RadioBox from '../../components/common/RadioBox';
+import PromotionalCode from '../../components/PromotionalCode';
 import ProgressBar from '../../components/common/ProgressBar';
 import { validateForm, handleFormResponse } from '../../utils/form';
 import { returnDefaultOption } from '../../utils';
+import { emptyCart } from '../../redux/actions/main'
 import { getDeliveryServiceCostByFilter } from '../../api/deliveryServiceCosts';
 import { getActiveDeliveryServicesByDeliveryOption } from '../../api/deliveryOptionServices';
 import { getDeliveryServiceGroupCostByDeliveryOption } from '../../api/deliveryServiceGroupCosts';
+import { getActivePromotionCodeByCode } from '../../api/promotionCodes';
 import { processOrderByUser } from '../../api/orders';
 import { getDeliveryOptions } from '../../api/deliveryOptions';
 import { getProductItemByIds } from '../../api/productItems';
 import { getActivePaymentOptions } from '../../api/paymentOptions';
-import { emptyCart } from '../../redux/actions/main'
-import { useTranslation } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { CompareSharp } from '@material-ui/icons';
+
+
 
 const styles = (theme) => ({
   root: {
@@ -109,6 +114,34 @@ const styles = (theme) => ({
     width: 80,
     height: 80,
     fill: 'green',
+  },
+  promoCodeMain: {
+    background: 'rgba(0,0,0,.03)',
+    marginBottom: 20,
+    padding: 20,
+    [theme.breakpoints.down('sm')]: {
+      padding: 10
+    }
+  },
+  promoCodeTitle: {
+    margin: '10px 0px',
+    '& h4': {
+      fontSize: '1em',
+      fontWeight: 'bold'
+    }
+  },
+  promoCodeButton: {
+    margin: '0px !important',
+    height: '100%',
+  },
+  promoCodeIteInput: {
+    '& input': {
+      background: 'white'
+    }
+  },
+  promoCodeItemBtn: {
+    width: '100%',
+    padding: '0px 5px',
   }
 });
 
@@ -135,6 +168,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   const [showAddressLoader, setShowAddressLoader] = useState(false);
   const [guestAddress, setGuestAddress] = useState({});
   const [orderResult, setOrderResult] = useState(null);
+  const [selectedPromotionCode, setSelectedPromotionCode] = useState(null);
   const [total, setTotal] = useState({});
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -219,6 +253,11 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
         ...guestAddress,
         [add.key]: add.val
       })
+    } else if (add && add.target && add.target.name === "promoCode") {
+      setForm({
+        ...form,
+        'promoCode': add.target.value,
+      })
     }
   }
 
@@ -252,6 +291,9 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     setTotal(evt);
   }
 
+  const handlePromoCode = async(e) => {
+    setSelectedPromotionCode(e)
+  }
 
   const checkStock = async(cart) => {
     const productItemIds = Object.keys(cart).map(key => Number(cart[key].id));
@@ -353,6 +395,8 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
       formSubmit['totalSaved'] = total.saved;
       formSubmit['tax'] = parseFloat(total.taxes);
       formSubmit['grandtotal'] = total.grandTotal;
+      formSubmit['promotionCode'] = selectedPromotionCode ? selectedPromotionCode.name : null;
+      formSubmit['promotionCodeId'] = selectedPromotionCode ? selectedPromotionCode.id : null;
       formSubmit['deliveryOption'] = selectedDeliveryOption ? selectedDeliveryOption.name : null;
       formSubmit['deliveryOptionId'] = selectedDeliveryOption ? selectedDeliveryOption.id : null;
       formSubmit['paymentOption'] = selectedPaymentOption ? selectedPaymentOption.name : null;
@@ -418,8 +462,8 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   }, [paymentOptions])
 
   const loadCartTotal = useCallback(() => {
-    return <CartBox deliveryOption={total.delivery} onCartTotal={handleCartTotal} data={cart} />
-  }, [total.delivery, cart])
+    return <CartBox deliveryOption={total.delivery} promotionCode={selectedPromotionCode} onCartTotal={handleCartTotal} data={cart} />
+  }, [total.delivery, selectedPromotionCode, cart])
   
   const resetAddress = useCallback(() => {
     setShowAddressLoader(true);
@@ -612,6 +656,9 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                           </Grid>                       
                         )
                       }
+                      <Grid item lg={12} xs={12} className={classes.promoCodeMain}>
+                        <PromotionalCode onApply={handlePromoCode} />
+                      </Grid>
                       {
                         paymentOptions && (
                           <Grid item lg={12} xs={12} className={classes.contentBoxSection}>

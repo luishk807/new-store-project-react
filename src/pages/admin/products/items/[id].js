@@ -189,7 +189,6 @@ const Index = ({classes}) => {
             </Hidden>
             {
               productItems.map((item, index) => {
-                console.log("itenm", item)
                 const image = getImage(item);
                 return (
                   <Grid key={index} item lg={12} xs={12} className={classes.mainItems}>

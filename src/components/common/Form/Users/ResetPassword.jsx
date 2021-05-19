@@ -39,7 +39,6 @@ const ResetPassword = ({classes, onSubmit, inStatus}) => {
       handleSubmit()
     } else {
       const { name, value } = e.target;
-      console.log(name, value, 'je')
       if(name in form && validateForm(name, value)){
         setForm({
           ...form,

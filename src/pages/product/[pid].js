@@ -7,12 +7,8 @@ import { useRouter } from 'next/router';
 import {
   Grid,
   withStyles,
-  Link,
   Button,
-  Hidden,
-  Divider,
-  Typography,
-  ButtonGroup
+  Typography
 } from '@material-ui/core';
 import moment from 'moment';
 
@@ -20,25 +16,17 @@ import { getImageUrlByType } from '../../utils/form';
 import { checkDiscountPrice, setBundleDiscount, checkBundlePrice } from '../../utils/products';
 import { formatNumber, isAroundTime, capitalize, sortOptions } from '../../utils';
 import { noImageUrl } from '../../../config';
-import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../../constants/samples/ProductSample';
-import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
 import QuantitySelectorB from '../../components/common/QuantitySelectorB';
-import { getItemById } from '../../api';
 import { getActiveProductBundlesByProductItemId } from '../../api/productBundles';
 import { getProductById } from '../../api/products';
 import { getSizesByProductId } from '../../api/sizes';
 import { getColorsByProductId } from '../../api/productColors';
 import { getProductItemById } from '../../api/productItems';
 import ProgressBar from '../../components/common/ProgressBar';
-import WishListIcon from '../../components/common/WishListIcon';
-import ProductQuestionBox from '../../components/product/QuestionBox';
-import RateBox from '../../components/rate/Simple';
 import RateFullView from '../../components/rate/FullView';
-import VendorBox from '../../components/vendorBox';
-import { getDisplayName } from 'next/dist/next-server/lib/utils';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { getThumbnail } from '../../utils/helpers/image'
@@ -83,17 +71,22 @@ const styles = (theme) => ({
     fontSize: '1.5rem',
     textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '2em',
-      textAlign: 'center',
+      fontSize: '1.2em',
+      textAlign: 'left',
     }
   },
   productPrice: {
     fontSize: '1.2rem',
     textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '1em',
-      textAlign: 'center',
+      fontSize: '1.2em',
+      textAlign: 'left',
     }
+  },
+  productPriceNumber: {
+    fontWeight: 'bold',
+    color: '#B12704',
+    fontSize: '1.2rem'
   },
   productPriceDeal: {
     fontSize: '1.2rem',
@@ -185,9 +178,9 @@ const styles = (theme) => ({
     outline: '2px solid rgba(0,0,0)',
   },
   productSizeBox: {
-    border: '1px solid white',
+    border: '1px solid #f8be15',
+    borderRadius: '5px',
     display: 'flex',
-    outline: '1px solid rgba(0,0,0,.09)',
     padding: '8px 10px',
     fontSize: '.8em',
     alignItems: 'center',
@@ -198,6 +191,8 @@ const styles = (theme) => ({
     margin: '10px 0px',
   },
   productSizeLink: {
+    marginRight: '2px',
+    marginBottom: '2px',
     display: 'inline-block',
     color: 'grey',
     '&:hover': {
@@ -206,11 +201,15 @@ const styles = (theme) => ({
     }
   },
   productSizeLinkSelected: {
+    marginRight: '2px',
+    marginBottom: '2px',
     display: 'inline-block',
     backgroundColor: '#f8be15',
     color: 'white',
+    borderRadius: '5px',
     '&:hover': {
       color: 'white',
+      borderRadius: '5px',
     }
   },
   productSizeLinkDisabled: {
@@ -218,8 +217,10 @@ const styles = (theme) => ({
     display: 'inline-block',
     color: 'rgba(0,0,0,.1)',
     cursor: 'not-allowed',
+    borderRadius: '5px',
     '&:hover': {
       color: 'rgba(0,0,0,.1)',
+      borderRadius: '5px',
     }
   },
   descriptionItem: {
@@ -327,19 +328,19 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       setSnack({
         severity: 'error',
         open: true,
-        text: 'Please choose quantity',
+        text: t('choose_cantidad'),
       })
     } else if (!selectedColor) {
       setSnack({
         severity: 'error',
         open: true,
-        text: 'Please choose color',
+        text: t('choose_color'),
       })
     } else if (!selectedSize) {
       setSnack({
         severity: 'error',
         open: true,
-        text: 'Please choose size',
+        text: t('choose_size'),
       })
     } else {
      await addCart(selectedProductItem);
@@ -363,17 +364,18 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
   }
 
-  const handleDefaultSize = () => {
-    if (showData && selectedColor) {
-      const items = productInfo.productProductItems;
-      if (items && items.length) {
-        const getItem = items.filter(item => item.productColor === selectedColor.id)
-        if (getItem && getItem.length) {
-          const getSize = sizes.filter(size => size.id === getItem[0].productSize)
-        }
-      }
-    }
-  }
+  // Commented out because this does nothing with the results
+  // const handleDefaultSize = () => {
+  //   if (showData && selectedColor) {
+  //     const items = productInfo.productProductItems;
+  //     if (items && items.length) {
+  //       const getItem = items.filter(item => item.productColor === selectedColor.id)
+  //       if (getItem && getItem.length) {
+  //         const getSize = sizes.filter(size => size.id === getItem[0].productSize)
+  //       }
+  //     }
+  //   }
+  // }
 
   const handleBundleChange = async(e, bundle) => {
     if (e) {
@@ -613,59 +615,62 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       loadBundles()
     }
     if (selectedProductItem) {
+
+      const getProductPriceComponent = (value, isScratched = false) => {
+        return (
+          <>
+            <Grid item lg={4} xs={4} className={classes.productPrice}>
+              <span>{ t('unit_price') }:</span>
+            </Grid>
+            <Grid item lg={8} xs={8} className={[(isScratched) ? classes.productPriceScratch : {}, classes.productPriceNumber].join(' ')}>
+              <span>&nbsp;$ {value}</span>
+            </Grid>
+          </>)
+      }
+      
+      const getProductPriceDealComponent = (value) => {
+        return (
+          <>
+            <Grid item lg={4} xs={4} className={classes.productPriceDeal}>
+              <span>{ t('price_with_discount') }:</span>
+            </Grid>
+            <Grid item lg={8} xs={8} className={classes.productPriceDeal}>
+              <span>&nbsp;$ {value}</span>
+            </Grid>
+          </>)
+      }
+      
+      const getProductPriceSavings = (value) => {
+        return (
+          <>
+            <Grid item lg={4} xs={4} className={classes.productPrice}>
+              <span>{ t('savings') }:</span>
+            </Grid>
+            <Grid item lg={8} xs={8} className={classes.priceSave}>
+              <span>&nbsp;$ {value}</span>
+            </Grid>
+          </>
+        )
+      }
+
       if (selectedProductItem.discount) {
         setPriceBlock(
           <Grid container className={classes.productPriceInContainer}>
-          <Grid item lg={4} xs={4} className={classes.productPrice}>
-            <span>{ t('unit_price') }:</span>
-          </Grid>
-          <Grid item lg={8} xs={8} className={classes.productPriceScratch}>
-            <span>&nbsp;${selectedProductItem.originalPrice}</span>
-          </Grid>
-          <Grid item lg={4} xs={4} className={classes.productPriceDeal}>
-            <span>{ t('price_with_discount') }:</span>
-          </Grid>
-          <Grid item lg={8} xs={8}  className={classes.productPriceDeal}>
-            <span>&nbsp;${dealPrice}</span>
-          </Grid>
-          <Grid item lg={4} xs={4} className={classes.productPrice}>
-            <span>{ t('savings') }:</span>
-          </Grid>
-          <Grid item lg={8} xs={8} className={classes.priceSave}>
-            <span>&nbsp;${selectedProductItem.save_price} ({selectedProductItem.save_percentag_show})</span>
-          </Grid>
+            {getProductPriceComponent(selectedProductItem.originalPrice, true)}
+            {getProductPriceDealComponent(dealPrice)}
+            {getProductPriceSavings(`-${selectedProductItem.save_price} (${selectedProductItem.save_percentag_show})`)}
         </Grid>)
       } else if (selectedProductItem.bundle) {
         setPriceBlock(
           <Grid container className={classes.productPriceInContainer}>
-          <Grid item lg={4} xs={4} className={classes.productPrice}>
-            <span>{ t('unit_price') }:</span>
-          </Grid>
-          <Grid item lg={8} xs={8} className={classes.productPriceScratch}>
-            <span>&nbsp;${selectedProductItem.originalPrice}</span>
-          </Grid>
-          <Grid item lg={4} xs={4} className={classes.productPriceDeal}>
-            <span>{ t('price_with_discount') }:</span>
-          </Grid>
-          <Grid item lg={8} xs={8}  className={classes.productPriceDeal}>
-            <span>&nbsp;${dealPrice}</span>
-          </Grid>
-          <Grid item lg={4} xs={4} className={classes.productPrice}>
-            <span>{ t('savings') }:</span>
-          </Grid>
-          <Grid item lg={8} xs={8} className={classes.priceSave}>
-            <span>&nbsp;${selectedProductItem.save_price}</span>
-          </Grid>
+            {getProductPriceComponent(selectedProductItem.originalPrice, true)}
+            {getProductPriceDealComponent(dealPrice)}
+            {getProductPriceSavings(-selectedProductItem.save_price)}
         </Grid>)
       } else {
         setPriceBlock(    
          <Grid container className={classes.productPriceInContainer}>
-          <Grid item lg={4} xs={4} className={classes.productPrice}>
-            <span>{ t('unit_price') }:</span>
-          </Grid>
-          <Grid item lg={8} xs={8}>
-          < span>&nbsp;${selectedProductItem.retailPrice ? selectedProductItem.retailPrice : `0.00`}</span>
-          </Grid>
+           {getProductPriceComponent(selectedProductItem.retailPrice ? selectedProductItem.retailPrice : `0.00`)}
         </Grid>
         )
       }
@@ -678,9 +683,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
   }, [productInfo]);
 
-  useEffect(() => {
-    handleDefaultSize()
-  }, [selectedColor]);
+  // useEffect(() => {
+  //   handleDefaultSize()
+  // }, [selectedColor]);
 
   useEffect(()=>{
     loadProductInfo();
@@ -704,7 +709,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
               <Grid item lg={4} xs={12}>
                 <Grid container>
                   <Grid item lg={12} xs={12}>
-                   <Typography className={classes.productName} variant="h4" component="h3">{productInfo.name}</Typography>
+                   <Typography className={classes.productName} variant="h3" component="h3">{productInfo.name}</Typography>
                   </Grid>
                   <Grid item lg={12} xs={12}  className={classes.productPriceContainer}>
                     {
@@ -745,7 +750,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     showSizes && (
                       <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
                         <Grid container>
-                          <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('sizes') }</Grid>
+                          <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('sizes') }: { selectedSize ? selectedSize.name : '' }</Grid>
                           <Grid item lg={12} xs={12} >
                             {
                               sizeBlocks
@@ -773,6 +778,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     Object.keys(selectedProductItem).length ? (
                       <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
                         <Grid container className={classes.infoRowContentQuantity}>
+                          <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('quantity') }</Grid>
                           <Grid item lg={6} xs={6}>
                             <QuantitySelectorB 
                               jump={selectedProductItem.bundle ? selectedProductItem.bundle.quantity : 0} 

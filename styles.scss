@@ -265,6 +265,17 @@ a:hover {
     color: white !important;
   }
 }
+.secondButtonSmall{
+  border: 1px solid $main_color !important;
+  color: $main_color !important;
+  margin: 0px !important;
+  border-radius: 5px !important;
+  width: 100%;
+  &:hover {
+    background-color: $main_color !important;
+    color: white !important;
+  }
+}
 .mainButton {
   width: 100%;
   background-color: $main_color !important;

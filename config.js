@@ -576,6 +576,11 @@ export const FORM_SCHEMA = {
     label: 'Flete',
     tKey: "flete"
   },
+  deliveryServiceFee: {
+    type: FORM_TYPE.number,
+    label: 'Delivery Service Fee',
+    tKey: "delivery_service_fee"
+  },
   fleteTotal: {
     type: FORM_TYPE.number,
     label: 'Flete Total',

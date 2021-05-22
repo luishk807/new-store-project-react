@@ -104,17 +104,9 @@ const Index = React.memo(({
   deliveryOption,
   promotionCode
 }) => {
-  const imageUrl = getImageUrlByType('product');
   const [products, setProducts] = useState([]);
   const [totals, setTotals] = useState({});
-  const { t } = useTranslation('common')
-
-  const setDelivery = (val) => {
-    setTotal({
-      ...totals,
-      delivery: val
-    })
-  }
+  const { t } = useTranslation(['common'])
 
   const dispathGetTotal = useMemo(() => (obj) => {
     return getCartTotal(obj);
@@ -217,7 +209,20 @@ const Index = React.memo(({
             </Grid>
           </Grid>
         </Grid>
-
+        {
+          totals.coupon > 0 && (
+            <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
+              <Grid container className={classes.totalTotalContainer}>
+                <Grid item className={classes.totalTotalTitle}>
+                  { t('promo') }
+                </Grid>
+                <Grid item className={classes.totalTotalTotal}>
+                  - ${totals.coupon}
+                </Grid>
+              </Grid>
+            </Grid>
+          )
+        }
         <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
           <Grid container className={classes.totalTotalContainer}>
             <Grid item className={classes.totalTotalTitle}>
@@ -239,20 +244,6 @@ const Index = React.memo(({
             </Grid>
           </Grid>
         </Grid>
-        {
-          totals.coupon > 0 && (
-            <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
-              <Grid container className={classes.totalTotalContainer}>
-                <Grid item className={classes.totalTotalTitle}>
-                  { t('discount_with_coupon')}
-                </Grid>
-                <Grid item className={classes.totalTotalTotal}>
-                  - ${totals.coupon}
-                </Grid>
-              </Grid>
-            </Grid>
-          )
-        }
         {
           showCheckout ? (
             <Grid item className={`${showCheckout && 'borderTopMain'} ${classes.totalTotalitemsCheckout}`} lg={12} xs={12}>

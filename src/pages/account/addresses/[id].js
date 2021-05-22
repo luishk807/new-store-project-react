@@ -41,7 +41,7 @@ const Edit = ({classes}) => {
     province: null,
     district: null,
     corregimiento: null,
-    zone: null,
+    // zone: null,
     country: defaultCountry,
     note: null,
   }

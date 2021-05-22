@@ -354,6 +354,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     setForceRefresh(!forceRefresh)
     setSelectedColor(color);
     setSelectedSize(null);
+    setSelectedBundle(null);
     setProductItem({})
   }
 
@@ -415,6 +416,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
 
     setSelectedSize(size)
+
+    setSelectedBundle(null);
     
     setShowBundles(false)
 
@@ -553,12 +556,16 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       setProductInfo(getProductInfo);
     }
 
-    if (getProductColor && getProductColor.length) {
-      setColors(getProductColor);
+    if (getProductColor && getProductColor.length && getProductInfo.productProductItems &&  getProductInfo.productProductItems.length) {
+      const validColors = getProductInfo.productProductItems.map(item => item.productColorId);
+      const getTrueColors = getProductColor.filter(item => validColors.includes(item.id))
+      setColors(getTrueColors);
     }
 
     if (getProductSizes && getProductSizes.length) {
-      setSizes(getProductSizes);
+      const validSizes = getProductInfo.productProductItems.map(item => item.productSizeId);
+      const getTrueSizes = getProductSizes.filter(item => validSizes.includes(item.id))
+      setSizes(getTrueSizes);
     }
   }
   
@@ -659,13 +666,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
             {getProductPriceComponent(selectedProductItem.originalPrice, true)}
             {getProductPriceDealComponent(dealPrice)}
             {getProductPriceSavings(`-${selectedProductItem.save_price} (${selectedProductItem.save_percentag_show})`)}
-        </Grid>)
-      } else if (selectedProductItem.bundle) {
-        setPriceBlock(
-          <Grid container className={classes.productPriceInContainer}>
-            {getProductPriceComponent(selectedProductItem.originalPrice, true)}
-            {getProductPriceDealComponent(dealPrice)}
-            {getProductPriceSavings(-selectedProductItem.save_price)}
         </Grid>)
       } else {
         setPriceBlock(    

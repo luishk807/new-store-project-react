@@ -224,26 +224,6 @@ const Cart = ({cart, updateCart, deleteCart}) => {
         </Grid>
         </>
       )
-    } else if (data.bundle) {
-      return (
-        <>
-        <Grid item lg={12} xs={12} className={classes.cartPrice}>
-          <Typography align="left" component="p" className={classes.productPriceScratch}>
-            { t('unit_price') }: ${data.originalPrice}
-          </Typography>
-        </Grid>
-        <Grid item lg={12} xs={12} className={`${classes.cartPrice} ${classes.cartPriceSave}`}>
-          <Typography align="left" component="p">
-            { t('price_with_discount') }: ${data.retailPrice}
-          </Typography>
-        </Grid>
-        <Grid item lg={12} xs={12}  className={classes.cartPrice}>
-          <Typography align="left" component="p" className={classes.priceSave}>
-            { t('saves') }: {`$${data.save_price}`}
-          </Typography>
-        </Grid>
-        </>
-      )
     } else {
       return (    
         <Grid item lg={12} xs={12} className={classes.cartPrice}>

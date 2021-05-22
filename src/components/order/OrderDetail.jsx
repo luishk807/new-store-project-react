@@ -272,7 +272,7 @@ const View = ({classes, order, onRemoveDelivery, isAdmin = false}) => {
                   <span>{ order.deliveryService }</span>
                 </Grid>
                 <Grid item lg={4} xs={4} className={classes.deliveryServiceItemAmount}>
-                  <span>${ deliveryServiceFee ? deliveryServiceFee : order.delivery }</span>
+                  <span>${ order.deliveryServiceFee ? order.deliveryServiceFee : order.delivery }</span>
                 </Grid>
               </Grid>
             </Grid>
@@ -333,6 +333,21 @@ const View = ({classes, order, onRemoveDelivery, isAdmin = false}) => {
                     </Grid>
                   </Grid>
                 </Grid>
+                
+                {
+                  order.coupon && (
+                    <Grid item lg={12} xs={12}>
+                      <Grid container>
+                        <Grid item lg={6} xs={6}>
+                          { t('checkout:discount_with_coupon') }
+                        </Grid>
+                        <Grid item lg={6} xs={6}>
+                          ${formatNumber(order.coupon)}
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  )
+                }
 
                 <Grid item lg={12} xs={12}>
                   <Grid container>
@@ -355,21 +370,6 @@ const View = ({classes, order, onRemoveDelivery, isAdmin = false}) => {
                     </Grid>
                   </Grid>
                 </Grid>
-
-                {
-                  order.coupon && (
-                    <Grid item lg={12} xs={12}>
-                      <Grid container>
-                        <Grid item lg={6} xs={6}>
-                          { t('checkout:discount_with_coupon') }
-                        </Grid>
-                        <Grid item lg={6} xs={6}>
-                          ${formatNumber(order.coupon)}
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                  )
-                }
 
                 <Grid item lg={12} xs={12}>
                   <Grid container>

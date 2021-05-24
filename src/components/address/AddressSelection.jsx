@@ -107,7 +107,7 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
       province: add.addressProvince,
       district: add.addressDistrict,
       corregimiento: add.addressCorregimiento,
-      zone: add.addressZone,
+      // zone: add.addressZone,
       none: add.note,
       country: add.addressCountry,
     }
@@ -219,11 +219,11 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
                       <p>{userAddress.addressCorregimiento.name}</p>
                     )
                   }
-                  {
+                  {/* {
                     userAddress.addressZone && (
                       <p>{userAddress.addressZone.name}</p>
                     )
-                  }
+                  } */}
                   {
                     userAddress.note && userAddress.note !== "null" && (<p>{userAddress.note && userAddress.note}</p>)
                   }
@@ -251,7 +251,7 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
       province: null,
       district: null,
       corregimiento: null,
-      zone: null,
+      // zone: null,
       country: defaultCountry,
       note: null,
       selected: true

@@ -153,7 +153,6 @@ const Edit = ({classes}) => {
   }
 
   const removeDeliveryService = async() => {
-    console.log("hhh")
     const getResp = await saveOrderStatus({
       deliveryServiceFee: null
     }, order.id);

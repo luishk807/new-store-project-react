@@ -255,30 +255,29 @@ export const getCartTotal = (obj) => {
     })
   }
 
-  taxes = subtotal * 0.07;
-
-  grandTotal = taxes + subtotal + delivery;
-
-  savedGrandTotal = isNaN(originalTotal) ? null : originalTotal - subtotal;
-
-  let newCoupon = 0;
+  let couponTotal = 0;
 
   if (coupon) {
-    let oldTotal = grandTotal;
-    newCoupon = ((coupon / 100) * grandTotal);
-    grandTotal = grandTotal - newCoupon;
-    if (isNaN(savedGrandTotal)) {
-      savedGrandTotal = oldTotal - grandTotal;
-    } else {
-      savedGrandTotal = savedGrandTotal + newCoupon;
-    }
+    couponTotal = ((coupon / 100) * subtotal);
+  }
+
+  let newSubtotal = subtotal - couponTotal;
+
+  taxes = newSubtotal * 0.07;
+
+  grandTotal = taxes + newSubtotal + delivery;
+
+  savedGrandTotal = isNaN(originalTotal) ? null : originalTotal - newSubtotal;
+
+  if (coupon && !isNaN(savedGrandTotal)) {
+    savedGrandTotal = savedGrandTotal + couponTotal;
   }
 
   return {
     'subtotal': formatNumber(subtotal),
     'delivery': formatNumber(delivery),
     'taxes': formatNumber(taxes),
-    'coupon': formatNumber(newCoupon),
+    'coupon': formatNumber(couponTotal),
     'saved': formatNumber(savedGrandTotal),
     'grandTotal': formatNumber(grandTotal)
   }

@@ -273,7 +273,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     fetchedAddress.province = evt.addressProvince && evt.addressProvince.name ? evt.addressProvince.name : evt.province ? evt.province : null;
     fetchedAddress.district = evt.addressDistrict && evt.addressDistrict.name ? evt.addressDistrict.name : evt.district ? evt.district : null;
     fetchedAddress.corregimiento = evt.addressCorregimiento && evt.addressCorregimiento.iso ? evt.addressCorregimiento.iso : evt.district ? evt.corregimiento : null;
-    fetchedAddress.zone = evt.addressZone && evt.addressZone.name ? evt.addressZone.name : evt.zone ? evt.zone : null;
+    // fetchedAddress.zone = evt.addressZone && evt.addressZone.name ? evt.addressZone.name : evt.zone ? evt.zone : null;
     fetchedAddress.country = evt.addressCountry  && evt.addressCountry.name ? evt.addressCountry.name : evt.district ? evt.country : null;
 
     if (fetchedAddress.zone) {
@@ -500,7 +500,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
           province: defaultPanama.province,
           district: defaultPanama.district,
           corregimiento: null,
-          zone: null,
+          // zone: null,
           country: defaultCountry,
           note: null,
         }
@@ -576,7 +576,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
         province: null,
         district: null,
         corregimiento: null,
-        zone: null,
+        // zone: null,
         country: defaultCountry.name,
         note: null,
       }

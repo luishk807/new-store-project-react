@@ -86,16 +86,11 @@ export const setBundleDiscount = async(product, selectedItem, bundle) => {
 
   if (bundle) {
       const newTotal = Number(bundle.retailPrice);
-      const originPrice = originalItem.retailPrice * Number(bundle.quantity);
       currProduct['retailPrice'] = newTotal.toFixed(2);
-      currProduct['originalPrice'] = originPrice.toFixed(2);
       currProduct['bundle'] = bundle;
-      currProduct['save_price'] =  (originPrice - newTotal).toFixed(2)
 
   } else {
     currProduct['bundle'] = null;
-    currProduct['save_price'] = 0;
-    currProduct['originalPrice'] = null;
   }
   return currProduct;
 }

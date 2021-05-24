@@ -270,28 +270,29 @@ const Form = ({
     if (section === 'province') {
       fields['district'] = null;
       fields['corregimiento'] = null;
-      fields['zone'] = null;
+      // fields['zone'] = null;
       setPanamaAddress({
         ...panamaAddress,
         'sel_district': null,
         'sel_corregimiento': null,
-        'sel_zone': null
+        // 'sel_zone': null
       })
     } else if (section === 'district') {
       fields['corregimiento'] = null;
-      fields['zone'] = null;
+      // fields['zone'] = null;
       setPanamaAddress({
         ...panamaAddress,
         'sel_corregimiento': null,
-        'sel_zone': null
+        // 'sel_zone': null
       })
-    } else if (section === 'corregimiento') {
-      fields['zone'] = null;
-      setPanamaAddress({
-        ...panamaAddress,
-        'sel_zone': null
-      })
-    }
+    } 
+    // else if (section === 'corregimiento') {
+    //   fields['zone'] = null;
+    //   setPanamaAddress({
+    //     ...panamaAddress,
+    //     'sel_zone': null
+    //   })
+    // }
   }
 
   const onDropDownChange = async(val) => {
@@ -310,11 +311,12 @@ const Form = ({
         sel_name = 'sel_district';
         resetPanamaDrop('district');
       } else if (val.name === "corregimiento") {
-        const lists = panama.zones.filter((item) => item.corregimientoId == val.value.id);
-        options['zone'] = lists;
+        // const lists = panama.zones.filter((item) => item.corregimientoId == val.value.id);
+        // options['zone'] = lists;
         sel_name = 'sel_corregimiento';
         resetPanamaDrop('corregimiento');
-      } else if (val.name === "zone") {
+      } 
+      else if (val.name === "zone") {
         sel_name = 'sel_zone';
       } 
       setPanamaAddress({
@@ -557,6 +559,7 @@ const Form = ({
                   onChange={(e, value) => {
                     formOnChange(null, { name: field, value: value})
                   }}
+                  getOptionSelected={(option, value) => option.value === value.value}
                   getOptionLabel={(option) => option.name}
                   value={fields[field]}
                   renderOption={(option, { selected }) => (
@@ -589,6 +592,7 @@ const Form = ({
                     }
                     formOnChange(null, { name: field, value: value})
                   }}
+                  getOptionSelected={(option, value) => option.value === value.value}
                   getOptionLabel={(option) => 'name' in option ? option.name : option.first_name + " " + option.last_name}
                   value={fields[field]}
                   renderInput={(params) => <TextField {...params} label={ t(FORM_SCHEMA[field].tKey) } variant="outlined" />}
@@ -711,7 +715,7 @@ const Form = ({
       sel_province: null,
       sel_district: null,
       sel_corregimiento: null,
-      sel_zone: null
+      // sel_zone: null
     };
     if (options.province) {
       panama.provinces = options.province
@@ -722,9 +726,9 @@ const Form = ({
     if (options.corregimiento) {
       panama.corregimientos = options.corregimiento
     };
-    if (options.zone) {
-      panama.zones = options.zone
-    };
+    // if (options.zone) {
+    //   panama.zones = options.zone
+    // };
     setPanamaAddress(panama);
     setFormOptions(options);
     setUseFormOptions(true);

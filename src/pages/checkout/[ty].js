@@ -622,7 +622,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                   <Grid className={classes.contentSection} item lg={7} xs={12}>
                     <Grid container>
                       <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
-                        <RadioBox selected={form.delivery} onSelected={handleDeliveryOption} options={deliveryOptions} name="delivery" type="deliveryOption" title="Opciones de Entrega" />
+                        <RadioBox selected={form.delivery} onSelected={handleDeliveryOption} options={deliveryOptions} name="delivery" type="deliveryOption" title={t('delivery_options')} />
                       </Grid>
                       <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
                         {
@@ -652,7 +652,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                       {
                         showDeliveryServices && (
                           <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
-                            <RadioBox selected={selectedDeliveryService.id} onSelected={handleServiceOption} options={deliveryServices} name="deliveryOption" type="deliveryServiceList" title="Opciones de Servicio de Envio" />
+                            <RadioBox selected={selectedDeliveryService.id} onSelected={handleServiceOption} options={deliveryServices} name="deliveryOption" type="deliveryServiceList" title={t('delivery_service_options')} />
                           </Grid>                       
                         )
                       }
@@ -662,7 +662,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                       {
                         paymentOptions && (
                           <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
-                            <RadioBox selected={form.payment} onSelected={handlePaymentOption} options={paymentOptions} name="payment" type="payment" title="Opciones de Pago" />
+                            <RadioBox selected={form.payment} onSelected={handlePaymentOption} options={paymentOptions} name="payment" type="payment" title={t('payment_options')} />
                           </Grid>                       
                         )
                       }

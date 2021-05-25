@@ -9,6 +9,7 @@ import {
 
 import { getActivePromotionCodeByCode } from '../api/promotionCodes';
 import Snackbar from './common/Snackbar';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -57,6 +58,7 @@ const PromotionalCode = ({classes, onApply}) => {
     open: false,
     text: '',
   });
+  const { t } = useTranslation('checkout')
 
   const closePromoCode = async() => {
     setShowData(false);
@@ -102,7 +104,7 @@ const PromotionalCode = ({classes, onApply}) => {
     <div className={classes.root} id="vendorSection">
       <Grid container>
           <Grid item lg={12} xs={12} className={classes.title}>
-            <h4>Applicar cupon / Descuento</h4>
+            <h4>{t('apply_coupon')}</h4>
           </Grid>
           {
             showData ? (
@@ -113,7 +115,7 @@ const PromotionalCode = ({classes, onApply}) => {
                   </Grid>
                   <Grid item lg={2} className={classes.selectedPromoButton}>
                     <Button onClick={closePromoCode} className={`mainButton`}>
-                      Quitar
+                      {t('remove')}
                     </Button>
                   </Grid>
                 </Grid>
@@ -127,7 +129,7 @@ const PromotionalCode = ({classes, onApply}) => {
                       variant="outlined" 
                       name="promoCode"
                       onChange={(e) => setInput(e.target.value) }
-                      label="Introduzca el código"
+                      label={t('message.insert_coupon')}
                     />
                   </Grid>
                   <Grid item lg={3} xs={2} className={classes.itemBtn}>

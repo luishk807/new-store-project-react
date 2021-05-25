@@ -7,6 +7,7 @@ import {
   Button,
 } from '@material-ui/core';
 import { formatNumber, sortOptions } from '../../utils';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -97,6 +98,7 @@ const RadioBox = React.memo(({
     setCheckedOptions(checks)
     onSelected(opt)
   }
+  const { t } = useTranslation('common')
 
   useEffect(() => {
     let data = null;
@@ -237,7 +239,7 @@ const RadioBox = React.memo(({
         content = itemOptions && itemOptions.map((option, index) => {
           let optionTotal = null;
           if (option.id == 1) {
-            optionTotal = `FREE`;
+            optionTotal = t('free').toUpperCase();
           }
           return (
             <Grid container key={index}>
@@ -273,7 +275,7 @@ const RadioBox = React.memo(({
           } else if (option.deliveryOptionDeliveryServiceOptions && option.deliveryOptionDeliveryServiceOptions.length) {
             optionTotal = ``;
           } else {
-            optionTotal = `FREE`;
+            optionTotal = t('free').toUpperCase();
           }
           return (
             <Grid container key={index}>

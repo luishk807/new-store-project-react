@@ -333,7 +333,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     copyFormCheck['deliveryOption'] = selectedDeliveryOption;
     copyFormCheck['deliveryService'] = selectedDeliveryService;
     const useAddress = isUser ? Object.assign({}, address) : Object.assign({}, guestAddress)
-    if (selectedDeliveryOption.id == 2 || selectedDeliveryOption.id == 3) {
+    if (selectedDeliveryOption.id != 1) {
       isUserPickUp = false;
       ignoreFields = ignoreFields.concat(['addressB', 'zone', 'note']);
       if (!selectedDeliveryService) {
@@ -613,7 +613,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
             <>
             <Grid container className={classes.pageTitleContainer}>
               <Grid className={classes.pageTitle} item lg={12} xs={12}>
-                <h1>Checkout</h1>
+                <h1>{ t('checkout_title') }</h1>
               </Grid>
             </Grid>
             <Grid container className={classes.pageContenContainer}>

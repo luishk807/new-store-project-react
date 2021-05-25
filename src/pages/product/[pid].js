@@ -343,7 +343,12 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         text: t('choose_size'),
       })
     } else {
-     await addCart(selectedProductItem);
+      await addCart(selectedProductItem);
+      setSnack({
+        severity: 'success',
+        open: true,
+        text: t('product:messages.added_to_cart'),
+      })
     }
   }
 

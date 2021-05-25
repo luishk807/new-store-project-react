@@ -8,6 +8,7 @@
     "messages": {
         "choose_quantity": "Favor seleccione cantidad",
         "choose_color": "Favor seleccione color",
-        "choose_size": "Favor seleccione tamaño"
+        "choose_size": "Favor seleccione tamaño",
+        "added_to_cart": "Añadido al Carrito"
     }
 }

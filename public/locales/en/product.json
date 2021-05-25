@@ -8,6 +8,7 @@
     "messages": {
         "choose_quantity": "Please choose quantity",
         "choose_color": "Please choose color",
-        "choose_size": "Please choose size"
+        "choose_size": "Please choose size",
+        "added_to_cart": "Added to Cart"
     }
 }

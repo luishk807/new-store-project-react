@@ -102,6 +102,36 @@ const ImageBox = ({classes, name, showTitle = false, isSlider = false}) => {
     loadImageBoxes();
   }, [showData]);
 
+  const getClassNameBySweetBoxType = (sweetBoxType) => {
+    switch(sweetBoxType) {
+      case 1:
+      case 2:
+        return classes.columnMiniImageBox;
+      case 3:
+        return classes.columnBrandImageBox;
+      case 4:
+        return classes.columnStoreImageBox;
+      default:
+        return classes.columnMiniImageBox;
+    }
+  }
+
+  const getImageComponent = (imageBox, index, sweetBoxType, imageUrl) => {
+    const className = getClassNameBySweetBoxType(sweetBoxType);
+    return (
+      <div key={index} className={className}>
+        <Link href={imageBox.url}>
+          <img className='img-fluid' src={imageUrl} alt=""/>
+        </Link>
+      </div>
+    )
+  }
+
+  /** ImageBox does not have img_thumb_url implemented */
+  const getThumbnailOrFullUrl = (imageBox) => {
+    return `${imageUrl}/${imageBox.img_thumb_url ? imageBox.img_thumb_url : imageBox.img_url}`;
+  }
+
   return showData && (
     <Grid container className={classes.root}>
         {
@@ -119,81 +149,17 @@ const ImageBox = ({classes, name, showTitle = false, isSlider = false}) => {
             <Slider {...sliderSetting}>
               {
                 imageBoxes.productImages.map((imageBox, index) => {
-                  const imageBoxUrl = `${imageUrl}/${imageBox.img_url}`;
+                  const imageBoxUrl = getThumbnailOrFullUrl(imageBox);
                   const sweetBoxType = Number(imageBoxes.imageBoxType);
-                  switch(sweetBoxType) {
-                    case 2:
-                    case 1: {
-                      return (
-                        <div key={index} className={classes.columnMiniImageBox}>
-                          <Link href={imageBox.url}>
-                            <img className='img-fluid' src={imageBoxUrl} alt=""/>
-                          </Link>
-                        </div>
-                      )
-                      break;
-                    }
-                    case 3: {
-                      return (
-                        <div key={index} className={classes.columnBrandImageBox}>
-                          <Link href={imageBox.url}>
-                            <img className='img-fluid' src={imageBoxUrl} alt=""/>
-                          </Link>
-                        </div>
-                      )
-                      break;
-                    }
-                    case 4: {
-                      return (
-                        <div key={index} className={classes.columnStoreImageBox}>
-                          <Link href={imageBox.url}>
-                            <img className='img-fluid' src={imageBoxUrl} alt=""/>
-                          </Link>
-                        </div>
-                      )
-                      break;
-                    }
-                  }
+                  return getImageComponent(imageBox, index, sweetBoxType, imageBoxUrl);
                 })
               }
             </Slider>
           ) : (
             imageBoxes.productImages.map((imageBox, index) => {
-              const imageBoxUrl = `${imageUrl}/${imageBox.img_url}`;
+              const imageBoxUrl = getThumbnailOrFullUrl(imageBox);
               const sweetBoxType = Number(imageBoxes.imageBoxType);
-              switch(sweetBoxType) {
-                case 2:
-                case 1: {
-                  return (
-                    <Grid key={index} className={classes.columnMiniImageBox}>
-                      <Link href={imageBox.url}>
-                        <img className='img-fluid' src={imageBoxUrl} alt=""/>
-                      </Link>
-                    </Grid>
-                  )
-                  break;
-                }
-                case 3: {
-                  return (
-                    <Grid key={index} className={classes.columnBrandImageBox}>
-                      <Link href={imageBox.url}>
-                        <img className='img-fluid' src={imageBoxUrl} alt=""/>
-                      </Link>
-                    </Grid>
-                  )
-                  break;
-                }
-                case 4: {
-                  return (
-                    <Grid key={index} className={classes.columnStoreImageBox}>
-                      <Link href={imageBox.url}>
-                        <img className='img-fluid' src={imageBoxUrl} alt=""/>
-                      </Link>
-                    </Grid>
-                  )
-                  break;
-                }
-              }
+              return getImageComponent(imageBox, index, sweetBoxType, imageBoxUrl);
             })
           )
         }

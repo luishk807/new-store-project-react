@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 
 import { getProducts } from '../../api/products';
-import { getImageBaseOnly, getSortPriceRange } from '../../utils';
+import { getImageBaseThumbnail, getSortPriceRange } from '../../utils';
 import Rate from '../common/Rate/Rate';
 import ProgressBar from '../common/ProgressBar';
 import { useTranslation } from 'next-i18next'
@@ -148,7 +148,7 @@ const ProductScroller = ({classes}) => {
         </Grid>
         {
           showData && products.map((product, index) => {
-            const image = getImageBaseOnly(product);
+            const image = getImageBaseThumbnail(product);
             const rangePrice = getSortPriceRange(product)
             return (
               <Grid key={index} item className={classes.item}>

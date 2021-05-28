@@ -171,7 +171,7 @@ const SearchBar = ({classes}) => {
 
   const handleSelect = (product) => {
     clearInput();
-    window.location.href = `/product/${product.id}`;
+    window.location.href = `/product/${product.slug}`;
   }
 
   const handleDropDown = async(data) => {

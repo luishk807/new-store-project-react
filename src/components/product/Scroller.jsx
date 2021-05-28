@@ -152,7 +152,7 @@ const ProductScroller = ({classes}) => {
             const rangePrice = getSortPriceRange(product)
             return (
               <Grid key={index} item className={classes.item}>
-                <Link href={`/product/${product.id}`} className={classes.linkItem}>
+                <Link href={`/product/${product.slug}`} className={classes.linkItem}>
                   <div className={classes.imgHolder}>
                     {
                       image

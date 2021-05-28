@@ -195,7 +195,7 @@ const SearchResult = ({classes}) => {
                   const prodImage = getImage(data);
                   return (
                     <Grid key={index} item lg={2} xs={12} className={classes.itemMain}>
-                      <Link href={`/product/${data.id}`} color="inherit" underline="none">
+                      <Link href={`/product/${data.slug}`} color="inherit" underline="none">
                         <Grid container className={classes.cardRoot} >
                           <Grid item xs={5} lg={12 } className={classes.itemImg}>
                             {

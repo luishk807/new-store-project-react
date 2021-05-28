@@ -17,6 +17,7 @@
     "tax": "ITBMS",
     "cart_view": "Carrito",
     "price_with_discount": "Precio con Desc.",
+    "discount_with_coupon": "Descuento con cupon",
     "outofstock": "Agotado",
     "available": "Disponible",
     "add_to_cart": "Agregar a carrito",

@@ -339,7 +339,7 @@ const View = ({classes, order, onRemoveDelivery, isAdmin = false}) => {
                     <Grid item lg={12} xs={12}>
                       <Grid container>
                         <Grid item lg={6} xs={6}>
-                          { t('checkout:discount_with_coupon') }
+                          { t('common:discount_with_coupon') }
                         </Grid>
                         <Grid item lg={6} xs={6}>
                           ${formatNumber(order.coupon)}
@@ -386,7 +386,7 @@ const View = ({classes, order, onRemoveDelivery, isAdmin = false}) => {
                     <Grid item lg={12} xs={12}>
                       <Grid container>
                         <Grid item lg={6} xs={6}>
-                          { t('order:you_saved') }
+                          { t('common:message:you_saved') }
                         </Grid>
                         <Grid item lg={6} xs={6}>
                           - ${formatNumber(order.totalSaved)}

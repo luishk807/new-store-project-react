@@ -4,7 +4,7 @@ import React from 'react'
 import '../../styles.scss'
 import { wrapper } from '../redux/store';
 import { appWithTranslation } from 'next-i18next'
-
+import HttpsRedirect from 'react-https-redirect';
 class App extends NextApp {
   componentDidMount() {
     const jssStyles = document.querySelector('#jss-server-side')
@@ -14,7 +14,9 @@ class App extends NextApp {
   render() {
     const { Component, pageProps } = this.props
     return (
+      <HttpsRedirect>
         <Component {...pageProps} />
+      </HttpsRedirect>
     )
   }
 }

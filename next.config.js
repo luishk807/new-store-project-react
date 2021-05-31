@@ -40,5 +40,6 @@ module.exports = {
   env: {
     BACKEND_URL: process.env.BACKEND_URL,
     IMAGE_URL: process.env.IMAGE_URL,
+    HTTPS: process.env.HTTPS,
   },
 }

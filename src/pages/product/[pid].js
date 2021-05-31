@@ -21,7 +21,7 @@ import { ProductSample } from '../../constants/samples/ProductSample';
 import Snackbar from '../../components/common/Snackbar';
 import QuantitySelectorB from '../../components/common/QuantitySelectorB';
 import { getActiveProductBundlesByProductItemId } from '../../api/productBundles';
-import { getProductById } from '../../api/products';
+import { getProductBySlug, getProductById } from '../../api/products';
 import { getSizesByProductId } from '../../api/sizes';
 import { getColorsByProductId } from '../../api/productColors';
 import { getProductItemById } from '../../api/productItems';
@@ -289,6 +289,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const setProductItem = async(item) => {
     if (Object.keys(item).length && !item.productImages.length && item.productItemProduct) {
       item.productImages = productInfo.productImages;
+      item.slug = productInfo.slug
     }
     setSelectedProductItem(item);
   }
@@ -544,13 +545,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   const loadProductInfo = async() => {
-    const [getProductInfo, getProductColor, getProductSizes] = await Promise.all([
-      getProductById(id, {
-        isFullDetail: true
-      }),
-      getColorsByProductId(id),
-      getSizesByProductId(id)
+    const getProductInfo = await getProductBySlug(id, {
+      isFullDetail: true
+    });
+    const [getProductColor, getProductSizes] = await Promise.all([
+      getColorsByProductId(getProductInfo.id),
+      getSizesByProductId(getProductInfo.id)
     ])
+
+
 
     if (getProductInfo.productProductDiscount && getProductInfo.productProductDiscount.length) {
       setShowDiscount(true);

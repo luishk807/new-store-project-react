@@ -38,6 +38,7 @@
     "papaparse": "^5.3.0",
     "pluralize": "^8.0.0",
     "postcss": "^8.2.15",
+    "postcss-selector-parser": "^6.0.6",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
@@ -60,6 +61,7 @@
     "styled-components": "^5.1.1"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.14.4",
     "babel-plugin-styled-components": "^1.11.0-0"
   },
   "engines": {

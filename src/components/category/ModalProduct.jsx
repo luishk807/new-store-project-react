@@ -73,7 +73,7 @@ const CategoryModalProducts = React.memo(({classes, category}) => {
                     (<img className={`img-fluid`} src={`${noImageUrl.img}`} alt={noImageUrl.alt}/>) 
                   return (
                     <Grid key={index} item xs={12} className={classes.item}>
-                      <Button href={`/product/${product.id}`}>
+                      <Button href={`/product/${product.slug}`}>
                         <Grid container className={classes.itemContainer}>
                           <Grid item xs={5} className={classes.img}>
                             {

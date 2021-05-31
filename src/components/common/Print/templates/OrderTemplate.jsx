@@ -301,13 +301,13 @@ class OrderTemplate extends Component {
                             }
                           </td>
                           <td>
-                            {`$${item.unit_total}`}
+                            {`$${formatNumber(item.unit_total)}`}
                           </td>
                           <td>
                             { item.quantity }
                           </td>
                           <td>
-                            {`$${itemTotal}` }
+                            {`$${formatNumber(itemTotal)}` }
                           </td>
                         </tr>
                       )
@@ -355,7 +355,7 @@ class OrderTemplate extends Component {
                               </td>
                             </tr>
                             {
-                              data.coupon && (
+                              data.coupon && !!Number(data.coupon) &&(
                                 <tr>
                                   <th>
                                     Discuento con cupon
@@ -375,7 +375,7 @@ class OrderTemplate extends Component {
                               </td>
                             </tr>
                             {
-                              data.totalSaved && (
+                              data.totalSaved && !!Number(data.totalSaved) && (
                                 <tr>
                                   <th>
                                     Ahorrastes

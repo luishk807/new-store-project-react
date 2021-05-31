@@ -269,6 +269,9 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     if (cart && !stockVerified) {
       checkStock(cart);
     }
+    if (!Object.values(cart).length) {
+      setShowCart(false);
+    }
   }, [cart])
 
   return (
@@ -297,7 +300,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                 <Divider />
                               </Grid>
                               <Grid item lg={2} xs={5}  className={classes.cartImage}>
-                                <Link href={`/product/${item.productId}`}>
+                                <Link href={`/product/${item.slug}`}>
                                   {
                                     imgUrl && imgUrl
                                   }
@@ -309,7 +312,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                     <Typography align="left" component="h4" className={classes.cardDescTitle}>
                                       { // If there is an productItemProduct, or it will crash page
                                         item.productItemProduct ? (
-                                        <Link href={`/product/${item.productItemProduct.id}`}>{item.productItemProduct.name}</Link>
+                                        <Link href={`/product/${item.slug}`}>{item.productItemProduct.name}</Link>
                                       ) : <></>
                                       }
                                     </Typography>

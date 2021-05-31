@@ -7,6 +7,7 @@ import {
 
 import { ADMIN_SECTIONS } from '../../../constants/admin';
 import EditForm from '../../../components/common/Form/EditForm';
+import { getProductById } from '../../../api/products';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
@@ -26,7 +27,8 @@ const styles = (theme) => ({
 
 const Edit = ({classes}) => {
   const router = useRouter()
-  const id = router.query.pid;
+  const [id, setId] = useState(null);
+  const [showData, setShowData] = useState(false);
   const form = {
     name: null,
     category: null,
@@ -40,9 +42,23 @@ const Edit = ({classes}) => {
     }
   }
 
+  useEffect(() => {
+    const getProduct = async () => {
+      const gProd = await getProductById(router.query.pid);
+      if (gProd) {
+        setId(gProd.id);
+      }
+    }
+    getProduct();
+  }, [])
   const ignoreEntry=['image', 'model'];
 
-  return (
+  useEffect(() => {
+    if(id) {
+      setShowData(true)
+    }
+  }, [id])
+  return showData && (
     <AdminLayoutTemplate>
       <EditForm 
         classes={{root: classes.root}}

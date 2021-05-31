@@ -45,6 +45,8 @@ const Add = ({classes}) => {
         ignoreForm={ignoreEntry} 
         entryForm={form} 
         customUrl={`/admin/${ADMIN_SECTIONS.user.url}`} 
+        cancelUrl={`/admin/${ADMIN_SECTIONS.user.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.user.url}`} 
       />
     </AdminLayoutTemplate>
   );

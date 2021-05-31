@@ -58,13 +58,14 @@ const SimpleBox = React.memo(({ classes, data }) => {
     const newProducts = data;
 
     const refactorData = newProducts.map(item => {
-      const getImage = getProduct.filter(prod => {
+      const getProd = getProduct.filter(prod => {
         return prod.id === item.productItemId
       })
 
       const data = {
         ...item,
-        'productImages': getImage[0].productImages,
+        'productImages': getProd[0].productImages,
+        'slug': getProd[0].productItemProduct.slug,
       }
       return data
     })
@@ -110,7 +111,7 @@ const SimpleBox = React.memo(({ classes, data }) => {
                   }
                 </Grid>
                 <Grid item lg={9} xs={6} className={classes.itemProductDescription}>
-                  <p className={classes.itemName}><a href={`/product/${item.product}`}>{item.name}</a></p>
+                  <p className={classes.itemName}><a href={`/product/${item.slug}`}>{item.name}</a></p>
                   <p>Sku: <b>{item.sku}</b></p>
                   <p>{ t('common:size') }: <b>{item.size}</b></p>
                   <p>{ t('common:color') }: <b>{item.color}</b></p>

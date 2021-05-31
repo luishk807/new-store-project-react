@@ -63,7 +63,7 @@ const SweetBoxProducts = React.memo(({classes, data, type = ''}) => {
     switch(type) {
       case 'feature': {
         return (
-            <Button className={classes.cardBtn}  href={`product/${data.id}`}>
+            <Button className={classes.cardBtn}  href={`product/${data.slug}`}>
               <Grid container>
                 <Grid item lg={12} xs={12} className={classes.featureBtn}>
                   Show Now
@@ -82,7 +82,7 @@ const SweetBoxProducts = React.memo(({classes, data, type = ''}) => {
         return (
             <Grid container className={classes.cardSingle}>
               <Grid item lg={4} md={2} xs={7}>
-                <a href={`product/${data.id}`} title={data.name}>
+                <a href={`product/${data.slug}`} title={data.name}>
                 {
                   img
                 }
@@ -91,7 +91,7 @@ const SweetBoxProducts = React.memo(({classes, data, type = ''}) => {
               <Grid item lg={8} md={10} xs={5} className={`${classes.cardSingleText}`}>
                 <Grid container>
                   <Grid item lg={12} xs={12}>
-                    <a href={`product/${data.id}`} title={data.name} className={classes.singleLink}>{data.name}</a><br/>
+                    <a href={`product/${data.slug}`} title={data.name} className={classes.singleLink}>{data.name}</a><br/>
                     {priceRange}
                   </Grid>
                   <Hidden only={['sm', 'lg']}>
@@ -103,7 +103,7 @@ const SweetBoxProducts = React.memo(({classes, data, type = ''}) => {
                     </Grid>
                   </Hidden>
                   <Grid item lg={12} xs={12} className={classes.singleItem}>
-                    <Button href={`product/${data.id}`} className={`smallMainButton`}>Buy Now</Button>
+                    <Button href={`product/${data.slug}`} className={`smallMainButton`}>Buy Now</Button>
                   </Grid>
                 </Grid>
               </Grid>
@@ -113,7 +113,7 @@ const SweetBoxProducts = React.memo(({classes, data, type = ''}) => {
       }
       case 'plain': {
           return (
-            <Button className={classes.cardBtn} href={`product/${data.id}`} title={data.name}>
+            <Button className={classes.cardBtn} href={`product/${data.slug}`} title={data.name}>
               <Grid container>
                 <Grid item lg={12} xs={12}>
                   {
@@ -141,7 +141,7 @@ const SweetBoxProducts = React.memo(({classes, data, type = ''}) => {
       }
       default: {
         return (
-            <Button className={classes.cardBtn} href={`product/${data.id}`}>
+            <Button className={classes.cardBtn} href={`product/${data.slug}`}>
               <Grid container>
                 <Grid item lg={12} xs={12}>
                   {

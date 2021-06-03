@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-<<<<<<< HEAD
 import { 
   Grid,
   withStyles,
@@ -61,14 +60,9 @@ const styles = (theme) => ({
 });
 
 class ClassComponent extends Component {
-=======
-import Maitenance from '../components/Maintenance';
-export default class extends Component {
->>>>>>> e3972330d80ed9bad63ada48b0cdb975a562a37f
   render () {
     const { classes } = this.props;
     return (
-<<<<<<< HEAD
       <LayoutTemplate classes={{root: classes.layoutClass}}>
         <Grid container className="main-section">
           <Grid item lg={12} xs={12}>
@@ -84,9 +78,6 @@ export default class extends Component {
           </Grid>
         </Grid>
       </LayoutTemplate>
-=======
-      <Maitenance/>
->>>>>>> e3972330d80ed9bad63ada48b0cdb975a562a37f
     )
   }
 }

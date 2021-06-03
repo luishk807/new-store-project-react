@@ -1,14 +1,178 @@
 /*-------------------------------------------------- */
 $main_color: rgb(248,190,21);
-$stickyFooterLimit: 260px;
+$main_hover_color: rgb(248,190,12);
+$stickyFooterLimit: 400px;
+$stickyFooterLimitMobile: 600px;
+$screen-sm-min: 768px;
+$screen-xs-max: ($screen-sm-min - 1);
+$screen-md-min: 992px;
+$screen-sm-max: ($screen-md-min - 1);
+$screen-lg-min: 1200px;
+$screen-md-max: ($screen-lg-min - 1);
+
+@mixin transition($type) {
+  -webkit-transition: $type 1s;
+  -moz-transition: $type 1s;
+  -o-transition: $type 1s;
+  transition: $type 1s;
+  -ms-transition: $type 1s;
+}
+
+a {
+ color: #0066c0;
+}
 
 html {
   position: relative;
   min-height: 100%;
 }
-body {
-  margin-bottom: $stickyFooterLimit; /* Margin bottom by footer height */
+
+@media print {
+  @page {
+    size: portrait;
+    margin: 10mm;
+  }
 }
+/*  style scrollbar */ 
+div {
+  scrollbar-width: thin;
+}
+
+/* react-slick */
+.slick-next:before, .slick-prev:before {
+  color: $main_color;
+}
+/* end of react slick */
+
+div::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+}
+
+div::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #F5F5F5;
+}
+
+div::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #cccccc;
+  height: 50px;
+}
+div::-moz-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #cccccc;
+  height: 50px;
+  border: '2px solid #555555';
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+/*  end of style scrollbar */ 
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width : 320px) {
+  body {
+    margin-bottom: $stickyFooterLimitMobile; /* Margin bottom by footer height */
+  }
+  .main-section {
+    padding: 0px 10px 0px;
+  }
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+  .home-banner-single {
+    padding: 0px;
+  }
+}
+/* Extra Small Devices, Phones */ 
+@media only screen and (min-width : 480px) {
+  body {
+    margin-bottom: $stickyFooterLimitMobile; /* Margin bottom by footer height */
+  }
+  .main-section {
+    padding: 0px 10px 0px;
+  }
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+  .home-banner-single {
+    padding: 0px;
+  }
+}
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+  body {
+    margin-bottom: $stickyFooterLimitMobile; /* Margin bottom by footer height */
+  }
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+}
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1400px) {
+  body {
+    margin-bottom: $stickyFooterLimit; /* Margin bottom by footer height */
+  }
+  .home-banner-slider {
+    padding: 50px;
+  }
+  .home-banner-single {
+    padding: 20px;
+  }
+}
+
+/* For laptops 1024 Resolution */  
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) { 
+  /* STYLES GO HERE */
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+  .home-banner-single {
+    padding: 5px;
+  }
+}  
+
+/* For laptops 1366 Resolution */  
+@media only screen and (min-width: 1030px) and (max-width: 1366px) { 
+  /* STYLES GO HERE */
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+  .home-banner-single {
+    padding: 5px;
+  }
+}  
+
+.adminProductStickyHeader {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  top: 72px;
+  text-align: center;
+  padding: 8px 5px;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  width: 100%;
+}
+
+.checkoutStickyTotalBox {
+  position: sticky;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background: white;
+  top: 100px;
+  text-align: center;
+  padding: 8px 5px;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  width: 100%;
+}
+
+
 a:hover {
   text-decoration: none;
   color: inherit,
@@ -19,13 +183,40 @@ a:hover {
   width: 100%;
   min-height: 100px; /* Set the fixed height of the footer here */
   line-height: 60px; /* Vertically center the text there */
-  color: white;
-  background-color: $main_color;
+}
+.textColor {
+  color: $main_color !important;
+}
+.main_text_link {
+  cursor: pointer;
+  color: $main_color !important;
+  border-bottom: 1px solid $main_color !important;
+  text-decoration: none !important;
+  // @include transition(border-bottom);
+  &:hover {
+    color: $main_hover_color !important;
+    border-bottom: 1px solid transparent !important;
+  }
+}
+.main_text_link_normal {
+  cursor: pointer;
+  color: black;
+  border-bottom: 1px solid black !important;
+  text-decoration: none !important;
+  // @include transition(border-bottom);
+  &:hover {
+    border-bottom: 1px solid transparent !important;
+  }
 }
 .footerAdmin {
   position: absolute;
   bottom: 0;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  color: white;
+  align-items: center;
   min-height: 100px; /* Set the fixed height of the footer here */
   line-height: 60px; /* Vertically center the text there */
   border-top: 1px solid $main_color;
@@ -37,6 +228,12 @@ a:hover {
   background-color: $main_color;
   color: white;
 }
+// TODO :fix mobile for delete button
+@media (max-width: $screen-xs-max) {
+  .smallMainButton{
+    padding: 20px 40px !important;
+  }
+}
 .smallMainButton{
   border: 1px solid $main_color !important;
   color: $main_color !important;
@@ -47,10 +244,31 @@ a:hover {
     color: white !important;
   }
 }
+.iconBtnSimple{
+  color: $main_color !important;
+  padding: 5px 20px !important;
+  font-size: .7em !important;
+  background-color: transparent !important;
+  &:hover, &:focus {
+    border: 0px solid transparent !important;
+    outline: 1px solid transparent !important;
+  }
+}
 .secondButton{
   border: 1px solid $main_color !important;
   color: $main_color !important;
   margin: 10px 0px !important;
+  border-radius: 5px !important;
+  width: 100%;
+  &:hover {
+    background-color: $main_color !important;
+    color: white !important;
+  }
+}
+.secondButtonSmall{
+  border: 1px solid $main_color !important;
+  color: $main_color !important;
+  margin: 0px !important;
   border-radius: 5px !important;
   width: 100%;
   &:hover {
@@ -70,6 +288,36 @@ a:hover {
     color: $main_color !important;
   }
 }
+.mainButtonNaked {
+  background-color: $main_color !important;
+  border: 1px solid $main_color !important;
+  color: white !important;
+  &:hover {
+    background-color: white !important;
+    color: $main_color !important;
+  }
+}
+.borderTopMain {
+  border-top: 1px solid rgba(0, 0, 0, .09);
+}
+.cardRoot2 {
+  width: 100%;
+  text-align: center;
+  border-radius: 0px !important;
+  &:hover {
+    background-color: white !important;
+    & div {
+      color: black
+    }
+    & svg {
+      fill: black,
+    }
+  }
+  & span {
+    display: flex;
+    flex-direction: column;
+  }
+};
 .cardRoot {
   padding: 10;
   background-color: rgb(239,239,239);
@@ -90,15 +338,24 @@ a:hover {
   width: 60%;
   margin: 0px auto;
   fill: $main_color;
+  color: $main_color;
+}
+.iconMainColor {
+  fill: $main_color !important;
 }
 .cardLink {
   color: $main_color;
+}
+.cartButtonDisabled {
+  background-color: white !important;
+  border: 1px solid rgba(0,0,0,.03) !important;
+  color: rgba(0,0,0,.09) !important;
 }
 /* Custom page CSS
 -------------------------------------------------- */
 /* Not required for template or sticky footer method. */
 .AppBarBackColor {
-  background-color: $main_color !important,
+  background-color: $main_color !important;
 }
 .footer > .container {
   padding-right: 15px;

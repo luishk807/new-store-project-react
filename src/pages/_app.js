@@ -2,18 +2,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NextApp from 'next/app'
 import React from 'react'
 import '../../styles.scss'
-import { ThemeProvider } from 'styled-components'
-
-import { Provider } from 'react-redux';
-import withRedux from 'next-redux-wrapper';
-import { makeStyles } from '@material-ui/core';
-import store from '../redux/store';
-
-const theme = {
-  primary: 'green',
-}
+import { wrapper } from '../redux/store';
+import { appWithTranslation } from 'next-i18next'
+import HttpsRedirect from 'react-https-redirect';
 class App extends NextApp {
-  // remove it here
   componentDidMount() {
     const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles && jssStyles.parentNode)
@@ -22,12 +14,11 @@ class App extends NextApp {
   render() {
     const { Component, pageProps } = this.props
     return (
-      <Provider store={store}>
+      <HttpsRedirect>
         <Component {...pageProps} />
-      </Provider>
+      </HttpsRedirect>
     )
   }
 }
 
-const makeStore = () => store;
-export default withRedux(makeStore)(App)
+export default wrapper.withRedux(appWithTranslation(App))

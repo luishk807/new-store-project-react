@@ -1,0 +1,43 @@
+{
+    "name": "Name",
+    "description": "Description",
+    "basic": "Basic",
+
+    "add_product": "+Product",
+    "options": "Options",
+    "add_product_novariant": "Add No Variant Product",
+    "add_prod_novariant": "+Product No Variant",
+    "remove_prod_variant": "Remove Variant",
+
+    "po_title": "Product Options",
+    "po_name": "Name",
+    "po_description": "Description",
+    "po_add_option": "Add Option",
+
+    "pov_title": "Product Option's Values",
+    "pov_add_value": "Add Option Values",
+
+    "pv_title": "Product Variants",
+    "pv_remove_confirmation_message": "Are you sure you want to remove the product variant?",
+
+    "ca_title": "Categories",
+    "categories": "Categories",
+    "ca_add": "Add Category",
+    "va_add": "Add Variant",
+
+    "pv_name": "Name",
+    "pv_option": "Option",
+    "pv_option_value": "Option Value",
+    "pv_category": "Category",
+
+    "sku": "SKU",
+
+    "brand_title": "Brands",
+    "brand_add_new": "Add new brand",
+    "brand_add": "Add Brand",
+
+    "model": "Model",
+
+    "departments": "Departments",
+    "dep_add": "Add Department"
+}

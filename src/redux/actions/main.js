@@ -6,6 +6,11 @@ export const setCategories = (data) => ({
   payload: data
 })
 
+export const resetUser = (data) => ({
+  type: t.RESET_USER,
+  payload: data,
+})
+
 export const setBrands = (data) => ({
   type: t.SET_BRANDS,
   payload: data
@@ -13,11 +18,6 @@ export const setBrands = (data) => ({
 
 export const setVendors = (data) => ({
   type: t.SET_VENDORS,
-  payload: data
-})
-
-export const setStores = (data) => ({
-  type: t.SET_STORES,
   payload: data
 })
 
@@ -47,12 +47,6 @@ export const setCountries = (data) => ({
   payload: data
 })
 
-
-export const setStatuses = (data) => ({
-  type: t.SET_STATUSES,
-  payload: data
-})
-
 export const setGenders = (data) => ({
   type: t.SET_GENDERS,
   payload: data
@@ -66,5 +60,25 @@ export const setWorkRoles = (data) => ({
 
 export const saveUsers = (data) => ({
   type: t.SAVE_USER,
+  payload: data
+})
+
+export const addCart = (data) => ({
+  type: t.ADD_CART,
+  payload: data
+})
+
+export const deleteCart = (data) => ({
+  type: t.DELETE_CART,
+  payload: data
+})
+
+export const emptyCart = (data) => ({
+  type: t.EMPTY_CART,
+  payload: data
+})
+
+export const updateCart = (data) => ({
+  type: t.UPDATE_CART,
   payload: data
 })

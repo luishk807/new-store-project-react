@@ -1,0 +1,14 @@
+{
+    "reviews": "Opiniones",
+    "rating_breakdown": "Detalle de calificación",
+    "by": "Por",
+    "view_more": "Ver más",
+    "rate_product": "Calificar",
+
+    "messages": {
+        "choose_quantity": "Favor seleccione cantidad",
+        "choose_color": "Favor seleccione color",
+        "choose_size": "Favor seleccione tamaño",
+        "added_to_cart": "Añadido al Carrito"
+    }
+}

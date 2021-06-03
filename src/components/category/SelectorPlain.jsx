@@ -1,0 +1,232 @@
+import React, { useEffect, useState } from 'react';
+import * as T from 'prop-types';
+import { 
+  withStyles,
+  Grid,
+  List,
+  ListItem,
+  Button,
+  ListItemIcon,
+  ListItemText,
+} from '@material-ui/core';
+import { useRouter } from 'next/router';
+
+// import Modal from '../common/Modal';
+// import { ProductGallerySample } from '../../constants/samples/ProductCategoryIconsSample';
+// import { ADMIN_SECTIONS } from '../../constants/admin';
+// import { getItems } from '../../api';
+import ProgressBar from '../common/ProgressBar';
+import { getCategories } from '../../api/categories';
+// import { searchProductsByCat } from '../../api/products';
+import Icons from '../common/Icons';
+
+const styles = (theme) => ({
+  root: {
+    display: 'flex',
+    overflowX: 'auto',
+    height: '100%',
+    position: 'relative',
+    // '&::-webkit-scrollbar-track':{
+    //   backgroundColor: '#F5F5F5',
+    // },
+    // '&::-webkit-scrollbar': {
+    //   width: 6,
+    //   height: 6,
+    //   backgroundColor: '#F5F5F5',
+    // },
+    // '&::-webkit-scrollbar-thumb': {
+    //   borderRadius: 10,
+    //   backgroundColor: '#cccccc',
+    // }
+  },
+  listItemCont: {
+    display: 'inline-block',
+    width: 'auto',
+    textAlign: 'center',
+  },
+  listItemIcons: {
+    borderBottom: '3px solid blue',
+    paddingBottom: 7,
+    minWidth: 40,
+  },
+  name: {
+    '& span': {
+      fontSize: '.8em',
+    }
+  },
+  icon: {
+    width: 60,
+    height: 60,
+    [theme.breakpoints.down('sm')]: {
+      width: 40,
+      height: 40,
+    },
+  },
+  listItemMainCont: {
+    display: 'flex',
+    justifyContent: 'space-around',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'start',
+    },
+  },
+
+  cubeMainTitle: {
+    color: 'white',
+    textAlign: 'center', 
+    textTransform: 'uppercase',
+  },
+  cubeBtn: {
+    borderRadius: 0,
+    width: '100%',
+    textAlign: 'center',
+    '&:hover': {
+      background: 'white',
+      '& div': {
+        color: 'inherit',
+      },
+      '& svg': {
+        fill: 'rgb(248,190,12)',
+      }
+    },
+    '& span': {
+      display: 'flex',
+      flexDirection: 'column'
+    }
+  },
+  cubeContainer: {
+    width: '100%',
+    backgroundColor: 'black'
+  },
+  cubeItems: {
+  },
+  cubeIconHolder: {
+    width: '100%',
+  },
+  cubeIcon: {
+    width: 50,
+    height: 50,
+    fill: 'white',
+  },
+  cubeName: {
+    width: '100%',
+    color: 'white',
+    fontSize: '.8em',
+  },
+});
+
+const CategorySelectorPlain = ({classes, data, type}) => {
+  const router = useRouter();
+  const [categories, setCategories] = useState([]);
+  const [open, setOpen] = useState(true);
+  const [showCategories, setShowCategories] = useState(false);
+  
+  const loadCategories = async() => {
+    const categories = await getCategories();
+    setCategories(categories);
+  }
+
+  const goToSearch = (data) => {
+    const url = encodeURI(`/searchResult?cat=${data.id}&catn=${data.name}`);
+    router.push(url)
+  }
+  
+  useEffect(() => {
+    setShowCategories(true);
+  }, [categories])
+
+  const content = () => {
+    switch(type) {
+      case "cube": {
+        return (
+          <Grid container className={`${classes.cubeContainer}`}>
+            <Grid item lg={12} className={classes.cubeMainTitle}>Categories</Grid>
+            {
+              categories && categories.map((data, index) => {
+                return (
+                  <Grid item lg={6} key={index} className={classes.cubeItems}>
+                    <Button onClick={() => goToSearch(data)} className={`cardRoot2`}>
+                      <div className={classes.cubeIconHolder}>
+                        <Icons name={data.icon} classes={{icon: classes.cubeIcon}} />
+                      </div>
+                      <div className={classes.cubeName}>
+                        {
+                          data.name
+                        }
+                      </div>
+                    </Button>
+                  </Grid>
+                )
+              })
+            }
+          </Grid>
+        )
+        break;
+      }
+      case "button": {
+        return showCategories ? (
+          <Grid container className={classes.cubeContainer}>
+            {
+              categories.map((data, index) => {
+                return (
+                  <Grid item key={index} lg={3} xs={12} className={classes.cubeItems}>
+                    <Button key={index} className={classes.cubeBtn} >
+                      <Icons name={data.icon} classes={{icon: classes.cubeIcon}} />
+                      {
+                        data.name
+                      }
+                    </Button>
+                   </Grid>
+                )
+              })
+            }
+            </Grid>
+        ) : (
+          <ProgressBar />
+        )
+        break;
+      }
+      default: {
+        return (
+          <Grid container>
+            <Grid item lg={12} xs={12}>
+              <List component="nav" className={classes.listItemMainCont} aria-label="main mailbox folders">
+                {
+                  categories && categories.map((data, index) => {
+                    return (
+                      <ListItem onClick={()=>goToSearch(data)} key={index} button className={classes.listItemCont}>
+                        <ListItemIcon className={classes.listItemIcons}>
+                          <Icons name={data.icon} classes={{icon: classes.icon}} />
+                        </ListItemIcon>
+                        <ListItemText primary={data.name} className={classes.name}/>
+                      </ListItem>
+                    );
+                  })
+                }
+              </List>
+            </Grid>
+          </Grid>
+        )
+      }
+    }
+  }
+
+  useEffect(() => {
+    loadCategories();
+  }, [])
+
+  return categories && (
+    <div className={classes.root}>
+      {
+        content()
+      }
+    </div>
+  );
+}
+
+CategorySelectorPlain.propTypes = {
+  classes: T.object.isRequired,
+  type: T.string,
+  data: T.object,
+};
+
+export default withStyles(styles)(CategorySelectorPlain);

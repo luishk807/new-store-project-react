@@ -1,0 +1,43 @@
+{
+    "name": "Nombre",
+    "description": "Descripción",
+    "basic": "Básico",
+
+    "add_product": "+Producto",
+    "add_product_novariant": "Añadir Producto Sin Variante",
+    "add_prod_novariant": "+Product Sin Variante",
+    "remove_prod_variant": "Eliminar Variante",
+    "options": "Opciones",
+
+    "po_title": "Opciones de Producto",
+    "po_name": "Nombre",
+    "po_description": "Descripción",
+    "po_add_option": "Añadir Opción",
+
+    "pov_title": "Valor de Opciones de Producto",
+    "pov_add_value": "Añadir Valor para Opción",
+
+    "pv_title": "Variantes de Producto",
+    "pv_remove_confirmation_message": "¿Está seguro que desea eliminar el variante del producto?",
+
+    "ca_title": "Categorías",
+    "categories": "Categorías",
+    "ca_add": "Añadir Categoría",
+    "va_add": "Añadir Variante",
+
+    "pv_name": "Nombre",
+    "pv_option": "Opción",
+    "pv_option_value": "Tipo Opción",
+    "pv_category": "Category",
+
+    "sku": "SKU",
+
+    "brand_title": "Marcas",
+    "brand_add_new": "Añadir nueva marca",
+    "brand_add": "Añadir Marca",
+
+    "model": "Modelo",
+
+    "departments": "Departamentos",
+    "dep_add": "Añadir Departamento"
+}

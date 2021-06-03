@@ -3,32 +3,35 @@ import * as T from 'prop-types';
 import { 
   withStyles,
   Grid,
-  TextField,
   Button,  
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
 import { ADMIN_URL } from '../../../../constants/admin';
-import { validateForm } from '../../../../utils/form';
-import Snackbar from '../../../../components/common/Snackbar';
-import Typography from '../../../../components/common/Typography';
 import { adminLogin } from '../../../../api/auth'
+import Snackbar from '../../Snackbar';
+import Typography from '../../Typography';
+import LoginForm from '../Login';
 
 const styles = (theme) => ({
   root: {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    width: '40%',
+    position: 'relative',
+    margin: '50px auto 0px',
     textAlign: 'center',
     height: '100%',
     padding: 5,
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    }
   },
   formItems: {
-    marginTop: 50,
     display: 'flex',
     justifyContent: 'center',
-    width: '50%%',
+    width: '100%',
     '& div': {
       width: '100%',
     }
@@ -36,124 +39,46 @@ const styles = (theme) => ({
 });
 
 const Login = ({classes, inStatus}) => {
-  const [errors, setErrors] = useState(null);
-  const [hasAccess, setHasAccess] = useState(true)
   const router = useRouter();
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
     text: '',
   });
-  const [form, setForm] = useState({})
-  const formOnChange = (e, edrop = null) => {
-    const { name, value } = edrop ? edrop : e.target;
-    if(name in form && validateForm(name, value)){
-      setForm({
-        ...form,
-        [name]: value,
-      });
-    }
-  }
 
   const handleCancel = () => {
     router.push(`/${ADMIN_URL.index}/${ADMIN_URL.home}`)
   }
-  const handleSubmit = async (e) => {
-    let errorFound = false;
-    let key = '';
-    for (var i in form) {
-      errorFound = await validateForm(i, form[i]);
-      key = i;
-      if (errorFound){
-        saveErrors(i)
+  const handleSubmit = async (form) => {
+    try{
+      const resp = await adminLogin(form);
+      if (resp.data) {
+        // const test = setUser(resp.data.user) // dispatch to redux
+        setSnack({
+          severity: 'success',
+          open: true,
+          text: `Login success`,
+        })
+        handleCancel()
       } else {
-        saveErrors(i, true, `${i} is required`)
-        break
-      }
-    }
-    if (!errorFound) {
-      setSnack({
-        severity: 'error',
-        open: true,
-        text: `Unable to login, ${i} is required`
-      })
-    } else {
-      try{
-        const resp = await adminLogin(form);
-        if (resp.data) {
-          // const test = setUser(resp.data.user) // dispatch to redux
-          setSnack({
-            severity: 'success',
-            open: true,
-            text: `Login success`,
-          })
-          handleCancel()
-        } else {
-          setSnack({
-            severity: 'error',
-            open: true,
-            text: `ERROR: ${resp.data.message}`,
-          })
-        }
-      }catch(err) {
-        console.log(err.response)
-        const errSnack = err ? {
+        setSnack({
           severity: 'error',
           open: true,
-          text: `ERROR: ${err.response.data.message}`,
-        } : {}
-        setSnack(errSnack)
+          text: `ERROR: ${resp.data.message}`,
+        })
       }
-    }
-  }
-
-
-  const saveErrors = async (key, err = false, str = '') => {
-    await setErrors({
-      ...errors,
-      [key]: {
-        error: err,
-        text: str,
-      }
-    });
-  }
-
-  const configureError = async(fields) => {
-    let newErrors = {}
-
-    Object.keys(fields).forEach((field, index) => {
-      newErrors = {
-        ...newErrors,
-        [field]: {
-          error: false,
-          text: '',
-        }
-      }
-    })
-    setErrors(newErrors);
-  }
-
-  useEffect(() => {
-    setHasAccess(inStatus);
-    if (!hasAccess && typeof inStatus !== "undefined") {
-      setSnack({
+    }catch(err) {
+      const errSnack = err ? {
         severity: 'error',
         open: true,
-        text: `ERROR: Please login to access page`,
-       })
+        text: `ERROR: ${err.response.data.message}`,
+      } : {}
+      setSnack(errSnack)
     }
-    const fields = {
-      email: null,
-      password: null,
-    }
-    configureError(fields)
-    setForm(fields)
-  }, [hasAccess])
+  }
 
-
-  return errors && (
+  return (
     <div className={classes.root}>
-      <form noValidate autoComplete="off">
       <Grid container spacing={2} className={classes.formItems}>
         <Grid item lg={12} xs={9}>
           <img src={`/images/logo.svg`} className='img-fluid' />
@@ -161,30 +86,10 @@ const Login = ({classes, inStatus}) => {
         <Grid item lg={12} xs={12}>
             <Typography align="center" variant="h4" component="h4">Admin Login</Typography>
         </Grid>
-        <Grid item lg={12} xs={12} item>
-           <TextField
-              error={errors.email.error}
-              name="email"
-              onChange={formOnChange}
-              id="filled-error"
-              label="Email"
-            />
-        </Grid>
-        <Grid item lg={12} xs={12} item>
-           <TextField
-           error={errors.password.error}
-            name="password"
-            onChange={formOnChange}
-            type="password"
-            id="filled-error"
-            label="Password"
-          />
-        </Grid>
-        <Grid item lg={12} xs={12} item>
-          <Button onClick={handleSubmit} className={`mainButton`}>Login</Button>
+        <Grid item lg={12} xs={12}>
+          <LoginForm inStatus={inStatus} onSubmit={handleSubmit} />
         </Grid>
       </Grid>
-      </form>
       <Snackbar open={snack.open} severity={snack.severity} onClose={()=>setSnack({...snack,'open':false})} content={snack.text} />
     </div>
   );

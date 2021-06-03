@@ -14,7 +14,7 @@ const styles = (theme) => ({
   },
   footerBottomContent: {
     margin: '10px 0px',
-    fontSize: '.7em',
+    fontSize: '.9em',
     textAlign: 'center',
   }
 });
@@ -25,7 +25,7 @@ const Footer = ({classes}) => {
       <div className={classes.root}>
         <Grid container>
           <Grid item lg={12}>
-            <Typography align="center" variant="body1" component="p" className={classes.footerBottomContent}>&copy; 2020 AvenidaZ.  All right reserverd.</Typography>
+            <Typography align="center" variant="body1" component="p" className={classes.footerBottomContent}>&copy; {(new Date()).getFullYear()} AvenidaZ.com  All right reserverd.</Typography>
           </Grid>
         </Grid>
       </div>

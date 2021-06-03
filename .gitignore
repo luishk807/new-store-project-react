@@ -27,7 +27,7 @@ logs
 .idea/
 .vscode/
 *.sublime*
-/public/images/products/*
+/public/images/products/
 psd
 thumb
 sketch
@@ -36,6 +36,8 @@ build
 my-app*
 .npm/
 yarn.lock
+
+package-lock.json
 
 .next
 

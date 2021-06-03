@@ -11,7 +11,8 @@ export const setCookie = (data) => {
 export const getCookie = () => {
   let cookie = { token: null, userRole: null }
   try {
-    cookie = JSON.parse(Cookies.get('authorization'));
+    const test = Cookies.get('authorization');
+    cookie = JSON.parse(test);
     if (cookie && cookie.token) {
       cookie = JSON.parse(cookie);
     }
@@ -24,11 +25,15 @@ export const removeCookie = () => {
 }
 
 export const decodeCookie = () => {
-  const cookie = Cookies.get('authorization');
-  return jwt(cookie); // decode your token here
+  try{
+    const cookie = Cookies.get('authorization');
+    return jwt(cookie); // decode your token here
+  }catch(err){
+    return null
+  }
 }
 
 export const verifyCookie = () => {
   const { token } = getCookie();
-  return !!cookie;
+  return !!token;
 }

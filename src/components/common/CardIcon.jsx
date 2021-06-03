@@ -16,8 +16,11 @@ const styles = (theme) => ({
     margin:5,
   },
   img: {
-    height: 180,
-    width: 180,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 80,
+    width: 80,
   },
   TypoRoot: {},
   link: {

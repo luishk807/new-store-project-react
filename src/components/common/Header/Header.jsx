@@ -1,6 +1,6 @@
-import React, { useState} from 'react';
-// import Link from 'next/link'
+import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
+import { connect } from 'react-redux';
 import { fade } from '@material-ui/core/styles';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
@@ -9,18 +9,13 @@ import {
   Link,
   Button,
   Grid,
-  SwipeableDrawer,
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
 } from '@material-ui/core';
 import Icon from '../../../components/common/Icons';
 import Typography from '../Typography';
-
+import loadMain from '../../../redux/reducers'
 import SearchBar from '../SearchBar';
-import Modal from '../Modal';
+import { useRouter } from 'next/router'
+import Locale from './Locale';
 
 const styles = (theme) => ({
   root: {
@@ -31,11 +26,24 @@ const styles = (theme) => ({
     width: '100%',
     zIndex: '100',
   },
+  mainLogo: {
+    width: 180,
+    display: 'inline-block',
+    [theme.breakpoints.down('sm')]: {
+      display: 'none'
+    },
+    [theme.breakpoints.up('md')]: {
+      width: 145,
+    }
+  },
   menuButton: {
     '& svg': {
       fontSize: '1.5em'
     },
     [theme.breakpoints.up('lg')]: {
+      display: 'none'
+    },
+    [theme.breakpoints.up('md')]: {
       display: 'none'
     }
   },
@@ -50,7 +58,7 @@ const styles = (theme) => ({
     alignItems: 'center',
     [theme.breakpoints.down('sm')]: {
       justifyContent: 'space-between',
-      padding: '6px 0px',
+      padding: 0,
     }
   },
   headerContainerLeft: {
@@ -60,15 +68,24 @@ const styles = (theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
+  userName: {
+    verticaAlign: 'middle',
+    padding: 5,
+    display: 'inline',
+    [theme.breakpoints.down('md')]: {
+      display: 'none'
+    }
+  },
   headerContainerMiddleSub: {
     justifyContent: 'center'
   },
-  headerContainerRight: {
+  headerContainerRightin: {
     display: 'flex',
-    justifyContent: 'flex-end'
-  },
-  sideMenuRoot: {
-    width: 250,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    '& div': {
+      textAlign: 'center'
+    }
   },
   search: {
     position: 'relative',
@@ -85,6 +102,34 @@ const styles = (theme) => ({
       width: 'auto',
     },
   },
+  cartBtn: {
+    position: 'relative'
+  },
+  cartIcon: {
+    width: 40,
+    height: 40,
+    fill: 'white',
+    [theme.breakpoints.down('sm')]: {
+      fill: 'black'
+    }
+  },
+  cartTotal: {
+    position: 'absolute',
+    backgroundColor: 'red',
+    borderRadius: 15,
+    top: 0,
+    right: 5,
+    border: '.2em solid white',
+    minHeight: 9,
+    minWidth: 25,
+    textAlign: 'center',
+  },
+  cartTotalNumber: {
+    fontFamily: 'Arial',
+    fontSize: '0.8em',
+    color: 'white',
+    textAlign: 'center',
+  },
   searchIcon: {
     padding: theme.spacing(0, 2),
     height: '100%',
@@ -93,6 +138,10 @@ const styles = (theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  accountIcon: {
+    width: 40,
+    height: 40,
   },
   inputRoot: {
     color: 'inherit',
@@ -107,97 +156,72 @@ const styles = (theme) => ({
       width: '50ch',
     },
   },
+  localeItem: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 })
 
-const Header = ({classes, data}) => {
-  const [openMobile, setOpenMobile] = useState(false);
+const Header = ({classes, data, userInfo, loadMain, cart}) => {
   const [openCategory, setOpenCategory] = useState(false);
+  const router = useRouter()
 
-  const handleMobileMenu = () => {
-    setOpenMobile(!openMobile);
-  }
-  const renderSideMenu = (
-    <SwipeableDrawer
-      anchor={'left'}
-      open={openMobile}
-      onClose={handleMobileMenu}
-      onOpen={handleMobileMenu}
-    >
-      <div className={classes.sideMenuRoot}>
-      <List>
-        <ListItem>
-          <ListItemIcon><ShoppingCartOutlinedIcon/></ListItemIcon>
-          <ListItemText primary={"testing"} />
-        </ListItem>
-        <ListItem>
-          <ListItemIcon><ShoppingCartOutlinedIcon/></ListItemIcon>
-          <ListItemText primary={"testx"} />
-        </ListItem>
-      </List>
-      <Divider />
-      </div>
-    </SwipeableDrawer>
-  );
-
+  useEffect(() => {
+    loadMain()
+  }, [userInfo])
   return (
     <>
     <div className={classes.root}>
       <Grid container className={`${classes.headerContainer} AppBarBackColor`}>
           <Grid item lg={3} xs={2} className={`${classes.headerContainerLeft}`}>
-            <Grid container>
-              <Grid item lg={2} xs={2}  className={`${classes.menuButton}`}>
-                <Button onClick={handleMobileMenu}>
-                  <Icon name="logo" />
-                </Button>
-              </Grid>
-              <Grid item lg={4}>
-                <Link href="/">
-                  <img className={classes.logo} src="/images/logo-white.svg" alt="" />
-                </Link>
-              </Grid>
-            </Grid>
+            <Button href="/"  className={`${classes.menuButton}`}>
+              <Icon name="logo" />
+            </Button>
+            <Link href="/" className={classes.mainLogo}>
+              <img className={`img-fluid`} src="/images/logo-white.svg" alt="" />
+            </Link>
           </Grid>
-          <Grid item lg={6} xs={8} className={`${classes.headerContainerMiddle}`}>
+          <Grid item lg={7} xs={8} className={`${classes.headerContainerMiddle}`}>
             <Grid container className={classes.headerContainerMiddleSub}>
-              <Grid item lg={2}>
-                <Button onClick={() => setOpenCategory(true)} href="#" color="inherit" className='d-none d-sm-block'>
-                  <Typography className={classes.title} variant="h6" noWrap>
-                    category
-                  </Typography>
-                </Button>
-              </Grid>
-              <Grid item lg={10} xs={10}>
+              <Grid item lg={12} xs={12}>
                 <SearchBar/>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item lg={3} xs={2}>
-            <Grid container className={`${classes.headerContainerRight}`}>
-              <Grid item>
-                <Button href="/cart" color="inherit">
-                  <ShoppingCartOutlinedIcon style={{ fontSize: 40 }} />
+          <Grid item lg={2} xs={2} align="right">
+            <Grid container className={classes.headerContainerRightin}>
+              <Grid item lg={4} md={2} xs={4}>
+                <Button href="/cart" color="inherit" className={classes.cartBtn}>
+                  <ShoppingCartOutlinedIcon className={classes.cartIcon} />
+                  {
+                    Object.keys(cart).length > 0 && (
+                      <div className={classes.cartTotal}>
+                        <Typography className={classes.cartTotalNumber} variant="subtitle1">
+                          {Object.keys(cart).length}
+                        </Typography>
+                      </div>
+                    )
+                  }
                 </Button>
               </Grid>
-              <Grid item>
-                <Button href="/login" color="inherit" className='d-none d-sm-block'>
-                  <PermIdentityOutlinedIcon style={{ fontSize: 40 }} />
+              <Grid item lg={5} md={8} xs={4}>
+                <Button href="/account" color="inherit" className='d-none d-sm-block'>
+                  <PermIdentityOutlinedIcon className={classes.accountIcon} />
+                  {
+                    userInfo.first_name && (
+                      <Typography className={classes.userName} variant="subtitle2">{userInfo.first_name}</Typography>
+                    )
+                  }
                 </Button>
+              </Grid>
+              <Grid item lg={3} md={2} xs={4} className={classes.localeItem}>
+                <Locale className="d-none d-sm-block" />
               </Grid>
             </Grid>
           </Grid>
       </Grid>
-      {renderSideMenu}
     </div>
-    <Modal
-      onOpen={openCategory}
-      onClose={() => setOpenCategory(false)}
-    >
-        <Grid container>
-         <Grid item>
-              Test
-         </Grid>
-      </Grid>
-    </Modal>
     </>
   );
 }
@@ -206,4 +230,13 @@ Header.protoTypes = {
   classes: T.object,
   data: T.object,
 }
-export default withStyles(styles)(Header);
+const mapStateToProps = (state, ownProps) => {
+  return {
+    userInfo: state.user,
+    cart: state.cart
+  }
+}
+const mapDispatchToProps = {
+  loadMain: loadMain,
+} // add redux action to props
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Header));

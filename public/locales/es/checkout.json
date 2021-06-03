@@ -1,0 +1,25 @@
+{
+    "returning_customer": "Soy Cliente",
+    "continue_as_guest": "Continuar como Invitado",
+    "place_your_order": "Haga su Pedido",
+    "delivery_option_delivery": "Direccion de Entrega",
+    "delivery_option_pickup": "Informacion del Cliente",
+    "discount_with_coupon": "Descuento con cupon",
+    "payment_options": "Opciones de Pago",
+    "delivery_options": "Opciones de Entrega",
+    "delivery_service_options": "Opciones de Servicio de Envio",
+    "apply_coupon": "Applicar cupon / Descuento",
+    "checkout_title": "Página de Pago",
+    "remove": "Quitar",
+    "promotional_code": {
+        "title":  "Informacion del Cliente",
+        "label":  "Introduzca el código",
+        "button": "Aplicar",
+        "error": "Código invalido",
+        "success": "Código aplicado"
+    },
+    "message": {
+        "sign_in_to_your_account": "Entre a su cuenta",
+        "insert_coupon": "Introduzca el código"
+    }
+}

@@ -8,11 +8,16 @@ import * as T from 'prop-types';
 
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
+import MobileFooter from '../../MobileFooter';
+import FabActionButtons from '../FabActionButtons';
 
 const styles = (theme) => ({
   root: {
-    marginTop: 80,
+    marginTop: 90,
     flexGrow: 1,
+  },
+  mainItem: {
+    paddingBottom: '200px',
   }
 })
 const LayoutTemplate = ({classes, children}) => (
@@ -22,11 +27,13 @@ const LayoutTemplate = ({classes, children}) => (
       <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/>
     </Head>
     <Header />
+    <FabActionButtons />
     <Grid container className={classes.root}>
-      <Grid item xs={12} lg={12}>
+      <Grid item xs={12} lg={12} className={classes.mainItem}>
         {children}
       </Grid>
     </Grid>
+    <MobileFooter />
     <Footer />
   </section>
 );

@@ -236,7 +236,6 @@ const Icons = ({classes, name}) => {
       case 'logo':
         return <LogoIcon className={classes.icon}/>
       break;
-<<<<<<< HEAD
       case 'logoFull':
         return <Logo className={classes.icon}/>
       break;
@@ -257,10 +256,6 @@ const Icons = ({classes, name}) => {
       break;
       case 'heart2':
         return <FavoriteIcon className={classes.icon}/>
-=======
-      case 'logoWhite':
-        return <AvenidazWhite className={classes.icon}/>
->>>>>>> e3972330d80ed9bad63ada48b0cdb975a562a37f
       break;
       case 'user':
         return <PersonAddOutlinedIcon className={classes.icon}/>

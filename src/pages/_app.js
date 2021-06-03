@@ -5,6 +5,16 @@ import '../../styles.scss'
 import { wrapper } from '../redux/store';
 import { appWithTranslation } from 'next-i18next'
 import HttpsRedirect from 'react-https-redirect';
+
+import TagManager from 'react-gtm-module';
+
+const tagManagerArgs = {
+  gtmId: `${process.env.GTM_ID}`
+}
+
+if (process.browser) {
+  TagManager.initialize(tagManagerArgs);
+}
 class App extends NextApp {
   componentDidMount() {
     const jssStyles = document.querySelector('#jss-server-side')

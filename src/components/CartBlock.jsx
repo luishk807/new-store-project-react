@@ -1,16 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
   Grid,
   Button
 } from '@material-ui/core';
-import Icons from './common/Icons';
+import {isMobile} from 'react-device-detect';
 import { connect } from 'react-redux';
-import { formatNumber, getCartTotal, getImage } from '../utils';
+import { useTranslation } from 'next-i18next'
+
+import { getCartTotal, getTotal, getImage } from '../utils';
 import { getImageUrlByType } from '../utils/form';
-import { noImageUrl } from '../../config';
-import TextEllipsis from './common/TextEllipsis';
+
 const styles = (theme) => ({
   root: {
     width: '100%',
@@ -40,6 +41,9 @@ const styles = (theme) => ({
     '& a:hover': {
       textDecoration: 'underline'
     }
+  },
+  originalPrice: {
+    textDecoration: 'line-through',
   },
   itemItemsContainer: {
     display: 'flex',
@@ -71,9 +75,6 @@ const styles = (theme) => ({
   },
   totalTotalitems: {
     padding: 8,
-    '&:last-child > div': {
-      fontWeight: 'bold'
-    }
   },
   totalTotalitemsCheckout: {
     padding: 10,
@@ -92,7 +93,7 @@ const styles = (theme) => ({
   }
 });
 
-const Index = ({
+const Index = React.memo(({
   data, 
   classes,
   showItems = true,
@@ -100,18 +101,16 @@ const Index = ({
   showCheckout = false,
   onCartTotal,
   userInfo,
-  deliveryOption
+  deliveryOption,
+  promotionCode
 }) => {
-  const imageUrl = getImageUrlByType('product');
   const [products, setProducts] = useState([]);
   const [totals, setTotals] = useState({});
+  const { t } = useTranslation(['common'])
 
-  const setDelivery = (val) => {
-    setTotal({
-      ...totals,
-      delivery: val
-    })
-  }
+  const dispathGetTotal = useMemo(() => (obj) => {
+    return getCartTotal(obj);
+  }, [])
 
   useEffect(() => {
     if (data && Object.keys(data).length) {
@@ -125,29 +124,29 @@ const Index = ({
 
       const obj = {
         cart: cart,
-        delivery: deliveryOption ? deliveryOption : 0
+        delivery: deliveryOption ? deliveryOption : 0,
+        coupon: promotionCode ? promotionCode.percentage : 0
       }
-      const total = getCartTotal(obj);
+      const total = dispathGetTotal(obj);
 
       if (onCartTotal) {
         onCartTotal(total);
       }
-      
       setTotals(total)
       setProducts(prods);
     }
-  }, [data, deliveryOption]);
+  }, [data, deliveryOption, promotionCode]);
 
   return (
-    <div className={classes.root}>
+    <div className={isMobile ? classes.root : `${classes.root} checkoutStickyTotalBox`}>
       {
         showHeader && (
           <Grid container className={classes.itemHeader}>
             <Grid item lg={6} xs={6} className={classes.itemHeaderTitle}>
-              Items: {products.length}
+              { t('items') }: {products.length}
             </Grid>
             <Grid item lg={6} xs={6} className={classes.itemHeaderButton}>
-              <a href="/cart">Edit</a>
+              <a href="/cart">{ t('edit') }</a>
             </Grid>
           </Grid>
         )
@@ -158,6 +157,7 @@ const Index = ({
             {
               products && products.map((product, index) => {
                 const image = getImage(product);
+                const itemTotal = getTotal(product);
                 return (
                   <Grid item key={index} lg={12} xs={12} className={`borderTopMain ${classes.itemItems}`}>
                     <Grid container className={classes.itemItemsItemsContainer}>
@@ -167,11 +167,28 @@ const Index = ({
                       }
                       </Grid>
                       <Grid item lg={8} xs={8} className={classes.itemItemsContent}>
-                        <p>${product.retailPrice}</p>
                         <p>{product.productItemProduct.name}</p>
-                        <TextEllipsis classes={classes.itemItemsContentDescription} text={product.productItemProduct.description} limit={50} />
-                        <p>color: {product.productItemColor.name}</p>
-                        <p>size: {product.productItemSize.name}</p>
+                        <p>{ t('color') }: {product.productItemColor.name}</p>
+                        <p>{ t('size') }: {product.productItemSize.name}</p>
+                        <p>{ t('quantity') }: {product.quantity}</p>
+                        {
+                          product.save_price ? (
+                            <p>{ t('price') }: <span className={classes.originalPrice}>${product.originalPrice}&nbsp; </span>${product.retailPrice}</p>
+                          ) : (
+                            <p>{ t('price') }: ${product.retailPrice}</p>
+                          )
+                        }
+                        <p>{ t('total') }: {`${itemTotal}`}</p>
+                        {
+                          product.bundle && (
+                            <p>{ t('bundle') }:&nbsp;{`${product.bundle.name}`}</p>   
+                          )
+                        }
+                        {
+                          product.discount && (
+                            <p>{ t('discount') }:&nbsp;{`${product.discount.name}`}</p>   
+                          )
+                        }
                       </Grid>
                     </Grid>
                   </Grid>
@@ -185,18 +202,31 @@ const Index = ({
         <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
           <Grid container className={classes.totalTotalContainer}>
             <Grid item className={classes.totalTotalTitle}>
-              Subtotal
+              { t('subtotal') }
             </Grid>
             <Grid item className={classes.totalTotalTotal}>
               ${totals.subtotal}
             </Grid>
           </Grid>
         </Grid>
-
+        {
+          totals.coupon > 0 && (
+            <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
+              <Grid container className={classes.totalTotalContainer}>
+                <Grid item className={classes.totalTotalTitle}>
+                  { t('promo') }
+                </Grid>
+                <Grid item className={classes.totalTotalTotal}>
+                  - ${totals.coupon}
+                </Grid>
+              </Grid>
+            </Grid>
+          )
+        }
         <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
           <Grid container className={classes.totalTotalContainer}>
             <Grid item className={classes.totalTotalTitle}>
-              Tax
+              { t('tax') } 7%
             </Grid>
             <Grid item className={classes.totalTotalTotal}>
             ${totals.taxes}
@@ -207,20 +237,19 @@ const Index = ({
         <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
           <Grid container className={classes.totalTotalContainer}>
             <Grid item className={classes.totalTotalTitle}>
-              Delivery
+              { t('delivery') }
             </Grid>
             <Grid item className={classes.totalTotalTotal}>
               ${totals.delivery}
             </Grid>
           </Grid>
         </Grid>
-
         {
           showCheckout ? (
             <Grid item className={`${showCheckout && 'borderTopMain'} ${classes.totalTotalitemsCheckout}`} lg={12} xs={12}>
               <Grid container className={classes.totalTotalContainer}>
                 <Grid item className={classes.totalTotalTitle}>
-                  GrandTotal
+                  { t('grand_total') }
                 </Grid>
                 <Grid item className={classes.totalTotalTotal}>
                   ${totals.grandTotal}
@@ -231,10 +260,24 @@ const Index = ({
             <Grid item className={`${classes.totalTotalitems}`} lg={12} xs={12}>
               <Grid container className={classes.totalTotalContainer}>
                 <Grid item className={classes.totalTotalTitle}>
-                  GrandTotal
+                  <b>{ t('grand_total') }</b>
                 </Grid>
                 <Grid item className={classes.totalTotalTotal}>
-                  ${totals.grandTotal}
+                  <b>${totals.grandTotal}</b>
+                </Grid>
+              </Grid>
+            </Grid>
+          )
+        }
+        {
+          totals.saved > 0 && (
+            <Grid item className={classes.totalTotalitems} lg={12} xs={12}>
+              <Grid container className={classes.totalTotalContainer}>
+                <Grid item className={classes.totalTotalTitle}>
+                  { t('message.you_saved') }
+                </Grid>
+                <Grid item className={classes.totalTotalTotal}>
+                  - ${totals.saved}
                 </Grid>
               </Grid>
             </Grid>
@@ -243,14 +286,14 @@ const Index = ({
         {
           showCheckout && (
             <Grid item lg={12} xs={12} >
-              <Button href={`${userInfo.id ? '/checkout/f=e' : '/checkout'}`} className={`mainButton`}>Checkout</Button>
+              <Button href={`${userInfo.id ? '/checkout/f=e' : '/checkout'}`} className={`mainButton`}>{ t('checkout') }</Button>
             </Grid>
           )
         }
       </Grid>
     </div>
   );
-}
+})
 
 Index.protoTypes = {
   classes: T.object,
@@ -258,6 +301,7 @@ Index.protoTypes = {
   showItems: T.bool,
   onCartTotal: T.func,
   showHeader: T.bool,
+  promotionCode: T.object,
   deliveryOption: T.Object,
   showCheckout: T.bool,
 }

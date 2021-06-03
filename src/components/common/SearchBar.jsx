@@ -7,17 +7,14 @@ import {
   InputBase,
   Grid,
   Hidden,
+  Button
 } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import SearchIcon from '@material-ui/icons/Search';
 import Icons from './Icons';
 import Dropdown from './Dropdown';
 import { getCategories } from '../../api/categories';
 import { getCatSearch } from '../../utils';
 
-import {
-  SearchResultSample
-} from '../../constants/samples/SearchResultSample';
 import { searchProducts } from '../../api/products';
 
 const styles = (theme) => ({
@@ -25,7 +22,7 @@ const styles = (theme) => ({
     position: 'relative',
     background: 'white',
     padding: 3,
-    width: '95%',
+    width: '100%',
     alignItems: 'center',
     display: 'flex',
     borderRadius: '0px 4px 4px 0px',
@@ -53,10 +50,9 @@ const styles = (theme) => ({
     width: 25,
   },
   searchIcon: {
-    padding: theme.spacing(0, 2),
+    // padding: theme.spacing(0, 2),
     height: '100%',
     position: 'absolute',
-    pointerEvents: 'none',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -64,6 +60,7 @@ const styles = (theme) => ({
     top: 0,
     borderRadius: '0px 4px 4px 0px',
     border: '1px solid white',
+    outline: 'none'
   },
   inputRoot: {
     color: 'inherit',
@@ -118,7 +115,6 @@ const SearchBar = ({classes}) => {
   const [options, setOptions] = useState([]);
   const [currentTab, setCurrentTab] = useState(null);
   const [showResults, setShowResult] = useState(false);
-  const [htmlList, setHtmlList] = useState([]);
   const [currentValue, setCurrentValue] = useState('');
   const [dropDownOptions, setDropDownOptions] = useState([]);
   const refLists = useRef([]);
@@ -162,6 +158,12 @@ const SearchBar = ({classes}) => {
     }
   }
 
+  const onSearchIconClick = () => {
+    if (currentValue.length > 3) {
+      window.location.href = `/searchResult?str=${currentValue}`;
+    }
+  }
+
   const clearInput = () => {
     setCurrentValue('')
     resetTab()
@@ -169,7 +171,7 @@ const SearchBar = ({classes}) => {
 
   const handleSelect = (product) => {
     clearInput();
-    window.location.href = `/product/${product.id}`;
+    window.location.href = `/product/${product.slug}`;
   }
 
   const handleDropDown = async(data) => {
@@ -220,7 +222,9 @@ const SearchBar = ({classes}) => {
           </Hidden>
           <div className={classes.searchBarInputContent}>
             <div className={`AppBarBackColor ${classes.searchIcon}`}>
-              <Icons classes={{icon: classes.icon}} name="search"/>
+              <Button onClick={onSearchIconClick}>
+                <Icons classes={{icon: classes.icon}} name="search"/>
+              </Button>
             </div>
             <InputBase
               value={currentValue}

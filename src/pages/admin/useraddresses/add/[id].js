@@ -28,20 +28,29 @@ const Add = ({classes}) => {
 
   const form = {
     name: null,
-    address: null,
-    province: null,
-    township: null,
-    country: defaultCountry,
     phone: null,
     mobile: null,
-    zip: null,
+    address: null,
+    addressB: null,
+    province: null,
+    district: null,
+    corregimiento: null,
+    zone: null,
+    country: defaultCountry
   }
 
   return (
     <AdminLayoutTemplate>
       <Grid container>
         <Grid item lg={12}>
-          <AddForm customUrl={`/admin/useraddresses/${id}`} name={ADMIN_SECTIONS.address.key} id={id} entryForm={form} />
+          <AddForm 
+            customUrl={`/admin/useraddresses/${id}`} 
+            cancelUrl={`/admin/useraddresses/${id}`} 
+            successUrl={`/admin/useraddresses/${id}`} 
+            ignoreForm={['mobile','phone', 'province', 'district', 'corregimiento', 'addressB', 'zone', 'country']}
+            name={ADMIN_SECTIONS.address.key} 
+            id={id} 
+            entryForm={form} />
         </Grid>
       </Grid>
     </AdminLayoutTemplate>

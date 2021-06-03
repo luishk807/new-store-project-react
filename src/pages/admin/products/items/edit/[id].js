@@ -40,7 +40,7 @@ const Edit = ({classes}) => {
     }
   }
   
-  const ignoreEntry=['image']
+  const ignoreEntry=['image', 'sku']
   
   const getProductItem = async() => {
     const id = router.query.id;
@@ -64,6 +64,8 @@ const Edit = ({classes}) => {
             id={router.query.id} 
             entryForm={form} 
             customUrl={`/admin/products/items/${productItem.product}`}  
+            cancelUrl={`/admin/products/items/${productItem.product}`}  
+            successUrl={`/admin/products/items/${productItem.product}`}  
             adminSection={ADMIN_SECTIONS.productItem} 
             entryForm={form}
             basicParams={basicParams}

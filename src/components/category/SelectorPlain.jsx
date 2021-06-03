@@ -11,12 +11,13 @@ import {
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
-import Modal from '../common/Modal';
-import { ProductGallerySample } from '../../constants/samples/ProductCategoryIconsSample';
-import { ADMIN_SECTIONS } from '../../constants/admin';
-import { getItems } from '../../api';
+// import Modal from '../common/Modal';
+// import { ProductGallerySample } from '../../constants/samples/ProductCategoryIconsSample';
+// import { ADMIN_SECTIONS } from '../../constants/admin';
+// import { getItems } from '../../api';
+import ProgressBar from '../common/ProgressBar';
 import { getCategories } from '../../api/categories';
-import { searchProductsByCat } from '../../api/products';
+// import { searchProductsByCat } from '../../api/products';
 import Icons from '../common/Icons';
 
 const styles = (theme) => ({
@@ -25,6 +26,18 @@ const styles = (theme) => ({
     overflowX: 'auto',
     height: '100%',
     position: 'relative',
+    // '&::-webkit-scrollbar-track':{
+    //   backgroundColor: '#F5F5F5',
+    // },
+    // '&::-webkit-scrollbar': {
+    //   width: 6,
+    //   height: 6,
+    //   backgroundColor: '#F5F5F5',
+    // },
+    // '&::-webkit-scrollbar-thumb': {
+    //   borderRadius: 10,
+    //   backgroundColor: '#cccccc',
+    // }
   },
   listItemCont: {
     display: 'inline-block',
@@ -42,8 +55,8 @@ const styles = (theme) => ({
     }
   },
   icon: {
-    width: 70,
-    height: 70,
+    width: 60,
+    height: 60,
     [theme.breakpoints.down('sm')]: {
       width: 40,
       height: 40,
@@ -105,9 +118,10 @@ const CategorySelectorPlain = ({classes, data, type}) => {
   const router = useRouter();
   const [categories, setCategories] = useState([]);
   const [open, setOpen] = useState(true);
-
-  const getCategories = async() => {
-    const categories = await getItems(`${ADMIN_SECTIONS.category.url}`);
+  const [showCategories, setShowCategories] = useState(false);
+  
+  const loadCategories = async() => {
+    const categories = await getCategories();
     setCategories(categories);
   }
 
@@ -115,6 +129,10 @@ const CategorySelectorPlain = ({classes, data, type}) => {
     const url = encodeURI(`/searchResult?cat=${data.id}&catn=${data.name}`);
     router.push(url)
   }
+  
+  useEffect(() => {
+    setShowCategories(true);
+  }, [categories])
 
   const content = () => {
     switch(type) {
@@ -144,6 +162,29 @@ const CategorySelectorPlain = ({classes, data, type}) => {
         )
         break;
       }
+      case "button": {
+        return showCategories ? (
+          <Grid container className={classes.cubeContainer}>
+            {
+              categories.map((data, index) => {
+                return (
+                  <Grid item key={index} lg={3} xs={12} className={classes.cubeItems}>
+                    <Button key={index} className={classes.cubeBtn} >
+                      <Icons name={data.icon} classes={{icon: classes.cubeIcon}} />
+                      {
+                        data.name
+                      }
+                    </Button>
+                   </Grid>
+                )
+              })
+            }
+            </Grid>
+        ) : (
+          <ProgressBar />
+        )
+        break;
+      }
       default: {
         return (
           <Grid container>
@@ -170,7 +211,7 @@ const CategorySelectorPlain = ({classes, data, type}) => {
   }
 
   useEffect(() => {
-    getCategories();
+    loadCategories();
   }, [])
 
   return categories && (

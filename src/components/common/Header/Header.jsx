@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import Link from 'next/link'
 import * as T from 'prop-types';
 import { connect } from 'react-redux';
 import { fade } from '@material-ui/core/styles';
@@ -10,16 +9,13 @@ import {
   Link,
   Button,
   Grid,
-  Divider,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
 } from '@material-ui/core';
 import Icon from '../../../components/common/Icons';
 import Typography from '../Typography';
 import loadMain from '../../../redux/reducers'
 import SearchBar from '../SearchBar';
+import { useRouter } from 'next/router'
+import Locale from './Locale';
 
 const styles = (theme) => ({
   root: {
@@ -75,14 +71,21 @@ const styles = (theme) => ({
   userName: {
     verticaAlign: 'middle',
     padding: 5,
-    display: 'inline'
+    display: 'inline',
+    [theme.breakpoints.down('md')]: {
+      display: 'none'
+    }
   },
   headerContainerMiddleSub: {
     justifyContent: 'center'
   },
   headerContainerRightin: {
     display: 'flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    '& div': {
+      textAlign: 'center'
+    }
   },
   search: {
     position: 'relative',
@@ -153,11 +156,16 @@ const styles = (theme) => ({
       width: '50ch',
     },
   },
-
+  localeItem: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  }
 })
 
 const Header = ({classes, data, userInfo, loadMain, cart}) => {
   const [openCategory, setOpenCategory] = useState(false);
+  const router = useRouter()
 
   useEffect(() => {
     loadMain()
@@ -183,7 +191,7 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
           </Grid>
           <Grid item lg={2} xs={2} align="right">
             <Grid container className={classes.headerContainerRightin}>
-              <Grid item>
+              <Grid item lg={4} md={2} xs={4}>
                 <Button href="/cart" color="inherit" className={classes.cartBtn}>
                   <ShoppingCartOutlinedIcon className={classes.cartIcon} />
                   {
@@ -197,7 +205,7 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
                   }
                 </Button>
               </Grid>
-              <Grid item>
+              <Grid item lg={5} md={8} xs={4}>
                 <Button href="/account" color="inherit" className='d-none d-sm-block'>
                   <PermIdentityOutlinedIcon className={classes.accountIcon} />
                   {
@@ -206,6 +214,9 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
                     )
                   }
                 </Button>
+              </Grid>
+              <Grid item lg={3} md={2} xs={4} className={classes.localeItem}>
+                <Locale className="d-none d-sm-block" />
               </Grid>
             </Grid>
           </Grid>

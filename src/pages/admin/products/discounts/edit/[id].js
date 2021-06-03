@@ -15,9 +15,13 @@ const styles = (theme) => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
+    width: '50%',
+    margin: '0px auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
     textAlign: 'center',
   },
 });
@@ -29,12 +33,14 @@ const Edit = ({classes}) => {
   const [showData, setShowData] = useState(false);
   const form = {
     name: null,
-    price: null,
     percentage: null,
+    useDate: null,
     startDate: null,
     endDate: null,
     minQuantity: null
   }
+
+  const ignoreForm = ['startDate', 'endDate'];
 
   useEffect(() => {
     const pid = router.query.id;
@@ -54,9 +60,13 @@ const Edit = ({classes}) => {
           <EditForm 
             adminSection={ADMIN_SECTIONS.productDiscount} 
             id={id} 
+            classes={{root: classes.root}}
             title={`discount ${discount.name}`}
             entryForm={form} 
-            customUrl={`/admin/products/discounts/${discount.productId}`}  
+            ignoreForm={ignoreForm}
+            customUrl={`/admin/products/discounts/${discount.productId}`}
+            cancelUrl={`/admin/products/discounts/${discount.productId}`}
+            successUrl={`/admin/products/discounts/${discount.productId}`}  
           />
         ) : (
           <ProgressBar />

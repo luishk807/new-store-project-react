@@ -5,6 +5,7 @@ import {
   Grid,
   Button,
 } from '@material-ui/core';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -42,12 +43,13 @@ const styles = (theme) => ({
 });
 
 const OrderLeftColumn = ({classes, children}) => {
+  const { t } = useTranslation('order')
   return (
     <div>
       <Grid container className={classes.container}>
         <Grid item lg={2} xs={12} className={classes.leftItem}>
           <ul className={classes.ul}>
-            <li><a href="/account/orders">Order Page</a></li>
+            <li><a href="/account/orders">{ t('order_page') }</a></li>
           </ul>
         </Grid>
         <Grid item lg={7} xs={12}>

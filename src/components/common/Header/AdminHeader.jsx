@@ -14,6 +14,7 @@ import {
   Grid,
   SwipeableDrawer,
   Divider,
+  Hidden,
   List,
   ListItem,
   ListItemIcon,
@@ -23,9 +24,10 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-import { ADMIN_URL } from '../../../constants/admin';
+import { ADMIN_URL, ADMIN_SECTIONS, SECTIONS } from '../../../constants/admin';
 import loadMain from '../../../redux/reducers'
 import { logout } from '../../../api/auth';
+import Icons from '../../common/Icons';
 import Modal from '../Modal';
 
 
@@ -51,6 +53,19 @@ const styles = (theme) => ({
     verticalAlign: 'middle',
     textAlign: 'center'
   },
+  headerContainerInner: {
+    display: 'flex',
+    alignItems: 'center',
+    [theme.breakpoints.down('sm')]: {
+      justifyContent: 'center'
+    }
+  },
+  hideMobileOnly: {
+    display: 'none',
+    [theme.breakpoints.down('sm')]: {
+      display: 'flex'
+    }
+  },
   headerContainer: {
     color: 'white',
     padding: '6px 10px',
@@ -61,7 +76,7 @@ const styles = (theme) => ({
       padding: '6px 0px',
     }
   },
-  headerContainerLeft: {
+  headerItem: {
     width: '15%'
   },
   headerContainerMiddle: {
@@ -93,6 +108,12 @@ const styles = (theme) => ({
       width: 'auto',
     },
   },
+  menuIcon: {
+    width: '25px',
+  },
+  logoSvg: {
+    width: '70%',
+  },
   searchIcon: {
     padding: theme.spacing(0, 2),
     height: '100%',
@@ -115,6 +136,10 @@ const styles = (theme) => ({
       width: '50ch',
     },
   },
+  linkItem: {
+    display: 'flex',
+    flexDirection: 'row',
+  }
 })
 
 const Header = ({classes, data, loadMain, userInfo}) => {
@@ -142,17 +167,25 @@ const Header = ({classes, data, loadMain, userInfo}) => {
       onOpen={handleMobileMenu}
     >
       <div className={classes.sideMenuRoot}>
-      <List>
-        <ListItem>
-          <ListItemIcon><ShoppingCartOutlinedIcon/></ListItemIcon>
-          <ListItemText primary={"testing"} />
-        </ListItem>
-        <ListItem>
-          <ListItemIcon><ShoppingCartOutlinedIcon/></ListItemIcon>
-          <ListItemText primary={"testx"} />
-        </ListItem>
-      </List>
-      <Divider />
+        <List>
+          <ListItem className={`${classes.hideMobileOnly}`}>
+            <ListItemIcon><Icons name="logout" classes={{icon: classes.menuIcon}} /></ListItemIcon>
+            <ListItemText primary={userInfo.first_name} />
+          </ListItem>
+          <Divider  className={`${classes.hideMobileOnly}`}/>
+          {
+            SECTIONS.map((section, index) => {
+              return (
+                <ListItem key={index}>
+                  <Link href={`/admin/${ADMIN_SECTIONS[section].url}`} className={classes.linkItem}>
+                    <ListItemIcon><Icons name={ADMIN_SECTIONS[section].key} classes={{icon: classes.menuIcon}}/></ListItemIcon>
+                    {ADMIN_SECTIONS[section].names}
+                  </Link>
+                </ListItem>
+              )
+            })
+          }
+        </List>
       </div>
     </SwipeableDrawer>
   );
@@ -161,35 +194,37 @@ const Header = ({classes, data, loadMain, userInfo}) => {
     <>
     <div className={classes.root}>
       <Grid container className={`${classes.headerContainer} AppBarBackColor`}>
-          <Grid item lg={6} xs={10} className={`${classes.headerContainerLeft}`}>
-            <Grid container>
-              <Grid item lg={2} xs={2}  className={`${classes.menuButton}`}>
-              <IconButton onClick={handleMobileMenu} className={classes.menuButton} color="inherit" aria-label="Menu">
-                <MenuIcon />
-              </IconButton>
+          <Grid item lg={6} xs={12} className={`${classes.headerItem}`}>
+            <Grid container className={classes.headerContainerInner}>
+              <Grid item lg={1} xs={2}  className={`${classes.menuButton}`}>
+                <IconButton onClick={handleMobileMenu} className={classes.menuButton} color="inherit" aria-label="Menu">
+                  <MenuIcon />
+                </IconButton>
               </Grid>
-              <Grid item lg={3} xs={6}>
+              <Grid item lg={3} xs={10}>
                 <a href={`/${ADMIN_URL.index}/${ADMIN_URL.home}`}>
-                  <img className={`img-fluid`} src="/images/logo-white.svg" alt="" />
+                  <Icons name="logoNameWhite" classes={{icon: classes.logoSvg}} />
                 </a>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item lg={6} xs={2}>
-            <Grid container className={`${classes.headerContainerRight}`}>
-              <Grid item>
-                <Button onClick={logoutAdmin} color="inherit">
-                  <ExitToAppIcon style={{ fontSize: 40 }} />
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button onClick={() => router.push(`/${ADMIN_URL.index}/${ADMIN_URL.account}`)} color="inherit">
-                  <PermIdentityOutlinedIcon style={{ fontSize: 40 }} />
-                  <Typography variant="body2" className={classes.adminTitle} color="textSecondary" component="span">{userInfo.first_name}</Typography>
-                </Button>
+          <Hidden xsDown>
+            <Grid item lg={6} xs={2}>
+              <Grid container className={`${classes.headerContainerRight}`}>
+                <Grid item>
+                  <Button onClick={logoutAdmin} color="inherit">
+                    <ExitToAppIcon style={{ fontSize: 40 }} />
+                  </Button>
+                </Grid>
+                <Grid item>
+                  <Button onClick={() => router.push(`/${ADMIN_URL.index}/${ADMIN_URL.account}`)} color="inherit">
+                    <PermIdentityOutlinedIcon style={{ fontSize: 40 }} />
+                    <Typography variant="body2" className={classes.adminTitle} color="textSecondary" component="span">{userInfo.first_name}</Typography>
+                  </Button>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
+          </Hidden>
       </Grid>
       {renderSideMenu}
     </div>

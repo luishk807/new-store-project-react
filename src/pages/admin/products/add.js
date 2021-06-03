@@ -22,21 +22,18 @@ const styles = (theme) => ({
 const Add = ({classes}) => {
   const form = {
     name: null,
-    stock: null,
-    amount: null,
     category: null,
     brand: null,
     model: null,
     sku: null,
     description: null,
-    vendor: null,
     image: {
       values: [],
       open: false,
     }
   }
   
-  const ignoreEntry=['image']
+  const ignoreEntry=['image', 'model']
 
   return (
     <AdminLayoutTemplate>
@@ -45,6 +42,8 @@ const Add = ({classes}) => {
         ignoreForm={ignoreEntry} 
         entryForm={form}
         customUrl={`/admin/${ADMIN_SECTIONS.product.url}`}  
+        cancelUrl={`/admin/${ADMIN_SECTIONS.product.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.product.url}`} 
       />
     </AdminLayoutTemplate>
   );

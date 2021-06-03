@@ -29,6 +29,8 @@ const Edit = ({classes}) => {
     status: null,
     sweetBoxType: null,
     products: null,
+    key: null,
+    maxItems: null
   }
   const ignoreEntry=['products'];
 
@@ -40,6 +42,8 @@ const Edit = ({classes}) => {
         id={id} 
         entryForm={form} 
         customUrl={`/admin/${ADMIN_SECTIONS.sweetbox.url}`} 
+        cancelUrl={`/admin/${ADMIN_SECTIONS.sweetbox.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.sweetbox.url}`} 
       >
       </EditForm>
     </AdminLayoutTemplate>

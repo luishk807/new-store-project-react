@@ -23,13 +23,12 @@ const styles = (theme) => ({
   }
 });
 
-const OrderActivity = ({classes, order}) => {
+const OrderActivity = React.memo(({classes, order}) => {
   const [activiy, setActivity] = useState([]);
   const [showData, setShowData] = useState(false);
   
   const loadActivities = async() => {
     const getActivity = await getOrderActivitiesByOrderid(order.id);
-    console.log("acti", getActivity)
     setActivity(getActivity);
     setShowData(true);
   };
@@ -74,14 +73,14 @@ const OrderActivity = ({classes, order}) => {
                 <Hidden smDown>
                   <Grid item lg={3} xs={3}>
                     {
-                      item.orderActivityUser ? `${item.orderActivityUser.first_name}(${userRole})` : 'Sytem'
+                      item.orderActivityUser ? `${item.orderActivityUser.first_name}(${userRole})` : 'System'
                     }
                   </Grid>
                 </Hidden>
                 <Hidden smUp>
                   <Grid item lg={3} xs={3}>
                     {
-                      item.orderActivityUser ? `${item.orderActivityUser.first_name}` : 'Sytem'
+                      item.orderActivityUser ? `${item.orderActivityUser.first_name}` : 'System'
                     }
                   </Grid>
                 </Hidden>
@@ -92,7 +91,7 @@ const OrderActivity = ({classes, order}) => {
       }
     </Grid>
   );
-}
+})
  
 OrderActivity.protoTypes = {
   classes: T.object,

@@ -49,6 +49,8 @@ const Edit = ({classes}) => {
         id={id} 
         entryForm={form} 
         customUrl={`/admin/${ADMIN_SECTIONS.vendor.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.vendor.url}`} 
+        cancelUrl={`/admin/${ADMIN_SECTIONS.vendor.url}`} 
       />
     </AdminLayoutTemplate>
   );

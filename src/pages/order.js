@@ -12,6 +12,9 @@ import Snackbar from '../components/common/Snackbar';
 import { getOrderByOrderNumber } from '../api/orders';
 import { validateForm, handleFormResponse } from '../utils/form';
 import OrderDetail from '../components/order/OrderDetail';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+
 const styles = (theme) => ({
   root: {
     padding: 5,
@@ -36,6 +39,7 @@ const styles = (theme) => ({
 const Order = ({classes}) => {
   const [order, setOrder] = useState(null);
   const [showData, setShowData] = useState(false);
+  const { t } = useTranslation('order')
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -56,7 +60,6 @@ const Order = ({classes}) => {
   }
 
   const handleDeliveryForm = async(subform) => {
-    console.log("handle", subform)
     if (subform) {
       const confirm = await getOrderByOrderNumber({
         order_number: subform.order,
@@ -67,7 +70,7 @@ const Order = ({classes}) => {
         setSnack({
           severity: 'error',
           open: true,
-          text: `No order found`
+          text: t('message.no_order_found')
         })
       }
       setOrder(confirm);
@@ -82,12 +85,12 @@ const Order = ({classes}) => {
               order ? (
                 <>
                 <Grid item lg={8} className={classes.title}>
-                    <h3>Order Detail</h3>
+                    <h3>{ t('order_detail') }</h3>
                 </Grid>
                 <Grid item lg={8} className={classes.action}>
                   <Grid container>
                     <Grid item lg={2}>
-                      <Button onClick={handleBack} className={`mainButton`}>Back</Button>
+                      <Button onClick={handleBack} className={`mainButton`}>{ t('back') }</Button>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -98,15 +101,15 @@ const Order = ({classes}) => {
                ) : (
                 <ActionForm 
                     formSection={{
-                      name: 'Buscar su orden',
+                      name: t('message.search_order'),
                     }}
-                    actionButtonName="Search"
+                    actionButtonName={ t('search') }
                     entryForm={form} 
                     showCancel={false}
                     onSubmitAction={handleDeliveryForm}
                     type="action"
                   >
-                  <p>Type your order number to find the status</p>
+                  <p>{ t('message.order_number_to_find_status') }</p>
                 </ActionForm>
                )
             }
@@ -120,5 +123,12 @@ const Order = ({classes}) => {
 Order.protoTypes = {
   classes: T.object,
 }
+
+/** This section is mandatory for next-18next translation to work */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'order', 'footer']),
+  },
+})
 
 export default withStyles(styles)(Order);

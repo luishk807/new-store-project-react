@@ -25,6 +25,14 @@ export const getImageBoxesByName = async(name) => {
   return Api.get(`image-boxes`, data);
 }
 
+export const getImageBoxesByKey = async(key) => {
+  return Api.get(`image-boxes/${key}/key`);
+}
+
+export const getActiveImageBoxesByKey = async(key) => {
+  return Api.get(`image-boxes/${key}/active/key`);
+}
+
 export const getImageBoxesByType = async(type) => {
   if (!type) {
     return;

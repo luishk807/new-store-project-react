@@ -41,7 +41,7 @@ const Add = ({classes}) => {
     }
   }
   
-  const ignoreForm = ['productId', 'image'];
+  const ignoreForm = ['productId', 'image', 'sku'];
   const hideEntry = ['productId'];
 
   const getProduct = async() => {
@@ -70,6 +70,8 @@ const Add = ({classes}) => {
             hideEntry={hideEntry}
             ignoreForm={ignoreForm}
             customUrl={`/admin/products/items/${product.id}`}  
+            cancelUrl={`/admin/products/items/${product.id}`}  
+            successUrl={`/admin/products/items/${product.id}`}  
           />
         ) : (
           <ProgressBar />

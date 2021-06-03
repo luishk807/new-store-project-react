@@ -12,14 +12,16 @@ import moment from 'moment';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import { deleteOrderById, getAllOrders } from '../../../api/orders';
 import Snackbar from '../../../components/common/Snackbar';
+import Icons from '../../../components/common/Icons';
+import DialogModal from '../../../components/common/DialogModal';
 
 const styles = (theme) => ({
   root: {
     padding: 10,
   },
   icon: {
-    width: 30,
-    height: 30,
+    width: 20,
+    height: 20,
     fill: 'black'
   },
   actionBtn: {
@@ -50,7 +52,8 @@ const styles = (theme) => ({
     }
   },
   itemContainer: {
-    textAlign: 'center'
+    textAlign: 'center',
+    alignCenter: 'center'
   },
   itemIndex: {
     textAlign: 'left',
@@ -79,12 +82,28 @@ const styles = (theme) => ({
   itemAction: {
     textAlign: 'right',
     padding: 5,
-  }
+  },
+  itemActionMobile: {
+    display: 'none',
+    [theme.breakpoints.down('sm')]: {
+      display: 'block'
+    }
+  },
 });
 
 const Index = ({classes}) => {
   const [orders, setOrders] = useState([]);
   const [showData, setShowData] = useState(false);
+  const [dialogContent, setDialogContent] = useState({
+    open: false,
+    value: null,
+    title: "Deleting Item",
+    content: "Are you sure, you want to delete this item?",
+    actionLabels: {
+      true: "Yes",
+      false: "No"
+    }
+  })
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -114,6 +133,25 @@ const Index = ({classes}) => {
     })
   }
 
+  const handleActionMenu = (e) => {
+    setDialogContent({
+      ...dialogContent,
+      open: true,
+      title: `Deleting Order No. ${e.order_number}`,
+      value: e
+    })
+  }
+
+  const handleDialogClick = (e) => {
+    setDialogContent({
+      ...dialogContent,
+      open: false
+    })
+    if (e) {
+      delItem(dialogContent.value.id)
+    }
+  }
+
   useEffect(() => {
     loadOrders();
   }, []);
@@ -129,32 +167,32 @@ const Index = ({classes}) => {
         showData && (
           <Grid container className={classes.mainContainer}>
             <Hidden smDown>
-            <Grid item lg={12} xs={12} className={classes.mainHeader}>
-              <Grid container className={classes.itemContainer}>
-                <Grid item lg={1} className={classes.itemIndex}></Grid>
-                <Grid item lg={2} className={classes.itemName}>
-                  Name
-                </Grid>
-                <Grid item lg={1} className={classes.itemName}>
-                  Delivery
-                </Grid>
-                <Grid item lg={1} className={classes.itemLength}>
-                  Products
-                </Grid>
-                <Grid item lg={2} className={classes.itemType}>
-                  Total
-                </Grid>
-                <Grid item lg={2} className={classes.itemStatus}>
-                  Status
-                </Grid>
-                <Grid item lg={1} className={classes.itemDate}>
-                  Date Created
-                </Grid>
-                <Grid item lg={2} className={classes.itemAction}>
-                  Action
+              <Grid item lg={12} xs={12} className={classes.mainHeader}>
+                <Grid container className={classes.itemContainer}>
+                  <Grid item lg={1} className={classes.itemIndex}></Grid>
+                  <Grid item lg={2} className={classes.itemName}>
+                    Order Number
+                  </Grid>
+                  <Grid item lg={1} className={classes.itemName}>
+                    Delivery
+                  </Grid>
+                  <Grid item lg={1} className={classes.itemLength}>
+                    Products
+                  </Grid>
+                  <Grid item lg={2} className={classes.itemType}>
+                    Total
+                  </Grid>
+                  <Grid item lg={2} className={classes.itemStatus}>
+                    Status
+                  </Grid>
+                  <Grid item lg={1} className={classes.itemDate}>
+                    Date Created
+                  </Grid>
+                  <Grid item lg={2} className={classes.itemAction}>
+                    Action
+                  </Grid>
                 </Grid>
               </Grid>
-            </Grid>
             </Hidden>
             {
               orders.map((order, index) => {
@@ -166,23 +204,19 @@ const Index = ({classes}) => {
                           index + 1
                         }
                       </Grid>
-                      <Grid item lg={2} xs={6} className={classes.itemName}>
+                      <Grid item lg={2} xs={7} className={classes.itemName}>
                         <a href={`orders/${order.id}`}>
                         {
-                          order.shipping_name
+                          order.order_number
                         }
                         </a>
                       </Grid>
-                      <Hidden mdUp>
-                      <Grid item lg={2} xs={2} className={classes.itemAction}>
-                        <Button className={`smallMainButton ${classes.actionBtn}`} href={`orders/${order.id}`}>
-                          Edit
-                        </Button>
-                        <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => delItem(order.id)}>
-                          Delete
+                      <Grid item xs={3} className={classes.itemActionMobile}>
+                        <Button className={classes.actionBtn} onClick={() => handleActionMenu(order)}>
+                          <Icons name="delete" classes={{icon: classes.icon}} />
                         </Button>
                       </Grid>
-                      </Hidden>
+                      <Hidden smDown>
                       <Grid item lg={1} xs={4} className={classes.itemName}>
                         {
                           order.deliveryOrder ? order.deliveryOrder.name : 'N/A'
@@ -208,12 +242,11 @@ const Index = ({classes}) => {
                           moment(order.createdAt).format('YYYY-MM-DD')
                         }
                       </Grid>
-                      <Hidden smDown>
                       <Grid item lg={2} className={classes.itemAction}>
                         <Button className={`smallMainButton ${classes.actionBtn}`} href={`orders/${order.id}`}>
                           Edit
                         </Button>
-                        <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => delItem(order.id)}>
+                        <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => handleActionMenu(order)}>
                           Delete
                         </Button>
                       </Grid>
@@ -227,6 +260,7 @@ const Index = ({classes}) => {
         )
       }
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
+      <DialogModal open={dialogContent.open} onClick={handleDialogClick} title={dialogContent.title} content={dialogContent.content} actionLabels={dialogContent.actionLabels} />
     </AdminLayoutTemplate>
   );
 }

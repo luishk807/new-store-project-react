@@ -1,0 +1,25 @@
+{
+    "returning_customer": "Returning Customer",
+    "continue_as_guest": "Continue as Guest",
+    "place_your_order": "Place Your Order",
+    "delivery_option_delivery": "Direccion de Entrega",
+    "delivery_option_pickup": "Client Information",
+    "discount_with_coupon": "Discount with coupon",
+    "payment_options": "Payment Options",
+    "delivery_options": "Delivery Options",
+    "delivery_service_options": "Delivery Service Options",
+    "apply_coupon": "Apply coupon / Discount",
+    "checkout_title": "Checkout",
+    "remove": "Remove",
+    "promotional_code":{
+        "title":  "Informacion del Cliente",
+        "label":  "Enter code",
+        "button": "Apply",
+        "error": "Invalid Code",
+        "success": "Code Applied"
+    },
+    "message": {
+        "sign_in_to_your_account": "Sign in to your account",
+        "insert_coupon": "Insert code"
+    }
+}

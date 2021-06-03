@@ -6,21 +6,19 @@ import {
   Link,
   Button,
 } from '@material-ui/core';
-import NumberFormat from 'react-number-format';
 
 import { getProducts } from '../../api/products';
-import { getImageUrlByType } from '../../utils/form';
-import { noImageUrl } from '../../../config';
-import Icons from '../common/Icons';
+import { getImageBaseThumbnail, getSortPriceRange } from '../../utils';
 import Rate from '../common/Rate/Rate';
 import ProgressBar from '../common/ProgressBar';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
     width: '100%',
   },
   mainContainer: {
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
   },
   item: {
     padding: 8,
@@ -29,7 +27,7 @@ const styles = (theme) => ({
     display: 'flex',
     border: '1px solid rgba(0,0,0,.08)',
     margin: 14,
-    width: '23%',
+    width: '17%',
     [theme.breakpoints.down('sm')]: {
       width: '100%',
       margin: 5,
@@ -79,20 +77,21 @@ const styles = (theme) => ({
 })
 
 const ProductScroller = ({classes}) => {
-  const imageUrl = getImageUrlByType('product');
+  // const imageUrl = getImageUrlByType('product');
   const loader = useRef(null);
   const [products, setProducts] = useState([]);
   const [showData, setShowData] = useState(false);
   const [page, setPage] = useState(1);
   const [endData, setEndData] = useState(false);
+  const { t } = useTranslation('home')
 
   const loadProducts = async() => {
+    setShowData(false);
     const gProduct = await getProducts({
       page: page
     });
-
-    setProducts(gProduct);
-    setShowData(true);
+    setProducts(gProduct.rows);
+    // setShowData(true);
 
     var options = {
       root: null,
@@ -117,16 +116,21 @@ const ProductScroller = ({classes}) => {
     }
   }
 
+
+  useEffect(() => {
+    setShowData(true);
+  }, [products])
+
   useEffect(() => {
       // here we simulate adding new posts to List
       const loadMore = async() => {
         const gProduct =  await getProducts({
           page: page
         });
-        if (gProduct && !gProduct.length) {
+        if (gProduct && !gProduct.rows.length) {
           setEndData(true)
         }
-        const newProducts = products.concat(gProduct);
+        const newProducts = products.concat(gProduct.rows);
         setProducts(newProducts)
       }
       loadMore()
@@ -136,22 +140,19 @@ const ProductScroller = ({classes}) => {
     loadProducts()
   }, [])
 
-  return showData && ( 
+  return ( 
    <div className={classes.root}>
       <Grid container className={classes.mainContainer} spacing={1}>
         <Grid item lg={12} xs={12} className={classes.sectionTitle}>
-          Product you might like
+          { t('message.products_you_might_like') }
         </Grid>
         {
-          products.map((product, index) => {
-            const image = product.productImages && product.productImages.length ? (
-              <img className={`img-fluid`} src={`${imageUrl}/${product.productImages[0].img_url}`} alt={product.name}/>
-            ) : (
-              <img className={`img-fluid`} src={`${noImageUrl.img}`} alt={noImageUrl.alt} />
-            )
+          showData && products.map((product, index) => {
+            const image = getImageBaseThumbnail(product);
+            const rangePrice = getSortPriceRange(product)
             return (
               <Grid key={index} item className={classes.item}>
-                <Link href={`/product/${product.id}`} className={classes.linkItem}>
+                <Link href={`/product/${product.slug}`} className={classes.linkItem}>
                   <div className={classes.imgHolder}>
                     {
                       image
@@ -164,7 +165,7 @@ const ProductScroller = ({classes}) => {
                       }
                     </p>
                     <p className={classes.amount}>
-                      <NumberFormat value={product.amount} displayType={'text'} thousandSeparator={true} prefix={'$'} />
+                      {rangePrice}
                     </p>
                     <Rate data={0} disabled={true} />
                   </div>
@@ -175,9 +176,7 @@ const ProductScroller = ({classes}) => {
         }
         <Grid item lg={12} xs={12} ref={loader} className={classes.loadBar}>
           {
-            endData ? (
-              <h3>End of Products</h3>
-            ) : (
+            !endData && (
               <ProgressBar />
             )
           }

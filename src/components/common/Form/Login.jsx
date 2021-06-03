@@ -10,6 +10,7 @@ import {
 import { validateForm } from '../../../utils/form';
 import Snackbar from '../Snackbar';
 import Typography from '../Typography';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -27,6 +28,7 @@ const styles = (theme) => ({
 const Login = ({classes, onSubmit, inStatus}) => {
   const [errors, setErrors] = useState(null);
   const [hasAccess, setHasAccess] = useState(true)
+  const { t } = useTranslation(['forms', 'common'])
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -125,7 +127,7 @@ const Login = ({classes, onSubmit, inStatus}) => {
                 name="email"
                 onChange={formOnChange}
                 id="filled-error"
-                label="Email"
+                label={ t('forms:email') }
                 className={classes.formTextField}
               />
             </Grid>
@@ -137,15 +139,15 @@ const Login = ({classes, onSubmit, inStatus}) => {
                   type="password"
                   id="filled-error"
                   className={classes.formTextField}
-                  label="Password"
+                  label={ t('forms:password') }
                   onKeyUp={formOnChange}
                 />
             </Grid>
             <Grid item lg={12} xs={12}>
-              <Typography align="right" variant="subtitle1" component="p">Forgot password?</Typography>
+              <Typography align="right" variant="subtitle1" component="p"><a href="/forgotpassword">{ t('common:message.forgot_password') }</a></Typography>
             </Grid>
             <Grid item lg={12} xs={12} className={classes.formTextField}>
-              <Button className={`mainButton`} onClick={handleSubmit}>Login</Button>
+              <Button className={`mainButton`} onClick={handleSubmit}>{ t('common:continue') }</Button>
             </Grid>
           </Grid>
         </form>

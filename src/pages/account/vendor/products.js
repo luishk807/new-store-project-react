@@ -9,12 +9,10 @@ import {
 } from '@material-ui/core';
 
 import VendorLayoutTemplate from '../../../components/common/Layout/VendorLayoutTemplate';
-import ItemForm from '../../../components/common/Form/ItemForm';
 import { noImageUrl } from '../../../../config'; 
 import { deleteItem, getItems, getItemByFkId } from '../../../api';
-import Icons from '../../../components/common/Icons';
 import ProgressBar from '../../../components/common/ProgressBar';
-import Snackbar from '../../../components/common/Snackbar';
+import { getThumbnail } from '../../../utils/helpers/image'
 
 const styles = (theme) => ({
   root: {
@@ -134,8 +132,6 @@ const Products = ({classes, userInfo, vendorInfo}) => {
   }
 
   const loadVendorProducts = async() => {
-    let sect = null;
-    let getItemResult = null;
     try {
       const getItemResult = await getItemByFkId('products', 'productsvendor', vendorInfo.id);
       setProducts(getItemResult);
@@ -156,7 +152,7 @@ const Products = ({classes, userInfo, vendorInfo}) => {
         {
           showData ? products.length ? products.map((product, index) => {
             let imageUrl = product.productImages && product.productImages.length ? (
-              <img src={`${process.env.IMAGE_URL}/${product.productImages[0].img_url}`} className={`img-fluid`} alt={product.name} />
+              <img src={`${process.env.IMAGE_URL}/${getThumbnail(product.productImages[0])}`} className={`img-fluid`} alt={product.name} />
             ) : (
               <img src={`${noImageUrl.img}`} className={`img-fluid`} alt={noImageUrl.alt} />
             )

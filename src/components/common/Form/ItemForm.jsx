@@ -5,6 +5,7 @@ import { withStyles } from '@material-ui/core';
 import { 
   Grid,
   Button,
+  Hidden
 } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 
@@ -194,7 +195,7 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
               {
                 setChildTitle(item)
               }
-              <Grid item lg={3} xs={12}>
+              <Grid item lg={3} xs={1}>
                 <Button onClick={()=> { delItem(item.id) }}>
                   <Icons name="delete" classes={{icon: classes.deleteIcon}} />
                 </Button>
@@ -227,7 +228,7 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
         switch(field){
           case 'icon':
             return (
-              <Grid item lg={3} xs={12}>
+              <Grid key={index}  item lg={3} xs={12}>
                 { 
                   value ? 
                   (
@@ -357,15 +358,17 @@ const ItemForm = ({classes, adminSection, userSection,  fields, id, showTitle = 
           </Grid>
         </Grid>
         <Grid item lg={12} xs={12}>
-          <Grid container className={classes.itemTitle}>
-            <Grid item lg={1} xs={12}>&nbsp;</Grid>
-            {
-              setChildTitle()
-            }
-            <Grid item lg={3} xs={12}>
-              action
+          <Hidden xsDown>
+            <Grid container className={classes.itemTitle}>
+              <Grid item lg={1} xs={12}>&nbsp;</Grid>
+              {
+                setChildTitle()
+              }
+              <Grid item lg={3} xs={12}>
+                action
+              </Grid>
             </Grid>
-          </Grid>
+          </Hidden>
           <Grid container>
             {
               items && items

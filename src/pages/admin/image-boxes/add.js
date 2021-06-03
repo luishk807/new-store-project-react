@@ -23,6 +23,7 @@ const Add = ({classes}) => {
   const form = {
     name: null,
     imageBoxType: null,
+    key: null,
     imageBox: [
       {
         url: '',
@@ -39,6 +40,8 @@ const Add = ({classes}) => {
         entryForm={form}
         fileLimit={true}
         customUrl={`/admin/${ADMIN_SECTIONS.imageBox.url}`}  
+        cancelUrl={`/admin/${ADMIN_SECTIONS.imageBox.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.imageBox.url}`} 
       />
     </AdminLayoutTemplate>
   );

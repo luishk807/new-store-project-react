@@ -10,6 +10,7 @@ import { ADMIN_SECTIONS } from '../../constants/admin';
 import EditForm from '../../components/common/Form/EditForm';
 import AdminLayoutTemplate from '../../components/common/Layout/AdminLayoutTemplate';
 import { decodeCookie } from '../../utils/cookie';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -20,6 +21,13 @@ const styles = (theme) => ({
     width: '100%',
     textAlign: 'center',
   },
+  formRoot: {
+    width: '60%',
+    margin: '0px auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    }
+  }
 });
 
 const Settings = ({classes, userInfo}) => {
@@ -54,7 +62,7 @@ const Settings = ({classes, userInfo}) => {
   }, [])
   return (
     <AdminLayoutTemplate>
-      <EditForm showTitle={false} adminSection={ADMIN_SECTIONS.user} ignoreForm={ignoreEntry} id={user} entryForm={form} />
+      <EditForm classes={{root: classes.formRoot}} showTitle={false} adminSection={ADMIN_SECTIONS.user} ignoreForm={ignoreEntry} id={user} entryForm={form} />
     </AdminLayoutTemplate>
   );
 }
@@ -66,5 +74,12 @@ Settings.protoTypes = {
 const mapStateToProps = state => ({
   userInfo: state.user
 }) // add reducer access to props
+
+/** This section is mandatory for next-18next translation to work */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['forms', 'footer']),
+  },
+})
 
 export default connect(mapStateToProps)(withStyles(styles)(Settings));

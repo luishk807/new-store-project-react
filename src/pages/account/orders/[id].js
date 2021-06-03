@@ -19,6 +19,7 @@ import { getOrderById } from '../../../api/orders';
 import { getImageUrlByType } from '../../../utils/form';
 import { noImageUrl } from '../../../../config';
 import { formatNumber } from '../../../utils';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -83,5 +84,15 @@ View.protoTypes = {
 const mapStateToProps = state => ({
   userInfo: state.user
 }) // add reducer access to props
+
+/**
+ * This section is mandatory for next-18next translation to work, only inside /pages.
+ * Use get ServerSideProps instead of getStaticProps because it's a dinamic route
+ */
+export const getServerSideProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'order', 'footer']),
+  },
+})
 
 export default connect(mapStateToProps)(withStyles(styles)(View));

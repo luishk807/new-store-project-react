@@ -1,0 +1,26 @@
+{
+    "order_detail": "Detalle de Orden",
+    "back": "Regresar",
+    "search": "Buscar",
+    "order_number": "Número de Orden",
+    "total_saved": "Total Ahorrado",
+    "order_page": "Sección de Órdenes",
+    "unit_total": "Total Unitario",
+    "save_order": "Guardar Orden",
+    "delivery_service": "Servicio de entrega seleccionado",
+    "reason": "Razón",
+    "shipping_address": "Dirección de Envío",
+    "pick_up": "Para Recoger",
+    "cancel_order": "Cancelar Orden",
+    "order_summary": "Resumen de la Orden",
+
+    "message": {
+        "no_order_found": "No existe la orden",
+        "search_order": "Buscar su orden",
+        "order_number_to_find_status": "Introduzca su número de orden para encontrar el estado",
+        "order_cancel_request_sent": "Petición de cancelación de orden enviada",
+        "order_cancel_confirm": "Confirmación de cancelación de orden",
+        "order_cancel_confirmation": "¿Está seguro que desea cancelar esta orden?",
+        "order_cancelation_reason": "Favor seleccionar la razón de cancelación"
+    }
+}

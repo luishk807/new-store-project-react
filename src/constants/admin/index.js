@@ -170,8 +170,72 @@ export const ADMIN_SECTIONS = {
     option: 'sweetboxproduct',
     parent: 'sweetbox'
   },
+  'color': {
+    name: 'Color',
+    names: 'Colors',
+    key: 'color',
+    url: 'colors',
+    option: 'color'
+  },
+  'productBundle': {
+    name: 'Product Bundle',
+    names: 'Product Bundles',
+    key: 'productbundle',
+    url: 'product-bundles',
+    option: 'productbundle'
+  },
+  'productColor': {
+    name: 'Product Color',
+    names: 'Product Colors',
+    key: 'productcolor',
+    url: 'product-colors',
+    option: 'productcolor'
+  },
+  'deliveryOption': {
+    name: 'Delivery Option',
+    names: 'Delivery Options',
+    key: 'delivery',
+    url: 'delivery-options',
+    option: 'deliveryoption'
+  },
+  'deliveryOptionService': {
+    name: 'Delivery Option Service',
+    names: 'Delivery Option Services',
+    key: 'delivery',
+    url: 'delivery-option-services',
+    option: 'deliveryoptionservice'
+  },
+  'deliveryServiceCost': {
+    name: 'Delivery Service Cost',
+    names: 'Delivery Service Costs',
+    key: 'money',
+    url: 'delivery-service-costs',
+    option: 'deliveryservicecost'
+  },
+  'deliveryServiceGroupCost': {
+    name: 'Delivery Service Cost',
+    names: 'Delivery Service Costs',
+    key: 'money',
+    url: 'delivery-service-group-costs',
+    option: 'deliveryservicegroupcost'
+  },
+  'paymentOption': {
+    name: 'Payment Option',
+    names: 'Payment Options',
+    key: 'payment',
+    url: 'payment-options',
+    option: 'paymentoption'
+  },
+  'promotionCode': {
+    name: 'Promotion Code',
+    names: 'Promotion Codes',
+    key: 'coupon',
+    url: 'promotion-codes',
+    option: 'promotioncode'
+  },
 }
 
+export const SECTIONS = ['user','order','vendor','color','category','brand','product', 'imageBox', 'sweetbox', 'deliveryOption', 'paymentOption',  'deliveryServiceGroupCost', 'promotionCode']
 export const ADMIN_URL = {
   account: 'settings',
   home: 'home',

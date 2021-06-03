@@ -7,7 +7,7 @@ import {
 import { useRouter } from 'next/router';
 
 import { addItem } from '../../../api';
-import { validateForm, loadMainOptions, handleFormResponse } from '../../../utils/form';
+import { validateForm, loadMainOptions, handleFormResponse, checkEnforceDates } from '../../../utils/form';
 import { capitalize } from '../../../utils';
 import Form from './Form';
 import { FORM_SCHEMA } from '../../../../config';
@@ -18,7 +18,7 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '70%',
+    width: '60%',
     margin: '0px auto',
     textAlign: 'center',
     [theme.breakpoints.down('sm')]: {
@@ -41,7 +41,9 @@ const AddForm = ({
   fileLimit,
   ignoreForm, 
   children, 
-  customUrl = null
+  customUrl = null,
+  cancelUrl = null,
+  successUrl = null
 }) => {
   const router = useRouter()
   const [section, setSection] = useState({});
@@ -100,7 +102,7 @@ const AddForm = ({
   }
 
   const handleCancel = () => {
-    const url =customUrl ? customUrl : `/${section.url}`
+    const url = cancelUrl ? cancelUrl : `/${section.url}`
     setTimeout(()=>{
       router.push(url);
     }, 1000)
@@ -109,6 +111,9 @@ const AddForm = ({
   const handleSubmit = async (e) => {
     let errorFound = false;
     let key = '';
+    
+    await checkEnforceDates(form, ignoreForm);
+
     for (var i in form) {
       errorFound = await validateForm(i, form[i], ignoreForm);
       key = i;
@@ -135,9 +140,11 @@ const AddForm = ({
       const confirm = await addItem(section.url, form);
       const resp = handleFormResponse(confirm);
       setSnack(resp);
-      setTimeout(() => {
-        handleCancel() 
-      }, 1000)
+      if (confirm.data.status) {
+        setTimeout(() => {
+          router.push(successUrl);
+        }, 1000);
+      }
     }
   }
   const saveErrors = async (key, err = false, str = '') => {
@@ -230,16 +237,20 @@ const AddForm = ({
   }
 
   useEffect(() => {
+    let unmounted = false;
     let newErrors = {}
 
-    Object.keys(form).map((field, index) => {
-      newErrors[field] = {
-        error: false,
-        text: '',
-      }
-    })
-    setErrors(newErrors);
-   loadFormOption()
+    if (!unmounted) {
+      Object.keys(form).map((field, index) => {
+        newErrors[field] = {
+          error: false,
+          text: '',
+        }
+      })
+      setErrors(newErrors);
+      loadFormOption()
+    }
+    return () => { unmounted = true };
   }, [entryForm])
   
   return showForm && (
@@ -277,6 +288,8 @@ AddForm.protoTypes = {
   adminSection: T.object,
   userSection: T.object,
   entryForm: T.object,
+  cancelUrl: T.string,
+  successUrl: T.string,
   title: T.string,
   fileLimit: T.bool,
   showTitle: T.bool,

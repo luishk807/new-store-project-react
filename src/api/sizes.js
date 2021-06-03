@@ -19,3 +19,14 @@ export const getSizesById = async(id) => {
 export const getSizesByProductId = async(id) => {
   return Api.get(`product-sizes/product/${id}`);
 }
+
+export const getSizesByIds = async(ids) => {
+  if (!ids) {
+    return;
+  }
+  const data = {
+    ids: ids
+  }
+  
+  return Api.get(`product-sizes/filters/bulk`, data);
+}

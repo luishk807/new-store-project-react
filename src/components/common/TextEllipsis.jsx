@@ -7,7 +7,7 @@ import {
 import Typography from './Typography';
 
 const TextEllipsis = ({
-  classes = {}, 
+  classes = null, 
   variant="body1", 
   type="p", 
   limit, 
@@ -20,7 +20,7 @@ const TextEllipsis = ({
       className={classes}
     >
       { 
-        text.length > limit ? text.substring(0,limit).concat('...') : text
+        text && text.length > limit ? text.substring(0,limit).concat('...') : text
       }
     </Typography>
   );

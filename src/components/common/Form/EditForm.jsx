@@ -6,9 +6,9 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import { saveItem } from '../../../api';
+import { saveItem, deleteItem } from '../../../api';
 import Api from '../../../services/api';
-import { validateForm, loadMainOptions, handleFormResponse } from '../../../utils/form';
+import { validateForm, loadMainOptions, handleFormResponse, checkEnforceDates } from '../../../utils/form';
 import Form from './Form';
 import { FORM_SCHEMA } from '../../../../config';
 
@@ -35,7 +35,10 @@ const EditForm = ({
   userSection, 
   hideEntry,
   children,
-  customUrl = null
+  allowDelete,
+  customUrl = null,
+  cancelUrl = null,
+  successUrl = null
 }) => {
   const router = useRouter()
   const [errors, setErrors] = useState({});
@@ -105,18 +108,29 @@ const EditForm = ({
   }
 
   const handleCancel = () => {
-    if (customUrl) {
-      const url = customUrl ? customUrl : `/account`;
+    if (cancelUrl) {
+      const url = cancelUrl ? cancelUrl : `/`;
       router.push(url);
     } else {
       router.back()
     }
   }
 
+  const handleDelete = async (id) => {
+    const confirm = await deleteItem(section.url, id)
+    const resp = handleFormResponse(confirm);
+    setSnack(resp);
+    setTimeout(() => {
+      handleCancel() 
+    }, 1000);
+  }
+
   const handleSubmit = async (e) => {
     let errorFound = false;
     let key = '';
     
+    await checkEnforceDates(form, ignoreForm);
+
     for (var i in form) {
       errorFound = await validateForm(i, form[i], ignoreForm);
       key = i;
@@ -143,8 +157,8 @@ const EditForm = ({
           delete formSubmit.imageBox.saved
         }
         let imageBox = [];
-        for(const test in formSubmit.imageBox) {
-          imageBox.push(formSubmit.imageBox[test])
+        for(const imgBox in formSubmit.imageBox) {
+          imageBox.push(formSubmit.imageBox[imgBox])
         }
         formSubmit['imageBox'] = imageBox;
         formSubmit['saved'] = imageBoxDelete;
@@ -152,9 +166,13 @@ const EditForm = ({
       const confirm = await saveItem(section.url, id, formSubmit)
       const resp = handleFormResponse(confirm);
       setSnack(resp);
-      setTimeout(() => {
-        handleCancel() 
-      }, 1000);
+      if (confirm.data.status) {
+        setTimeout(() => {
+          if (successUrl) {
+            router.push(successUrl);
+          }
+        }, 1000);
+      }
     }
   }
   const saveErrors = async (key, err = false, str = '') => {
@@ -218,9 +236,7 @@ const EditForm = ({
     const mainOptions = basicParams && Object.keys(basicParams).length ? await loadMainOptions(admin, basicParams) : await loadMainOptions(admin);
 
     if (id) {
-      Api.get(`${sect.url}`,{
-        id: id
-      }).then((res) => {
+      Api.get(`${sect.url}/${id}`).then((res) => {
         let info = res;
         for(var field in form){
           let value = info[field];
@@ -287,6 +303,7 @@ const EditForm = ({
         showTitle={showTitle}
         errors={errors} 
         id={id}
+        allowDelete={allowDelete}
         isAdmin={isAdmin}
         hideEntry={hideEntry}
         basicParams={basicParams}
@@ -296,6 +313,7 @@ const EditForm = ({
         onSubmit={handleSubmit} 
         formSubmit={handleSubmit}
         formCancel={handleCancel}
+        formDelete={handleDelete}
         onImageDelete={markUserImageDelete}
         onImageBoxDelete={markImageBoxDelete}
         type="edit"
@@ -309,10 +327,13 @@ const EditForm = ({
 EditForm.protoTypes = {
   classes: T.object,
   id: T.number,
+  allowDelete: T.bool,
   name: T.string,
   customUrl: T.string,
   adminSection: T.object, 
   userSection: T.object, 
+  cancelUrl: T.string,
+  successUrl: T.string,
   basicParams: T.object,
   showTitle: T.bool,
   entryForm: T.object,

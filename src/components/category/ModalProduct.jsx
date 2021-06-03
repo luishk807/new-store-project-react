@@ -20,6 +20,7 @@ const styles = (theme) => ({
     width: '100%',
     height: '100%',
     overflowY: 'scroll',
+    overflowX: 'hidden',
   },
   item: {
     borderTop: '1px solid rgba(0,0,0,.08)',
@@ -48,6 +49,13 @@ const CategoryModalProducts = React.memo(({classes, category}) => {
   }
 
   useEffect(() => {
+    if (products && products.length) {
+      setShowData(true);
+    }
+  },[products]);
+
+  useEffect(() => {
+    setShowData(false);
     if (category) {
       fetchProducts(); 
     }
@@ -65,7 +73,7 @@ const CategoryModalProducts = React.memo(({classes, category}) => {
                     (<img className={`img-fluid`} src={`${noImageUrl.img}`} alt={noImageUrl.alt}/>) 
                   return (
                     <Grid key={index} item xs={12} className={classes.item}>
-                      <Button href={`/product/${product.id}`}>
+                      <Button href={`/product/${product.slug}`}>
                         <Grid container className={classes.itemContainer}>
                           <Grid item xs={5} className={classes.img}>
                             {

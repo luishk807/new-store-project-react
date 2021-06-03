@@ -1,7 +1,7 @@
 
 const { parsed: localEnv } = require('dotenv').config()
 const webpack = require('webpack')
-const localeSubpaths = { en: "en", es: "es" };
+const { i18n } = require('./next-i18next.config')
 
 module.exports = {
   module: {
@@ -34,12 +34,8 @@ module.exports = {
     return config;
   },
   i18n: {
-    locales: ['en', 'es'],
-    defaultLocale: 'es'
-  },
-  publicRuntimeConfig: {
-    // Will be available on both server and client
-    localeSubpaths
+    ...i18n,
+    localeDetection: true
   },
   env: {
     BACKEND_URL: process.env.BACKEND_URL,

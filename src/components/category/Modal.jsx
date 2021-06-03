@@ -11,6 +11,7 @@ import {
 import Icons from '../common/Icons';
 import { getItems } from '../../api';
 import CategoryModalProducts from './ModalProduct';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   catIcons: {
@@ -78,10 +79,12 @@ const styles = (theme) => ({
     backgroundColor: 'rgba(0,0,0,.03)',
     overflowY: 'auto',
     width: '30%',
+    paddingBottom: 50,
   },
   productsContainer: {
     overflowY: 'auto',
     width: '70%',
+    paddingBottom: 50,
   },
   iconContainer: {
     display: 'flex',
@@ -94,6 +97,7 @@ const CategoryModal = ({classes, open, onClose}) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
   const [showData, setShowData] = useState(false);
+  const { t } = useTranslation('home')
 
   const getCategories = async() => {
     const categories = await getItems('categories');
@@ -116,7 +120,7 @@ const CategoryModal = ({classes, open, onClose}) => {
       <div className={classes.body}>
         <div className={`AppBarBackColor ${classes.header}`}>
           <div className={classes.topItemTitle}>
-            Categoria:&nbsp;
+            { t('category') }:&nbsp;
             <span>
             {
               selectedCategory && selectedCategory.name

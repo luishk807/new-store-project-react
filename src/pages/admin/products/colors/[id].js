@@ -10,8 +10,9 @@ import moment from 'moment';
 import { useRouter } from 'next/router';
 
 import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteColorById, getColorsByProductId } from '../../../../api/colors';
+import { deleteColorById, getColorsByProductId } from '../../../../api/productColors';
 import Snackbar from '../../../../components/common/Snackbar';
+import ColorBlock from '../../../../components/common/ColorBlock';
 import HeaderSub from '../../../../components/product/HeaderSub';
 
 const styles = (theme) => ({
@@ -148,9 +149,7 @@ const Index = ({classes}) => {
                         }
                       </Grid>
                       <Grid item lg={4} xs={6} className={classes.itemColumn}>
-                        <a href={`/admin/products/colors/edit/${color.id}`}>
-                          <div className={`${classes.colorBlock}`} style={{backgroundColor: color.color}}></div>
-                        </a>
+                        <ColorBlock classes={{colorBlock: classes.colorBlock}} color={color.color} url={`/admin/products/colors/edit/${color.id}`} />
                       </Grid>
                       <Grid item lg={3} xs={6} className={classes.itemColumn}>
                         {

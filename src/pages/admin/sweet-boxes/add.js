@@ -24,6 +24,8 @@ const Add = ({classes}) => {
   const form = {
     name: null,
     sweetBoxType: null,
+    key: null,
+    maxItems: null
   }
 
   return (
@@ -32,6 +34,8 @@ const Add = ({classes}) => {
         adminSection={ADMIN_SECTIONS.sweetbox} 
         entryForm={form} 
         customUrl={`/admin/${ADMIN_SECTIONS.sweetbox.url}`} 
+        cancelurl={`/admin/${ADMIN_SECTIONS.sweetbox.url}`} 
+        successUrl={`/admin/${ADMIN_SECTIONS.sweetbox.url}`} 
       />
     </AdminLayoutTemplate>
   );

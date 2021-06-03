@@ -17,8 +17,9 @@ export const getProductDiscountsByProductIds = async(ids) => {
     ids: ids
   }
   
-  return Api.get(`product-discounts`, data);
+  return Api.get(`product-discounts/filters/bulk`, data);
 }
+
 
 export const createDiscount = async(data) => {
   return Api.post(`product-discounts`, data);

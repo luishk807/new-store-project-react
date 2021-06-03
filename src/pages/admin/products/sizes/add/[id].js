@@ -54,6 +54,8 @@ const Add = ({classes}) => {
             title={`size for ${product.name}`}
             ignoreForm={ignoreForm}
             customUrl={`/admin/products/sizes/${router.query.id}`}  
+            cancelUrl={`/admin/products/sizes/${router.query.id}`}  
+            successUrl={`/admin/products/sizes/${router.query.id}`}  
           />
         ) : (
           <ProgressBar />

@@ -20,6 +20,13 @@ const styles = (theme) => ({
     width: '100%',
     textAlign: 'center',
   },
+  formRoot: {
+    width: '50%',
+    margin: '0px auto',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%'
+    }
+  }
 });
 
 const Edit = ({classes}) => {
@@ -50,15 +57,15 @@ const Edit = ({classes}) => {
       <Grid container>
         <Grid item lg={12}>
           <EditForm  
+            classes={{root: classes.formRoot}}
             customUrl={`/admin/${ADMIN_SECTIONS.user.url}`} 
+            cancelUrl={`/admin/${ADMIN_SECTIONS.user.url}`} 
+            successUrl={`/admin/${ADMIN_SECTIONS.user.url}`} 
             ignoreForm={ignoreEntry} 
             adminSection={ADMIN_SECTIONS.user} 
             id={id} 
             entryForm={form} 
           />
-        </Grid>
-        <Grid item lg={12}>
-          <Button className={`mainButton`} onClick={()=>router.push(`/admin/useraddresses/${id}`)}>Address</Button>
         </Grid>
       </Grid>
     </AdminLayoutTemplate>

@@ -1,61 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
   Grid,
   Button,
 } from '@material-ui/core';
+
+import ProgressBar from '../common/ProgressBar';
 import SimpleBox from '../product/SimpleBox';
 const styles = (theme) => ({
   root: {
     width: '100%'
   },
-  container: {
-
-  },
-  actionBtn: {
-
-  },
-  itemProduct: {
-
-  },
-  orderOrderProduct: {
-
-  },
-  itemAction: {
-
-  },
-  itemActionItems: {
-
-  },
-  itemActionContainer: {
-
-  }
 });
 
 const OrderItem = ({classes, order, isAdmin = false}) => {
-  return (
-    <Grid container className={classes.container}>
-      <Grid item lg={9} xs={9} className={classes.itemProduct}>
+  const [showData, setShowData] = useState(false);
+
+  useEffect(() => {
+    setShowData(true);
+  }, [order]);
+
+  return showData ? (
+    <Grid container className={classes.root}>
+      <Grid item lg={12} xs={12}>
         <SimpleBox data={order.orderOrderProduct} />
       </Grid>
-      <Grid item lg={3} xs={3} className={classes.itemAction}>
+      {/* <Grid item lg={3} xs={3}>
         {
           !isAdmin && (
             <>
-              <Grid container className={classes.itemActionContainer}>
-                <Grid item lg={12} xs={12} className={classes.itemActionItems}>
-                  <Button className={`mainButton ${classes.actionBtn}`}>Review</Button>
-                </Grid>
-                <Grid item lg={12} xs={12} className={classes.itemActionItems}>
-                  <Button className={`mainButton ${classes.actionBtn}`}>Re-Order</Button>
+              <Grid container>
+                <Grid item lg={12} xs={12}>
+                  <Button className={`mainButton`}>Review</Button>
                 </Grid>
               </Grid>
             </>
           )
         }
-      </Grid>
+      </Grid> */}
     </Grid>
+  ) : (
+    <ProgressBar />
   );
 }
  

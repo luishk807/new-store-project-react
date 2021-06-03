@@ -5,14 +5,14 @@ export const getOrderByUser = async(data) => {
   if (!verifyCookie()) {
     return;
   }
-  return Api.get(`orders`, data);
+  return Api.get(`orders`);
 }
 
 export const getAllOrders = async(data) => {
   if (!verifyCookie()) {
     return;
   }
-  return Api.get(`orders`);
+  return Api.get(`orders/admin/orders/all`);
 }
 
 export const getOrderByOrderNumber= async(data) => {
@@ -23,10 +23,7 @@ export const getOrderById = async(id) => {
   if (!id) {
     return;
   }
-  const data = {
-    id: id
-  }
-  return Api.get(`orders`, data);
+  return Api.get(`orders/${id}`);
 }
 
 export const cancelOrder = async(data) => {
@@ -42,11 +39,7 @@ export const saveOrder = async(data, id) => {
 }
 
 export const saveOrderStatus = async(data, id) => {
-  const sendInfo = {
-    orderStatus: data.status
-  }
-
-  return Api.save(`orders/${id}`, sendInfo);
+  return Api.save(`orders/${id}`, data);
 }
 
 export const deleteOrderById = async(id) => {

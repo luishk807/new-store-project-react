@@ -14,6 +14,7 @@ import { deleteProductItemByID, getAllProductItemsByProductId } from '../../../.
 import Snackbar from '../../../../components/common/Snackbar';
 import { getImage } from '../../../../utils/';
 import HeaderSub from '../../../../components/product/HeaderSub';
+import DialogModal from '../../../../components/common/DialogModal';
 
 const styles = (theme) => ({
   root: {
@@ -81,6 +82,17 @@ const Index = ({classes}) => {
   const [product, setProduct] = useState(null)
   const [productItems, setProductItems] = useState([]);
   const [showData, setShowData] = useState(false);
+  const [dialogContent, setDialogContent] = useState({
+    open: false,
+    value: null,
+    title: "Deleting Item",
+    content: "Are you sure, you want to delete this item?",
+    actionLabels: {
+      true: "Yes",
+      false: "No"
+    }
+  });
+  
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -92,11 +104,33 @@ const Index = ({classes}) => {
     setProduct(pid);
     if (pid) {
       const items = await getAllProductItemsByProductId(pid);
-      console.log(items);
       setProductItems(items);
       setShowData(true);
     }
   };
+
+  const handleActionMenu = (e) => {
+    if (typeof e === "object") {
+      setDialogContent({
+        ...dialogContent,
+        open: true,
+        title: `Deleting this variant`,
+        value: e
+      })
+    } else {
+      router.push(e)
+    }
+  }
+
+  const handleDialogClick = (e) => {
+    setDialogContent({
+      ...dialogContent,
+      open: false
+    })
+    if (e) {
+      delItem(dialogContent.value.id)
+    }
+  }
 
   const delItem = async(id) => {
     deleteProductItemByID(id).then((data) => {
@@ -135,8 +169,11 @@ const Index = ({classes}) => {
                 <Grid item lg={1} className={classes.itemColumn}>
                   Stock
                 </Grid>
-                <Grid item lg={2} className={classes.itemColumn}>
+                <Grid item lg={1} className={classes.itemColumn}>
                   Retail Price
+                </Grid>
+                <Grid item lg={1} className={classes.itemColumn}>
+                  Bundles
                 </Grid>
                 <Grid item lg={2} className={classes.itemColumn}>
                   Status
@@ -153,7 +190,6 @@ const Index = ({classes}) => {
             {
               productItems.map((item, index) => {
                 const image = getImage(item);
-                console.log("image", image)
                 return (
                   <Grid key={index} item lg={12} xs={12} className={classes.mainItems}>
                     <Grid container className={classes.itemContainer}>
@@ -192,10 +228,17 @@ const Index = ({classes}) => {
                           item.stock
                         }
                       </Grid>
-                      <Grid item lg={2} xs={6} className={classes.itemColumn}>
+                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
                         {
                           item.retailPrice
                         }
+                      </Grid>
+                      <Grid item lg={1} xs={6} className={classes.itemColumn}>
+                          <a href={`/admin/products/items/bundles/${item.id}`}>
+                          {
+                            item.productItemProductBundles && item.productItemProductBundles.length
+                          }
+                          </a>
                       </Grid>
                       <Grid item lg={2} xs={6} className={classes.itemColumn}>
                         {
@@ -212,7 +255,7 @@ const Index = ({classes}) => {
                         <Button className={`smallMainButton ${classes.actionBtn}`} href={`/admin/products/items/edit/${item.id}`}>
                           Edit
                         </Button>
-                        <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => delItem(item.id)}>
+                        <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => handleActionMenu(item)}>
                           Delete
                         </Button>
                       </Grid>
@@ -232,6 +275,7 @@ const Index = ({classes}) => {
         )
       }
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
+      <DialogModal open={dialogContent.open} onClick={handleDialogClick} title={dialogContent.title} content={dialogContent.content} actionLabels={dialogContent.actionLabels} />
     </AdminLayoutTemplate>
   );
 }

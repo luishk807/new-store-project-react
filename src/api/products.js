@@ -6,7 +6,7 @@ export const getProducts = async(data) => {
 }
 
 export const getAdminProducts = async(data) => {
-  return Api.get(`products/admin/home`, data);
+  return Api.get(`products`, data);
 }
 
 export const getAllProducts = async() => {
@@ -18,41 +18,35 @@ export const searchProducts = async(str) => {
     search: str,
   }
 
-  return Api.get(`products`, data);
+  return Api.get(`products/search`, data);
 }
 
 export const getProductByCategory = async(cat) => {
-  const filter = {
-    'category': cat
-  }
-
-  return Api.get(`products`, filter);
+  return Api.get(`products/cat/${cat}`);
 }
 
 export const searchProductsByFilter = async(filter) => {
-  return Api.get(`products`, filter);
+  return Api.get(`products/search`, filter);
 }
 
-export const getProductById = async(id) => {
-  if (!id) {
-    return;
-  }
-  const data = {
-    id: id
-  }
-  
-  return Api.get(`products`, data);
+export const getProductById = async(id, filter = null) => {  
+  return Api.get(`products/${id}`, filter);
 }
 
-export const getProductByIds = async(ids) => {
+export const getProductBySlug = async(id, filter = null) => {
+  return Api.get(`products/k/${id}`, filter);
+}
+
+export const getProductByIds = async(ids, page = null) => {
   if (!ids) {
     return;
   }
   const data = {
-    ids: ids
+    ids: ids,
+    page: page
   }
   
-  return Api.get(`products`, data);
+  return Api.get(`products/bulk`, data);
 }
 
 export const createProduct = async(data) => {

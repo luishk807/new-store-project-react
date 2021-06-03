@@ -11,6 +11,8 @@ import Typography from '../../components/common/Typography';
 import { login } from '../../api/auth'
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import LoginFrom from '../../components/common/Form/Login';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -52,6 +54,7 @@ const Login = ({classes, inStatus, showRegister, onCancel}) => {
     open: false,
     text: '',
   });
+  const { t } = useTranslation(['checkout', 'common'])
 
   const handleResponse = () => {
     if (onCancel) {
@@ -95,23 +98,20 @@ const Login = ({classes, inStatus, showRegister, onCancel}) => {
           <Grid item lg={8} xs={12}>
             <Grid container className={classes.itemContainer} spacing={2} justify="center" direction="row">
               <Grid item lg={12} xs={12}>
-                <Typography className={classes.mainTitle} align="center" variant="h3" component="p">Sign in to your account</Typography>
+                <Typography className={classes.mainTitle} align="center" variant="h3" component="p">{ t('checkout:message.sign_in_to_your_account') }</Typography>
               </Grid>
               <Grid item lg={5} xs={12} className={classes.loginItem}>
-                <Typography className={classes.subtitle} variant="h4" component="p">Returning customer</Typography>
+                <Typography className={classes.subtitle} variant="h4" component="p">{ t('checkout:returning_customer') }</Typography>
                 <LoginFrom classes={{root: classes.loginForm}} inStatus={inStatus} onSubmit={handleSubmit} />
               </Grid>
 
               <Grid item lg={5} xs={12} className={classes.guestItem}>
                 <Grid container spacing={2} className={classes.guestItemContainer}>
                   <Grid item lg={12} xs={12}>
-                    <Typography className={classes.subtitle} align="center" variant="h4" component="p">Don't have an account?</Typography>
+                    <Typography className={classes.subtitle} align="center" variant="h4" component="p">{ t('common:message.no_account') }</Typography>
                   </Grid>
                   <Grid item lg={12} xs={12}>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Obcaecati autem ad alias.</p>
-                  </Grid>
-                  <Grid item lg={12} xs={12}>
-                    <Button className={`mainButton`} href="/checkout/g">Continue As Guest</Button>
+                    <Button className={`mainButton`} href="/checkout/g">{ t('checkout:continue_as_guest') }</Button>
                   </Grid>
                 </Grid>
               </Grid>
@@ -130,5 +130,12 @@ Login.protoTypes = {
   inStatus: T.object,
   onCancel: T.func
 }
+
+/** This section is mandatory for next-18next translation to work */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'checkout', 'footer']),
+  },
+})
 
 export default withStyles(styles)(Login) ;

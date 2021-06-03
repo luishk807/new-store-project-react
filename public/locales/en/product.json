@@ -1,0 +1,14 @@
+{
+    "reviews": "Reviews",
+    "rating_breakdown": "Rating breakdown",
+    "by": "By",
+    "view_more": "View more",
+    "rate_product": "Rate",
+
+    "messages": {
+        "choose_quantity": "Please choose quantity",
+        "choose_color": "Please choose color",
+        "choose_size": "Please choose size",
+        "added_to_cart": "Added to Cart"
+    }
+}

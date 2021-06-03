@@ -1,8 +1,8 @@
 /*-------------------------------------------------- */
 $main_color: rgb(248,190,21);
 $main_hover_color: rgb(248,190,12);
-$stickyFooterLimit: 480px;
-$stickyFooterLimitMobile: 780px;
+$stickyFooterLimit: 400px;
+$stickyFooterLimitMobile: 600px;
 $screen-sm-min: 768px;
 $screen-xs-max: ($screen-sm-min - 1);
 $screen-md-min: 992px;
@@ -18,11 +18,58 @@ $screen-md-max: ($screen-lg-min - 1);
   -ms-transition: $type 1s;
 }
 
+a {
+ color: #0066c0;
+}
+
 html {
   position: relative;
   min-height: 100%;
 }
 
+@media print {
+  @page {
+    size: portrait;
+    margin: 10mm;
+  }
+}
+/*  style scrollbar */ 
+div {
+  scrollbar-width: thin;
+}
+
+/* react-slick */
+.slick-next:before, .slick-prev:before {
+  color: $main_color;
+}
+/* end of react slick */
+
+div::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+}
+
+div::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+  background-color: #F5F5F5;
+}
+
+div::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #cccccc;
+  height: 50px;
+}
+div::-moz-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #cccccc;
+  height: 50px;
+  border: '2px solid #555555';
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+/*  end of style scrollbar */ 
 /* Custom, iPhone Retina */ 
 @media only screen and (min-width : 320px) {
   body {
@@ -30,6 +77,12 @@ html {
   }
   .main-section {
     padding: 0px 10px 0px;
+  }
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+  .home-banner-single {
+    padding: 0px;
   }
 }
 /* Extra Small Devices, Phones */ 
@@ -40,25 +93,85 @@ html {
   .main-section {
     padding: 0px 10px 0px;
   }
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+  .home-banner-single {
+    padding: 0px;
+  }
 }
 /* Small Devices, Tablets */
 @media only screen and (min-width : 768px) {
   body {
     margin-bottom: $stickyFooterLimitMobile; /* Margin bottom by footer height */
   }
-}
-/* Medium Devices, Desktops */
-@media only screen and (min-width : 992px) {
-  body {
-    margin-bottom: $stickyFooterLimit; /* Margin bottom by footer height */
+  .home-banner-slider {
+    padding: 10px 50px;
   }
 }
 /* Large Devices, Wide Screens */
-@media only screen and (min-width : 1200px) {
+@media only screen and (min-width : 1400px) {
   body {
     margin-bottom: $stickyFooterLimit; /* Margin bottom by footer height */
   }
+  .home-banner-slider {
+    padding: 50px;
+  }
+  .home-banner-single {
+    padding: 20px;
+  }
 }
+
+/* For laptops 1024 Resolution */  
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) { 
+  /* STYLES GO HERE */
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+  .home-banner-single {
+    padding: 5px;
+  }
+}  
+
+/* For laptops 1366 Resolution */  
+@media only screen and (min-width: 1030px) and (max-width: 1366px) { 
+  /* STYLES GO HERE */
+  .home-banner-slider {
+    padding: 10px 50px;
+  }
+  .home-banner-single {
+    padding: 5px;
+  }
+}  
+
+.adminProductStickyHeader {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: white;
+  top: 72px;
+  text-align: center;
+  padding: 8px 5px;
+  font-weight: bold;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  width: 100%;
+}
+
+.checkoutStickyTotalBox {
+  position: sticky;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  background: white;
+  top: 100px;
+  text-align: center;
+  padding: 8px 5px;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+  width: 100%;
+}
+
 
 a:hover {
   text-decoration: none;
@@ -99,6 +212,11 @@ a:hover {
   position: absolute;
   bottom: 0;
   width: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: black;
+  color: white;
+  align-items: center;
   min-height: 100px; /* Set the fixed height of the footer here */
   line-height: 60px; /* Vertically center the text there */
   border-top: 1px solid $main_color;
@@ -147,12 +265,32 @@ a:hover {
     color: white !important;
   }
 }
+.secondButtonSmall{
+  border: 1px solid $main_color !important;
+  color: $main_color !important;
+  margin: 0px !important;
+  border-radius: 5px !important;
+  width: 100%;
+  &:hover {
+    background-color: $main_color !important;
+    color: white !important;
+  }
+}
 .mainButton {
   width: 100%;
   background-color: $main_color !important;
   border: 1px solid $main_color !important;
   margin: 10px 0px !important;
   border-radius: 5px !important;
+  color: white !important;
+  &:hover {
+    background-color: white !important;
+    color: $main_color !important;
+  }
+}
+.mainButtonNaked {
+  background-color: $main_color !important;
+  border: 1px solid $main_color !important;
   color: white !important;
   &:hover {
     background-color: white !important;
@@ -202,8 +340,16 @@ a:hover {
   fill: $main_color;
   color: $main_color;
 }
+.iconMainColor {
+  fill: $main_color !important;
+}
 .cardLink {
   color: $main_color;
+}
+.cartButtonDisabled {
+  background-color: white !important;
+  border: 1px solid rgba(0,0,0,.03) !important;
+  color: rgba(0,0,0,.09) !important;
 }
 /* Custom page CSS
 -------------------------------------------------- */

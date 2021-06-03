@@ -7,31 +7,29 @@ import { useRouter } from 'next/router';
 import {
   Grid,
   withStyles,
-  Link,
   Button,
-  Hidden,
-  Divider,
   Typography
 } from '@material-ui/core';
+import moment from 'moment';
 
 import { getImageUrlByType } from '../../utils/form';
-import { checkDiscountPrice } from '../../utils/products';
-import { formatNumber } from '../../utils';
+import { checkDiscountPrice, setBundleDiscount, checkBundlePrice } from '../../utils/products';
+import { formatNumber, isAroundTime, capitalize, sortOptions } from '../../utils';
 import { noImageUrl } from '../../../config';
-import { ADMIN_SECTIONS } from '../../constants/admin';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../../constants/samples/ProductSample';
-import Select from '../../components/common/QuanitySelector';
-import Icons from '../../components/common/Icons';
 import Snackbar from '../../components/common/Snackbar';
-import { getItemById } from '../../api';
+import QuantitySelectorB from '../../components/common/QuantitySelectorB';
+import { getActiveProductBundlesByProductItemId } from '../../api/productBundles';
+import { getProductBySlug, getProductById } from '../../api/products';
+import { getSizesByProductId } from '../../api/sizes';
+import { getColorsByProductId } from '../../api/productColors';
 import { getProductItemById } from '../../api/productItems';
 import ProgressBar from '../../components/common/ProgressBar';
-import WishListIcon from '../../components/common/WishListIcon';
-import ProductQuestionBox from '../../components/product/QuestionBox';
-import RateBox from '../../components/rate/Simple';
 import RateFullView from '../../components/rate/FullView';
-import VendorBox from '../../components/vendorBox';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { getThumbnail } from '../../utils/helpers/image'
 
 const styles = (theme) => ({
   root: {
@@ -56,20 +54,51 @@ const styles = (theme) => ({
     fontWeight: 'bold',
     textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '3em',
+      fontSize: '2em',
       textAlign: 'center',
     }
+  },
+  productPriceContainerMain: {
+    padding: '5px 0px'
   },
   productPriceContainer: {
     padding: '5px 0px'
   },
-  productPrice: {
+  productPriceInContainer: {
+    alignItems: 'center'
+  },
+  productPriceMain: {
     fontSize: '1.5rem',
     textAlign: 'left',
     [theme.breakpoints.down('sm')]: {
-      fontSize: '2em',
+      fontSize: '1.2em',
+      textAlign: 'left',
+    }
+  },
+  productPrice: {
+    fontSize: '1.2rem',
+    textAlign: 'left',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1.2em',
+      textAlign: 'left',
+    }
+  },
+  productPriceNumber: {
+    fontWeight: 'bold',
+    color: '#B12704',
+    fontSize: '1.2rem'
+  },
+  productPriceDeal: {
+    fontSize: '1.2rem',
+    textAlign: 'left',
+    fontWeight: '600',
+    [theme.breakpoints.down('sm')]: {
+      fontSize: '1em',
       textAlign: 'center',
     }
+  },
+  productPriceScratch: {
+    textDecoration: 'line-through',
   },
   deliveryText: {
     color: '#51DC55',
@@ -85,6 +114,11 @@ const styles = (theme) => ({
     display: 'flex',
     alignItems: 'center',
   },
+  variantRowContentNoShow: {
+    margin: '10px 0px',
+    display: 'flex',
+    alignItems: 'center',
+  },
   deliveryIcon: {
     width: 80,
     height: 80,
@@ -92,9 +126,6 @@ const styles = (theme) => ({
   },
   productBottomSec: {
     padding: 10,
-  },
-  dropDown: {
-    width: '100%',
   },
   addCartBtn: {
     width: '100%',
@@ -114,7 +145,14 @@ const styles = (theme) => ({
   },
   productStock: {
     fontSize: '1.2em',
-    fontWeight: 'bold',
+    color: 'green'
+  },
+  productOutStock: {
+    fontSize: '1.2em',
+    color: 'red'
+  },
+  priceSave: {
+    color: 'red',
   },
   productColorBox: {
     width: 50,
@@ -140,18 +178,21 @@ const styles = (theme) => ({
     outline: '2px solid rgba(0,0,0)',
   },
   productSizeBox: {
-    border: '1px solid white',
+    border: '1px solid #f8be15',
+    borderRadius: '5px',
     display: 'flex',
-    outline: '1px solid rgba(0,0,0,.09)',
     padding: '8px 10px',
     fontSize: '.8em',
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'column',
   },
   variantTitles: {
     margin: '10px 0px',
   },
   productSizeLink: {
+    marginRight: '2px',
+    marginBottom: '2px',
     display: 'inline-block',
     color: 'grey',
     '&:hover': {
@@ -160,68 +201,125 @@ const styles = (theme) => ({
     }
   },
   productSizeLinkSelected: {
+    marginRight: '2px',
+    marginBottom: '2px',
     display: 'inline-block',
     backgroundColor: '#f8be15',
     color: 'white',
+    borderRadius: '5px',
     '&:hover': {
       color: 'white',
+      borderRadius: '5px',
     }
   },
   productSizeLinkDisabled: {
+    textAlign: 'center',
     display: 'inline-block',
     color: 'rgba(0,0,0,.1)',
     cursor: 'not-allowed',
+    borderRadius: '5px',
     '&:hover': {
       color: 'rgba(0,0,0,.1)',
+      borderRadius: '5px',
     }
   },
   descriptionItem: {
-    margin: '10px 0px',
+    whiteSpace: 'pre-line',
+    lineHeight: '1.7',
   },
   descriptionTitle: {
+    fontSize: '1.2em',
     margin: '10px 0px',
+  },
+  infoRowContentQuantity: {
+    alignItems: 'center'
   }
 });
 
 const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const router = useRouter()
   const id = router.query.pid;
-  const [images, setImages] = useState({});
-  const [productInfo, setProductInfo] = useState({});
+  const [forceRefresh, setForceRefresh] = useState(false);
+
   const [showData, setShowData] = useState(false);
+  const [showDiscount, setShowDiscount] = useState(false);
+  const [showColors, setShowColors] = useState(false);
+  const [showSizes, setShowSizes] = useState(false);
+  const [showProduct, setShowProduct] = useState(false);
+  const [showBundles, setShowBundles] = useState(false);
+
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
-  const [sizeBlocks, setSizeBlock] = useState(null);
-  const [dealPrice, setDealPrice] = useState(0);
-  const [originalRetailPrice, setOriginalRetailPrice] = useState(0);
+  const [selectedBundle, setSelectedBundle] = useState(null);
   const [selectedProductItem, setSelectedProductItem] = useState({});
-  const [colors, setColors] = useState(null)
+
+  const [discountHtml, setDiscountHtml] = useState(null);
+  const [sizeBlocks, setSizeBlock] = useState(null);
+  const [bundleBlocks, setBundleBlock] = useState(null);
+  const [priceBlock, setPriceBlock] = useState(null);
+
+  const [images, setImages] = useState({});
+  const [productInfo, setProductInfo] = useState(null);
+  const [dealPrice, setDealPrice] = useState(0);
+  const [colors, setColors] = useState(null);
+  const [bundles, setBundles] = useState(null);
+  const [sizes, setSizes] = useState(null);
+  const [outOfStock, setOutofStock] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
     text: '',
   });
+  const { t } = useTranslation(['common', 'product'])
 
   const handQuantitySelect = async(resp) => {
-    const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem,resp.value);
-    setDealPrice(getDiscountItem.retailPrice);
-    setSelectedProductItem(getDiscountItem);
+      if (Object.keys(selectedProductItem).length) {
+        if (!selectedProductItem.bundle) {
+          const getDiscountItem = await checkDiscountPrice(productInfo, selectedProductItem, resp.value);
+          setDealPrice(getDiscountItem.retailPrice);
+          setProductItem(getDiscountItem);
+        } else if (selectedProductItem.bundle) {
+          const getDiscountItem = await checkBundlePrice(productInfo, selectedProductItem, resp.value);
+          setDealPrice(getDiscountItem.retailPrice);
+          setProductItem(getDiscountItem);
+        }
+      }
   };
+
+  const setProductItem = async(item) => {
+    if (Object.keys(item).length && !item.productImages.length && item.productItemProduct) {
+      item.productImages = productInfo.productImages;
+      item.slug = productInfo.slug
+    }
+    setSelectedProductItem(item);
+  }
 
   const loadImages = (data) => {
     const imageUrl = getImageUrlByType('product');
     let imgs = [];
 
-    if (data && data.productImages && data.productImages.length) {
-      if (data.productImages.length) {
-          imgs = data.productImages.map((img) => {
-            return {
-              original: `${imageUrl}/${img.img_url}`,
-              thumbnail: `${imageUrl}/${img.img_url}`,
-            }
+    if (data && data.productImages) {
+      imgs = data.productImages.map((img) => {
+        return {
+          original: `${imageUrl}/${img.img_url}`,
+          thumbnail: `${imageUrl}/${getThumbnail(img)}`,
+        }
+      });
+      setImages(imgs);
+    } else {
+      if (productInfo && productInfo.productImages && productInfo.productImages.length) {
+        imgs = productInfo.productImages.map((img) => {
+          return {
+            original: `${imageUrl}/${img.img_url}`,
+            thumbnail: `${imageUrl}/${getThumbnail(img)}`,
+          }
+        });
+      } else {
+        imgs.push({
+          original: `${noImageUrl.svg}`,
+          thumbnail: `${noImageUrl.svg}`,
         });
       }
-
       setImages(imgs);
     }
   }
@@ -231,22 +329,27 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       setSnack({
         severity: 'error',
         open: true,
-        text: 'Please choose quantity',
+        text: t('choose_cantidad'),
       })
     } else if (!selectedColor) {
       setSnack({
         severity: 'error',
         open: true,
-        text: 'Please choose color',
+        text: t('choose_color'),
       })
     } else if (!selectedSize) {
       setSnack({
         severity: 'error',
         open: true,
-        text: 'Please choose size',
+        text: t('choose_size'),
       })
     } else {
       await addCart(selectedProductItem);
+      setSnack({
+        severity: 'success',
+        open: true,
+        text: t('product:messages.added_to_cart'),
+      })
     }
   }
 
@@ -254,21 +357,62 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     if (e) {
       e.preventDefault();
     }
+    setForceRefresh(!forceRefresh)
     setSelectedColor(color);
     setSelectedSize(null);
-    setSelectedProductItem({})
+    setSelectedBundle(null);
+    setProductItem({})
   }
 
-  const handleDefaultSize = () => {
-    if (productInfo && selectedColor) {
-      const items = productInfo.productProductItems;
-      if (items && items.length) {
-        const getItem = items.filter(item => item.productColor === selectedColor.id)
-        if (getItem && getItem.length) {
-          const getSize = productInfo.productSizes.filter(size => size.id === getItem[0].productSize)
-          handleSizeChange(null, getSize[0])
+  const loadBundles = async() => {
+    const getBundles = await getActiveProductBundlesByProductItemId(selectedProductItem.id)
+    if (getBundles) {
+      setBundles(getBundles);
+    }
+  }
+
+  // Commented out because this does nothing with the results
+  // const handleDefaultSize = () => {
+  //   if (showData && selectedColor) {
+  //     const items = productInfo.productProductItems;
+  //     if (items && items.length) {
+  //       const getItem = items.filter(item => item.productColor === selectedColor.id)
+  //       if (getItem && getItem.length) {
+  //         const getSize = sizes.filter(size => size.id === getItem[0].productSize)
+  //       }
+  //     }
+  //   }
+  // }
+
+  const handleBundleChange = async(e, bundle) => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    let currBundle = bundle;
+
+    if (selectedBundle && selectedBundle.id === currBundle.id) {
+      setSelectedBundle(null);
+      currBundle = null;
+    } else {
+      setSelectedBundle(currBundle);
+    }
+
+    setForceRefresh(!forceRefresh)
+    if (selectedProductItem) {
+         const searchItem = selectedProductItem;
+        searchItem['quantity'] = 1;
+
+        const getDiscountItem = await setBundleDiscount(productInfo, selectedProductItem, currBundle);
+        setDealPrice(getDiscountItem.retailPrice);
+        setProductItem(getDiscountItem);
+
+        //check if variant is out of stock
+        if (!selectedProductItem.stock) {
+          setOutofStock(true);
+        } else {
+          setOutofStock(false);
         }
-      }
     }
   }
 
@@ -278,119 +422,330 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
 
     setSelectedSize(size)
+
+    setSelectedBundle(null);
     
+    setShowBundles(false)
+
     const itemsAvailable = productInfo.productProductItems;
+
+    setForceRefresh(!forceRefresh)
 
     if (itemsAvailable && itemsAvailable.length) {
       const getItem = productInfo.productProductItems.filter(item => item.productColorId === selectedColor.id && item.productSizeId === size.id)
       if (getItem && getItem.length) {
         const searchItem = await getProductItemById(getItem[0].id);
+        searchItem['quantity'] = 1;
+
         const getTotal = formatNumber(searchItem.retailPrice);
-        setSelectedProductItem(searchItem);
-        setOriginalRetailPrice(getTotal);
+        setProductItem(searchItem);
         setDealPrice(getTotal)
+        // check if variant is out of stock
+        if (!getItem[0].stock) {
+          setOutofStock(true);
+        } else {
+          setOutofStock(false);
+        }
       }
     }
   }
 
-  const createSizeBlock = (color) => {
-    if (showData) {
-      if(productInfo.productSizes && color) {
-        const blocks = productInfo.productSizes.map((size, index) => {
+  const createBundleBlock = () => {
+    if(bundles && selectedProductItem) {
+      let stock = selectedProductItem.stock;
+      const validBundles = bundles.filter((bundle) => {
+        return stock >= bundle.quantity
+      })
+      const blocks = validBundles.map((bundle, index) => {
+        if (stock >= bundle.quantity) {
+          stock -= bundle.quantity;
+          if (selectedBundle && selectedBundle.id === bundle.id) {
+            return (
+              <a title={`Select ${capitalize(bundle.name)} for ${bundle.retailPrice}`} href="#" key={index} className={classes.productSizeLinkSelected} onClick={(e) => handleBundleChange(e, bundle)}><div className={classes.productSizeBox}><span>{bundle.name}</span><span>{`$${bundle.retailPrice}`}</span></div></a>
+            )
+          } else {
+            return (
+              <a title={`Select ${capitalize(bundle.name)} for ${bundle.retailPrice}`} href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleBundleChange(e, bundle)}><div className={classes.productSizeBox}><span>{bundle.name}</span><span>{`$${bundle.retailPrice}`}</span></div></a>
+            )
+          }
+        }
+      })
+      setBundleBlock(blocks);
+    }
+  }
+
+  const createSizeBlock = (color = null) => {
+      if(sizes && color) {
+        let sizesArry = [];
+        sizes.forEach((size) => {
+            let sizeArry = size;
             const found = productInfo.productProductItems.filter(item => {
               return item.productSize === size.id && item.productColor == color.id;
             })
             if (found && found.length) {
-              if (selectedSize && selectedSize.id === size.id) {
-                return (
-                  <a key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}>{size.name}</div></a>
-                )
-              } else {
-                return (
-                  <a href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}>{size.name}</div></a>
-                )
-              }
+              // only get valid variants
+              sizeArry['price'] = found[0].retailPrice ? Number(found[0].retailPrice) : 0;
+              sizesArry.push(sizeArry);
+            }
+
+        })
+        const sizesAndPrices = sortOptions(sizesArry, 'price');
+
+        if (!selectedSize) {
+          handleSizeChange(null, sizesArry[0])
+        }
+
+        const blocks = sizesAndPrices.map((size, index) => {
+            const foundPrice = size.price ? `$${formatNumber(size.price)}` : `N/A`;
+            if (selectedSize && selectedSize.id === size.id) {
+              return (
+                <a title={`Select ${capitalize(size.name)} for ${foundPrice}`} key={index} className={classes.productSizeLinkSelected}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`${foundPrice}`}</span></div></a>
+              )
             } else {
               return (
-                <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}</div></a>
+                <a title={`Select ${capitalize(size.name)} for ${foundPrice}`} href="#" key={index} className={classes.productSizeLink} onClick={(e) => handleSizeChange(e, size)}><div className={classes.productSizeBox}><span>{size.name}</span><span>{`${foundPrice}`}</span></div></a>
               )
             }
         })
+
         setSizeBlock(blocks);
+
       } else {
-        const blocks = productInfo.productSizes.map((size, index) => {
-            return (
-              <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}</div></a>
-            )
-        })
-        setSizeBlock(blocks);
+        if (sizes && sizes.length) {
+          const blocks = sizes.map((size, index) => {
+              return (
+                <a key={index} className={classes.productSizeLinkDisabled}><div className={classes.productSizeBox}>{size.name}</div></a>
+              )
+          })
+          setSizeBlock(blocks);
+        }
       }
+  }
+
+  const getDiscountHtml = (product) => {
+    const discounts = product.productProductDiscount.filter((item) => {
+      if (item.useDate) {
+        if (isAroundTime(item.startDate, item.endDate)) {
+          return item
+        }
+      } else {
+        return item
+      }
+    })
+    if (discounts) {
+      const discountBlocks = discounts.map((item, index) => {
+        let hitem = <li key={index}>{item.name}</li>;
+        if (item.useDate) {
+          hitem = <li key={index}>{`${item.name} hasta ${moment(item.endDate).format('DD-MM-YYYY')}`}</li>;
+        }
+        return hitem
+      })
+      setDiscountHtml(discountBlocks);
     }
   }
 
+  const loadProductInfo = async() => {
+    const getProductInfo = await getProductBySlug(id, {
+      isFullDetail: true
+    });
+    const [getProductColor, getProductSizes] = await Promise.all([
+      getColorsByProductId(getProductInfo.id),
+      getSizesByProductId(getProductInfo.id)
+    ])
+
+
+
+    if (getProductInfo.productProductDiscount && getProductInfo.productProductDiscount.length) {
+      setShowDiscount(true);
+      getDiscountHtml(getProductInfo);
+    }
+
+    if (getProductInfo) {
+      setProductInfo(getProductInfo);
+    }
+
+    if (getProductColor && getProductColor.length && getProductInfo.productProductItems &&  getProductInfo.productProductItems.length) {
+      const validColors = getProductInfo.productProductItems.map(item => item.productColorId);
+      const getTrueColors = getProductColor.filter(item => validColors.includes(item.id))
+      setColors(getTrueColors);
+    }
+
+    if (getProductSizes && getProductSizes.length) {
+      const validSizes = getProductInfo.productProductItems.map(item => item.productSizeId);
+      const getTrueSizes = getProductSizes.filter(item => validSizes.includes(item.id))
+      setSizes(getTrueSizes);
+    }
+  }
+  
   useEffect(() => {
-    createSizeBlock(selectedColor);
+    if (sizes && colors) {
+       setShowData(true);
+    }
+  }, [sizes, colors]);
+
+  useEffect(() => {
+    if (colors && colors.length) {
+      handleColorChange(null, colors[0])
+      setShowColors(true)
+    }
+  }, [colors]);
+
+  useEffect(() => {
+    if (sizes && sizes.length) {
+      createSizeBlock();
+    }
+  }, [sizes]);
+
+  useEffect(() => {
+    if (bundles && bundles.length) {
+      createBundleBlock();
+    }
+  }, [bundles]);
+
+  useEffect(() => {
+      createBundleBlock();
+  }, [selectedBundle]);
+
+  useEffect(() => {
+    if (bundleBlocks && bundleBlocks.length) {
+      setShowBundles(true)
+    }
+  }, [bundleBlocks]);
+
+  useEffect(() => {
+    if (sizeBlocks && sizeBlocks.length) {
+      setShowSizes(true)
+    }
+  }, [sizeBlocks]);
+
+  useEffect(() => {
+    if (selectedColor || selectedSize) {
+      createSizeBlock(selectedColor);
+    }
   }, [selectedColor, selectedSize]);
 
   useEffect(() => {
     loadImages(selectedProductItem)
+    if (selectedProductItem && Object.keys(selectedProductItem).length) {
+      loadBundles()
+    }
+    if (selectedProductItem) {
+
+      const getProductPriceComponent = (value, isScratched = false) => {
+        return (
+          <>
+            <Grid item lg={4} xs={4} className={classes.productPrice}>
+              <span>{ t('unit_price') }:</span>
+            </Grid>
+            <Grid item lg={8} xs={8} className={[(isScratched) ? classes.productPriceScratch : {}, classes.productPriceNumber].join(' ')}>
+              <span>&nbsp;$ {value}</span>
+            </Grid>
+          </>)
+      }
+      
+      const getProductPriceDealComponent = (value) => {
+        return (
+          <>
+            <Grid item lg={4} xs={4} className={classes.productPriceDeal}>
+              <span>{ t('price_with_discount') }:</span>
+            </Grid>
+            <Grid item lg={8} xs={8} className={classes.productPriceDeal}>
+              <span>&nbsp;$ {value}</span>
+            </Grid>
+          </>)
+      }
+      
+      const getProductPriceSavings = (value) => {
+        return (
+          <>
+            <Grid item lg={4} xs={4} className={classes.productPrice}>
+              <span>{ t('savings') }:</span>
+            </Grid>
+            <Grid item lg={8} xs={8} className={classes.priceSave}>
+              <span>&nbsp;$ {value}</span>
+            </Grid>
+          </>
+        )
+      }
+
+      if (selectedProductItem.discount) {
+        setPriceBlock(
+          <Grid container className={classes.productPriceInContainer}>
+            {getProductPriceComponent(selectedProductItem.originalPrice, true)}
+            {getProductPriceDealComponent(dealPrice)}
+            {getProductPriceSavings(`-${selectedProductItem.save_price} (${selectedProductItem.save_percentag_show})`)}
+        </Grid>)
+      } else {
+        setPriceBlock(    
+         <Grid container className={classes.productPriceInContainer}>
+           {getProductPriceComponent(selectedProductItem.retailPrice ? selectedProductItem.retailPrice : `0.00`)}
+        </Grid>
+        )
+      }
+    }
   }, [selectedProductItem]);
 
   useEffect(() => {
-    handleDefaultSize()
-  }, [productInfo, selectedColor]);
+    if (productInfo) {
+      setShowProduct(true);
+    }
+  }, [productInfo]);
+
+  // useEffect(() => {
+  //   handleDefaultSize()
+  // }, [selectedColor]);
 
   useEffect(()=>{
-    const loadProductInfo = async() => {
-      const getProductInfo = await getItemById(ADMIN_SECTIONS.product.url, id)
-      await setProductInfo(getProductInfo);
-      if (getProductInfo.productColors && getProductInfo.productColors.length) {
-        setColors(getProductInfo.productColors);
-        handleColorChange(null, getProductInfo.productColors[0])
-      }
-      setShowData(true);
-    }
     loadProductInfo();
   }, [id, showData])
 
-  return showData && (
+  return showProduct && (
     <LayoutTemplate>
       <div className={classes.root}>
         <Grid container>
           <Grid item lg={12} xs={12}>
             <Grid container spacing={2}>
               <Grid item lg={8} xs={12}>
-                <Grid container>
-                  <Grid item lg={12} xs={12} align="center">
-                    {
-                      images.length ? (
-                        <ImageGallery items={images} />
-                      ) : (
-                        <ProgressBar />
-                      )
-                    }
-                  </Grid>
-                </Grid>
+              {
+                images.length ? (
+                  <ImageGallery items={images} />
+                ) : (
+                  <ProgressBar />
+                )
+              }
               </Grid>
               <Grid item lg={4} xs={12}>
                 <Grid container>
-    
                   <Grid item lg={12} xs={12}>
-                   <Typography className={classes.productName} variant="h4" component="h3">{productInfo.name}</Typography>
+                   <Typography className={classes.productName} variant="h3" component="h3">{productInfo.name}</Typography>
                   </Grid>
-                  <Grid item lg={12} xs={12} className={classes.productPriceContainer}>
-                    <Typography  className={classes.productPrice} variant="h1" component="h2">${dealPrice}</Typography>
+                  <Grid item lg={12} xs={12}  className={classes.productPriceContainer}>
+                    {
+                      priceBlock
+                    }
                   </Grid>
                   {
-                    colors && (
+                      showDiscount && (
+                      <Grid item lg={12} xs={12}>
+                        <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>{ t('deals') }</Typography>
+                        <ul>
+                          {
+                            discountHtml && discountHtml
+                          }
+                        </ul>
+                      </Grid>
+                    )
+                  }
+                  {
+                    showColors && (
                       <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
                         <Grid container>
-                          <Grid item lg={12} xs={12} className={classes.variantTitles}>Colors</Grid>
+                          <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('colors') }</Grid>
                           <Grid item lg={12} xs={12}>
                             {
                               colors.map((item, index) => {
                                 return (
-                                  <a key={index} href="#" className={selectedColor.id === item.id ? classes.productColorLinkSelected : classes.productColorLink} onClick={(e) => handleColorChange(e, item)}><div className={classes.productColorBox} style={{backgroundColor: item.color}}></div></a>
+                                  <a title={`Select ${capitalize(item.name)}`} key={index} href="#" className={selectedColor.id === item.id ? classes.productColorLinkSelected : classes.productColorLink} onClick={(e) => handleColorChange(e, item)}><div className={classes.productColorBox} style={{backgroundColor: item.color}}></div></a>
                                 )
                               })
                             }
@@ -400,10 +755,10 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     )
                   }
                   {
-                    sizeBlocks && (
+                    showSizes && (
                       <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
                         <Grid container>
-                          <Grid item lg={12} xs={12} className={classes.variantTitles}>Sizes</Grid>
+                          <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('sizes') }: { selectedSize ? selectedSize.name : '' }</Grid>
                           <Grid item lg={12} xs={12} >
                             {
                               sizeBlocks
@@ -413,35 +768,69 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                       </Grid>
                     )
                   }
-                  <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
-                    <Select onChange={handQuantitySelect} className={classes.dropDown} title="quant" id="quant-select" />
-                  </Grid>
-                  <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
-                    <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>Add To Cart</Button>
-                    <WishListIcon product={productInfo.id} />
+                  {
+                    showBundles && (
+                      <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
+                        <Grid container>
+                          <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('bundles') }</Grid>
+                          <Grid item lg={12} xs={12} >
+                            {
+                              bundleBlocks
+                            }
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    )
+                  }
+                  {
+                    Object.keys(selectedProductItem).length ? (
+                      <Grid item lg={12} xs={12}  className={classes.infoRowContent}>
+                        <Grid container className={classes.infoRowContentQuantity}>
+                          <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('quantity') }</Grid>
+                          <Grid item lg={6} xs={6}>
+                            <QuantitySelectorB 
+                              jump={selectedProductItem.bundle ? selectedProductItem.bundle.quantity : 0} 
+                              stock={selectedProductItem.stock} 
+                              refresh={forceRefresh} 
+                              onChange={handQuantitySelect} 
+                              id="quant-select"
+                            />
+                          </Grid>
+                          <Grid item lg={6} xs={6}>
+                            {
+                              outOfStock ? (
+                                <Typography align="left" variant="h5" component="h5" className={classes.productOutStock}>{ t('outofstock') }</Typography>
+                              ) : (
+                                <Typography align="left" variant="h5" component="h5" className={classes.productStock}>{ t('available') }</Typography>
+                              )
+                            }
+    
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                    ) : (
+                      <Grid item lg={12} xs={12}  className={classes.infoRowContent}></Grid>
+                    )
+                  }
+                  <Grid item lg={10}  xs={12} className={classes.infoRowContent}>
+                    {
+                      outOfStock || !Object.keys(selectedProductItem).length ? (
+                        <Button disabled className={`cartButtonDisabled ${classes.addCartBtn}`}>{ t('add_to_cart') }</Button>
+                      ) : (
+                        <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>{ t('add_to_cart') }</Button>
+                      )
+                    }
+                    {/* <WishListIcon product={productInfo.id} /> */}
                   </Grid>
                   <Grid item lg={12} xs={12}>
-                    <ul>
-                        {
-                          productInfo.productProductDiscount && productInfo.productProductDiscount.map((item, index) => {
-                            return (
-                              <li key={index}>{item.name}</li>
-                            )
-                          })
-                        }
-                    </ul>
-                  </Grid>
-                  <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
-                    <Typography align="left" variant="h5" component="h5" className={classes.productStock}>{productInfo.stock ? 'Avalialable' : 'Out of Stock'}</Typography>
+                    <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>{ t('description') }</Typography>
+                    <Typography align="left" variant="body1" component="p" className={classes.descriptionItem}>{productInfo.description}</Typography>
                   </Grid>
                   {/* <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
-                    <Typography align="left" variant="h5" component="h5">Disponibilidad: {productInfo.stock}</Typography>
-                  </Grid> */}
-                  <Grid item lg={12}  xs={12} className={classes.infoRowContent}>
                     <Typography className={classes.deliveryText} align="left" variant="body1" component="p">
                       <Icons name="delivery" classes={{icon: classes.deliveryIcon}}  /> Entrega a todo Panama
                     </Typography>
-                  </Grid>
+                  </Grid> */}
                 </Grid>
               </Grid>
             </Grid>
@@ -451,20 +840,16 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
           </Grid> */}
         </Grid>
         {/* Review and Seller */}
-        <Grid container spacing={2}>
-          <Grid item lg={12} sm={12} className={classes.descriptionItem}>
-            <Typography align="left" variant="h4" component="h4" className={classes.descriptionTitle}>Description</Typography>
-            <Typography align="left" variant="body1" component="p">{productInfo.description}</Typography>
-          </Grid>
-          {/* <Grid item lg={4} sm={12}>
+        {/* <Grid container spacing={2}>
+          <Grid item lg={4} sm={12}>
             <Typography align="left" variant="h4" component="h4">Acerca del Vendedor</Typography>
             {
               productInfo.vendor && <VendorBox id={productInfo.vendor} />
             }
-          </Grid> */}
-        </Grid>
+          </Grid>
+        </Grid> */}
         {/* Q&A section */}
-        <ProductQuestionBox data={productInfo}/>
+        {/* <ProductQuestionBox data={productInfo}/> */}
          {/* Rate section */}
         <RateFullView data={productInfo} />
         {/* Gallery thumb */}
@@ -489,5 +874,15 @@ const mapDispatchToProps = {
   updateCart: updateCart,
   addCart: addCart
 }
+
+/**
+ * This section is mandatory for next-18next translation to work, only inside /pages.
+ * Use get ServerSideProps instead of getStaticProps because it's a dinamic route
+ */
+export const getServerSideProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['common', 'product', 'footer']),
+  },
+})
 
 export default connect(mapStateToProps,mapDispatchToProps)(withStyles(styles)(Index));

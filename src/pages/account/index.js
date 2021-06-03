@@ -14,6 +14,8 @@ import CardIcon from '../../components/common/CardIcon';
 import Icons from '../../components/common/Icons';
 import UserLayoutTemplate from '../../components/common/Layout/UserLayoutTemplate';
 import { logout } from '../../api/auth';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -35,6 +37,7 @@ const styles = (theme) => ({
 
 const Settings = ({classes, userInfo}) => {
   const router = useRouter();
+  const { t } = useTranslation('account')
   const data = userInfo;
   const onLogOut = () => {
     if (logout()) {
@@ -45,7 +48,7 @@ const Settings = ({classes, userInfo}) => {
     <UserLayoutTemplate>
       <div className={classes.root}>
         <Typography align="left" variant="h4" component="h3" className={classes.accountTitle}>
-          Your Account&nbsp;
+          { t('your_account') }&nbsp;
           <Link onClick={onLogOut} href="#" className={classes.smallLink}>
             <Icons name="logout"  classes={{icon: classes.icon}} />
           </Link>
@@ -55,7 +58,7 @@ const Settings = ({classes, userInfo}) => {
           USER_ACCOUNT_SECTIONS.map((button, index) => {
             return (
               <Grid key={index} item lg={3} xs={12}>
-                <CardIcon link={`/account/${button.url}`} title={button.label}>
+                <CardIcon link={`/account/${button.url}`} title={ t(button.tKey) }>
                   <Icons name={button.name} />
                 </CardIcon>
               </Grid>
@@ -75,5 +78,12 @@ Settings.protoTypes = {
 const mapStateToProps = state => ({
   userInfo: state.user
 }) // add reducer access to props
+
+/** This section is mandatory for next-18next translation to work, only inside /pages */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['forms', 'common', 'account', 'footer']),
+  },
+})
 
 export default connect(mapStateToProps)(withStyles(styles)(Settings));

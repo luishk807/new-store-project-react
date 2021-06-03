@@ -41,7 +41,12 @@ const tableColumns = [
   { field: 'size', headerName: 'Size'},
   { field: 'halfDozen', headerName: 'Half Dozen'},
   { field: 'dozen', headerName: 'Dozen'},
-  { field: 'cost', headerName: 'Cost'}
+  { field: 'cost', headerName: 'Cost'},
+  // Discounts
+  { field: 'discount1', headerName: 'Discount1'},
+  { field: 'discount1MinQty', headerName: 'Discount1 MinQty'},
+  { field: 'discount2', headerName: 'Discount2'},
+  { field: 'discount2MinQty', headerName: 'Discount2 MinQty'}
 ];
 
 const transformData = (csvArrayData) => {

@@ -9,6 +9,8 @@ import RateBoxBreakdown from '../common/Rate/RateBoxBreakdown';
 import RateListDetails from '../common/Rate/RateListDetails';
 import Typography from '../common/Typography';
 import { getAllProductRatesById } from '../../api/rate';
+import { containerSizesSelector } from '@material-ui/data-grid';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   mainRateContainer: {
@@ -26,11 +28,14 @@ const styles = (theme) => ({
 const RateFullView = ({classes, data}) => {
   const [rates, setRates] = useState({});
   const [showRate, setShowRate] = useState(false);
+  const { t } = useTranslation('product')
 
   const loadRates = async() => {
     const getRates = await getAllProductRatesById({id: data.id});
-    setRates(getRates);
-    setShowRate(true);
+    if (getRates && getRates.length) {
+      setRates(getRates);
+      setShowRate(true);
+    }
   }
   useEffect(() => {
     loadRates();
@@ -40,7 +45,7 @@ const RateFullView = ({classes, data}) => {
     <div className={classes.root} id="rateSection">
       <Grid container spacing={2} className={classes.mainRateContainer}>
         <Grid item lg={12} xs={12}>
-          <Typography align="left" variant="h4" component="h4">Opiniones</Typography>
+          <Typography align="left" variant="h4" component="h4">{ t('reviews') }</Typography>
         </Grid>
         <Grid item lg={3} xs={12} align="left">
           <RateBoxBreakdown data={rates} />

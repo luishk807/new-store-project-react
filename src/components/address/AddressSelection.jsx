@@ -14,11 +14,12 @@ import Icons from '../common/Icons';
 import Snackbar from '../common/Snackbar';
 import { formatNumber } from '../../utils';
 import { validateForm, handleFormResponse } from '../../utils/form';
-import { getAddresses, createAddress } from '../../api/addresses';
+import { getAddressesByUser, createAddress } from '../../api/addresses';
 import ActionForm from '../common/Form/Action/Add';
 import RadioBox from '../common/RadioBox';
 import { defaultCountry } from '../../../config';
 import { finished } from 'stream';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -67,6 +68,7 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
     open: false,
     text: '',
   });
+  const { t } = useTranslation('common')
 
 
   const changeContent = async(action) => {
@@ -76,7 +78,7 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
 
 
   const loadUserAddress = async() => {
-    const addresses = await getAddresses()
+    const addresses = await getAddressesByUser()
     let getAdd = addresses.filter(address => address.selected === true);
 
     if (addresses && !addresses.length || !addresses) {
@@ -99,12 +101,15 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
     return {
       name: add.name,
       address: add.address,
+      addressB: add.addressB,
       email: add.email,
       phone: add.phone,
-      province: add.addressProvince.name,
-      district: add.addressDistrict.name,
-      corregimiento: add.addressCorregimiento.name,
-      country: add.addressCountry.iso,
+      province: add.addressProvince,
+      district: add.addressDistrict,
+      corregimiento: add.addressCorregimiento,
+      // zone: add.addressZone,
+      none: add.note,
+      country: add.addressCountry,
     }
   }
 
@@ -145,11 +150,11 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
         return (
           <Grid container className={classes.headerContainer}>
             <Grid item lg={9} xs={9} className={classes.headerTitleItem}>
-                Direccion de entrega
+              { t('shipping_address') }
             </Grid>
             <Grid item lg={3} xs={3} className={classes.headerBtnItem}>
               <Button onClick={() => changeContent(null)} className={`mainButton`}>
-                  Cancel
+              { t('cancel') }
               </Button>
             </Grid>
             <Grid item lg={12} xs={12} className={classes.addressBox}>
@@ -157,7 +162,7 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
             </Grid>
             <Grid item lg={5} xs={12} className={classes.headerBtnItem}>
               <Button onClick={() => changeContent('add')} className={`mainButton`}>
-                  Add
+                { t('add') }
               </Button>
             </Grid>
           </Grid>
@@ -187,11 +192,11 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
         return (
           <Grid container className={classes.headerContainer}>
             <Grid item lg={9} xs={9} className={classes.headerTitleItem}>
-                Direccion de entrega
+                { t('shipping_address') }
             </Grid>
             <Grid item lg={3} xs={3} className={classes.headerBtnItem}>
               <Button onClick={() => changeContent('list')} className={`mainButton`}>
-                  Change
+                { t('change') }
               </Button>
             </Grid>
             {
@@ -199,9 +204,34 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
                 <Grid item lg={12} xs={12} className={classes.addressBox}>
                   <p>{userAddress.name}</p>
                   <p>{userAddress.address}</p>
-                  <p>{userAddress.addressDistrict.name} {userAddress.addressCorregimiento.name}</p>
-                  <p>{userAddress.addressProvince.name}</p>
-                  <p>{userAddress.addressCountry.nicename}</p>
+                  {
+                    userAddress.addressProvince && (
+                      <p>{userAddress.addressProvince.name}</p>
+                    )
+                  }
+                  {
+                    userAddress.addressDistrict && (
+                      <p>{userAddress.addressDistrict.name}</p>
+                    )
+                  }
+                  {
+                    userAddress.addressCorregimiento && (
+                      <p>{userAddress.addressCorregimiento.name}</p>
+                    )
+                  }
+                  {/* {
+                    userAddress.addressZone && (
+                      <p>{userAddress.addressZone.name}</p>
+                    )
+                  } */}
+                  {
+                    userAddress.note && userAddress.note !== "null" && (<p>{userAddress.note && userAddress.note}</p>)
+                  }
+                  {
+                    userAddress.addressCountry && (
+                      <p>{userAddress.addressCountry.nicename}</p>
+                    )
+                  }
                 </Grid>
               )
             }
@@ -214,13 +244,16 @@ const AddressSelection = ({classes, userInfo, onSelected}) => {
   const resetForm = () => {
     setForm({
       name: null,
-      address: null,
       email: null,
       phone: null,
+      address: null,
+      addressB: null,
       province: null,
       district: null,
       corregimiento: null,
+      // zone: null,
       country: defaultCountry,
+      note: null,
       selected: true
     })
   }

@@ -99,6 +99,7 @@ import Christmas from '../../../public/images/svg/categories/christmas.svg';
 import Others from '../../../public/images/svg/categories/others.svg';
 import NoImages from '../../../public/images/svg/noimage.svg';
 import Coupon from '../../../public/images/svg/coupon.svg';
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 
 import Typography from './Typography';
 
@@ -114,6 +115,9 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'special':
         return <Special className={classes.icon}/>
+      break;
+      case 'sad':
+        return <SentimentVeryDissatisfiedIcon className={classes.icon}/>
       break;
       case 'coupon':
         return <Coupon className={classes.icon}/>

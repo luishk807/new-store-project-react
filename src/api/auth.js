@@ -1,5 +1,6 @@
 import Api from '../services/api';
 import { removeCookie, setCookie, getCookie } from '../utils/cookie';
+import { config } from '../../config';
 
 const contentTypeJson = { 'Content-Type': 'application/json' };
 
@@ -46,7 +47,8 @@ export const logout = () => {
 
 export const verifyAuth = () => {
   let {token, userRole} = getCookie();
-  return !!token && userRole == 1;
+  const conv_userRole = Number(userRole)
+  return !!token && config.adminRoles.includes(conv_userRole);
 }
 
 export const verifyUser = () => {

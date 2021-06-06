@@ -2,13 +2,11 @@ import React from 'react';
 import * as T from 'prop-types';
 import { 
   withStyles,
-  Grid,
-  Button, 
-  TextField,
+  Grid
 } from '@material-ui/core';
 
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
-import Typography from '../components/common/Typography';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -130,5 +128,12 @@ const Terms = ({classes}) => {
 Terms.protoTypes = {
   classes: T.object
 }
+
+/** This section is mandatory for next-18next translation to work, only inside /pages */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['footer']),
+  },
+})
  
 export default withStyles(styles)(Terms);

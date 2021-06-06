@@ -271,6 +271,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     }
     if (!Object.values(cart).length) {
       setShowCart(false);
+      setStockVerified(false);
     }
   }, [cart])
 

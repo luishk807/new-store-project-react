@@ -64,12 +64,14 @@ const SweetBox = React.memo(({classes, type, plain}) => {
       fetchSweetBox.forEach(async(sweetbox) => {
         let item = Object.assign({}, sweetbox);
         const ids = sweetbox.sweetBoxSweetboxProduct.map(item => item.product);
-        const getProd = await getProductByIds(ids)
-        item.sweetBoxSweetboxProduct = getProd;
-        setSweetBoxes(prev => [
-          ...prev,
-          item
-        ])
+        if (ids && ids.length) {
+          const getProd = await getProductByIds(ids)
+          item.sweetBoxSweetboxProduct = getProd;
+          setSweetBoxes(prev => [
+            ...prev,
+            item
+          ])
+        }
       });      
     } else {
       setSweetBoxes([])

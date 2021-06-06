@@ -713,5 +713,6 @@ export const config = {
     sales: 'ventas@avenidaz.com',
   },
   web: 'www.avenidaz.com',
-  address: 'Plaza Dorado'
+  address: 'Plaza Dorado',
+  adminRoles: [1,3]
 }

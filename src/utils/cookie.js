@@ -21,6 +21,8 @@ export const getCookie = () => {
 }
 
 export const removeCookie = () => {
+  // clear localstorage
+  localStorage.clear();
   return Cookies.remove('authorization');
 }
 

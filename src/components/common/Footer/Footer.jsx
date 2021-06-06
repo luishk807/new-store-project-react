@@ -266,11 +266,11 @@ const Footer = ({classes}) => {
             <Grid container>
               <Grid item lg={8} md={8} xs={12} className={classes.secondLastlineMain}>
                 <ul>
-                  <li>
+                  {/* <li>
                     <a href="/aboutus" className={classes.secondLastlineItems}>
                     { t('about_us') }
                     </a>
-                  </li>
+                  </li> */}
                   <li>
                     <a href="/contactus" className={classes.secondLastlineItems}>
                     { t('contact_us') }

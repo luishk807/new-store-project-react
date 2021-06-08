@@ -10,6 +10,20 @@ export const removeCharacter = (str) => {
 
 export const formatNumber = (x) => x ? Number.parseFloat(x).toFixed(2) : 0.00;
 
+export const getCartTotalItems = (cart, item = null) => {
+  if (cart && cart.length) {
+    if (item) {
+      const getItems = cart.filter(cartItem => cartItem.id == item.id && cartItem.productColor == item.productColor && cartItem.productSize == item.productSize);
+      if (getItems && getItems.length) {
+        return getItems.map(item => item.quantity).reduce((prev, curr) => prev + curr)
+      }
+    } else {
+      return cart.map(item => item.quantity).reduce((prev, curr) => prev + curr)
+    }
+  } else {
+    return cart
+  }
+}
 export const getDeliveryInfo = (order) => {
   let delivery = null;
   if (order.deliveryOptionId && order.deliveryOptionId === '1') {

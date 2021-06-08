@@ -19,7 +19,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
 import QuantitySelectorB from '../components/common/QuantitySelectorB';
-import CartBox from '../components/CartBlock';
+import CartBox from '../components/cart/Block';
 import Icons from '../components/common/Icons';
 import Snackbar from '../components/common/Snackbar';
 import { getProductById } from '../api/products';
@@ -237,7 +237,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
 
   const checkStock = async(cart) => {
     const productItemIds = Object.keys(cart).map(key => Number(cart[key].id));
-    if (productItemIds) {
+    if (productItemIds && productItemIds.length) {
       const getProductItems = await getProductItemByIds(productItemIds);
       Object.keys(cart).forEach((key) => {
         const currProd = getProductItems.filter(item => item.id === cart[key].id)[0];

@@ -51,6 +51,7 @@
     "react-material-ui-form-validator": "^2.1.1",
     "react-moment": "^0.9.7",
     "react-number-format": "^4.4.1",
+    "react-pluralize": "^1.6.3",
     "react-redux": "^7.2.1",
     "react-scroll": "^1.8.1",
     "react-slick": "^0.28.1",

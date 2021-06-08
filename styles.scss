@@ -37,7 +37,6 @@ html {
 div {
   scrollbar-width: thin;
 }
-
 /* react-slick */
 .slick-next:before, .slick-prev:before {
   color: $main_color;
@@ -246,6 +245,16 @@ a:hover {
 }
 .iconBtnSimple{
   color: $main_color !important;
+  padding: 5px 20px !important;
+  font-size: .7em !important;
+  background-color: transparent !important;
+  &:hover, &:focus {
+    border: 0px solid transparent !important;
+    outline: 1px solid transparent !important;
+  }
+}
+.iconBtnBlackSimple{
+  color: black !important;
   padding: 5px 20px !important;
   font-size: .7em !important;
   background-color: transparent !important;

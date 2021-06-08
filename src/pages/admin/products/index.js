@@ -118,6 +118,10 @@ const useStyles = makeStyles((theme) => ({
   itemHeaderFixed: {
     width: '100%',
     background: 'white',
+  },
+  emptyData: {
+    textAlign: 'center',
+    fontWeight: 'bold',
   }
 }));
 
@@ -126,6 +130,7 @@ const Index = () => {
   const [products, setProducts] = useState([]);
   const [searchParams, setSearchParams] = useState(null);
   const [showData, setShowData] = useState(false);
+  const [showEmpty, setShowEmpty] = useState(false);
   const [paginationHtml, setPaginationHtml] = useState(null);
   const [page, setPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
@@ -166,8 +171,10 @@ const Index = () => {
     if (getProducts) {
       setProducts('rows' in getProducts ? getProducts.rows : getProducts.items);
       setTotalCount(getProducts.count)
+      if (!getProducts.count || !getProducts.rows) {
+        setShowEmpty(true);
+      }
     }
-
   };
   
   const handlePaginationChange = (event, value) => {
@@ -287,7 +294,7 @@ const Index = () => {
         }
       </Grid>
       {
-        paginationHtml && paginationHtml
+        paginationHtml && !showEmpty && paginationHtml
       }
       {
         showData ? (
@@ -447,13 +454,19 @@ const Index = () => {
         ) : (
           <Grid container>
             <Grid item lg={12} xs={12}>
-              <ProgressBar />
+              {
+                showEmpty ? (
+                  <div className={classes.emptyData}>No Products available</div>
+                ) : (
+                  <ProgressBar />
+                )
+              }
             </Grid>
           </Grid>
         )
       }
       {
-        paginationHtml && paginationHtml
+        paginationHtml && !showEmpty && paginationHtml
       }
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
       <DialogModal open={dialogContent.open} onClick={handleDialogClick} title={dialogContent.title} content={dialogContent.content} actionLabels={dialogContent.actionLabels} />

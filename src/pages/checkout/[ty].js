@@ -14,7 +14,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { defaultCountry, defaultPanama } from '../../../config';
-import CartBox from '../../components/CartBlock';
+import CartBox from '../../components/cart/Block';
 import Icons from '../../components/common/Icons';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import ActionForm from '../../components/common/Form/Action/Add';

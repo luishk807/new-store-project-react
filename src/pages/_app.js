@@ -16,6 +16,13 @@ if (process.browser) {
   TagManager.initialize(tagManagerArgs);
 }
 class App extends NextApp {
+  static async getInitialProps(ctx) {
+    const res = await fetch('https://api.github.com/repos/vercel/next.js')
+    const json = await res.json()
+    console.log('ffff')
+    return { stars: json.stargazers_count }
+  }
+
   componentDidMount() {
     const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles && jssStyles.parentNode)
@@ -24,9 +31,9 @@ class App extends NextApp {
   render() {
     const { Component, pageProps } = this.props
     return (
-      <HttpsRedirect>
+      // <HttpsRedirect>
         <Component {...pageProps} />
-      </HttpsRedirect>
+      // </HttpsRedirect>
     )
   }
 }

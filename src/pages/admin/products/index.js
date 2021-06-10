@@ -18,7 +18,7 @@ import DialogModal from '../../../components/common/DialogModal';
 import { getImageBaseThumbnail } from '../../../utils';
 import { deleteProduct, getAdminProducts, searchProductsByFilter } from '../../../api/products';
 import AccordionBox from '../../../components/common/accordion/AccordionBox';
-import { CollectionsOutlined } from '@material-ui/icons';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -473,5 +473,12 @@ const Index = () => {
     </AdminLayoutTemplate>
   );
 }
+
+/** This section is mandatory for next-18next translation to work */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['colors']),
+  },
+})
 
 export default Index;

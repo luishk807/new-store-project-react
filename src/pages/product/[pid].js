@@ -586,13 +586,13 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
 
     if (getProductColor && getProductColor.length && getProductInfo.productProductItems &&  getProductInfo.productProductItems.length) {
-      const validColors = getProductInfo.productProductItems.map(item => item.productColorId);
+      const validColors = getProductInfo.productProductItems.filter(item => Number(item.status) == 1).map(item => item.productColorId);
       const getTrueColors = getProductColor.filter(item => validColors.includes(item.id))
       setColors(getTrueColors);
     }
 
     if (getProductSizes && getProductSizes.length) {
-      const validSizes = getProductInfo.productProductItems.map(item => item.productSizeId);
+      const validSizes = getProductInfo.productProductItems.filter(item => Number(item.status) == 1).map(item => item.productSizeId);
       const getTrueSizes = getProductSizes.filter(item => validSizes.includes(item.id))
       setSizes(getTrueSizes);
     }

@@ -737,7 +737,7 @@ const mapDispatchToProps = {
  */
 export const getServerSideProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['common', 'checkout', 'footer', 'forms']),
+    ...await serverSideTranslations(locale, ['common', 'checkout', 'footer', 'forms', 'colors']),
   },
 })
 

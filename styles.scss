@@ -1,6 +1,7 @@
 /*-------------------------------------------------- */
 $main_color: rgb(248,190,21);
 $main_hover_color: rgb(248,190,12);
+$main_red_color: #B12704;
 $stickyFooterLimit: 400px;
 $stickyFooterLimitMobile: 600px;
 $screen-sm-min: 768px;
@@ -354,6 +355,9 @@ a:hover {
 }
 .cardLink {
   color: $main_color;
+}
+.main_red_color_font {
+  color: $main_red_color;
 }
 .cartButtonDisabled {
   background-color: white !important;

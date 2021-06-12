@@ -22,7 +22,7 @@
     "outofstock": "Agotado",
     "available": "Disponible",
     "cart": "Carrito",
-    "cart_swipe_title": "{{name}} Agregado al Carrito",
+    "added_to_cart": "Agregado al Carrito",
     "add_to_cart": "Agregar a carrito",
     "description": "Descripción",
     "deals": "Promociones",

@@ -11,7 +11,7 @@ import {isMobile} from 'react-device-detect';
 import Pluralize from 'react-pluralize'
 import { connect } from 'react-redux';
 import { useTranslation } from 'next-i18next'
-import { getImage, getCartTotalItems, getCartTotal } from '../../utils';
+import { getImage, getCartTotalItems, getCartTotal, getTotal } from '../../utils';
 import Icons from '../../components/common/Icons';
 
 const styles = (theme) => ({
@@ -21,8 +21,11 @@ const styles = (theme) => ({
     background: 'rgba(0,0,0, .04)',
   },
   title: {
+    fontSize: '1em',
+  },
+  titleTitle: {
+    fontSize: '1.2em',
     fontWeight: 'bold',
-    fontSize: '1.2em'
   },
   swipeContainer: {
     width: 350,
@@ -53,9 +56,6 @@ const styles = (theme) => ({
     height: 30,
   },
   itemTitle: {
-    fontWeight: 'bold'
-  },
-  itemTotal: {
     fontWeight: 'bold'
   },
   cartItemsCont: {
@@ -131,7 +131,13 @@ const Swipe = React.memo(({
         <Grid item lg={12} xs={12} className={classes.cartHeader}>
           <Grid container>
             <Grid item lg={10} xs={10} className={classes.title}>
-              { showData && t('cart_swipe_title', {name: data.productItemProduct.name}) } (<Pluralize singular={t('item')} plural={t('items')} count={cartItemsTotal} />)
+              { showData && (
+                  <>
+                    <span className={classes.titleTitle}>{data.productItemProduct.name}</span>
+                    &nbsp;<span className={classes.titleCart}>{t('added_to_cart')}</span>
+                    &nbsp;<span>(<Pluralize singular={t('item')} plural={t('items')} count={cartItemsTotal} />)</span>
+                  </>
+              ) }
             </Grid>
             <Grid item lg={2} xs={2}>
               <Button className={`iconBtnBlackSimple`} onClick={handleCloseCart}>
@@ -170,7 +176,8 @@ const Swipe = React.memo(({
                             <span className={classes.itemTitle}>{item.productItemProduct.name}</span>
                             <span>{ t('color') }: {item.productItemColor.name}</span>
                             <span>{ t('size') }: {item.productItemSize.name}</span>
-                            <span className={classes.itemTotal}>${item.retailPrice}</span>
+                            <span>{ t('quantity') }: {item.quantity}</span>
+                            <span>{t('price')}: <b>{getTotal(item)}</b></span>
                           </Grid>
                         </Grid>
                       </Grid>

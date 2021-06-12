@@ -24,7 +24,7 @@
     "add_to_cart": "Add to Cart",
     "description": "Description",
     "cart": "Cart",
-    "cart_swipe_title": "{{name}} Added to Cart",
+    "added_to_cart": "Added to Cart",
     "deals": "Deals",
     "date": "Date",
     "status": "Status",

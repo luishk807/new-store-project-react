@@ -6,7 +6,9 @@ import {
   Button,
   TextField,
   CircularProgress,
+  FormControl,
 } from '@material-ui/core';
+import DatePicker from '@material-ui/lab/DatePicker';
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { CompareSharp } from '@material-ui/icons';
@@ -142,7 +144,19 @@ const styles = (theme) => ({
   promoCodeItemBtn: {
     width: '100%',
     padding: '0px 5px',
-  }
+  },
+
+  formItem: {
+    width: '100%',
+    margin: 5,
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+    // margin: '20px auto 0px auto',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 
@@ -169,6 +183,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   const [guestAddress, setGuestAddress] = useState({});
   const [orderResult, setOrderResult] = useState(null);
   const [selectedPromotionCode, setSelectedPromotionCode] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date())
   const [total, setTotal] = useState({});
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -666,6 +681,55 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                           </Grid>                       
                         )
                       }
+                      {/* credit card */}
+                      <Grid item className={classes.itemSection} lg={12} xs={12}>
+                          <Grid container>
+                            <Grid item lg={12} xs={12} className={classes.formItem}>
+                              <FormControl fullWidth variant="outlined">
+                                  <TextField
+                                    id="filled-textarea"
+                                    label="Name on card"
+                                    variant="outlined" 
+                                  />
+                              </FormControl>
+                            </Grid>
+                            <Grid  item lg={12} xs={12} className={classes.formItem}>
+                              <FormControl fullWidth variant="outlined">
+                                  <TextField
+                                    id="filled-textarea"
+                                    label="Credit card number"
+                                    variant="outlined" 
+                                  />
+                              </FormControl>
+                            </Grid>
+                            <Grid  item lg={7} xs={7} className={classes.formItem}>
+                              <FormControl fullWidth variant="outlined">
+                                  <DatePicker
+                                    views={['year', 'month']}
+                                    label="Year and Month"
+                                    minDate={new Date('2012-03-01')}
+                                    maxDate={new Date('2023-06-01')}
+                                    value={selectedDate}
+                                    onChange={(newValue) => {
+                                      setValue(newValue);
+                                    }}
+                                    renderInput={(params) => <TextField {...params} helperText={null} />}
+                                  />
+                              </FormControl>
+                            </Grid>
+                            <Grid  item lg={4} xs={4} className={classes.formItem}>
+                              <FormControl fullWidth variant="outlined">
+                                  <TextField
+                                    id="filled-textarea"
+                                    label="Multiline Placeholder"
+                                    placeholder="Placeholder"
+                                    variant="outlined" 
+                                  />
+                              </FormControl>
+                            </Grid>
+                          </Grid>
+                      </Grid>
+                      {/* end of credit card */}
                       <Grid item className={classes.itemSection} lg={12} xs={12}>
                         <Button onClick={handlePlaceOrder} className={`mainButton ${classes.processBtn}`}>
                             { 

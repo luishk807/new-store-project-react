@@ -9,6 +9,7 @@ import Typography from '../Typography';
 
 import { RateLabels } from '../../../../config';
 import { useEffect, useState } from 'react';
+import { config } from '../../../../config';
 
 const styles = (theme) => ({
   root: {
@@ -39,22 +40,26 @@ const Rate = ({className, classes, data, onChange, onChangeActive, disabled = fa
     onChange(value)
   }
 
-  return (
-    <div className={classes.root}>
-      <Rating
-        name="user-feedback"
-        value={rate}
-        precision={0.5}
-        className={className}
-        disabled={disabled}
-        onChange={handleOnChange}
-        onChangeActive={onChangeActive}
-      />
-      {
-        showTitle && (<Typography component="div" className={classes.rateLabel}>{RateLabels[rate]}</Typography>)
-      }
-    </div>
-  );
+  if (config.system && config.system.enableRating) {
+    return (
+      <div className={classes.root}>
+        <Rating
+          name="user-feedback"
+          value={rate}
+          precision={0.5}
+          className={className}
+          disabled={disabled}
+          onChange={handleOnChange}
+          onChangeActive={onChangeActive}
+        />
+        {
+          showTitle && (<Typography component="div" className={classes.rateLabel}>{RateLabels[rate]}</Typography>)
+        }
+      </div>
+    );
+  } else {
+    return <></>
+  }
 }
 
 Rate.protoTypes = {

@@ -10,6 +10,7 @@ import {
 import { getImageBaseOnly } from '../../../../utils';
 import { getProductItemByIds } from '../../../../api/productItems';
 import { useTranslation } from 'next-i18next'
+import { getColorName } from '../../../../utils/helpers/product'
 
 const styles = (theme) => ({
   root: {
@@ -82,13 +83,6 @@ const VariantItem = React.memo(({ classes, data }) => {
     }
   }, [data]);
 
-  const getColorName = (color) => {
-    if (color) {
-      return t(`colors:${color.color}`);
-    }
-    return '';
-  }
-
   return showData && (
     <div className={classes.root}>
       <Grid container>
@@ -152,7 +146,7 @@ const VariantItem = React.memo(({ classes, data }) => {
                       { item.sku }
                     </p>
                     <p>
-                      { getColorName(item.productItemColor) }
+                      { getColorName(item.productItemColor, t, 'colors') }
                     </p>
                     <p>
                       { item.productItemSize && item.productItemSize.name }

@@ -31,3 +31,15 @@ export const getProductVariants = (detail) => {
     }
     return []
 }
+
+/** Returns the translation based con color field, if not then returns name field */
+export const getColorName = (color, t, tNamespace) => {
+    if (t && color) {
+        if (tNamespace) {
+            return t(`${tNamespace}:${color.color}`);
+        } else {
+            return t(`${color.color}`);
+        }
+    }
+    return (color && color.name) ? color.name : '';
+}

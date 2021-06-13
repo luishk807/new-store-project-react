@@ -27,6 +27,7 @@ import { getProductItemByIds } from '../api/productItems';
 import { formatNumber, getCartTotal, getImage } from '../utils';
 import { checkDiscountPrice, checkBundlePrice } from '../utils/products';
 import { getImageUrlByType } from '../utils/form';
+import { getColorName } from '../utils/helpers/product'
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -275,13 +276,6 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     }
   }, [cart])
 
-  const getColorName = (color) => {
-    if (color) {
-      return t(`colors:${color.color}`);
-    }
-    return '';
-  }
-
   return (
     <LayoutTemplate>
       <div className={classes.root}>
@@ -337,7 +331,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                     item.productItemColor ? (
                                     <Grid item lg={12} xs={12} className={classes.cartPrice}>
                                       <Typography align="left" component="p">
-                                        { t('common:color') }: { getColorName(item.productItemColor) }
+                                        { t('common:color') }: { getColorName(item.productItemColor, t, 'colors') }
                                       </Typography>
                                     </Grid>
                                     ) : <></>

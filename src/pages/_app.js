@@ -16,11 +16,6 @@ if (process.browser) {
   TagManager.initialize(tagManagerArgs);
 }
 class App extends NextApp {
-  static async getStaticProps(ctx) {
-    console.log('in here')
-    return { stars: null }
-  }
-
   componentDidMount() {
     const jssStyles = document.querySelector('#jss-server-side')
     if (jssStyles && jssStyles.parentNode)
@@ -46,7 +41,10 @@ App.getInitialProps = async ({ Component, ctx }) => {
     return;
   }
   return {
-    test: null
+    pageProps: {
+      // Call page-level getInitialProps
+      ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {}),
+    },
   };
 };
 export default wrapper.withRedux(appWithTranslation(App))

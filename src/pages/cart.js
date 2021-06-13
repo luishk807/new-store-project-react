@@ -19,7 +19,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
 import Typography from '../components/common/Typography';
 import QuantitySelectorB from '../components/common/QuantitySelectorB';
-import CartBox from '../components/CartBlock';
+import CartBox from '../components/cart/Block';
 import Icons from '../components/common/Icons';
 import Snackbar from '../components/common/Snackbar';
 import { getProductById } from '../api/products';
@@ -179,7 +179,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     grandTotal: 0,
   })
   const [showCart, setShowCart] = useState(false);
-  const { t } = useTranslation('common')
+  const { t } = useTranslation(['common', 'colors'])
 
   const handleSelectChange = async(resp) => {
     const index = resp.id.split("-")[1]
@@ -237,7 +237,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
 
   const checkStock = async(cart) => {
     const productItemIds = Object.keys(cart).map(key => Number(cart[key].id));
-    if (productItemIds) {
+    if (productItemIds && productItemIds.length) {
       const getProductItems = await getProductItemByIds(productItemIds);
       Object.keys(cart).forEach((key) => {
         const currProd = getProductItems.filter(item => item.id === cart[key].id)[0];
@@ -271,8 +271,16 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     }
     if (!Object.values(cart).length) {
       setShowCart(false);
+      setStockVerified(false);
     }
   }, [cart])
+
+  const getColorName = (color) => {
+    if (color) {
+      return t(`colors:${color.color}`);
+    }
+    return '';
+  }
 
   return (
     <LayoutTemplate>
@@ -329,7 +337,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                     item.productItemColor ? (
                                     <Grid item lg={12} xs={12} className={classes.cartPrice}>
                                       <Typography align="left" component="p">
-                                        { t('color') }: {item.productItemColor.name}
+                                        { t('common:color') }: { getColorName(item.productItemColor) }
                                       </Typography>
                                     </Grid>
                                     ) : <></>
@@ -457,7 +465,7 @@ const mapDispatchToProps = {
 /** This section is mandatory for next-18next translation to work */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['common', 'footer']),
+    ...await serverSideTranslations(locale, ['common', 'footer', 'colors']),
   },
 })
 

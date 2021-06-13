@@ -144,6 +144,8 @@ const styles = (theme) => ({
 
 const Header = ({classes, data, loadMain, userInfo}) => {
   const [openMobile, setOpenMobile] = useState(false);
+  const [menuItems, setMenuItems] = useState(null);
+  // const [showData, setShowData] = useState(false);
   const [openCategory, setOpenCategory] = useState(false);
   const router = useRouter();
   const handleMobileMenu = () => {
@@ -153,12 +155,21 @@ const Header = ({classes, data, loadMain, userInfo}) => {
   useEffect(() => {
      loadMain()
   }, [])
+  
+  useEffect(() => {
+    if (userInfo && userInfo.userRole) {
+     // setShowData(true)
+      setMenuItems(SECTIONS[userInfo.userRole])
+    }
+ }, [userInfo])
+
   const logoutAdmin = () => {
     const resp = logout();
     if (resp) {
       router.push(`/${ADMIN_URL.index}`)
     }
   }
+
   const renderSideMenu = (
     <SwipeableDrawer
       anchor={'left'}
@@ -174,7 +185,7 @@ const Header = ({classes, data, loadMain, userInfo}) => {
           </ListItem>
           <Divider  className={`${classes.hideMobileOnly}`}/>
           {
-            SECTIONS.map((section, index) => {
+            menuItems && menuItems.map((section, index) => {
               return (
                 <ListItem key={index}>
                   <Link href={`/admin/${ADMIN_SECTIONS[section].url}`} className={classes.linkItem}>

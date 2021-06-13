@@ -11,6 +11,7 @@ import {
   Grid,
 } from '@material-ui/core';
 import Icon from '../../../components/common/Icons';
+import { getCartTotalItems } from '../../../utils';
 import Typography from '../Typography';
 import loadMain from '../../../redux/reducers'
 import SearchBar from '../SearchBar';
@@ -160,12 +161,22 @@ const styles = (theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 })
 
 const Header = ({classes, data, userInfo, loadMain, cart}) => {
   const [openCategory, setOpenCategory] = useState(false);
+  const [cartData, setCartData] = useState(null);
+  const [cartTotal, setCartTotal] = useState(0);
   const router = useRouter()
+
+  useEffect(() => {
+    if (Object.keys(cart).length) {
+      setCartData(Object.values(cart));
+      const total = getCartTotalItems(Object.values(cart));
+      setCartTotal(total);
+    }
+  }, [cart]);
 
   useEffect(() => {
     loadMain()
@@ -198,7 +209,7 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
                     Object.keys(cart).length > 0 && (
                       <div className={classes.cartTotal}>
                         <Typography className={classes.cartTotalNumber} variant="subtitle1">
-                          {Object.keys(cart).length}
+                          {cartTotal}
                         </Typography>
                       </div>
                     )

@@ -1,6 +1,7 @@
 /*-------------------------------------------------- */
 $main_color: rgb(248,190,21);
 $main_hover_color: rgb(248,190,12);
+$main_red_color: #B12704;
 $stickyFooterLimit: 400px;
 $stickyFooterLimitMobile: 600px;
 $screen-sm-min: 768px;
@@ -37,7 +38,6 @@ html {
 div {
   scrollbar-width: thin;
 }
-
 /* react-slick */
 .slick-next:before, .slick-prev:before {
   color: $main_color;
@@ -254,6 +254,16 @@ a:hover {
     outline: 1px solid transparent !important;
   }
 }
+.iconBtnBlackSimple{
+  color: black !important;
+  padding: 5px 20px !important;
+  font-size: .7em !important;
+  background-color: transparent !important;
+  &:hover, &:focus {
+    border: 0px solid transparent !important;
+    outline: 1px solid transparent !important;
+  }
+}
 .secondButton{
   border: 1px solid $main_color !important;
   color: $main_color !important;
@@ -345,6 +355,9 @@ a:hover {
 }
 .cardLink {
   color: $main_color;
+}
+.main_red_color_font {
+  color: $main_red_color;
 }
 .cartButtonDisabled {
   background-color: white !important;

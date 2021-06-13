@@ -235,7 +235,10 @@ export const ADMIN_SECTIONS = {
   },
 }
 
-export const SECTIONS = ['user','order','vendor','color','category','brand','product', 'imageBox', 'sweetbox', 'deliveryOption', 'paymentOption',  'deliveryServiceGroupCost', 'promotionCode']
+export const SECTIONS = {
+  1: ['user','order','vendor','color','category','brand','product', 'imageBox', 'sweetbox', 'deliveryOption', 'paymentOption',  'deliveryServiceGroupCost', 'promotionCode'],
+  3: ['order','product', 'sweetbox']
+}
 export const ADMIN_URL = {
   account: 'settings',
   home: 'home',

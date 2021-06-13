@@ -14,7 +14,7 @@ import moment from 'moment';
 
 import { getImageUrlByType } from '../../utils/form';
 import { checkDiscountPrice, setBundleDiscount, checkBundlePrice } from '../../utils/products';
-import { formatNumber, isAroundTime, capitalize, sortOptions } from '../../utils';
+import { formatNumber, isAroundTime, capitalize, sortOptions, getCartTotalItems} from '../../utils';
 import { noImageUrl } from '../../../config';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../../constants/samples/ProductSample';
@@ -30,6 +30,7 @@ import RateFullView from '../../components/rate/FullView';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { getThumbnail } from '../../utils/helpers/image'
+import CartSwipe from '../../components/cart/Swipe';
 
 const styles = (theme) => ({
   root: {
@@ -240,7 +241,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const router = useRouter()
   const id = router.query.pid;
   const [forceRefresh, setForceRefresh] = useState(false);
-
+  const [forceSwipeRefresh, setForceSwipeRefresh] = useState(false);
+  const [cartSwipeData, setCartSwipeData] = useState(null)
+  
   const [showData, setShowData] = useState(false);
   const [showDiscount, setShowDiscount] = useState(false);
   const [showColors, setShowColors] = useState(false);
@@ -265,6 +268,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [bundles, setBundles] = useState(null);
   const [sizes, setSizes] = useState(null);
   const [outOfStock, setOutofStock] = useState(false);
+
+  const [cartData, setCartData] = useState(null);
+
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -344,7 +350,16 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         text: t('choose_size'),
       })
     } else {
-      await addCart(selectedProductItem);
+      let total = getCartTotalItems(cartData, selectedProductItem);
+      total = total ? total : 0;
+
+      const itemAdd = Object.assign({}, selectedProductItem);
+      itemAdd.quantity += total;
+
+      await addCart(itemAdd);
+      
+      setForceSwipeRefresh(!forceSwipeRefresh)
+      setCartSwipeData(selectedProductItem)
       setSnack({
         severity: 'success',
         open: true,
@@ -352,6 +367,12 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       })
     }
   }
+
+  useEffect(() => {
+    if (Object.keys(cart).length) {
+      setCartData(Object.values(cart));
+    }
+  }, [cart]);
 
   const handleColorChange = (e, color) => {
     if (e) {
@@ -565,13 +586,13 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
 
     if (getProductColor && getProductColor.length && getProductInfo.productProductItems &&  getProductInfo.productProductItems.length) {
-      const validColors = getProductInfo.productProductItems.map(item => item.productColorId);
+      const validColors = getProductInfo.productProductItems.filter(item => Number(item.status) == 1).map(item => item.productColorId);
       const getTrueColors = getProductColor.filter(item => validColors.includes(item.id))
       setColors(getTrueColors);
     }
 
     if (getProductSizes && getProductSizes.length) {
-      const validSizes = getProductInfo.productProductItems.map(item => item.productSizeId);
+      const validSizes = getProductInfo.productProductItems.filter(item => Number(item.status) == 1).map(item => item.productSizeId);
       const getTrueSizes = getProductSizes.filter(item => validSizes.includes(item.id))
       setSizes(getTrueSizes);
     }
@@ -701,6 +722,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
   return showProduct && (
     <LayoutTemplate>
+      <CartSwipe data={cartSwipeData} forceUpdate={forceSwipeRefresh} />
       <div className={classes.root}>
         <Grid container>
           <Grid item lg={12} xs={12}>

@@ -13,6 +13,7 @@ import { searchProductItemByFilter } from '../../api/productItems';
 import { searchProductsByFilter } from '../../api/products';
 import { getImageBaseThumbnail } from '../../utils';
 import ProgressBar from '../common/ProgressBar';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -58,6 +59,7 @@ const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
   const [showLoader, setShowLoader] = useState(false);
   const [products, setProducts] = useState([]);
   const [resultText, setResultText] = useState('');
+  const { t } = useTranslation('colors');
 
   const searchProduct = async(value) => {
     setShowLoader(true);
@@ -117,6 +119,13 @@ const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
       setResultText('');
     }
   }
+
+  const getColorName = (color) => {
+    if (color) {
+      return t(`colors:${color.color}`);
+    }
+    return '';
+  }
   
   const prepareProductInfo = (product) => {
     if (product.productItemProduct) {
@@ -129,9 +138,7 @@ const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
             Model: { product.model }
           </div>
           <div>
-            Color: {
-             product.productItemColor && product.productItemColor.name 
-            }
+            Color: { getColorName(product.productItemColor) }
           </div>
           <div>
             Size: {

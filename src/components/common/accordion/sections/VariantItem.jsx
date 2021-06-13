@@ -9,6 +9,7 @@ import {
 
 import { getImageBaseOnly } from '../../../../utils';
 import { getProductItemByIds } from '../../../../api/productItems';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -62,6 +63,7 @@ const styles = (theme) => ({
 const VariantItem = React.memo(({ classes, data }) => {
   const [products, setProducts] = useState([]);
   const [showData, setShowData] = useState(false);
+  const { t } = useTranslation('colors');
 
   const loadProducts = async() => {
     const itemIds = data.map((item) => item.id);
@@ -79,6 +81,13 @@ const VariantItem = React.memo(({ classes, data }) => {
       loadProducts();
     }
   }, [data]);
+
+  const getColorName = (color) => {
+    if (color) {
+      return t(`colors:${color.color}`);
+    }
+    return '';
+  }
 
   return showData && (
     <div className={classes.root}>
@@ -143,7 +152,7 @@ const VariantItem = React.memo(({ classes, data }) => {
                       { item.sku }
                     </p>
                     <p>
-                      { item.productItemColor && item.productItemColor.name}
+                      { getColorName(item.productItemColor) }
                     </p>
                     <p>
                       { item.productItemSize && item.productItemSize.name }

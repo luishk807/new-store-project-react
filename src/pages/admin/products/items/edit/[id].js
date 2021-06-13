@@ -34,6 +34,7 @@ const Edit = ({classes}) => {
     retailPrice: null,
     model: null,
     sku: null,
+    status: null,
     image: {
       values: [],
       open: false,

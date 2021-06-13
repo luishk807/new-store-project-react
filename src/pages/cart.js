@@ -179,7 +179,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     grandTotal: 0,
   })
   const [showCart, setShowCart] = useState(false);
-  const { t } = useTranslation('common')
+  const { t } = useTranslation(['common', 'colors'])
 
   const handleSelectChange = async(resp) => {
     const index = resp.id.split("-")[1]
@@ -275,6 +275,13 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     }
   }, [cart])
 
+  const getColorName = (color) => {
+    if (color) {
+      return t(`colors:${color.color}`);
+    }
+    return '';
+  }
+
   return (
     <LayoutTemplate>
       <div className={classes.root}>
@@ -330,7 +337,7 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                     item.productItemColor ? (
                                     <Grid item lg={12} xs={12} className={classes.cartPrice}>
                                       <Typography align="left" component="p">
-                                        { t('color') }: {item.productItemColor.name}
+                                        { t('common:color') }: { getColorName(item.productItemColor) }
                                       </Typography>
                                     </Grid>
                                     ) : <></>
@@ -458,7 +465,7 @@ const mapDispatchToProps = {
 /** This section is mandatory for next-18next translation to work */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['common', 'footer']),
+    ...await serverSideTranslations(locale, ['common', 'footer', 'colors']),
   },
 })
 

@@ -11,6 +11,7 @@ import { useTranslation } from 'next-i18next'
 
 import { getCartTotal, getTotal, getImage } from '../../utils';
 import { getImageUrlByType } from '../../utils/form';
+import { getColorName } from '../../utils/helpers/product'
 
 const styles = (theme) => ({
   root: {
@@ -137,13 +138,6 @@ const Index = React.memo(({
     }
   }, [data, deliveryOption, promotionCode]);
 
-  const getColorName = (color) => {
-    if (color) {
-      return t(`colors:${color.color}`);
-    }
-    return '';
-  }
-
   return (
     <div className={isMobile ? classes.root : `${classes.root} checkoutStickyTotalBox`}>
       {
@@ -175,7 +169,7 @@ const Index = React.memo(({
                       </Grid>
                       <Grid item lg={8} xs={8} className={classes.itemItemsContent}>
                         <p>{product.productItemProduct.name}</p>
-                        <p>{ t('common:color') }: { getColorName(product.productItemColor) }</p>
+                        <p>{ t('common:color') }: { getColorName(product.productItemColor, t, 'colors') }</p>
                         <p>{ t('common:size') }: {product.productItemSize.name}</p>
                         <p>{ t('common:quantity') }: {product.quantity}</p>
                         {

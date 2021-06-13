@@ -16,11 +16,9 @@ if (process.browser) {
   TagManager.initialize(tagManagerArgs);
 }
 class App extends NextApp {
-  static async getInitialProps(ctx) {
-    const res = await fetch('https://api.github.com/repos/vercel/next.js')
-    const json = await res.json()
-    console.log('ffff')
-    return { stars: json.stargazers_count }
+  static async getStaticProps(ctx) {
+    console.log('in here')
+    return { stars: null }
   }
 
   componentDidMount() {

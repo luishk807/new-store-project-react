@@ -36,4 +36,17 @@ class App extends NextApp {
   }
 }
 
+App.getInitialProps = async ({ Component, ctx }) => {
+  // HTTPS redirect
+   if (process.env.NODE_ENV === 'production' && ctx.req && ctx.req.headers['x-forwarded-proto'] !== 'https') {
+    ctx.res.writeHead(302, {
+      Location: `https://${ctx.req.headers.host}${ctx.req.url}`,
+    });
+    ctx.res.end();
+    return;
+  }
+  return {
+    test: null
+  };
+};
 export default wrapper.withRedux(appWithTranslation(App))

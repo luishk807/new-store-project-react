@@ -45,6 +45,22 @@ const MyApp = ({ Component, pageProps, auth }) => {
       // </Layout>
   )
 }
-// export default MyApp
+
+MyApp.getInitialProps = async ({ Component, ctx }) => {
+  // HTTPS redirect
+   if (process.env.NODE_ENV === 'production' && ctx.req && ctx.req.headers['x-forwarded-proto'] !== 'https') {
+    ctx.res.writeHead(302, {
+      Location: `https://${ctx.req.headers.host}${ctx.req.url}`,
+    });
+    ctx.res.end();
+    return;
+  }
+  return {
+    pageProps: {
+      // Call page-level getInitialProps
+      ...(Component.getInitialProps ? await Component.getInitialProps(ctx) : {}),
+    },
+  };
+};
 
 export default wrapper.withRedux(appWithTranslation(MyApp))

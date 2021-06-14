@@ -31,7 +31,7 @@ class App extends NextApp {
   }
 }
 
-App.getInitialProps = async (appContext) => {
+App.getInitialProps = async ({ Component, ctx }) => {
     // HTTPS redirect
     if (process.env.NODE_ENV === 'production' && ctx.req && ctx.req.headers['x-forwarded-proto'] !== 'https') {
       ctx.res.writeHead(302, {
@@ -41,8 +41,8 @@ App.getInitialProps = async (appContext) => {
       return;
     }
   
-    const { pathname } = ctx;
-    const route = getRouteByPath(pathname);
+    // const { pathname } = ctx;
+    // const route = getRouteByPath(pathname);
   
     // // private route check  access
     // let isUserAuth = selectIsUserAuth(ctx.store.getState());

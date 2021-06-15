@@ -355,7 +355,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       total = total ? total : 0;
 
       const itemAdd = Object.assign({}, selectedProductItem);
-      itemAdd.quantity += total;
+      const currQuantity = Number(itemAdd.quantity);
+      const newQuantity = Number(total);
+      itemAdd.quantity = currQuantity + newQuantity;
 
       await addCart(itemAdd);
       

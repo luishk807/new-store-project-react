@@ -129,7 +129,7 @@ const SweetBoxProducts = React.memo(({classes, data, type = ''}) => {
                   </Grid>
                 </Hidden>
                 <Grid item lg={12} xs={12} className={`${classes.textCenter}`}>
-                  <TextEllipsis classes={classes.plainText} limit={23} variant="body1" type="p" text={data.name} />
+                  <TextEllipsis classes={classes.plainText} limit={40} variant="body1" type="p" text={data.name} />
                 </Grid>
                 <Grid item lg={12} xs={12} className={`${classes.textCenter}`}>
                   {priceRange}

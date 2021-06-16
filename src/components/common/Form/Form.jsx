@@ -22,6 +22,8 @@ import {
 import moment from 'moment'
 import { useTranslation } from 'next-i18next'
 import ColorPicker from 'material-ui-color-picker'
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 
 import { loadMainOptions } from '../../../utils/form';
 import { FORM_SCHEMA, CATEGORY_ICONS } from '../../../../config';

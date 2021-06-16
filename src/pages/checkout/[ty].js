@@ -6,16 +6,14 @@ import {
   Button,
   TextField,
   CircularProgress,
-  FormControl,
 } from '@material-ui/core';
-import DatePicker from '@material-ui/lab/DatePicker';
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
-import { CompareSharp } from '@material-ui/icons';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { defaultCountry, defaultPanama } from '../../../config';
+import CreditCard from '../../components/CreditCard';
 import CartBox from '../../components/cart/Block';
 import Icons from '../../components/common/Icons';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
@@ -36,8 +34,6 @@ import { processOrderByUser } from '../../api/orders';
 import { getDeliveryOptions } from '../../api/deliveryOptions';
 import { getProductItemByIds } from '../../api/productItems';
 import { getActivePaymentOptions } from '../../api/paymentOptions';
-
-
 
 const styles = (theme) => ({
   root: {
@@ -145,18 +141,6 @@ const styles = (theme) => ({
     width: '100%',
     padding: '0px 5px',
   },
-
-  formItem: {
-    width: '100%',
-    margin: 5,
-    [theme.breakpoints.down('sm')]: {
-      width: '100%',
-    },
-    // margin: '20px auto 0px auto',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
 });
 
 
@@ -191,6 +175,10 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     text: '',
   });
   const { t } = useTranslation('checkout')
+
+  const handleCreditCardSubmit = (e) => {
+    console.log("credit card form");
+  }
 
   const handleDeliveryForm = (getForm) => {
     setForm({
@@ -682,53 +670,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                         )
                       }
                       {/* credit card */}
-                      <Grid item className={classes.itemSection} lg={12} xs={12}>
-                          <Grid container>
-                            <Grid item lg={12} xs={12} className={classes.formItem}>
-                              <FormControl fullWidth variant="outlined">
-                                  <TextField
-                                    id="filled-textarea"
-                                    label="Name on card"
-                                    variant="outlined" 
-                                  />
-                              </FormControl>
-                            </Grid>
-                            <Grid  item lg={12} xs={12} className={classes.formItem}>
-                              <FormControl fullWidth variant="outlined">
-                                  <TextField
-                                    id="filled-textarea"
-                                    label="Credit card number"
-                                    variant="outlined" 
-                                  />
-                              </FormControl>
-                            </Grid>
-                            <Grid  item lg={7} xs={7} className={classes.formItem}>
-                              <FormControl fullWidth variant="outlined">
-                                  <DatePicker
-                                    views={['year', 'month']}
-                                    label="Year and Month"
-                                    minDate={new Date('2012-03-01')}
-                                    maxDate={new Date('2023-06-01')}
-                                    value={selectedDate}
-                                    onChange={(newValue) => {
-                                      setValue(newValue);
-                                    }}
-                                    renderInput={(params) => <TextField {...params} helperText={null} />}
-                                  />
-                              </FormControl>
-                            </Grid>
-                            <Grid  item lg={4} xs={4} className={classes.formItem}>
-                              <FormControl fullWidth variant="outlined">
-                                  <TextField
-                                    id="filled-textarea"
-                                    label="Multiline Placeholder"
-                                    placeholder="Placeholder"
-                                    variant="outlined" 
-                                  />
-                              </FormControl>
-                            </Grid>
-                          </Grid>
-                      </Grid>
+                      <CreditCard onSubmit={handleCreditCardSubmit} />
                       {/* end of credit card */}
                       <Grid item className={classes.itemSection} lg={12} xs={12}>
                         <Button onClick={handlePlaceOrder} className={`mainButton ${classes.processBtn}`}>

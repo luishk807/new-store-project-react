@@ -680,6 +680,26 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.dateFull,
     label: 'End Date',
     tKey: "end_date"
+  },
+  creditCardName: {
+    type: FORM_TYPE.text,
+    label: 'Credit Card Name',
+    tKey: "credit_card_name"
+  },
+  creditCardNumber: {
+    type: FORM_TYPE.number,
+    label: 'Credit Card Number',
+    tKey: "credit_card_number"
+  },
+  creditCardExpireDate: {
+    type: FORM_TYPE.date,
+    label: 'Credit Card Expiration Date',
+    tKey: "credit_card_expiration_date"
+  },
+  creditCardCode: {
+    type: FORM_TYPE.number,
+    label: 'Credit Card Code',
+    tKey: "credit_card_code"
   }
 }
 

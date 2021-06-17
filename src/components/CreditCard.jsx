@@ -7,10 +7,10 @@ import {
   FormControl,
   Button,  
 } from '@material-ui/core';
-// import DateFnsUtils from "@date-io/date-fns";
-// import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
-
-//import { removeCharacter } from '../utils';
+import DateFnsUtils from "@date-io/date-fns";
+import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+import { FORM_SCHEMA } from '../../config';
+import { removeCharacter } from '../utils';
 import ActionForm from './common/Form/Action/Add';
 import { validateForm } from '../utils/form';
 import Snackbar from './common/Snackbar';
@@ -19,10 +19,20 @@ import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
-    padding: '5px 0px',
+    width: '100%'
   },
   formRoot: {
-    padding: 5
+    width: '100%',
+    margin: '0px',
+    textAlign: 'left',
+    '& h4': {
+      fontSize: '1.5em',
+      padding: 10,
+    }
+  },
+  formItems: {
+    margin: '0px auto',
+    justifyContent: 'space-between'
   },
   formTextField: {
     padding: '10px 0px',
@@ -45,7 +55,11 @@ const styles = (theme) => ({
   },
 });
 
-const CreditCard = ({classes, onSubmit, inStatus}) => {
+const CreditCard = ({
+  classes, 
+  onChange:formOnChange,
+  creditCardRefresh: forceRefresh
+}) => {
   const [errors, setErrors] = useState(null);
   const [form, setForm] = useState({});
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -120,19 +134,19 @@ const CreditCard = ({classes, onSubmit, inStatus}) => {
 
   return errors && (
       <div className={classes.root}>
-        {/* <form className={classes.formFoot} noValidate autoComplete="off"> */}
-            {/* credit card */}
-            <ActionForm 
-              formSection={{
-                name: t('message.search_order'),
-              }}
-              actionButtonName={ t('search') }
-              entryForm={form} 
-              showCancel={false}
-              onSubmitAction={handleDeliveryForm}
-              type="action"
-            />
-            {/* <Grid item className={classes.itemSection} lg={12} xs={12}>
+        <ActionForm 
+          classes={{root: classes.formRoot, formItems: classes.formItems}}
+          formSection={{
+            name: "Tarjeta de Credito"
+          }} 
+          forceRefresh={forceRefresh}
+          onFormChange={formOnChange}
+          entryForm={form} 
+          showCancel={false}
+          type="dynamic"
+        />
+        {/* <form className={classes.formFoot} noValidate autoComplete="off">
+            <Grid item className={classes.itemSection} lg={12} xs={12}>
                 <Grid container className={classes.mainContainer}>
                   <Grid item lg={12} xs={12} className={classes.formItem}>
                     <FormControl fullWidth variant="outlined">
@@ -194,9 +208,8 @@ const CreditCard = ({classes, onSubmit, inStatus}) => {
                     </FormControl>
                   </Grid>
                 </Grid>
-            </Grid> */}
-            {/* end of credit card */}
-        {/* </form> */}
+            </Grid>
+        </form> */}
         <Snackbar open={snack.open} severity={snack.severity} onClose={()=>setSnack({...snack,'open':false})} content={snack.text} />
       </div>
   );
@@ -204,8 +217,8 @@ const CreditCard = ({classes, onSubmit, inStatus}) => {
 
 CreditCard.protoTypes = {
   classes: T.object,
-  onSubmit: T.func,
-  inStatus: T.object,
+  onChange: T.func,
+  creditCardRefresh: T.bool
 }
 
 export default withStyles(styles)(CreditCard);

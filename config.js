@@ -7,6 +7,7 @@ export const FORM_TYPE = {
   pass: 'password',
   date: 'date',
   dateFull: 'datefull',
+  dateMonthYear: 'dateMonthYear',
   rate: 'rate',
   color: 'color',
   textArea: 'textarea',
@@ -692,14 +693,14 @@ export const FORM_SCHEMA = {
     tKey: "credit_card_number"
   },
   creditCardExpireDate: {
-    type: FORM_TYPE.date,
+    type: FORM_TYPE.dateMonthYear,
     label: 'Credit Card Expiration Date',
     tKey: "credit_card_expiration_date"
   },
   creditCardCode: {
     type: FORM_TYPE.number,
     label: 'Credit Card Code',
-    tKey: "credit_card_code"
+    tKey: "ccv"
   }
 }
 

@@ -145,6 +145,7 @@ const Add = ({
       <Form 
         title={section ? section.name : ''} 
         fields={form} 
+        classes={classes}
         showTitle={showTitle}
         errors={errors} 
         type={type}

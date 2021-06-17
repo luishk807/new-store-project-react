@@ -95,5 +95,9 @@
     "end_date": "End Date",
     "quantity": "Quantity",
     "selectYour": "Select your",
-    "promoCode": "Promotional Code"
+    "promoCode": "Promotional Code",
+    "credit_card_name": "Promotional Code",
+    "credit_card_number": "Promotional Code",
+    "credit_card_expiration_date": "Promotional Code",
+    "ccv": "Promotional Code"
 }

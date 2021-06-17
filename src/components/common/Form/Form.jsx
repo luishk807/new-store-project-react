@@ -456,8 +456,9 @@ const Form = ({
         break
       }
       case "number": {
+        const numberWidth = field === "creditCardCode" ? 5 : 12;
         return (
-          <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
+          <Grid key={index} item lg={numberWidth} xs={numberWidth} className={classes.formItem}>
             <FormControl fullWidth variant="outlined">
               <TextField 
                 type="number"
@@ -544,6 +545,32 @@ const Form = ({
                 }}
                 label={removeCharacter( t(FORM_SCHEMA[field].tKey) )} 
               />
+            </FormControl>
+          </Grid>
+        )
+        break
+      }
+      case "dateMonthYear": {
+        const initialDate = fields[field] ? moment(fields[field]).format('YYYY-MM-DTHH:mm:ss') : moment(new Date()).subtract(1, 'day').format('YYYY-MM-DD');
+        const dateWidth = field === "creditCardExpireDate" ? 7 : 12;
+        return (
+          <Grid key={index} item lg={dateWidth} xs={dateWidth} className={classes.formItem}>
+            <FormControl fullWidth variant="outlined">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DatePicker
+                      name={field} 
+                      variant="inline"
+                      openTo="year"
+                      views={["year", "month"]}
+                      label={removeCharacter( t(FORM_SCHEMA.creditCardExpireDate.tKey) )} 
+                      InputAdornmentProps={{ position: "start" }}
+                      defaultValue={initialDate}
+                      onChange={formOnChange}
+                      error={errors[field].error}
+                      helperText={errors[field].text} 
+                      inputVariant="outlined"
+                    />
+                </MuiPickersUtilsProvider>
             </FormControl>
           </Grid>
         )

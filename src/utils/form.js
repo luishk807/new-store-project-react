@@ -79,6 +79,7 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
     case "repassword":
     case "date":
     case "datefull":
+    case "dateMonthYear":
     case "color":
     case "textarea": {
       if (value && value.length > 0) {

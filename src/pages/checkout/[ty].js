@@ -57,6 +57,9 @@ const styles = (theme) => ({
       padding: 10,
     }
   },
+  formItems: {
+    margin: '0px auto',
+  },
   centerContainer: {
     display: 'flex',
     alignItems: 'center',
@@ -176,7 +179,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   });
   const { t } = useTranslation('checkout')
 
-  const handleCreditCardSubmit = (e) => {
+  const handleCreditCardFormChange = (e) => {
     console.log("credit card form");
   }
 
@@ -635,7 +638,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                               <ProgressBar />
                             ) : (
                               <ActionForm 
-                                classes={{root: classes.formRoot}}
+                                classes={{root: classes.formRoot, formItems: classes.formItems}}
                                 formSection={{
                                   name: selectedDeliveryOption && selectedDeliveryOption.id == 1 ? t('delivery_option_pickup') :  t('delivery_option_delivery') ,
                                 }} 
@@ -670,7 +673,9 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                         )
                       }
                       {/* credit card */}
-                      <CreditCard onSubmit={handleCreditCardSubmit} />
+                      <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
+                          <CreditCard onChange={handleCreditCardFormChange} />
+                      </Grid>
                       {/* end of credit card */}
                       <Grid item className={classes.itemSection} lg={12} xs={12}>
                         <Button onClick={handlePlaceOrder} className={`mainButton ${classes.processBtn}`}>

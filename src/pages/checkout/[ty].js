@@ -180,7 +180,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   const { t } = useTranslation('checkout')
 
   const handleCreditCardFormChange = (e) => {
-    console.log("credit card form");
+    console.log("credit card form", e);
   }
 
   const handleDeliveryForm = (getForm) => {

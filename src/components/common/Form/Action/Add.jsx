@@ -25,6 +25,9 @@ const styles = (theme) => ({
       width: '100%',
     }
   },
+  formItems: {
+    
+  }
 });
 
 const Add = ({
@@ -58,6 +61,7 @@ const Add = ({
   const [form, setForm] = useState({})
 
   const formOnChange = (e, edrop = null) => {
+    console.log(e, ' or ', edrop)
     let { name, value } = edrop ? edrop : e.target;
     if (e && FORM_SCHEMA[e.target.name].type === "checkbox") {
       name = e.target.name;

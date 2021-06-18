@@ -563,9 +563,7 @@ const Form = ({
                       openTo="year"
                       views={["year", "month"]}
                       label={removeCharacter( t(FORM_SCHEMA.creditCardExpireDate.tKey) )} 
-                      InputAdornmentProps={{ position: "start" }}
-                      defaultValue={initialDate}
-                      onChange={formOnChange}
+                      onChange={(e) => formOnChange({target: {value: e, name: field}})}
                       error={errors[field].error}
                       helperText={errors[field].text} 
                       inputVariant="outlined"

@@ -70,40 +70,40 @@ const CreditCard = ({
     text: '',
   });
 
-  const handleDeliveryForm = async (e) => {
-    let errorFound = false;
-    let key = '';
-    for (var i in form) {
-      errorFound = await validateForm(i, form[i]);
-      key = i;
-      if (errorFound){
-        saveErrors(i)
-      } else {
-        saveErrors(i, true, `${i} is required`)
-        break
-      }
-    }
-    if (!errorFound) {
-      setSnack({
-        severity: 'error',
-        open: true,
-        text: `Unable to login, ${i} is required`
-      })
-    } else {
-      onSubmit(form);
-    }
-  }
+  // const handleDeliveryForm = async (e) => {
+  //   let errorFound = false;
+  //   let key = '';
+  //   for (var i in form) {
+  //     errorFound = await validateForm(i, form[i]);
+  //     key = i;
+  //     if (errorFound){
+  //       saveErrors(i)
+  //     } else {
+  //       saveErrors(i, true, `${i} is required`)
+  //       break
+  //     }
+  //   }
+  //   if (!errorFound) {
+  //     setSnack({
+  //       severity: 'error',
+  //       open: true,
+  //       text: `Unable to login, ${i} is required`
+  //     })
+  //   } else {
+  //     onSubmit(form);
+  //   }
+  // }
 
 
-  const saveErrors = async (key, err = false, str = '') => {
-    await setErrors({
-      ...errors,
-      [key]: {
-        error: err,
-        text: str,
-      }
-    });
-  }
+  // const saveErrors = async (key, err = false, str = '') => {
+  //   await setErrors({
+  //     ...errors,
+  //     [key]: {
+  //       error: err,
+  //       text: str,
+  //     }
+  //   });
+  // }
 
   const configureError = async(fields) => {
     let newErrors = {}

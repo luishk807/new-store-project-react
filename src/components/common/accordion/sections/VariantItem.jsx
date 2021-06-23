@@ -112,7 +112,7 @@ const VariantItem = React.memo(({ classes, data }) => {
           const img = getImageBaseOnly(item)
           return (
             <Grid key={indx} className={classes.item} item lg={12} xs={12}>
-              <Link href={`/admin/products/items/edit/${item.id}`} variant="body2">
+              <Link target="_blank" href={`/admin/products/items/edit/${item.id}`} variant="body2">
                 <Grid container className={classes.itemContainer}>
                   <Grid item lg={1} xs={3} className={classes.itemProductImage}>
                     {

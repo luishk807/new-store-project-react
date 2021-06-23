@@ -88,7 +88,7 @@ const VariantItem = React.memo(({ classes, data }) => {
         items.map((item, indx) => {
           return (
             <Grid key={indx} className={classes.item} item lg={12} xs={12}>
-              <Link href={`/admin/products/sizes/edit/${item.id}`} variant="body2">
+              <Link target="_blank" href={`/admin/products/sizes/edit/${item.id}`} variant="body2">
                 <Grid container>
                   <Grid item lg={6} xs={6} className={classes.itemProductDescription}>
                     {

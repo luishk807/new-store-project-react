@@ -13,11 +13,10 @@ import SearchBarPlain from '../../../components/common/SearchBarPlain';
 import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
 import Snackbar from '../../../components/common/Snackbar';
 import ProgressBar from '../../../components/common/ProgressBar';
-import MobileMenu from '../../../components/common/MobileMenu';
 import DialogModal from '../../../components/common/DialogModal';
+import ProductModal from '../../../components/ProductModal';
 import { getImageBaseThumbnail } from '../../../utils';
 import { deleteProduct, getAdminProducts, searchProductsByFilter } from '../../../api/products';
-import AccordionBox from '../../../components/common/accordion/AccordionBox';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const useStyles = makeStyles((theme) => ({
@@ -42,12 +41,6 @@ const useStyles = makeStyles((theme) => ({
   headerButton: {
     padding: 20
   },
-  mobileDeleteItem: {
-    display: 'none',
-    [theme.breakpoints.down('sm')]: {
-      display: 'block'
-    }
-  },
   headerContainer: {
     alignItems: 'center',
     justifyContent: 'space-between'
@@ -61,10 +54,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
     margin: '10px 0px',
     padding: 5
-    // borderTop: '1px solid rgba(0,0,0,.08)',
-    // '&:last-child': {
-    //   borderBottom: '1px solid rgba(0,0,0,.08)',
-    // }
   },
   itemContainer: {
     textAlign: 'center'
@@ -122,12 +111,15 @@ const useStyles = makeStyles((theme) => ({
   emptyData: {
     textAlign: 'center',
     fontWeight: 'bold',
-  }
+  },
 }));
 
 const Index = () => {
   const classes = useStyles();
   const [products, setProducts] = useState([]);
+  const [productModalContent, setProductModalContent] = useState(null);
+  const [openProductModal, setOpenProductModal] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState(null);
   const [searchParams, setSearchParams] = useState(null);
   const [showData, setShowData] = useState(false);
   const [showEmpty, setShowEmpty] = useState(false);
@@ -150,6 +142,10 @@ const Index = () => {
     open: false,
     text: '',
   });
+
+  const handleWindowClose = () => {
+    setSelectedProductId(null)
+  }
 
   const loadProducts = async() => {
     const search = router.query.search;
@@ -234,6 +230,11 @@ const Index = () => {
     }
   }
 
+  const loadProductModal = async(e, productId) => {
+    e.preventDefault();
+    setSelectedProductId(productId);
+  }
+
   const handleSearchEnterKey = (searchText) => {
     setShowData(false);
     if (searchText) {
@@ -241,7 +242,6 @@ const Index = () => {
     } else {
       window.location.href=`/admin/products`
     }
-   
   }
 
   useEffect(() => {
@@ -301,26 +301,20 @@ const Index = () => {
           <Grid container>
             <Hidden smDown>
               <Grid item lg={12} xs={12} className={`${classes.itemHeaderFixed} adminProductStickyHeader`}>
-                <Grid container className={classes.itemContainer}>
-                  <Grid item lg={3} className={classes.itemColumn}>
+              <Grid container className={classes.itemContainer}>
+                <Grid item lg={3} className={classes.itemColumn}>
                     Name
                   </Grid>
                   <Grid item lg={2} className={classes.itemColumn}>
                     Categories
                   </Grid>
-                  <Grid item lg={1} className={classes.itemColumn}>
-                    Colors
+                  <Grid item lg={2} className={classes.itemColumn}>
+                    Model
                   </Grid>
                   <Grid item lg={1} className={classes.itemColumn}>
-                    Sizes
+                    Sku
                   </Grid>
-                  <Grid item lg={1} className={classes.itemColumn}>
-                    Items
-                  </Grid>
-                  <Grid item lg={1} className={classes.itemColumn}>
-                    Deals
-                  </Grid>
-                  <Grid item lg={1} className={classes.itemColumn}>
+                  <Grid item lg={2} className={classes.itemColumn}>
                     Brand
                   </Grid>
                   <Grid item lg={1} className={classes.itemColumn}>
@@ -335,28 +329,6 @@ const Index = () => {
             {
               products.map((product, index) => {
                 const img = getImageBaseThumbnail(product);
-                const options = [
-                  {
-                    name: `Items (${product.productProductItems ? product.productProductItems.length: 0})`,
-                    value: `/admin/products/items/${product.id}`
-                  },
-                  {
-                    name: `Deals (${product.productProductDiscount ? product.productProductDiscount.length: 0})`,
-                    value: `/admin/products/discounts/${product.id}`
-                  },
-                  {
-                    name: `Colors (${product.productColors ? product.productColors.length: 0})`,
-                    value: `/admin/products/colors/${product.id}`
-                  },
-                  {
-                    name: `Sizes (${product.productSizes ? product.productSizes.length: 0})`,
-                    value: `/admin/products/sizes/${product.id}`
-                  },
-                  {
-                    name: 'Delete',
-                    value: product
-                  }
-                ]
                 return (
                   <Grid key={index} item lg={12} xs={12} className={classes.mainItems}>
                     <Grid container className={classes.itemContainer}>
@@ -369,63 +341,32 @@ const Index = () => {
                           </Grid>
                           <Grid item lg={7} xs={7}>
                             <p>
-                              <a href={`/admin/products/${product.id}`}>
+                              <a href="#" onClick={(e) => loadProductModal(e, product.id)}>
                                 { product.name }
                               </a>
-                            </p>
-                            <p>
-                                SKU: { product.sku }
-                            </p>
-                            <p>
-                                Model: { product.model }
                             </p>
                           </Grid>
                         </Grid>
                       </Grid>
-                      <Grid item xs={1} className={classes.mobileDeleteItem}>
-                        <MobileMenu options={options} onChange={handleActionMenu}/>
-                      </Grid>
                       <Hidden xsDown>
                         <Grid item lg={2} xs={6} className={classes.itemColumn}>
-                          {
-                            product.categories && product.categories.name
-                          }
+                        {
+                          product.categories && product.categories.name
+                        }
+                        </Grid>
+                        <Grid item lg={2} xs={6} className={classes.itemColumn}>
+                        { product.sku }
                         </Grid>
                         <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                          <a href={`/admin/products/colors/${product.id}`}>
-                          {
-                            (product.productColors) ? product.productColors.length : 0
-                          }
-                          </a>
+                        { product.model }
+                        </Grid>
+                        <Grid item lg={2} xs={6} className={classes.itemColumn}>
+                        { product.productBrand && product.productBrand.name }
                         </Grid>
                         <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                          <a href={`/admin/products/sizes/${product.id}`}>
-                          {
-                            (product.productSizes) ? product.productSizes.length : 0
-                          }
-                          </a>
-                        </Grid>
-                        <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                          <a href={`/admin/products/items/${product.id}`}>
-                          {
-                            (product.productProductItems) ? product.productProductItems.length : 0
-                          }
-                          </a>
-                        </Grid>
-                        <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                          <a href={`/admin/products/discounts/${product.id}`}>
-                          {
-                            (product.productProductDiscount) ? product.productProductDiscount.length : 0
-                          }
-                          </a>
-                        </Grid>
-                        <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                          { product.productBrand && product.productBrand.name }
-                        </Grid>
-                        <Grid item lg={1} xs={6} className={classes.itemColumn}>
-                          {
-                            product.productStatus.name
-                          }
+                        {
+                          product.productStatus.name
+                        }
                         </Grid>
                         <Grid item lg={1} className={classes.itemAction}>
                           <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => handleActionMenu(product)}>
@@ -433,18 +374,6 @@ const Index = () => {
                           </Button>
                         </Grid>
                       </Hidden>
-                      <Grid item lg={12} xs={12}>
-                        <AccordionBox section="variant" title={`Variantes [${(product.productProductItems) ? product.productProductItems.length : 0}]`} options={product.productProductItems}/>
-                      </Grid>
-                      <Grid item lg={12} xs={12}>
-                        <AccordionBox section="size" title={`Tamaños [${(product.productSizes) ? product.productSizes.length : 0}]`}  options={product.productSizes} />
-                      </Grid>
-                      <Grid item lg={12} xs={12}>
-                        <AccordionBox section="color" title={`Colores [${product.productColors.length}]`} options={product.productColors}/>
-                      </Grid>
-                      <Grid item lg={12} xs={12}>
-                        <AccordionBox section="deal" title={`Descuentos [${(product.productProductDiscount) ? product.productProductDiscount.length : 0}]`} options={product.productProductDiscount}/>
-                      </Grid>
                     </Grid>
                   </Grid>
                 )
@@ -470,6 +399,11 @@ const Index = () => {
       }
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
       <DialogModal open={dialogContent.open} onClick={handleDialogClick} title={dialogContent.title} content={dialogContent.content} actionLabels={dialogContent.actionLabels} />
+      <ProductModal
+        onOpen={openProductModal}
+        productId={selectedProductId}
+        onClose={handleWindowClose}
+      />
     </AdminLayoutTemplate>
   );
 }

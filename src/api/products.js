@@ -33,6 +33,10 @@ export const getProductById = async(id, filter = null) => {
   return Api.get(`products/${id}`, filter);
 }
 
+export const getAdminProductById = async(id) => {  
+  return Api.get(`products/full-detail/${id}`);
+}
+
 export const getProductBySlug = async(id, filter = null) => {
   return Api.get(`products/k/${id}`, filter);
 }

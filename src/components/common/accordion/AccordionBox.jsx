@@ -46,7 +46,7 @@ const AccordionB = ({options, title, section, id}) => {
     const total = options ? options.length : 0;
     switch(section) {
       case 'variant': {
-        urlLink = <a target="_blank" href={`/admin/products/items/${id}`}>View{total}</a>
+        urlLink = <a target="_blank" href={`/admin/products/items/${id}`}>{total}</a>
         itemSect = <VariantItem data={options} />;
         break;
       }

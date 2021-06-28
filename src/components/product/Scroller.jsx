@@ -3,8 +3,7 @@ import * as T from 'prop-types';
 import { 
   withStyles, 
   Grid,
-  Link,
-  Button,
+  Link
 } from '@material-ui/core';
 
 import { getProducts } from '../../api/products';
@@ -12,6 +11,7 @@ import { getImageBaseThumbnail, getSortPriceRange } from '../../utils';
 import Rate from '../common/Rate/Rate';
 import ProgressBar from '../common/ProgressBar';
 import { useTranslation } from 'next-i18next'
+import TextEllipsis from '../common/TextEllipsis'
 
 const styles = (theme) => ({
   root: {
@@ -159,11 +159,7 @@ const ProductScroller = ({classes}) => {
                     }
                   </div>
                   <div className={classes.infoHolder}>
-                    <p className={classes.title}>
-                      {
-                        product.name
-                      }
-                    </p>
+                    <TextEllipsis classes={classes.title} limit={40} variant="body1" type="p" text={product.name} />
                     <p className={classes.amount}>
                       {rangePrice}
                     </p>

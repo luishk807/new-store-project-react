@@ -10,6 +10,7 @@ import {
 import { getImageBaseOnly } from '../../../../utils';
 import { getProductItemByIds } from '../../../../api/productItems';
 import { useTranslation } from 'next-i18next'
+import { getColorName } from '../../../../utils/helpers/product'
 
 const styles = (theme) => ({
   root: {
@@ -82,13 +83,6 @@ const VariantItem = React.memo(({ classes, data }) => {
     }
   }, [data]);
 
-  const getColorName = (color) => {
-    if (color) {
-      return t(`colors:${color.color}`);
-    }
-    return '';
-  }
-
   return showData && (
     <div className={classes.root}>
       <Grid container>
@@ -118,7 +112,7 @@ const VariantItem = React.memo(({ classes, data }) => {
           const img = getImageBaseOnly(item)
           return (
             <Grid key={indx} className={classes.item} item lg={12} xs={12}>
-              <Link href={`/admin/products/items/edit/${item.id}`} variant="body2">
+              <Link target="_blank" href={`/admin/products/items/edit/${item.id}`} variant="body2">
                 <Grid container className={classes.itemContainer}>
                   <Grid item lg={1} xs={3} className={classes.itemProductImage}>
                     {
@@ -152,7 +146,7 @@ const VariantItem = React.memo(({ classes, data }) => {
                       { item.sku }
                     </p>
                     <p>
-                      { getColorName(item.productItemColor) }
+                      { getColorName(item.productItemColor, t, 'colors') }
                     </p>
                     <p>
                       { item.productItemSize && item.productItemSize.name }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import { 
   makeStyles, 
@@ -34,27 +34,51 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const AccordionB = ({options, title, section}) => {
+const AccordionB = ({options, title, section, id}) => {
+  const [optionUrl, setOptionUrl] = useState(null);
+  const [showData, setShowData] = useState(false);
+  const [itemSection, setItemSection] = useState(null);
   const classes = useStyles();
 
-  const getSection = () => {
+  useEffect(() => {
+    let urlLink = null;
+    let itemSect = null;
+    const total = options ? options.length : 0;
     switch(section) {
       case 'variant': {
-        return <VariantItem data={options} />
+        urlLink = <a target="_blank" href={`/admin/products/items/${id}`}>{total}</a>
+        itemSect = <VariantItem data={options} />;
+        break;
       }
       case 'color': {
-        return <ColorItem data={options} />
+        urlLink = <a target="_blank" href={`/admin/products/colors/${id}`}>{total}</a>
+        itemSect = <ColorItem data={options} />;
+        break;
       }
       case 'size': {
-        return <SizeItem data={options} />
+        urlLink = <a target="_blank" href={`/admin/products/sizes/${id}`}>{total}</a>
+        itemSect = <SizeItem data={options} />;
+        break;
       }
       case 'deal': {
-        return <DealItem data={options} />
+        urlLink = <a target="_blank" href={`/admin/products/discounts/${id}`}>{total}</a>
+        itemSect = <DealItem data={options} />;
+        break;
       }
     }
-  }
 
-  return ( 
+    setItemSection(itemSect);
+    setOptionUrl(urlLink);
+
+  }, [section]);
+
+  useEffect(() => {
+    if (itemSection) {
+      setShowData(true);
+    }
+  }, [itemSection])
+
+  return showData && ( 
       <div className={classes.root}>
         <Accordion className={classes.accordion}>
           <AccordionSummary
@@ -63,12 +87,12 @@ const AccordionB = ({options, title, section}) => {
             id="panel1a-header"
             className={classes.accordionHeader} 
           >
-            <Typography className={classes.heading}>{title}</Typography>
+            <Typography className={classes.heading}>{title}&nbsp;[{optionUrl}]</Typography>
           </AccordionSummary>
           <AccordionDetails>
             <Grid container>
               {
-                getSection()
+                itemSection && itemSection
               }
             </Grid>
           </AccordionDetails>
@@ -80,6 +104,7 @@ const AccordionB = ({options, title, section}) => {
 AccordionB.protoTypes = {
   options: T.array,
   title: T.string,
+  id: T.number,
   section: T.string
 }
 

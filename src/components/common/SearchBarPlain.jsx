@@ -14,6 +14,7 @@ import { searchProductsByFilter } from '../../api/products';
 import { getImageBaseThumbnail } from '../../utils';
 import ProgressBar from '../common/ProgressBar';
 import { useTranslation } from 'next-i18next'
+import { getColorName } from '../../utils/helpers/product'
 
 const styles = (theme) => ({
   root: {
@@ -120,13 +121,6 @@ const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
     }
   }
 
-  const getColorName = (color) => {
-    if (color) {
-      return t(`colors:${color.color}`);
-    }
-    return '';
-  }
-  
   const prepareProductInfo = (product) => {
     if (product.productItemProduct) {
       return (
@@ -138,7 +132,7 @@ const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
             Model: { product.model }
           </div>
           <div>
-            Color: { getColorName(product.productItemColor) }
+            Color: { getColorName(product.productItemColor, t, 'colors') }
           </div>
           <div>
             Size: {

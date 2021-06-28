@@ -13,7 +13,7 @@ const styles = (theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-  }
+  },
 })
 
 const Modal = ({classes, title, children, onClose: closeModal, onOpen}) => {

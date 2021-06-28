@@ -31,6 +31,7 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { getThumbnail } from '../../utils/helpers/image'
 import CartSwipe from '../../components/cart/Swipe';
+import { getColorName } from '../../utils/helpers/product'
 
 const styles = (theme) => ({
   root: {
@@ -276,7 +277,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     open: false,
     text: '',
   });
-  const { t } = useTranslation(['common', 'product'])
+  const { t } = useTranslation(['common', 'product', 'colors'])
 
   const handQuantitySelect = async(resp) => {
       if (Object.keys(selectedProductItem).length) {
@@ -354,7 +355,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       total = total ? total : 0;
 
       const itemAdd = Object.assign({}, selectedProductItem);
-      itemAdd.quantity += total;
+      const currQuantity = Number(itemAdd.quantity);
+      const newQuantity = Number(total);
+      itemAdd.quantity = currQuantity + newQuantity;
 
       await addCart(itemAdd);
       
@@ -762,7 +765,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                     showColors && (
                       <Grid item lg={12}  xs={12} className={classes.variantRowContent}>
                         <Grid container>
-                          <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('colors') }</Grid>
+                          <Grid item lg={12} xs={12} className={classes.variantTitles}>{ t('colors') }: { selectedColor ? getColorName(selectedColor, t, 'colors') : '' }</Grid>
                           <Grid item lg={12} xs={12}>
                             {
                               colors.map((item, index) => {
@@ -903,7 +906,7 @@ const mapDispatchToProps = {
  */
 export const getServerSideProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['common', 'product', 'footer']),
+    ...await serverSideTranslations(locale, ['common', 'product', 'footer', 'colors']),
   },
 })
 

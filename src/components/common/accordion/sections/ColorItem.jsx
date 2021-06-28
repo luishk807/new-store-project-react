@@ -106,7 +106,7 @@ const ColorItem = React.memo(({ classes, data }) => {
         colors.map((item, indx) => {
           return (
             <Grid key={indx} className={classes.item} item lg={12} xs={12}>
-              <Link href={`/admin/products/colors/edit/${item.id}`} variant="body2">
+              <Link target="_blank" href={`/admin/products/colors/edit/${item.id}`} variant="body2">
                 <Grid container className={classes.itemContainer}>
                   <Grid item lg={3} xs={3} className={classes.itemProductDescription}>
                     <ColorBlock classes={{colorBlock: classes.colorBlock}} color={item.color} />

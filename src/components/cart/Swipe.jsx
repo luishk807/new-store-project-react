@@ -13,6 +13,7 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'next-i18next'
 import { getImage, getCartTotalItems, getCartTotal, getTotal } from '../../utils';
 import Icons from '../../components/common/Icons';
+import { getColorName } from '../../utils/helpers/product'
 
 const styles = (theme) => ({
   root: {
@@ -174,7 +175,7 @@ const Swipe = React.memo(({
                           </Grid>
                           <Grid item lg={8} xs={8} className={classes.itemText}>
                             <span className={classes.itemTitle}>{item.productItemProduct.name}</span>
-                            <span>{ t('color') }: {item.productItemColor.name}</span>
+                            <span>{ t('color') }: { getColorName(item.productItemColor, t, 'colors') }</span>
                             <span>{ t('size') }: {item.productItemSize.name}</span>
                             <span>{ t('quantity') }: {item.quantity}</span>
                             <span>{t('price')}: <b>{getTotal(item)}</b></span>

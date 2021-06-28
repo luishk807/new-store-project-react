@@ -697,6 +697,10 @@ export const IGNORE_FORM_FIELDS = ['useDate', 'saved'];
 
 export const ALLOW_FIELDS = ['saved', 'id', 'items', 'totalSaved', 'paymentOptionId', 'deliveryOptionId', 'deliveryServiceId', 'promotionCodeId', 'promotionCode'];
 
+const SYSTEM_CONFIGS = {
+  enableRating: false
+}
+
 export const config = {
   backEndUrl: process.env.BACKEND_URL,
   apiBaseUrl: process.env.API_BASE_URL,
@@ -714,5 +718,6 @@ export const config = {
   },
   web: 'www.avenidaz.com',
   address: 'Plaza Dorado',
-  adminRoles: [1,3]
+  adminRoles: [1,3],
+  system: SYSTEM_CONFIGS
 }

@@ -2,6 +2,7 @@ export const FORM_TYPE = {
   text: 'textfield',
   drop: 'dropdown',
   number: 'number',
+  creditcard: 'creditCardNumber',
   file: 'file',
   email: 'email',
   pass: 'password',
@@ -688,7 +689,7 @@ export const FORM_SCHEMA = {
     tKey: "credit_card_name"
   },
   creditCardNumber: {
-    type: FORM_TYPE.number,
+    type: FORM_TYPE.creditcard,
     label: 'Credit Card Number',
     tKey: "credit_card_number"
   },

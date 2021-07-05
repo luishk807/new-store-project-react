@@ -410,14 +410,15 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
       formSubmit['delivery'] = total.delivery;
       formSubmit['deliveryService'] = !isUserPickUp && selectedDeliveryService ? selectedDeliveryService.name : null;
       formSubmit['deliveryServiceId'] = !isUserPickUp && selectedDeliveryService ? selectedDeliveryService.id : null;
-      setShowPlaceOrderLoader(true);
-      const confirm = await processOrderByUser(formSubmit)
-      if (confirm && confirm.data && confirm.data.data) {
-        setOrderResult(confirm.data.data);
-      }
-      setShowCheckout(false);
-      const resp = handleFormResponse(confirm);
-      setSnack(resp);
+      console.log("submit", formSubmit)
+      // setShowPlaceOrderLoader(true);
+      // const confirm = await processOrderByUser(formSubmit)
+      // if (confirm && confirm.data && confirm.data.data) {
+      //   setOrderResult(confirm.data.data);
+      // }
+      // setShowCheckout(false);
+      // const resp = handleFormResponse(confirm);
+      // setSnack(resp);
     }
   }
 

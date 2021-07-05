@@ -455,6 +455,25 @@ const Form = ({
         )
         break
       }
+      case "creditCardNumber": {
+        return (
+          <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
+            <FormControl fullWidth variant="outlined">
+              <TextField 
+                type="number"
+                error={errors[field].error}
+                helperText={errors[field].text} 
+                variant="outlined" 
+                name={field} 
+                defaultValue={fields[field]}
+                onChange={formOnChange}
+                label={removeCharacter( t(FORM_SCHEMA[field].tKey) )} 
+              />
+            </FormControl>
+          </Grid>
+        )
+        break
+      }
       case "number": {
         const numberWidth = field === "creditCardCode" ? 5 : 12;
         return (

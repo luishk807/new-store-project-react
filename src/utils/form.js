@@ -115,6 +115,7 @@ export const validateForm = async(name = null, value = null, ignore = []) => {
       break;
     }
     case "number":
+    case "creditCardNumber":
     case "rate": {
       if (value) {
         return true

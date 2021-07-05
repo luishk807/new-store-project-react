@@ -96,8 +96,8 @@
     "quantity": "Cantidad",
     "selectYour": "Seleccione su",
     "promoCode": "Codigo promocional",
-    "credit_card_name": "Promotional Code",
-    "credit_card_number": "Promotional Code",
-    "credit_card_expiration_date": "Promotional Code",
-    "ccv": "Promotional Code"
+    "credit_card_name": "Nombre en tarjeta",
+    "credit_card_number": "Numero de tarjeta",
+    "credit_card_expiration_date": "Fecha de expiración",
+    "ccv": "Seguridad"
 }

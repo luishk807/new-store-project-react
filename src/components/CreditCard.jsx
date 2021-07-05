@@ -10,7 +10,7 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import { FORM_SCHEMA } from '../../config';
-import { removeCharacter } from '../utils';
+import { getCardType } from '../utils/creditCard';
 import ActionForm from './common/Form/Action/Add';
 import { validateForm } from '../utils/form';
 import Snackbar from './common/Snackbar';
@@ -70,6 +70,10 @@ const CreditCard = ({
     text: '',
   });
 
+  const handleFormChange = (e) => {
+    console.log("hey", e)
+    formOnChange(e);
+  }
   // const handleDeliveryForm = async (e) => {
   //   let errorFound = false;
   //   let key = '';
@@ -140,7 +144,7 @@ const CreditCard = ({
             name: "Tarjeta de Credito"
           }} 
           forceRefresh={forceRefresh}
-          onFormChange={formOnChange}
+          onFormChange={handleFormChange}
           entryForm={form} 
           showCancel={false}
           type="dynamic"

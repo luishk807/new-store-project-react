@@ -23,6 +23,7 @@ import moment from 'moment'
 import { useTranslation } from 'next-i18next'
 import ColorPicker from 'material-ui-color-picker'
 import DateFnsUtils from "@date-io/date-fns";
+import { createMuiTheme,ThemeProvider  } from "@material-ui/core/styles";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 
 import { loadMainOptions } from '../../../utils/form';
@@ -38,6 +39,15 @@ import Snackbar from '../Snackbar';
 import Icons from '../Icons';
 import DialogModal from '../DialogModal';
 import ProgressBar from '../ProgressBar';
+
+const defaultMaterialTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: 'rgb(248,190,12)',
+    },
+  },
+})
+
 
 const styles = (theme) => ({
   root: {
@@ -152,6 +162,7 @@ const styles = (theme) => ({
     height: 40,
   }
 });
+
 
 const Form = ({
   type,
@@ -575,19 +586,21 @@ const Form = ({
         return (
           <Grid key={index} item lg={dateWidth} xs={dateWidth} className={classes.formItem}>
             <FormControl fullWidth variant="outlined">
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <DatePicker
-                      name={field} 
-                      variant="inline"
-                      openTo="year"
-                      views={["year", "month"]}
-                      label={removeCharacter( t(FORM_SCHEMA.creditCardExpireDate.tKey) )} 
-                      onChange={(e) => formOnChange({target: {value: e, name: field}})}
-                      error={errors[field].error}
-                      helperText={errors[field].text} 
-                      inputVariant="outlined"
-                    />
-                </MuiPickersUtilsProvider>
+                <ThemeProvider theme={defaultMaterialTheme}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                      <DatePicker
+                        name={field} 
+                        variant="inline"
+                        openTo="year"
+                        views={["year", "month"]}
+                        label={removeCharacter( t(FORM_SCHEMA.creditCardExpireDate.tKey) )} 
+                        onChange={(e) => formOnChange({target: {value: e, name: field}})}
+                        error={errors[field].error}
+                        helperText={errors[field].text} 
+                        inputVariant="outlined"
+                      />
+                  </MuiPickersUtilsProvider>
+                </ThemeProvider>
             </FormControl>
           </Grid>
         )

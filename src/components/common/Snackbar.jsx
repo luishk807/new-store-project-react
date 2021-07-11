@@ -33,7 +33,7 @@ const SnackBar = React.memo(({ severity="success", open, onClose, content, ancho
       }
     }
     return () => { unmounted = true };
-  }, [content]);
+  }, [content, open]);
 
   return (
     <Snack open={doOpen} onClose={onClose} autoHideDuration={6000} anchorOrigin={anchor}>

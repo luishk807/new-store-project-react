@@ -7,6 +7,7 @@ import {
   FormControl,
   Button,  
 } from '@material-ui/core';
+import moment from 'moment';
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import { FORM_SCHEMA } from '../../config';
@@ -16,6 +17,7 @@ import { validateForm } from '../utils/form';
 import Snackbar from './common/Snackbar';
 import Typography from './common/Typography';
 import { useTranslation } from 'next-i18next'
+import { ContactSupportOutlined } from '@material-ui/icons';
 
 const styles = (theme) => ({
   root: {
@@ -71,8 +73,41 @@ const CreditCard = ({
   });
 
   const handleFormChange = (e) => {
-    console.log("hey", e)
-    formOnChange(e);
+    const currForm = form;
+    let valid = true;
+    switch(e.key) {
+      case 'creditCardNumber': {
+        const cardType = getCardType(e.val);
+        currForm[e.key] = e.val;
+        if (e.val.length > 10) {
+          if (cardType) {
+            currForm[e.key] = e.val;
+            currForm['creditCardType'] = cardType;
+          } else {
+            valid = false;
+            setSnack({
+              severity: 'error',
+              open: true,
+              text: 'Invalid credit card type',
+            })
+          }
+        }
+        break;
+      }
+      case 'creditCardExpireDate': {
+        const currDate = moment(e.val).format('MM-YYYY');
+        currForm[e.key] = currDate;
+        break;
+      }
+      default: {
+        currForm[e.key] = e.val;
+      }
+    }
+
+    if (valid) {
+      console.log("complete", currForm)
+      formOnChange(currForm);
+    }
   }
   // const handleDeliveryForm = async (e) => {
   //   let errorFound = false;
@@ -214,7 +249,7 @@ const CreditCard = ({
                 </Grid>
             </Grid>
         </form> */}
-        <Snackbar open={snack.open} severity={snack.severity} onClose={()=>setSnack({...snack,'open':false})} content={snack.text} />
+        <Snackbar open={snack.open} severity={snack.severity} onClose={()=>setSnack({...snack,open: false, text: ''})} content={snack.text} />
       </div>
   );
 }

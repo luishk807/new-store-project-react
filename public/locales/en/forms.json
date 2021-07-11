@@ -99,5 +99,8 @@
     "credit_card_name": "Credit card name",
     "credit_card_number": "Credit card number",
     "credit_card_expiration_date": "Expiration date",
+    "creditCardName": "Nombre en tarjeta",
+    "creditCardNumber": "Numero de tarjeta",
+    "creditCardExpireDate": "Fecha de expiración",
     "ccv": "Security"
 }

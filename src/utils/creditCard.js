@@ -6,14 +6,14 @@ export const getCardType = (card) => {
   }
 
   const checkCard = String(card);
-
+  
   if (checkCard.length === 15 && checkCard[0] === 3 && ['4','7'].indexOf(checkCard[1]) > 0) {
     // amx
     type = {
       name: 'American Express',
       id: '003'
     };
-  } else if(checkCard.length === 19 && checkCard[0] === '4') {
+  } else if(checkCard.length <= 19 && checkCard[0] === '4') {
     // visa
     type =  {
       name: 'Visa',

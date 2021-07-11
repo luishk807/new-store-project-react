@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import { defaultCountry, defaultPanama } from '../../../config';
+import { defaultCountry, defaultPanama, FORM_SCHEMA } from '../../../config';
 import CreditCard from '../../components/CreditCard';
 import CartBox from '../../components/cart/Block';
 import Icons from '../../components/common/Icons';
@@ -34,6 +34,7 @@ import { processOrderByUser } from '../../api/orders';
 import { getDeliveryOptions } from '../../api/deliveryOptions';
 import { getProductItemByIds } from '../../api/productItems';
 import { getActivePaymentOptions } from '../../api/paymentOptions';
+import { processPaymentCard } from '../../api/stGeorgePayment';
 
 const styles = (theme) => ({
   root: {
@@ -156,6 +157,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null)
   const [selectedDeliveryService, setSelectedDeliveryService] = useState(null)
   const [selectedZone, setSelectedZone] = useState(null)
+  const [creditCardForm, setCreditCardForm] = useState({})  
   const [selectedCorregimiento, setSelectedCorregimiento] = useState(null)
   const [deliveryOptions, setDeliveryOptions] = useState([])
   const [deliveryServices, setDeliveryServices] = useState([])
@@ -181,6 +183,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
 
   const handleCreditCardFormChange = (e) => {
     console.log("credit card form", e);
+    setCreditCardForm(e);
   }
 
   const handleDeliveryForm = (getForm) => {
@@ -357,14 +360,37 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
       copyFormCheck['phone'] = useAddress.phone;
     }
 
+    if (selectedPaymentOption.id == 3) {
+      // credit card
+      for (var i in creditCardForm) {
+        copyFormCheck[i] = creditCardForm[i];
+      }
+      ignoreFields.push('creditCardType');
+    }
+
     for (var i in copyFormCheck) {
       if (errorFound) {
         errorFound = await validateForm(i, copyFormCheck[i], ignoreFields);
-        key = i;
+        key = FORM_SCHEMA[i].label;
       } else {
         break;
       }
     }
+
+    console.log("cart", cart)
+    let cartCreditCard = {};
+    let cartTotalItems = 0;
+    for(const cartIndx in cart) {
+      console.log(`${cartIndx} ${cart[cartIndx].product}` )
+      cartCreditCard[`item_${cartIndx}_quantity`] = cart[cartIndx].quantity;;
+      cartCreditCard[`item_${cartIndx}_sku`] = cart[cartIndx].productItemProduct.sku;
+      cartCreditCard[`item_${cartIndx}_name`] = cart[cartIndx].productItemProduct.name
+      cartCreditCard[`item_${cartIndx}_unit_price`] = Number(cart[cartIndx].retailPrice);
+      cartCreditCard[`item_${cartIndx}_tax_amount`] = Number(cart[cartIndx].retailPrice) * 0.08;
+      cartTotalItems += cart[cartIndx].quantity;
+    }
+    cartCreditCard['amount'] = total.grandTotal;
+    cartCreditCard['line_item_count'] = cartTotalItems;
 
     if (!errorFound) {
       setSnack({
@@ -385,6 +411,28 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
         country = defaultCountry.name;
       }
 
+      if (selectedPaymentOption.id == 3) {
+          //credit card
+          cartCreditCard['card_type'] = copyFormCheck.creditCardType && copyFormCheck.creditCardType.id ? copyFormCheck.creditCardType.id : null;
+          cartCreditCard['card_number'] = copyFormCheck.creditCardNumber;
+          cartCreditCard['card_expiry_date'] = copyFormCheck.creditCardExpireDate;
+          cartCreditCard['transaction_type'] = "authorization";
+          cartCreditCard['reference_number'] = new Date().getTime();
+          // cartCreditCard['amount'] = copyFormCheck.grandTotal;
+          cartCreditCard['currency'] = "USD";
+          cartCreditCard['payment_method'] = "card";
+          cartCreditCard['bill_to_forename'] = copyFormCheck.name;
+          cartCreditCard['bill_to_surname'] = copyFormCheck.name;
+          cartCreditCard['bill_to_email'] = copyFormCheck.email;
+          cartCreditCard['bill_to_phone'] = copyFormCheck.phone;
+          cartCreditCard['bill_to_address_line1'] = copyFormCheck.address;
+          cartCreditCard['bill_to_address_city'] = copyFormCheck.province;
+          cartCreditCard['bill_to_address_state'] = copyFormCheck.district;
+          cartCreditCard['bill_to_address_country'] = copyFormCheck.country;
+          cartCreditCard['bill_to_address_postal_code'] = '00000';
+      }
+
+      console.log("entire cart", cartCreditCard)
       formSubmit['shipping_name'] = copyFormCheck.name;
       formSubmit['shipping_address'] = copyFormCheck.address;
       formSubmit['shipping_addressB'] = copyFormCheck.addressB;
@@ -410,7 +458,12 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
       formSubmit['delivery'] = total.delivery;
       formSubmit['deliveryService'] = !isUserPickUp && selectedDeliveryService ? selectedDeliveryService.name : null;
       formSubmit['deliveryServiceId'] = !isUserPickUp && selectedDeliveryService ? selectedDeliveryService.id : null;
-      console.log("submit", formSubmit)
+      console.log("submit", cartCreditCard)
+
+
+      const rest = await processPaymentCard(cartCreditCard);
+
+       console.log(rest);
       // setShowPlaceOrderLoader(true);
       // const confirm = await processOrderByUser(formSubmit)
       // if (confirm && confirm.data && confirm.data.data) {

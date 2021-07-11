@@ -589,6 +589,7 @@ const Form = ({
                 <ThemeProvider theme={defaultMaterialTheme}>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <DatePicker
+                        autoOk
                         name={field} 
                         variant="inline"
                         openTo="year"

@@ -39,6 +39,10 @@ module.exports = {
   },
   env: {
     BACKEND_URL: process.env.BACKEND_URL,
+    STGEORGE_ACCESS_KEY: process.env.STGEORGE_ACCESS_KEY,
+    STGEORGE_PROFILE_ID: process.env.STGEORGE_PROFILE_ID,
+    STGEORGE_SECREY_KEY: process.env.STGEORGE_SECREY_KEY,
+    STGEORGE_URL: process.env.STGEORGE_URL,
     IMAGE_URL: process.env.IMAGE_URL,
     GTM_ID: process.env.GTM_ID
   },

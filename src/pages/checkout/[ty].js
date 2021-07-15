@@ -416,7 +416,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
           cartCreditCard['card_type'] = copyFormCheck.creditCardType && copyFormCheck.creditCardType.id ? copyFormCheck.creditCardType.id : null;
           cartCreditCard['card_number'] = copyFormCheck.creditCardNumber;
           cartCreditCard['card_expiry_date'] = copyFormCheck.creditCardExpireDate;
-          cartCreditCard['transaction_type'] = "authorization";
+          cartCreditCard['transaction_type'] = "sale";
           cartCreditCard['reference_number'] = new Date().getTime();
           // cartCreditCard['amount'] = copyFormCheck.grandTotal;
           cartCreditCard['currency'] = "USD";

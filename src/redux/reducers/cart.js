@@ -95,7 +95,9 @@ const updateCurrentCart = (state, action) => {
   let indexFound = null;
   let length = Object.keys(state).length;
   Object.keys(state).map((index) => {
-    if (state[index].id == action.payload.id && state[index].productColor === action.payload.productColor && state[index].productSize === action.payload.productSize && !indexFound) {
+    if (state[index].id == action.payload.id && state[index].productColor === action.payload.productColor && state[index].productSize === action.payload.productSize && !action.payload.bundle && !indexFound) {
+      indexFound = index
+    } else if (state[index].id == action.payload.id && state[index].productColor === action.payload.productColor && state[index].productSize === action.payload.productSize && (state[index].bundle &&  action.payload.bundle && state[index].bundle.id === action.payload.bundle.id) && !indexFound) {
       indexFound = index
     }
   })

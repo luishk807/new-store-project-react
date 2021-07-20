@@ -71,7 +71,7 @@ const Register = ({classes, data, showRegister}) => {
                 />
               </Grid>
               <Grid item lg={12} xs={12} className={classes.terms}>
-               <Typography align="center" component="p">{ t('message.opening_an_account') } <a target="_blank" href="/terms">{ t('terms_of_use') }</a> { t('and') } <a target="_blank" href="/terms">{ t('message.legal_notice_privacy') }</a>{ t('message.from_avenidaz') }</Typography>
+               <Typography align="center" component="p">{ t('message.opening_an_account') } <a target="_blank" href="/terms">{ t('message.terms_of_use') }</a> { t('and') } <a target="_blank" href="/terms">{ t('message.legal_notice_privacy') }</a>{ t('message.from_avenidaz') }</Typography>
               </Grid>
               <Grid item lg={12} xs={12}>
                 <Grid container spacing={2}>

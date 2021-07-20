@@ -178,6 +178,11 @@ const Swipe = React.memo(({
                             <span>{ t('color') }: { getColorName(item.productItemColor, t, 'colors') }</span>
                             <span>{ t('size') }: {item.productItemSize.name}</span>
                             <span>{ t('quantity') }: {item.quantity}</span>
+                            {
+                              item.bundle && (
+                                <span>{ t('bundle') }: {item.bundle.name}</span>
+                              )
+                            }
                             <span>{t('price')}: <b>{getTotal(item)}</b></span>
                           </Grid>
                         </Grid>

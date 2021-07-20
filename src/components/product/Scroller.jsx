@@ -159,7 +159,7 @@ const ProductScroller = ({classes}) => {
                     }
                   </div>
                   <div className={classes.infoHolder}>
-                    <TextEllipsis classes={classes.title} limit={23} variant="body1" type="p" text={product.name} />
+                    <TextEllipsis classes={classes.title} limit={40} variant="body1" type="p" text={product.name} />
                     <p className={classes.amount}>
                       {rangePrice}
                     </p>

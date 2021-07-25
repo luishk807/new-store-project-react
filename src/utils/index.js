@@ -343,3 +343,19 @@ export const getRatingAvg = (data) => {
 export const getCatSearch = (data) => {
   return encodeURI(`/searchResult?cat=${data.id}&catn=${data.name}`);
 }
+
+export function removeDuplicatesByProperty(inputArray, propertyName) {
+  if (Array.isArray(inputArray)) {
+    const uniqueValues = [];
+    const returnArray = [];
+    inputArray.forEach((value) => {
+      // If the value is not there
+      if (!uniqueValues.includes(value[propertyName])) {
+        returnArray.push(value);
+        uniqueValues.push(value[propertyName])
+      }
+    });
+    return returnArray;
+  }
+  return inputArray;
+}

@@ -233,10 +233,17 @@ export const ADMIN_SECTIONS = {
     url: 'promotion-codes',
     option: 'promotioncode'
   },
+  'integration': {
+    name: 'Integration',
+    names: 'Integrations',
+    key: 'integration',
+    url: 'integration',
+    option: 'integration'
+  }
 }
 
 export const SECTIONS = {
-  1: ['user','order','vendor','color','category','brand','product', 'imageBox', 'sweetbox', 'deliveryOption', 'paymentOption',  'deliveryServiceGroupCost', 'promotionCode'],
+  1: ['user','order','vendor','color','category','brand','product', 'imageBox', 'sweetbox', 'deliveryOption', 'paymentOption',  'deliveryServiceGroupCost', 'promotionCode', 'integration'],
   3: ['order','product', 'sweetbox']
 }
 export const ADMIN_URL = {

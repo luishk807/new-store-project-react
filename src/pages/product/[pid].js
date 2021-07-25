@@ -14,7 +14,7 @@ import moment from 'moment';
 
 import { getImageUrlByType } from '../../utils/form';
 import { checkDiscountPrice, setBundleDiscount, checkBundlePrice } from '../../utils/products';
-import { formatNumber, isAroundTime, capitalize, sortOptions, getCartTotalItems} from '../../utils';
+import { formatNumber, isAroundTime, capitalize, sortOptions, getCartTotalItems, removeDuplicatesByProperty } from '../../utils';
 import { noImageUrl } from '../../../config';
 import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
 import { ProductSample } from '../../constants/samples/ProductSample';
@@ -301,34 +301,35 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     setSelectedProductItem(item);
   }
 
+  const getGalleryImage = (original, thumbnail) => {
+    return {
+      original: original,
+      thumbnail: thumbnail
+    }
+  }
+
   const loadImages = (data) => {
     const imageUrl = getImageUrlByType('product');
     let imgs = [];
 
     if (data && data.productImages) {
-      imgs = data.productImages.map((img) => {
-        return {
-          original: `${imageUrl}/${img.img_url}`,
-          thumbnail: `${imageUrl}/${getThumbnail(img)}`,
-        }
-      });
-      setImages(imgs);
-    } else {
-      if (productInfo && productInfo.productImages && productInfo.productImages.length) {
-        imgs = productInfo.productImages.map((img) => {
-          return {
-            original: `${imageUrl}/${img.img_url}`,
-            thumbnail: `${imageUrl}/${getThumbnail(img)}`,
-          }
-        });
-      } else {
-        imgs.push({
-          original: `${noImageUrl.svg}`,
-          thumbnail: `${noImageUrl.svg}`,
-        });
-      }
-      setImages(imgs);
+      imgs = imgs.concat(data.productImages.map((img) => {
+        return getGalleryImage(`${imageUrl}/${img.img_url}`, `${imageUrl}/${getThumbnail(img)}`);
+      }));
     }
+
+    if (productInfo && productInfo.productImages && productInfo.productImages.length) {
+      imgs = imgs.concat(productInfo.productImages.map((img) => {
+        return getGalleryImage(`${imageUrl}/${img.img_url}`, `${imageUrl}/${getThumbnail(img)}`)
+      }));
+    } else {
+      if (!data) {
+        imgs.push(getGalleryImage(`${noImageUrl.svg}`,`${noImageUrl.svg}`));
+      }
+    }
+    // Remove any duplicate images
+    imgs = removeDuplicatesByProperty(imgs, 'original');
+    setImages(imgs);
   }
 
   const onAddCart = async() => {
@@ -729,8 +730,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       <div className={classes.root}>
         <Grid container>
           <Grid item lg={12} xs={12}>
-            <Grid container spacing={2}>
-              <Grid item lg={8} xs={12}>
+            <Grid container spacing={5}>
+              <Grid item lg={1} />
+              <Grid item lg={3} xs={12}>
               {
                 images.length ? (
                   <ImageGallery items={images} />
@@ -739,7 +741,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                 )
               }
               </Grid>
-              <Grid item lg={4} xs={12}>
+              <Grid item lg={2} />
+              <Grid item lg={5} xs={12}>
                 <Grid container>
                   <Grid item lg={12} xs={12}>
                    <Typography className={classes.productName} variant="h3" component="h3">{productInfo.name}</Typography>
@@ -858,6 +861,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   </Grid> */}
                 </Grid>
               </Grid>
+              <Grid item lg={1} />
             </Grid>
           </Grid>
           {/* <Grid item lg={3} sm={12} className={classes.rateBox}>

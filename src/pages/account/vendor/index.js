@@ -9,13 +9,13 @@ import {
   Button
 } from '@material-ui/core';
 
-import Typography from '../../../components/common/Typography';
-import { VENDOR_SECTIONS } from '../../../constants/vendor'
-import CardIcon from '../../../components/common/CardIcon';
-import Icons from '../../../components/common/Icons';
-import VendorLayoutTemplate from '../../../components/common/Layout/VendorLayoutTemplate';
-import { logout } from '../../../api/auth';
-import { getVendorByUserId } from '../../../api/vendor';
+import Typography from 'src/components/common/Typography';
+import { VENDOR_SECTIONS } from 'src/constants/vendor'
+import CardIcon from 'src/components/common/CardIcon';
+import Icons from 'src/components/common/Icons';
+import VendorLayoutTemplate from 'src/components/common/Layout/VendorLayoutTemplate';
+import { logout } from 'src/api/auth';
+import { getVendorByUserId } from 'src/api/vendor';
 
 const styles = (theme) => ({
   root: {

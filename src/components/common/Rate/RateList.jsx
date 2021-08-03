@@ -10,7 +10,7 @@ import {
   Blue,
 } from '@material-ui/core';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
-import Typography from '../Typography';
+import Typography from '@/common/Typography';
 
 import Rate from './Rate';
 

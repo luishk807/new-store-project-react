@@ -8,13 +8,13 @@ import {
 import { useRouter } from 'next/router';
 import Pagination from '@material-ui/lab/Pagination';
 
-import { getImage, getSortPriceRange } from '../utils';
-import Rate from '../components/common/Rate/Rate';
-import Typography from '../components/common/Typography';
-import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
-import { searchProductsByFilter } from '../api/products';
-import ProgressBar from '../components/common/ProgressBar';
-import TextEllipsis from '../components/common/TextEllipsis';
+import { getImage, getSortPriceRange } from 'src/utils';
+import Rate from 'src/components/common/Rate/Rate';
+import Typography from 'src/components/common/Typography';
+import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
+import { searchProductsByFilter } from 'src/api/products';
+import ProgressBar from 'src/components/common/ProgressBar';
+import TextEllipsis from 'src/components/common/TextEllipsis';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

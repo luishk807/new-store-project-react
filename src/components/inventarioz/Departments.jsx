@@ -21,7 +21,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useState, useEffect } from 'react'
 import CustomInputs from './CustomInputs'
-import { getDepartments, saveDepartment } from '../../services/inventarioz/department'
+import { getDepartments, saveDepartment } from '@/services/inventarioz/department'
 
 const useStyles = makeStyles((theme) => ({
     root: {

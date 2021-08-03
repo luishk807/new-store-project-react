@@ -15,11 +15,11 @@ import {
 import MessageOutlinedIcon from '@material-ui/icons/MessageOutlined';
 import CommentOutlinedIcon from '@material-ui/icons/CommentOutlined';
 
-import { sendQuestion, getQuestions } from '../../api/questions';
-import { handleFormResponse } from '../../utils/form';
-import Snackbar from '../common/Snackbar';
-import Typography from '../common/Typography';
-import AskProductQuestionsForm from '../common/AskProductQuestionsForm';
+import { sendQuestion, getQuestions } from 'src/api/questions';
+import { handleFormResponse } from 'src/utils/form';
+import Snackbar from '@/components/common/Snackbar';
+import Typography from '@/components/common/Typography';
+import AskProductQuestionsForm from '@/components/common/AskProductQuestionsForm';
 
 const styles = (theme) => ({
   root: {

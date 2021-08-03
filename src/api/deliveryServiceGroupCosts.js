@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const getDeliveryServiceGroupCosts = async() => {
   return Api.get(`delivery-service-group-costs`);

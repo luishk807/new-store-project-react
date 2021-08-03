@@ -11,7 +11,7 @@ import {
 import Slider from "react-slick";
 import {isMobile} from 'react-device-detect';
 
-import { getImageBoxesByType, getActiveImageBoxesByKey } from '../../api/imageBoxes';
+import { getImageBoxesByType, getActiveImageBoxesByKey } from '@/api/imageBoxes';
 
 const styles = (theme) => ({
   root: {

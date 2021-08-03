@@ -8,15 +8,15 @@ import { useRouter } from 'next/router';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 
-import { LIMIT } from '../../../../config';
-import SearchBarPlain from '../../../components/common/SearchBarPlain';
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import Snackbar from '../../../components/common/Snackbar';
-import ProgressBar from '../../../components/common/ProgressBar';
-import DialogModal from '../../../components/common/DialogModal';
-import ProductModal from '../../../components/ProductModal';
-import { getImageBaseThumbnail } from '../../../utils';
-import { deleteProduct, getAdminProducts, searchProductsByFilter } from '../../../api/products';
+import { LIMIT } from 'config';
+import SearchBarPlain from 'src/components/common/SearchBarPlain';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import Snackbar from 'src/components/common/Snackbar';
+import ProgressBar from 'src/components/common/ProgressBar';
+import DialogModal from 'src/components/common/DialogModal';
+import ProductModal from 'src/components/ProductModal';
+import { getImageBaseThumbnail } from 'src/utils';
+import { deleteProduct, getAdminProducts, searchProductsByFilter } from 'src/api/products';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const useStyles = makeStyles((theme) => ({

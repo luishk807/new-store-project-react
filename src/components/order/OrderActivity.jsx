@@ -7,7 +7,7 @@ import {
   Hidden,
 } from '@material-ui/core';
 import moment from 'moment';
-import { getOrderActivitiesByOrderid } from '../../api/ordersActivities';
+import { getOrderActivitiesByOrderid } from 'src/api/ordersActivities';
 
 const styles = (theme) => ({
   root: {

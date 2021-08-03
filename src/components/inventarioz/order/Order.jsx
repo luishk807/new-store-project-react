@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles'
 import MaterialTable from 'material-table'
-import MaterialTableIcons from '../common/MaterialTableIcons'
+import MaterialTableIcons from '@/inventarioz/common/MaterialTableIcons'
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker
@@ -11,9 +11,9 @@ import {
     Grid,
     Button
 } from '@material-ui/core'
-import ClientEntryFields from '../client/ClientEntryFields'
-import MessageAlert from '../MessageAlert'
-import CustomDialog from '../CustomDialog'
+import ClientEntryFields from '@/inventarioz/client/ClientEntryFields'
+import MessageAlert from '@/inventarioz/MessageAlert'
+import CustomDialog from '@/inventarioz/CustomDialog'
 import {
     Accordion,
     AccordionSummary,
@@ -21,10 +21,10 @@ import {
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { useState } from 'react'
-import ProductSearchMini from '../product/ProductSearchMini'
-import ClientSearchMini from '../client/ClientSearchMini'
-import { saveClient } from '../../../services/inventarioz/client'
-// import { convertDataToTableData } from '../../../utils/materialtable'
+import ProductSearchMini from '@/inventarioz/product/ProductSearchMini'
+import ClientSearchMini from '@/inventarioz/client/ClientSearchMini'
+import { saveClient } from '@/services/inventarioz/client'
+// import { convertDataToTableData } from '@/utils/materialtable'
 const useStyles = makeStyles((theme) => ({
     root: {
         padding: 0

@@ -9,15 +9,15 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import Typography from '../../../components/common/Typography';
-import CardIcon from '../../../components/common/CardIcon';
-import Icons from '../../../components/common/Icons';
-import { getAddressesByUser, deleteAddress, updateAddress } from '../../../api/addresses';
-import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
-import AddressBox from '../../../components/address/AddressBox';
-import Snackbar from '../../../components/common/Snackbar';
-import { handleFormResponse } from '../../../utils/form';
-import ProgressBar from '../../../components/common/ProgressBar';
+import Typography from 'src/components/common/Typography';
+import CardIcon from 'src/components/common/CardIcon';
+import Icons from 'src/components/common/Icons';
+import { getAddressesByUser, deleteAddress, updateAddress } from 'src/api/addresses';
+import UserLayoutTemplate from 'src/components/common/Layout/UserLayoutTemplate';
+import AddressBox from 'src/components/address/AddressBox';
+import Snackbar from 'src/components/common/Snackbar';
+import { handleFormResponse } from 'src/utils/form';
+import ProgressBar from 'src/components/common/ProgressBar';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

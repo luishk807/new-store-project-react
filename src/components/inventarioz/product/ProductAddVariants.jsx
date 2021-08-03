@@ -9,12 +9,12 @@ import {
     Button
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import DropDown from '../DropDown'
-import ProductOptionsDropDown from '../ProductOptionsDropDown'
-import MessageAlert from '../MessageAlert'
+import DropDown from '@/inventarioz/DropDown'
+import ProductOptionsDropDown from '@/inventarioz/ProductOptionsDropDown'
+import MessageAlert from '@/inventarioz/MessageAlert'
 import { useState } from 'react'
-import { saveProductVariant } from '../../../services/inventarioz/product'
-import CustomDialog from '../CustomDialog'
+import { saveProductVariant } from '@/services/inventarioz/product'
+import CustomDialog from '@/inventarioz/CustomDialog'
 
 const useStyles = makeStyles((theme) => ({
     root: {

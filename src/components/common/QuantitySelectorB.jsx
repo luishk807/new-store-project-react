@@ -7,7 +7,7 @@ import {
   Button
 } from '@material-ui/core';
 import Snackbar from './Snackbar';
-import { createProductItem } from '../../api/productItems';
+import { createProductItem } from '@/api/productItems';
 
 const styles = (theme) => ({
   root: {

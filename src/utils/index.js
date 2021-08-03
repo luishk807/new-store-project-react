@@ -1,8 +1,8 @@
 import { getImageUrlByType } from './form';
-import { noImageUrl } from '../../config';
-import { getProductItemByIds } from '../api/productItems';
-import { getProductById } from '../api/products';
-import { getThumbnail } from '../utils/helpers/image'
+import { noImageUrl } from 'config';
+import { getProductItemByIds } from '@/api/productItems';
+import { getProductById } from '@/api/products';
+import { getThumbnail } from '@/utils/helpers/image'
 
 export const removeCharacter = (str) => {
   return str ? str.replace(/_/g, ' ') : str

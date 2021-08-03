@@ -7,9 +7,9 @@ import {
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
-import { getCategories } from '../../api/categories';
-import Icons from '../common/Icons';
-import { getCatSearch } from '../../utils';
+import { getCategories } from '@/api/categories';
+import Icons from '@/common/Icons';
+import { getCatSearch } from 'src/utils';
 
 const styles = (theme) => ({
   root: {

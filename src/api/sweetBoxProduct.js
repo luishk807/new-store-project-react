@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const getSweetBoxProducts = async(data) => {
   return Api.get(`sweet-box-products`, data);

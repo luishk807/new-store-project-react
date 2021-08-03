@@ -1,7 +1,7 @@
 import { DropzoneDialog } from 'material-ui-dropzone'
 import { Button } from '@material-ui/core'
 import { useState } from 'react'
-import { uploadStockImport } from '../../../services/inventarioz/stock'
+import { uploadStockImport } from '@/services/inventarioz/stock'
 import { FormControl } from '@material-ui/core'
 
 const acceptedTypes = [

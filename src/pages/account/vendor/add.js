@@ -9,9 +9,9 @@ import {
   Button
 } from '@material-ui/core';
 
-import VendorLayoutTemplate from '../../../components/common/Layout/VendorLayoutTemplate';
-import AddForm from '../../../components/common/Form/AddForm';
-import { USER_SECTIONS } from '../../../constants/user';
+import VendorLayoutTemplate from 'src/components/common/Layout/VendorLayoutTemplate';
+import AddForm from 'src/components/common/Form/AddForm';
+import { USER_SECTIONS } from 'src/constants/user';
 
 const styles = (theme) => ({
   root: {

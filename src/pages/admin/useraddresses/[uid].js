@@ -3,9 +3,9 @@ import * as T from 'prop-types';
 import { useRouter } from 'next/router';
 import { withStyles } from '@material-ui/core';
 
-import { ADMIN_SECTIONS } from '../../../constants/admin';
-import ItemForm from '../../../components/common/Form/ItemForm';
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
+import { ADMIN_SECTIONS } from 'src/constants/admin';
+import ItemForm from 'src/components/common/Form/ItemForm';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {

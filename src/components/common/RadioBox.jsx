@@ -6,7 +6,7 @@ import {
   Radio,
   Button,
 } from '@material-ui/core';
-import { formatNumber, sortOptions } from '../../utils';
+import { formatNumber, sortOptions } from 'src/utils';
 import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({

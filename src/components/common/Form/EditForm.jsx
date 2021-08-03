@@ -6,11 +6,11 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import { saveItem, deleteItem } from '../../../api';
-import Api from '../../../services/api';
-import { validateForm, loadMainOptions, handleFormResponse, checkEnforceDates } from '../../../utils/form';
+import { saveItem, deleteItem } from 'src/api';
+import Api from '@/services/api';
+import { validateForm, loadMainOptions, handleFormResponse, checkEnforceDates } from '@/utils/form';
 import Form from './Form';
-import { FORM_SCHEMA } from '../../../../config';
+import { FORM_SCHEMA } from 'config';
 
 const styles = (theme) => ({
   root: {

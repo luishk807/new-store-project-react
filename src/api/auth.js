@@ -1,6 +1,6 @@
-import Api from '../services/api';
-import { removeCookie, setCookie, getCookie } from '../utils/cookie';
-import { config } from '../../config';
+import Api from '@/services/api';
+import { removeCookie, setCookie, getCookie } from '@/utils/cookie';
+import { config } from 'config';
 
 const contentTypeJson = { 'Content-Type': 'application/json' };
 

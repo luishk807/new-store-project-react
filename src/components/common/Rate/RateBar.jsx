@@ -11,7 +11,7 @@ import {
 import { blue } from '@material-ui/core/colors';
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 
-import Typography from '../Typography';
+import Typography from '@/common/Typography';
 
 const styles = (theme) => ({
   root: {

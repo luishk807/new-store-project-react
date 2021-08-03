@@ -7,10 +7,10 @@ import {
   Hidden,
 } from '@material-ui/core';
 
-import { getImage, getSortPriceRange } from '../../utils';
+import { getImage, getSortPriceRange } from 'src/utils';
 
-import TextEllipsis from '../common/TextEllipsis';
-import Rate from '../common/Rate/Rate';
+import TextEllipsis from '@/components/common/TextEllipsis';
+import Rate from '@/components/common/Rate/Rate';
 
 const styles = (theme) => ({
   cardBtn: {

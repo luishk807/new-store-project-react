@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const createDeliveryOptionService = async(data) => {
   return Api.post(`delivery-option-services`, data);

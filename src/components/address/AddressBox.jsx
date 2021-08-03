@@ -5,8 +5,8 @@ import {
   Grid,
   Button
 } from '@material-ui/core';
-import Icons from '../common/Icons';
-import Typography from '../common/Typography';
+import Icons from '@/components/common/Icons';
+import Typography from '@/components/common/Typography';
 import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({

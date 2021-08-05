@@ -8,11 +8,11 @@ import {
 } from '@material-ui/core';
 import moment from 'moment'
 
-import { ADMIN_SECTIONS } from '../../../constants/admin';
-import ItemForm from '../../../components/common/Form/ItemForm';
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import { getImageBoxes, deleteImageBox } from '../../../api/imageBoxes';
-import Snackbar from '../../../components/common/Snackbar';
+import { ADMIN_SECTIONS } from 'src/constants/admin';
+import ItemForm from 'src/components/common/Form/ItemForm';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import { getImageBoxes, deleteImageBox } from 'src/api/imageBoxes';
+import Snackbar from 'src/components/common/Snackbar';
 
 const styles = (theme) => ({
   root: {

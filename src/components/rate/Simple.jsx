@@ -6,11 +6,11 @@ import {
   Typography
 } from '@material-ui/core';
 
-import Rate from '../common/Rate/Rate';
-import RateList from '../common/Rate/RateList';
+import Rate from '@/components/common/Rate/Rate';
+import RateList from '@/components/common/Rate/RateList';
 import { Link, animateScroll as scroll } from "react-scroll";
-import { getAllProductRatesById } from '../../api/rate';
-import { calculateRate, getRatingAvg } from '../../utils';
+import { getAllProductRatesById } from 'src/api/rate';
+import { calculateRate, getRatingAvg } from 'src/utils';
 
 const styles = (theme) => ({
   linkClass: {

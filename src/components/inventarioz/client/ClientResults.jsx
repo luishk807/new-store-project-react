@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import MaterialTable from 'material-table'
-import MaterialTableIcons from '../common/MaterialTableIcons'
+import MaterialTableIcons from '@/common/MaterialTableIcons'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router';

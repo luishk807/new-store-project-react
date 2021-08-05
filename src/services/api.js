@@ -1,6 +1,6 @@
 import axios, { post, put} from 'axios';
-import { getCookie } from '../utils/cookie';
-import { formatForm, formatFormData } from '../utils/products';
+import { getCookie } from '@/utils/cookie';
+import { formatForm, formatFormData } from '@/utils/products';
 
 const getAuthorizationHeader = () => {
   const cookie = getCookie();

@@ -8,7 +8,7 @@ import {
   Button,
 } from '@material-ui/core';
 
-import { getMainSliders } from '../../api/imageBoxes';
+import { getMainSliders } from '@/api/imageBoxes';
 
 const styles = (theme) => ({
   root: {

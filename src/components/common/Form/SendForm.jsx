@@ -6,9 +6,9 @@ import {
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
-import { validateForm, handleFormResponse } from '../../../utils/form';
-import { capitalize } from '../../../utils';
-import { postItem } from '../../../api';
+import { validateForm, handleFormResponse } from '@/utils/form';
+import { capitalize } from 'src/utils';
+import { postItem } from 'src/api';
 import Form from './Form';
 
 const styles = (theme) => ({

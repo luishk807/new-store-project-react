@@ -6,12 +6,12 @@ import {
   Link
 } from '@material-ui/core';
 
-import { getProducts } from '../../api/products';
-import { getImageBaseThumbnail, getSortPriceRange } from '../../utils';
-import Rate from '../common/Rate/Rate';
-import ProgressBar from '../common/ProgressBar';
+import { getProducts } from 'src/api/products';
+import { getImageBaseThumbnail, getSortPriceRange } from 'src/utils';
+import Rate from '@/components/common/Rate/Rate';
+import ProgressBar from '@/components/common/ProgressBar';
 import { useTranslation } from 'next-i18next'
-import TextEllipsis from '../common/TextEllipsis'
+import TextEllipsis from '@/components/common/TextEllipsis'
 
 const styles = (theme) => ({
   root: {

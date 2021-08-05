@@ -7,8 +7,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import { MuiThemeProvider } from '@material-ui/core/styles';
-import myTheme from '../../../themes/inventarioz';
-import SearchInput from '../SearchInput';
+import myTheme from '@/themes/inventarioz';
+import SearchInput from '@/components/inventarioz/SearchInput';
 import {
     List,
     ListItem,

@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as T from 'prop-types';
 import ReactToPrint from 'react-to-print';
 
-import ProgressBar from '../../common/ProgressBar';
+import ProgressBar from '@/common/ProgressBar';
 import OrderTemplate from './templates/OrderTemplate';
 
 import { 

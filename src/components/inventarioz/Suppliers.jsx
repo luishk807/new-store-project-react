@@ -21,7 +21,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useState, useEffect } from 'react'
 import CustomInputs from './CustomInputs'
-import { getSuppliers, addSupplier } from '../../services/inventarioz/supplier'
+import { getSuppliers, addSupplier } from '@/services/inventarioz/supplier'
 
 const useStyles = makeStyles((theme) => ({
     root: {

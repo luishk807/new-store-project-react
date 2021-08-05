@@ -7,7 +7,7 @@ import {
   TextField,
 } from '@material-ui/core';
 
-import { getActivePromotionCodeByCode } from '../api/promotionCodes';
+import { getActivePromotionCodeByCode } from 'src/api/promotionCodes';
 import Snackbar from './common/Snackbar';
 import { useTranslation } from 'next-i18next'
 

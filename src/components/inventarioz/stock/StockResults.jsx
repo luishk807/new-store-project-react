@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 import MaterialTable from 'material-table'
-import MaterialTableIcons from '../common/MaterialTableIcons'
+import MaterialTableIcons from '@/inventarioz/common/MaterialTableIcons'
 // import ProductDetailPanel from './ProductDetailPanel'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState, useEffect } from 'react'

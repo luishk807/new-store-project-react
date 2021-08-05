@@ -5,17 +5,17 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import Typography from '../common/Typography';
-import SweetBoxProducts from '../sweetbox/Products';
-import ProgressBar from '../common/ProgressBar';
+import Typography from '@/components/common/Typography';
+import SweetBoxProducts from '@/components/sweetbox/Products';
+import ProgressBar from '@/components/common/ProgressBar';
 
  import {
   getSweetBoxesByType
- } from '../../api/sweetbox';
+ } from 'src/api/sweetbox';
 
  import {
   getProductByIds
- } from '../../api/products';
+ } from 'src/api/products';
 
 const styles = (theme) => ({
   root: {

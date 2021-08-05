@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 
 import Rate from './Rate';
-import { getRatingAvg } from '../../../utils';
+import { getRatingAvg } from 'src/utils';
 import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({

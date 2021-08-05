@@ -10,16 +10,16 @@ import {
 } from '@material-ui/core';
 
 import { connect } from 'react-redux';
-import Icons from '../common/Icons';
-import Snackbar from '../common/Snackbar';
-import { formatNumber } from '../../utils';
-import { validateForm, handleFormResponse } from '../../utils/form';
-import { getAddressesByUser, createAddress } from '../../api/addresses';
-import ActionForm from '../common/Form/Action/Add';
-import RadioBox from '../common/RadioBox';
-import { defaultCountry } from '../../../config';
 import { finished } from 'stream';
 import { useTranslation } from 'next-i18next'
+import { formatNumber } from 'src/utils';
+import { defaultCountry } from 'config';
+import { validateForm, handleFormResponse } from 'src/utils/form';
+import { getAddressesByUser, createAddress } from 'src/api/addresses';
+import Icons from '@/components/common/Icons';
+import Snackbar from '@/components/common/Snackbar';
+import ActionForm from '@/components/common/Form/Action/Add';
+import RadioBox from '@/components/common/RadioBox';
 
 const styles = (theme) => ({
   root: {

@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const createPaymentOption = async(data) => {
   return Api.post(`payment-options`, data);

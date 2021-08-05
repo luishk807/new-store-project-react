@@ -10,15 +10,15 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import Icons from '../../../components/common/Icons';
-import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
-import LeftOrderColumn from '../../../components/common/Layout/Left/account/OrderLeftColumn';
-import ProgressBar from '../../../components/common/ProgressBar';
-import OrderDetail from '../../../components/order/OrderDetail';
-import { getOrderById } from '../../../api/orders';
-import { getImageUrlByType } from '../../../utils/form';
-import { noImageUrl } from '../../../../config';
-import { formatNumber } from '../../../utils';
+import Icons from 'src/components/common/Icons';
+import UserLayoutTemplate from 'src/components/common/Layout/UserLayoutTemplate';
+import LeftOrderColumn from 'src/components/common/Layout/Left/account/OrderLeftColumn';
+import ProgressBar from 'src/components/common/ProgressBar';
+import OrderDetail from 'src/components/order/OrderDetail';
+import { getOrderById } from 'src/api/orders';
+import { getImageUrlByType } from 'src/utils/form';
+import { noImageUrl } from 'config';
+import { formatNumber } from 'src/utils';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({

@@ -5,8 +5,8 @@ import {
   Grid,
   IconButton,
 } from '@material-ui/core';
-import { getImageBaseOnly } from '../../utils';
-import { getProductById } from '../../api/products';
+import { getImageBaseOnly } from 'src/utils';
+import { getProductById } from '@/api/products';
 import Icons from './Icons';
 import Typography from './Typography';
 

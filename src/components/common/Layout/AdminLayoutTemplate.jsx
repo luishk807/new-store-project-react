@@ -7,13 +7,13 @@ import {
   Button
 } from '@material-ui/core';
 import * as T from 'prop-types';
-import Header from '../Header/AdminHeader';
-import Footer from '../Footer/AdminFooter';
-import Typography from '../Typography';
-import PrivatePage from '../Private/Admin';
+import Header from '@/common/Header/AdminHeader';
+import Footer from '@/common/Footer/AdminFooter';
+import Typography from '@/common/Typography';
+import PrivatePage from '@/common/Private/Admin';
 import { useRouter } from 'next/router';
-import { logout } from '../../../api/auth';
-import Icons from '../Icons';
+import { logout } from '@/api/auth';
+import Icons from '@/common/Icons';
 const styles = (theme) => ({
   root: {
     marginTop: 100,

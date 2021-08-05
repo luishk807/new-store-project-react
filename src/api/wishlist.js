@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const saveWishlist = async(data) => {
   return Api.post(`wishlists`, data);

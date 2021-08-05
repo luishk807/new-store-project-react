@@ -7,10 +7,10 @@ import {
   Link
 } from '@material-ui/core';
 
-import { getImageBaseOnly } from '../../../../utils';
-import { getProductItemByIds } from '../../../../api/productItems';
+import { getImageBaseOnly } from 'src/utils';
+import { getProductItemByIds } from '@/api/productItems';
 import { useTranslation } from 'next-i18next'
-import { getColorName } from '../../../../utils/helpers/product'
+import { getColorName } from '@/utils/helpers/product'
 
 const styles = (theme) => ({
   root: {

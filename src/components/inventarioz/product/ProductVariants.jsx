@@ -16,10 +16,10 @@ import {
 } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import DeleteIcon from '@material-ui/icons/Delete'
-import MessageAlert from '../MessageAlert'
-import CustomDialog from '../CustomDialog'
+import MessageAlert from '@/inventarioz/MessageAlert'
+import CustomDialog from '@/inventarioz/CustomDialog'
 import { useEffect, useState } from 'react'
-import { removeProductVariant } from '../../../services/inventarioz/product'
+import { removeProductVariant } from '@/services/inventarioz/product'
 
 const useStyles = makeStyles((theme) => ({
     root: {

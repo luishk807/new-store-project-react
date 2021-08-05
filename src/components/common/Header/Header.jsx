@@ -10,11 +10,11 @@ import {
   Button,
   Grid,
 } from '@material-ui/core';
-import Icon from '../../../components/common/Icons';
-import { getCartTotalItems } from '../../../utils';
-import Typography from '../Typography';
-import loadMain from '../../../redux/reducers'
-import SearchBar from '../SearchBar';
+import Icon from '@/common/Icons';
+import { getCartTotalItems } from 'src/utils';
+import Typography from '@/common/Typography';
+import loadMain from '@/redux/reducers'
+import SearchBar from '@/common/SearchBar';
 import { useRouter } from 'next/router'
 import Locale from './Locale';
 

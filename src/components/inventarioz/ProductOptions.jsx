@@ -21,7 +21,7 @@ import {
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import DeleteIcon from '@material-ui/icons/Delete';
 import { useState, useEffect } from 'react'
-import { getOptions, saveOption, saveOptionValue, removeOption } from '../../services/inventarioz/product'
+import { getOptions, saveOption, saveOptionValue, removeOption } from '@/services/inventarioz/product'
 import CustomInputs from './CustomInputs'
 
 const useStyles = makeStyles((theme) => ({

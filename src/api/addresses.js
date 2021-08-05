@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const saveAddress = async(data, id) => {
   return Api.post(`useraddresses/${id}`, data);

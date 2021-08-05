@@ -8,10 +8,10 @@ import {
   Link,
 } from '@material-ui/core';
 
-import { updateCart,addCart } from '../redux/actions/main';
-import { getProductById } from '../api/products';
+import { updateCart,addCart } from 'src/redux/actions/main';
+import { getProductById } from 'src/api/products';
 import Icons from './common/Icons';
-import { getImageUrlByType } from '../utils/form';
+import { getImageUrlByType } from 'src/utils/form';
 
 const styles = (theme) => ({
   root: {

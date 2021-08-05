@@ -6,10 +6,10 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-import { USER_SECTIONS } from '../../constants/user';
-import EditForm from '../../components/common/Form/EditForm';
-import { decodeCookie } from '../../utils/cookie';
-import UserLayoutTemplate from '../../components/common/Layout/UserLayoutTemplate';
+import { USER_SECTIONS } from 'src/constants/user';
+import EditForm from 'src/components/common/Form/EditForm';
+import { decodeCookie } from 'src/utils/cookie';
+import UserLayoutTemplate from 'src/components/common/Layout/UserLayoutTemplate';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({

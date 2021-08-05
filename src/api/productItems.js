@@ -1,5 +1,5 @@
-import Api from '../services/api';
-import { verifyCookie } from '../utils/cookie';
+import Api from '@/services/api';
+import { verifyCookie } from '@/utils/cookie';
 
 export const getAllProductItems = async() => {
   return Api.get(`product-items`);

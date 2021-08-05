@@ -9,9 +9,9 @@ import {isMobile} from 'react-device-detect';
 import { connect } from 'react-redux';
 import { useTranslation } from 'next-i18next'
 
-import { getCartTotal, getTotal, getImage } from '../../utils';
-import { getImageUrlByType } from '../../utils/form';
-import { getColorName } from '../../utils/helpers/product'
+import { getCartTotal, getTotal, getImage } from 'src/utils';
+import { getImageUrlByType } from 'src/utils/form';
+import { getColorName } from 'src/utils/helpers/product'
 
 const styles = (theme) => ({
   root: {

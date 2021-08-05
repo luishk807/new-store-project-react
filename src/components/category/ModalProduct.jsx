@@ -8,12 +8,12 @@ import {
   TextField,
 } from '@material-ui/core';
 
-import Icons from '../common/Icons';
-import { getProductByCategory } from '../../api/products';
+import Icons from '@/components/common/Icons';
+import { getProductByCategory } from '@/api/products';
 
-import { noImageUrl } from '../../../config';
-import { getImageUrlByType } from '../../utils/form'
-import ProgressBar from '../../components/common/ProgressBar';
+import { noImageUrl } from 'config';
+import { getImageUrlByType } from '@/utils/form'
+import ProgressBar from '@/components/common/ProgressBar';
 
 const styles = (theme) => ({
   root: {

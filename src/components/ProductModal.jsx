@@ -5,7 +5,7 @@ import {
   Grid,
 } from '@material-ui/core';
 import Modal from './common/Modal';
-import { getAdminProductById } from '../api/products';
+import { getAdminProductById } from 'src/api/products';
 import AccordionBox from './common/accordion/AccordionBox';
 
 const styles = (theme) => ({

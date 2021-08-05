@@ -24,11 +24,11 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-import { ADMIN_URL, ADMIN_SECTIONS, SECTIONS } from '../../../constants/admin';
-import loadMain from '../../../redux/reducers'
-import { logout } from '../../../api/auth';
-import Icons from '../../common/Icons';
-import Modal from '../Modal';
+import { ADMIN_URL, ADMIN_SECTIONS, SECTIONS } from '@/constants/admin';
+import loadMain from '@/redux/reducers'
+import { logout } from '@/api/auth';
+import Icons from '@/common/Icons';
+import Modal from '@/common/Modal';
 
 
 const styles = (theme) => ({

@@ -10,7 +10,7 @@ import {
 import NumberFormat from 'react-number-format';
 
 import { noImageUrl } from 'config'; 
-import { deleteItem, getItems, getItemByFkId } from '.src/api';
+import { deleteItem, getItems, getItemByFkId } from 'src/api';
 import Icons from '@/common/Icons';
 import Snackbar from '@/common/Snackbar';
 import { ADMIN_SECTIONS } from '@/constants/admin';

@@ -18,7 +18,7 @@ export const processPaymentCard = async(data) => {
   data['merchant_defined_data3'] = "https://www.avenidaz.com";
   data['user_po'] = 582364797;
   data['tax_indicator'] = "Y";
-  data['unsigned_field_names'] = 'card_type,card_number,card_expiry_date';
+  data['unsigned_field_names'] = 'card_type,card_number,card_expiry_date,card_cvn';
   data['signed_date_time'] = new Date().toISOString();
   data['customer_ip_address'] = myIP;
   data['override_custom_receipt_page'] = "https://www.avenidaz.com/stgeorgeprocess.js";

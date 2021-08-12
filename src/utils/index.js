@@ -1,3 +1,4 @@
+import axios from 'axios';
 import { getImageUrlByType } from './form';
 import { noImageUrl } from '../../config';
 import { getProductItemByIds } from '../api/productItems';
@@ -9,6 +10,11 @@ export const removeCharacter = (str) => {
 }
 
 export const formatNumber = (x) => x ? Number.parseFloat(x).toFixed(2) : 0.00;
+
+export const getIP = async () => {
+  const res = await axios.get('https://geolocation-db.com/json/');
+  return res.data.IPv4
+}
 
 export const getCartTotalItems = (cart, item = null) => {
   if (cart && cart.length) {

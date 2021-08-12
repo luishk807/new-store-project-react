@@ -42,6 +42,7 @@ module.exports = {
     STGEORGE_ACCESS_KEY: process.env.STGEORGE_ACCESS_KEY,
     STGEORGE_PROFILE_ID: process.env.STGEORGE_PROFILE_ID,
     STGEORGE_SECREY_KEY: process.env.STGEORGE_SECREY_KEY,
+    STGEORGE_MID: process.env.STGEORGE_MID,
     STGEORGE_URL: process.env.STGEORGE_URL,
     IMAGE_URL: process.env.IMAGE_URL,
     GTM_ID: process.env.GTM_ID

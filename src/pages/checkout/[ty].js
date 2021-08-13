@@ -415,13 +415,15 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
       if (selectedPaymentOption.id == 3) {
           //credit card
           // get fingerprint
+          let referenceNum = new Date().getTime();
           const getDeviceFingerPrint = await cybs_dfprofiler(process.env.STGEORGE_MID,'test');
           cartCreditCard['card_type'] = copyFormCheck.creditCardType && copyFormCheck.creditCardType.id ? copyFormCheck.creditCardType.id : null;
           cartCreditCard['card_number'] = copyFormCheck.creditCardNumber;
           cartCreditCard['card_expiry_date'] = copyFormCheck.creditCardExpireDate;
           cartCreditCard['card_cvn'] = copyFormCheck.creditCardCode;
           cartCreditCard['transaction_type'] = "sale";
-          cartCreditCard['reference_number'] = new Date().getTime();
+          cartCreditCard['reference_number'] = referenceNum;
+          cartCreditCard['user_po'] = referenceNum;
           cartCreditCard['device_fingerprint_id'] = getDeviceFingerPrint;
           // cartCreditCard['amount'] = copyFormCheck.grandTotal;
           cartCreditCard['currency'] = "USD";

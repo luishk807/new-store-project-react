@@ -11,7 +11,6 @@ export const uniqid = (prefix = "", random = false) => {
 };
 
 export const encryptSign = async(params) => {
-  const test = buildDataToSign(params);
   return signData(buildDataToSign(params), process.env.STGEORGE_SECREY_KEY);
 }
 

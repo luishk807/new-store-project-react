@@ -1,6 +1,7 @@
 // import Api from '../services/api';
 import axios, { post, put } from 'axios';
 import { getIP } from '../utils';
+import { cybs_dfprofiler } from '../utils/creditCard';
 import sha256 from 'crypto-js/sha256';
 import Base64 from 'crypto-js/enc-base64';
 
@@ -36,6 +37,9 @@ export const commaSeparate = (dataToSign) => {
 
 export const processPaymentCard = async(data) => {
   const myIP = await getIP();
+  // get fingerprint
+  const getDeviceFingerPrint = await cybs_dfprofiler(process.env.STGEORGE_MID,'test');
+  let referenceNum = new Date().getTime(); // user numero de orden - recomendado
   // const headers = {
   //   'Content-Type': 'application/json',
   //   'Authorization': 'JWT'
@@ -49,8 +53,13 @@ export const processPaymentCard = async(data) => {
   data['unsigned_field_names'] = 'card_type,card_number,card_expiry_date,card_cvn';
   data['signed_date_time'] = new Date().toISOString();
   data['customer_ip_address'] = myIP;
+  data['reference_number'] = referenceNum;
+  data['user_po'] = referenceNum;
   data['override_custom_receipt_page'] = "https://www.avenidaz.com/stgeorgeprocess.js";
   data['locale'] = 'es-co';
+  data['transaction_type'] = "sale";
+  data['device_fingerprint_id'] = getDeviceFingerPrint;
+  data['currency'] = "USD";
   const encrypt = await encryptSign(data);
   data['signature'] = encrypt;
   const apiUrl = process.env.STGEORGE_URL;

@@ -381,9 +381,14 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     console.log("cart", cart)
     let cartCreditCard = {};
     let cartTotalItems = 0;
+    let items_string = [];
     for(const cartIndx in cart) {
-      console.log(`${cartIndx} ${cart[cartIndx].product}` )
-      cartCreditCard[`item_${cartIndx}_quantity`] = cart[cartIndx].quantity;;
+      items_string.push(`item_${cartIndx}_quantity`);
+      items_string.push(`item_${cartIndx}_sku`);
+      items_string.push(`item_${cartIndx}_name`);
+      items_string.push(`item_${cartIndx}_unit_price`);
+      items_string.push(`item_${cartIndx}_tax_amount`);
+      cartCreditCard[`item_${cartIndx}_quantity`] = cart[cartIndx].quantity;
       cartCreditCard[`item_${cartIndx}_sku`] = cart[cartIndx].productItemProduct.sku;
       cartCreditCard[`item_${cartIndx}_name`] = cart[cartIndx].productItemProduct.name
       cartCreditCard[`item_${cartIndx}_unit_price`] = Number(cart[cartIndx].retailPrice);
@@ -439,7 +444,6 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
           cartCreditCard['bill_to_address_postal_code'] = '00000';
       }
 
-      console.log("entire cart", cartCreditCard)
       formSubmit['shipping_name'] = copyFormCheck.name;
       formSubmit['shipping_address'] = copyFormCheck.address;
       formSubmit['shipping_addressB'] = copyFormCheck.addressB;
@@ -467,6 +471,12 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
       formSubmit['deliveryServiceId'] = !isUserPickUp && selectedDeliveryService ? selectedDeliveryService.id : null;
       console.log("submit", cartCreditCard)
 
+      if (items_string && items_string.length) {
+        const items_string_impl = items_string.join(",");
+        cartCreditCard['signed_field_names'] = `transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency,payment_method,bill_to_forename,bill_to_surname,bill_to_email,bill_to_phone,bill_to_address_line1,bill_to_address_city,bill_to_address_state,bill_to_address_country,bill_to_address_postal_cod,override_custom_receipt_page,merchant_defined_data2,merchant_defined_data3,user_po,line_item_count,device_fingerprint_id,customer_ip_address,tax_indicator,bill_to_address_postal_code,item_0_quantity,item_0_name,item_0_sku,item_0_tax_amount,item_0_unit_price,${items_string_impl}`;
+      } else {
+        cartCreditCard['signed_field_names'] = `transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency,payment_method,bill_to_forename,bill_to_surname,bill_to_email,bill_to_phone,bill_to_address_line1,bill_to_address_city,bill_to_address_state,bill_to_address_country,bill_to_address_postal_cod,override_custom_receipt_page,merchant_defined_data2,merchant_defined_data3,user_po,line_item_count,device_fingerprint_id,customer_ip_address,tax_indicator,bill_to_address_postal_code,item_0_quantity,item_0_name,item_0_sku,item_0_tax_amount,item_0_unit_price`;
+      }
 
       const rest = await processPaymentCard(cartCreditCard);
 

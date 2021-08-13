@@ -59,7 +59,6 @@ export const getCardType = (card) => {
 // Valor de retorno colocar en el campo device_fingerprint_id  y enviar cifrado como los demás campos 
 // se usa en el momento que presiona el boton de pagar para regrear el device fingerprint
 export const cybs_dfprofiler = async(merchantID, environment) => {
-  console.log("tesss", merchantID, 'test', environment)
   if (environment.toLowerCase() == 'live') {
     var org_id = 'k8vif92e';
   } else {

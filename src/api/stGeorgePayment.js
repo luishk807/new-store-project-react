@@ -1,6 +1,8 @@
 // import Api from '../services/api';
 import axios, { post, put } from 'axios';
 import { getIP } from '../utils';
+import sha256 from 'crypto-js/sha256';
+import Base64 from 'crypto-js/enc-base64';
 
 export const uniqid = (prefix = "", random = false) => {
   const sec = Date.now() * 1000 + Math.random() * 1000;
@@ -8,12 +10,40 @@ export const uniqid = (prefix = "", random = false) => {
   return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 100000000)}`:""}`;
 };
 
+export const encryptSign = (params) => {
+  const test = buildDataToSign(params);
+  return signData(buildDataToSign(params), process.env.STGEORGE_SECREY_KEY);
+}
+
+export const signData = (data, secretKey = null) => {
+   // return base64_encode(hash_hmac('sha256', $data, $secretKey, true));
+   return Base64.stringify(sha256(data, secretKey));
+}
+
+export const buildDataToSign = (params) => {
+  let dataToSign = [];
+  const signedFieldNames = params["signed_field_names"].split(",");
+  signedFieldNames.forEach(item => {
+    dataToSign.push(`${item} = ${params[item]}`);
+  })
+
+  return commaSeparate(dataToSign);
+}
+
+
+export const commaSeparate = (dataToSign) => {
+  return dataToSign.join(',');
+}
+
 export const processPaymentCard = async(data) => {
   const myIP = await getIP();
+  // const headers = {
+  //   'Content-Type': 'application/json',
+  //   'Authorization': 'JWT'
+  // }
   data['access_key'] = process.env.STGEORGE_ACCESS_KEY;
   data['profile_id'] = process.env.STGEORGE_PROFILE_ID;
   data['transaction_uuid'] = uniqid();
-  data['signed_field_names'] = 'transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency,payment_method,bill_to_forename,bill_to_surname,bill_to_email,bill_to_phone,bill_to_address_line1,bill_to_address_city,bill_to_address_state,bill_to_address_country,bill_to_address_postal_cod,override_custom_receipt_page,merchant_defined_data2,merchant_defined_data3,user_po,line_item_count,device_fingerprint_id,customer_ip_address,tax_indicator,bill_to_address_postal_code,item_0_quantity,item_0_name,item_0_sku,item_0_tax_amount,item_0_unit_price';
   data['merchant_defined_data2'] = "Avenidaz.com";
   data['merchant_defined_data3'] = "https://www.avenidaz.com";
   data['tax_indicator'] = "Y";
@@ -22,7 +52,12 @@ export const processPaymentCard = async(data) => {
   data['customer_ip_address'] = myIP;
   data['override_custom_receipt_page'] = "https://www.avenidaz.com/stgeorgeprocess.js";
   data['locale'] = 'es-co';
+  const encrypt = await encryptSign(data);
+  data['signature'] = encrypt;
   const apiUrl = process.env.STGEORGE_URL;
+  // const request = post(apiUrl, data, {
+  //   headers: headers
+  // })
   const request = post(apiUrl, data)
   return request;
 }

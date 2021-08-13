@@ -10,7 +10,7 @@ export const uniqid = (prefix = "", random = false) => {
   return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 100000000)}`:""}`;
 };
 
-export const encryptSign = (params) => {
+export const encryptSign = async(params) => {
   const test = buildDataToSign(params);
   return signData(buildDataToSign(params), process.env.STGEORGE_SECREY_KEY);
 }

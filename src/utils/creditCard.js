@@ -58,7 +58,7 @@ export const getCardType = (card) => {
 // Ejecución del javascrips cybs_dfprofiler   parametos de entrada (merchantID =tc_pa_0xxxxxxxxx, environment =live/test) en la página de pago
 // Valor de retorno colocar en el campo device_fingerprint_id  y enviar cifrado como los demás campos 
 // se usa en el momento que presiona el boton de pagar para regrear el device fingerprint
-export const cybs_dfprofiler = async(merchantID, environment) => {
+export const cybs_dfprofiler = (merchantID, environment) => {
   if (environment.toLowerCase() == 'live') {
     var org_id = 'k8vif92e';
   } else {

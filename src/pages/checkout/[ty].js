@@ -35,6 +35,7 @@ import { getDeliveryOptions } from '../../api/deliveryOptions';
 import { getProductItemByIds } from '../../api/productItems';
 import { getActivePaymentOptions } from '../../api/paymentOptions';
 import { processPaymentCard } from '../../api/stGeorgePayment';
+import { cybs_dfprofiler } from '../../utils/creditCard';
 
 const styles = (theme) => ({
   root: {
@@ -173,6 +174,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   const [orderResult, setOrderResult] = useState(null);
   const [selectedPromotionCode, setSelectedPromotionCode] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date())
+  const [deviceFingerPrint, setDeviceFingerPrint] = useState(null)
   const [total, setTotal] = useState({});
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -461,6 +463,8 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
       formSubmit['deliveryServiceId'] = !isUserPickUp && selectedDeliveryService ? selectedDeliveryService.id : null;
       console.log("submit", cartCreditCard)
 
+      dacartCreditCardta['device_fingerprint_id'] = deviceFingerPrint;
+
       if (items_string && items_string.length) {
         const items_string_impl = items_string.join(",");
         cartCreditCard['signed_field_names'] = `profile_id,access_key,transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency,payment_method,bill_to_forename,bill_to_surname,bill_to_email,bill_to_phone,bill_to_address_line1,bill_to_address_city,bill_to_address_state,bill_to_address_country,bill_to_address_postal_cod,override_custom_receipt_page,merchant_defined_data2,merchant_defined_data3,user_po,line_item_count,device_fingerprint_id,customer_ip_address,tax_indicator,bill_to_address_postal_code,item_0_quantity,item_0_name,item_0_sku,item_0_tax_amount,item_0_unit_price,${items_string_impl}`;
@@ -666,11 +670,28 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
 
   useEffect(() => {
     if (orderResult && Object.entries(orderResult).length) {
+      // get fingerprint
+      const getDeviceFingerPrint = cybs_dfprofiler(process.env.STGEORGE_MID,'test');
+      setDeviceFingerPrint(getDeviceFingerPrint);
+
       emptyCart();
       setShowCheckout(false);
       setThankyou(true);
     }
   }, [orderResult])
+
+  // useEffect(() => {
+  //   const script = document.createElement('script');
+  
+  //   script.src = `https://h.online-metrix.net/fp/check.js?org_id=${orgId}&session_id=${deviceFingerPrint}`;
+  //   script.async = true;
+  
+  //   document.body.appendChild(script);
+  
+  //   return () => {
+  //     document.body.removeChild(script);
+  //   }
+  // }, [deviceFingerPrint]);
 
   return (
     <LayoutTemplate>

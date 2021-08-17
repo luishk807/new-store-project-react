@@ -38,8 +38,6 @@ export const commaSeparate = (dataToSign) => {
 
 export const processPaymentCard = async(data) => {
   const myIP = await getIP();
-  // get fingerprint
-  const getDeviceFingerPrint = await cybs_dfprofiler(process.env.STGEORGE_MID,'test');
   let referenceNum = uuidv4(); // user numero de orden - recomendado
   // const headers = {
   //   'Content-Type': 'application/json',
@@ -60,7 +58,6 @@ export const processPaymentCard = async(data) => {
   data['locale'] = 'es-co';
   data['device_fingerprint_raw'] = 'true';
   data['transaction_type'] = "authorization,create_payment_token";
-  data['device_fingerprint_id'] = getDeviceFingerPrint;
   data['currency'] = "USD";
   const encrypt = await encryptSign(data);
   data['signature'] = encrypt;

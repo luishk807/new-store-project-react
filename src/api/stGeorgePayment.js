@@ -59,7 +59,7 @@ export const processPaymentCard = async(data) => {
   data['override_custom_receipt_page'] = "https://www.avenidaz.com/stgeorgeprocess.js";
   data['locale'] = 'es-co';
   data['device_fingerprint_raw'] = 'true';
-  data['transaction_type'] = "authorization,create_payment_token";
+  data['transaction_type'] = "sale";
   data['currency'] = "USD";
   const encrypt = await encryptSign(data);
   data['signature'] = encrypt;

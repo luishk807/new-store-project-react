@@ -42,7 +42,8 @@ export const processPaymentCard = async(data) => {
   let referenceNum = uuidv4(); // user numero de orden - recomendado
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
-    'Accept': 'text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*;q=0.8'
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'Set-Cookie': uuidv4()
   }
   data['access_key'] = process.env.STGEORGE_ACCESS_KEY;
   data['profile_id'] = process.env.STGEORGE_PROFILE_ID;

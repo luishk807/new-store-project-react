@@ -138,3 +138,16 @@ export const formatFormData = (form) => {
   }
   return formData;
 }
+
+export const formatFormDataRaw = (form) => {
+  let saveForm = '';
+  for (var i in form){
+    console.log(`test ${i} and ${form[i]}`)
+    if (saveForm) {
+      saveForm += `&${i}=${form[i]}`;
+    } else {
+      saveForm += `${i}=${form[i]}`;
+    }
+  }
+  return encodeURI(saveForm);
+}

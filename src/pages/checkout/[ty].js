@@ -7,10 +7,12 @@ import {
   TextField,
   CircularProgress,
 } from '@material-ui/core';
+import Head from 'next/head';
+import { v4 as uuidv4 } from 'uuid';
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
 import { useTranslation } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { defaultCountry, defaultPanama, FORM_SCHEMA } from '../../../config';
 import CreditCard from '../../components/CreditCard';
@@ -463,7 +465,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
       formSubmit['deliveryServiceId'] = !isUserPickUp && selectedDeliveryService ? selectedDeliveryService.id : null;
       console.log("submit", cartCreditCard)
 
-      dacartCreditCardta['device_fingerprint_id'] = deviceFingerPrint;
+      cartCreditCard['device_fingerprint_id'] = uuidv4();
 
       if (items_string && items_string.length) {
         const items_string_impl = items_string.join(",");
@@ -670,10 +672,6 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
 
   useEffect(() => {
     if (orderResult && Object.entries(orderResult).length) {
-      // get fingerprint
-      const getDeviceFingerPrint = cybs_dfprofiler(process.env.STGEORGE_MID,'test');
-      setDeviceFingerPrint(getDeviceFingerPrint);
-
       emptyCart();
       setShowCheckout(false);
       setThankyou(true);
@@ -696,6 +694,10 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   return (
     <LayoutTemplate>
      <div className={classes.root}>
+      <Head>
+        <title>My page title</title>
+        <script src={cybs_dfprofiler(process.env.STGEORGE_MID,'test')} />
+      </Head>
       {
           showCheckout && (
             <>

@@ -1,6 +1,7 @@
 // import Api from '../services/api';
 import axios, { post, put } from 'axios';
 import { getIP } from '../utils';
+import { formatFormDataRaw } from '../utils/products';
 import { v4 as uuidv4 } from 'uuid';
 import { cybs_dfprofiler } from '../utils/creditCard';
 import sha256 from 'crypto-js/sha256';
@@ -39,10 +40,10 @@ export const commaSeparate = (dataToSign) => {
 export const processPaymentCard = async(data) => {
   const myIP = await getIP();
   let referenceNum = uuidv4(); // user numero de orden - recomendado
-  // const headers = {
-  //   'Content-Type': 'application/json',
-  //   'Authorization': 'JWT'
-  // }
+  const headers = {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Accept': 'text/html, application/xhtml+xml, application/xml;q=0.9, image/webp, */*;q=0.8'
+  }
   data['access_key'] = process.env.STGEORGE_ACCESS_KEY;
   data['profile_id'] = process.env.STGEORGE_PROFILE_ID;
   data['transaction_uuid'] = referenceNum;
@@ -61,10 +62,13 @@ export const processPaymentCard = async(data) => {
   data['currency'] = "USD";
   const encrypt = await encryptSign(data);
   data['signature'] = encrypt;
+  const cleanForm = formatFormDataRaw(data);
+
+  console.log("cleaning", cleanForm)
   const apiUrl = process.env.STGEORGE_URL;
-  // const request = post(apiUrl, data, {
-  //   headers: headers
-  // })
-  const request = post(apiUrl, data)
+  const request = post(apiUrl, cleanForm, {
+    headers: headers
+  })
+  // const request = post(apiUrl, data)
   return request;
 }

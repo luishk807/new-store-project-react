@@ -76,15 +76,17 @@ const CreditCard = ({
 
   const handleFormChange = (e) => {
     const currForm = form;
+    const {name:key, value:val} = e.target;
     let valid = true;
-    switch(e.key) {
+    console.log("hey", key, ' and ', val)
+    switch(key) {
       case 'creditCardNumber': {
-        const cardType = getCardType(e.val);
-        currForm[e.key] = e.val;
-        if (e.val.length > 10) {
+        const cardType = getCardType(val);
+        currForm[key] = val;
+        if (val.length > 10) {
           if (cardType) {
-            currForm[e.key] = e.val;
-            currForm['creditCardType'] = cardType;
+            currForm[key] = val;
+            currForm['creditCardType'] = cardType.id;
           } else {
             valid = false;
             setSnack({
@@ -97,12 +99,13 @@ const CreditCard = ({
         break;
       }
       case 'creditCardExpireDate': {
-        const currDate = moment(e.val).format('MM-YYYY');
-        currForm[e.key] = currDate;
+        const currDate = moment(val).format('MM-YYYY');
+        currForm[key] = currDate;
         break;
       }
       default: {
-        currForm[e.key] = e.val;
+        console.log("jeeeeee", val, 'jey', key)
+        currForm[key] = val;
       }
     }
 
@@ -111,40 +114,41 @@ const CreditCard = ({
       formOnChange(currForm);
     }
   }
-  // const handleDeliveryForm = async (e) => {
-  //   let errorFound = false;
-  //   let key = '';
-  //   for (var i in form) {
-  //     errorFound = await validateForm(i, form[i]);
-  //     key = i;
-  //     if (errorFound){
-  //       saveErrors(i)
-  //     } else {
-  //       saveErrors(i, true, `${i} is required`)
-  //       break
-  //     }
-  //   }
-  //   if (!errorFound) {
-  //     setSnack({
-  //       severity: 'error',
-  //       open: true,
-  //       text: `Unable to login, ${i} is required`
-  //     })
-  //   } else {
-  //     onSubmit(form);
-  //   }
-  // }
+  const handleDeliveryForm = async (e) => {
+    let errorFound = false;
+    let key = '';
+    for (var i in form) {
+      errorFound = await validateForm(i, form[i]);
+      key = i;
+      if (errorFound){
+        saveErrors(i)
+      } else {
+        saveErrors(i, true, `${i} is required`)
+        break
+      }
+    }
+    if (!errorFound) {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `Unable to login, ${i} is required`
+      })
+    } else {
+      //onSubmit(form);
+      console.log("form", form)
+    }
+  }
 
 
-  // const saveErrors = async (key, err = false, str = '') => {
-  //   await setErrors({
-  //     ...errors,
-  //     [key]: {
-  //       error: err,
-  //       text: str,
-  //     }
-  //   });
-  // }
+  const saveErrors = async (key, err = false, str = '') => {
+    await setErrors({
+      ...errors,
+      [key]: {
+        error: err,
+        text: str,
+      }
+    });
+  }
 
   const configureError = async(fields) => {
     let newErrors = {}
@@ -219,19 +223,6 @@ const CreditCard = ({
                     <FormControl fullWidth variant="outlined">
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <DatePicker
-                              // name="creditCardExpireDate"
-                              // variant="inline"
-                              // openTo="year"
-                              // views={["year", "month"]}
-                              // label={removeCharacter( t(FORM_SCHEMA.creditCardExpireDate.tKey) )} 
-                              // InputAdornmentProps={{ position: "start" }}
-                              // value={form.creditCardExpireDate}
-                              // onChange={formOnChange}
-                              // error={errors.creditCardExpireDate.error}
-                              // helperText={errors.creditCardExpireDate.text} 
-                              // inputVariant="outlined"
-
-
                               autoOk
                               name="creditCardExpireDate"
                               variant="inline"
@@ -251,7 +242,7 @@ const CreditCard = ({
                           error={errors.creditCardCode.error}
                           helperText={errors.creditCardCode.text} 
                           name="creditCardCode"
-                          value={form.creditCardCode}
+                          defaultValue={form.creditCardCode}
                           label={removeCharacter( t(FORM_SCHEMA.creditCardCode.tKey) )} 
                           onChange={handleFormChange}
                           placeholder="Placeholder"
@@ -260,7 +251,7 @@ const CreditCard = ({
                     </FormControl>
                   </Grid>
                   <Grid item lg={12}>
-                    <Button className={`mainButton ${classes.processBtn}`}>
+                    <Button onClick={handleDeliveryForm} className={`mainButton ${classes.processBtn}`}>
                         { 
                           showPlaceOrderLoader ? (
                             <CircularProgress color='inherit' />

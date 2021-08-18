@@ -465,7 +465,8 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
       formSubmit['deliveryServiceId'] = !isUserPickUp && selectedDeliveryService ? selectedDeliveryService.id : null;
       console.log("submit", cartCreditCard)
 
-      cartCreditCard['device_fingerprint_id'] = uuidv4();
+      // const getDeviceFingerPrint = await cybs_dfprofiler(process.env.STGEORGE_MID,'test');
+      cartCreditCard['device_fingerprint_id'] = new Date().getTime();
 
       if (items_string && items_string.length) {
         const items_string_impl = items_string.join(",");

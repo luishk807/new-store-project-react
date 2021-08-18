@@ -39,7 +39,7 @@ export const commaSeparate = (dataToSign) => {
 
 export const processPaymentCard = async(data) => {
   const myIP = await getIP();
-  let referenceNum = uuidv4(); // user numero de orden - recomendado
+  let referenceNum = new Date().toISOString(); // user numero de orden - recomendado
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',

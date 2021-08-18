@@ -695,10 +695,10 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   return (
     <LayoutTemplate>
      <div className={classes.root}>
-      <Head>
+      {/* <Head>
         <title>My page title</title>
         <script src={cybs_dfprofiler(process.env.STGEORGE_MID,'test')} />
-      </Head>
+      </Head> */}
       {
           showCheckout && (
             <>
@@ -762,7 +762,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                           <CreditCard onChange={handleCreditCardFormChange} />
                       </Grid>
                       {/* end of credit card */}
-                      <Grid item className={classes.itemSection} lg={12} xs={12}>
+                      {/* <Grid item className={classes.itemSection} lg={12} xs={12}>
                         <Button onClick={handlePlaceOrder} className={`mainButton ${classes.processBtn}`}>
                             { 
                               showPlaceOrderLoader ? (
@@ -772,7 +772,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                               )
                             }
                         </Button>
-                      </Grid>
+                      </Grid> */}
                     </Grid>
                   </Grid>
                   <Grid item className={classes.itemSection} lg={5} xs={12}>

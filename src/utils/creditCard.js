@@ -68,7 +68,7 @@ export const cybs_dfprofiler = (merchantID, environment) => {
   }
 
   var sessionID =   new Date().getTime();
-  var str = "https://h.online-metrix.net/fp/tags.js?org_id=" + org_id + "&session_id=" + merchantID + sessionID + "&m=2";
+  var str = `https://h.online-metrix.net/fp/tags.js?org_id=${org_id}&session_id=${merchantID}${sessionID}&m=2`;
 
   // var paragraphTM = document.createElement("p");
   // str = "background:url(https://h.online-metrix.net/fp/clear.png?org_id=" + org_id + "&session_id=" + merchantID + sessionID + "&m=1)";

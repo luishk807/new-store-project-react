@@ -23,7 +23,7 @@ import moment from 'moment'
 import { useTranslation } from 'next-i18next'
 import ColorPicker from 'material-ui-color-picker'
 import DateFnsUtils from "@date-io/date-fns";
-import { createMuiTheme,ThemeProvider  } from "@material-ui/core/styles";
+import { createTheme,ThemeProvider  } from "@material-ui/core/styles";
 import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 
 import { loadMainOptions } from '../../../utils/form';
@@ -40,7 +40,7 @@ import Icons from '../Icons';
 import DialogModal from '../DialogModal';
 import ProgressBar from '../ProgressBar';
 
-const defaultMaterialTheme = createMuiTheme({
+const defaultMaterialTheme = createTheme({
   palette: {
     primary: {
       main: 'rgb(248,190,12)',

@@ -2,6 +2,7 @@ import React from 'react'
 import NextDocument, { Html, Head, Main, NextScript } from 'next/document'
 import { ServerStyleSheet as StyledComponentSheets } from 'styled-components'
 import { ServerStyleSheets as MaterialUiServerStyleSheets } from '@material-ui/core/styles'
+import { cybs_dfprofiler } from '../utils/creditCard';
 export default class Document extends NextDocument {
   static async getInitialProps (ctx) {
     const styledComponentSheet = new StyledComponentSheets()
@@ -41,6 +42,7 @@ export default class Document extends NextDocument {
           <link rel="manifest" href="/favicons/site.webmanifest"/>
           <meta name="msapplication-TileColor" content="#f8be15"/>
           <meta name="theme-color" content="#ffffff"/>
+          <script src={cybs_dfprofiler(process.env.STGEORGE_MID,'test')} />
           {/* style for react-slick */}
           <link rel="stylesheet" type="text/css" charSet="UTF-8" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"/>
           <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css" />

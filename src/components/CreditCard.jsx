@@ -14,6 +14,7 @@ import { FORM_SCHEMA } from '../../config';
 import { getCardType } from '../utils/creditCard';
 import ActionForm from './common/Form/Action/Add';
 import { validateForm } from '../utils/form';
+import { removeCharacter } from '../utils';
 import Snackbar from './common/Snackbar';
 import Typography from './common/Typography';
 import { useTranslation } from 'next-i18next'
@@ -64,6 +65,7 @@ const CreditCard = ({
 }) => {
   const [errors, setErrors] = useState(null);
   const [form, setForm] = useState({});
+  const [showPlaceOrderLoader, setShowPlaceOrderLoader] = useState(false);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const { t } = useTranslation('order')
   const [snack, setSnack] = useState({
@@ -173,7 +175,7 @@ const CreditCard = ({
 
   return errors && (
       <div className={classes.root}>
-        <ActionForm 
+        {/* <ActionForm 
           classes={{root: classes.formRoot, formItems: classes.formItems}}
           formSection={{
             name: "Tarjeta de Credito"
@@ -183,8 +185,8 @@ const CreditCard = ({
           entryForm={form} 
           showCancel={false}
           type="dynamic"
-        />
-        {/* <form className={classes.formFoot} noValidate autoComplete="off">
+        /> */}
+        <form className={classes.formFoot} noValidate autoComplete="off">
             <Grid item className={classes.itemSection} lg={12} xs={12}>
                 <Grid container className={classes.mainContainer}>
                   <Grid item lg={12} xs={12} className={classes.formItem}>
@@ -194,7 +196,7 @@ const CreditCard = ({
                           helperText={errors.creditCardName.text} 
                           name="creditCardName"
                           defaultValue={form.creditCardName}
-                          onChange={formOnChange}
+                          onChange={handleFormChange}
                           label={removeCharacter( t(FORM_SCHEMA.creditCardName.tKey) )} 
                           variant="outlined" 
                         />
@@ -207,7 +209,7 @@ const CreditCard = ({
                           helperText={errors.creditCardNumber.text} 
                           defaultValue={form.creditCardNumber}
                           name="creditCardNumber"
-                          onChange={formOnChange}
+                          onChange={handleFormChange}
                           label="Credit card number"
                           variant="outlined" 
                         />
@@ -217,16 +219,27 @@ const CreditCard = ({
                     <FormControl fullWidth variant="outlined">
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
                             <DatePicker
+                              // name="creditCardExpireDate"
+                              // variant="inline"
+                              // openTo="year"
+                              // views={["year", "month"]}
+                              // label={removeCharacter( t(FORM_SCHEMA.creditCardExpireDate.tKey) )} 
+                              // InputAdornmentProps={{ position: "start" }}
+                              // value={form.creditCardExpireDate}
+                              // onChange={formOnChange}
+                              // error={errors.creditCardExpireDate.error}
+                              // helperText={errors.creditCardExpireDate.text} 
+                              // inputVariant="outlined"
+
+
+                              autoOk
                               name="creditCardExpireDate"
                               variant="inline"
                               openTo="year"
                               views={["year", "month"]}
-                              label={removeCharacter( t(FORM_SCHEMA.creditCardExpireDate.tKey) )} 
-                              InputAdornmentProps={{ position: "start" }}
                               value={form.creditCardExpireDate}
-                              onChange={formOnChange}
-                              error={errors.creditCardExpireDate.error}
-                              helperText={errors.creditCardExpireDate.text} 
+                              label={removeCharacter( t(FORM_SCHEMA.creditCardExpireDate.tKey) )} 
+                              onChange={(e) => handleFormChange({target: {value: e, name: "creditCardExpireDate"}})}
                               inputVariant="outlined"
                             />
                         </MuiPickersUtilsProvider>
@@ -240,15 +253,26 @@ const CreditCard = ({
                           name="creditCardCode"
                           value={form.creditCardCode}
                           label={removeCharacter( t(FORM_SCHEMA.creditCardCode.tKey) )} 
-                          onChange={formOnChange}
+                          onChange={handleFormChange}
                           placeholder="Placeholder"
                           variant="outlined" 
                         />
                     </FormControl>
                   </Grid>
+                  <Grid item lg={12}>
+                    <Button className={`mainButton ${classes.processBtn}`}>
+                        { 
+                          showPlaceOrderLoader ? (
+                            <CircularProgress color='inherit' />
+                          ) : (
+                            t('place_your_order')
+                          )
+                        }
+                    </Button>
+                  </Grid>
                 </Grid>
             </Grid>
-        </form> */}
+        </form>
         <Snackbar open={snack.open} severity={snack.severity} onClose={()=>setSnack({...snack,open: false, text: ''})} content={snack.text} />
       </div>
   );

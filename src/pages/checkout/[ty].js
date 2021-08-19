@@ -422,10 +422,14 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
 
       if (selectedPaymentOption.id == 3) {
           //credit card
-          cartCreditCard['card_type'] = copyFormCheck.creditCardType && copyFormCheck.creditCardType.id ? copyFormCheck.creditCardType.id : null;
-          cartCreditCard['card_number'] = copyFormCheck.creditCardNumber;
-          cartCreditCard['card_expiry_date'] = copyFormCheck.creditCardExpireDate;
-          cartCreditCard['card_cvn'] = copyFormCheck.creditCardCode;
+          // cartCreditCard['card_type'] = copyFormCheck.creditCardType && copyFormCheck.creditCardType.id ? copyFormCheck.creditCardType.id : null;
+          // cartCreditCard['card_number'] = copyFormCheck.creditCardNumber;
+          // cartCreditCard['card_expiry_date'] = copyFormCheck.creditCardExpireDate;
+          // cartCreditCard['card_cvn'] = copyFormCheck.creditCardCode;
+          cartCreditCard['card_type'] = '001';
+          cartCreditCard['card_number'] = 4111111111111111;
+          cartCreditCard['card_expiry_date'] = '12-2023';
+          cartCreditCard['card_cvn'] = 333;
           cartCreditCard['payment_method'] = "card";
           cartCreditCard['bill_to_forename'] = copyFormCheck.name;
           cartCreditCard['bill_to_surname'] = copyFormCheck.name;
@@ -759,7 +763,7 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                       }
                       {/* credit card */}
                       <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
-                          <CreditCard onChange={handleCreditCardFormChange} />
+                          <CreditCard formData={form} onChange={handleCreditCardFormChange} />
                       </Grid>
                       {/* end of credit card */}
                       {/* <Grid item className={classes.itemSection} lg={12} xs={12}>

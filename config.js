@@ -694,7 +694,7 @@ export const FORM_SCHEMA = {
     tKey: "credit_card_number"
   },
   creditCardExpireDate: {
-    type: FORM_TYPE.dateMonthYear,
+    type: FORM_TYPE.text,
     label: 'Credit Card Expiration Date',
     tKey: "credit_card_expiration_date"
   },

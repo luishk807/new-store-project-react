@@ -1,9 +1,9 @@
 // import Api from '../services/api';
 import axios, { post, put } from 'axios';
-import { getIP } from '../utils';
+import { getIP} from '../utils';
 import { formatFormDataRaw } from '../utils/products';
 import { v4 as uuidv4 } from 'uuid';
-import { cybs_dfprofiler } from '../utils/creditCard';
+import { cybs_dfprofiler, convertToSignatureDate } from '../utils/creditCard';
 import sha256 from 'crypto-js/sha256';
 import Base64 from 'crypto-js/enc-base64';
 
@@ -32,7 +32,6 @@ export const buildDataToSign = (params) => {
   return commaSeparate(dataToSign);
 }
 
-
 export const commaSeparate = (dataToSign) => {
   return dataToSign.join(',');
 }
@@ -52,7 +51,7 @@ export const processPaymentCard = async(data) => {
   data['merchant_defined_data3'] = "https://www.avenidaz.com";
   data['tax_indicator'] = "Y";
   data['unsigned_field_names'] = 'card_type,card_number,card_expiry_date,card_cvn';
-  data['signed_date_time'] = new Date().toISOString();
+  data['signed_date_time'] = convertToSignatureDate(new Date());
   data['customer_ip_address'] = myIP;
   data['reference_number'] = referenceNum;
   data['user_po'] = referenceNum;

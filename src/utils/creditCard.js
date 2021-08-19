@@ -55,6 +55,11 @@ export const getCardType = (card) => {
 
 }
 
+export const convertToSignatureDate = (d) => {
+  const [ isoDate ] = d.toISOString().split(".");
+
+  return `${isoDate}Z`;
+}
 
 // Información de identificación del dispositivo  
 // Ejecución del javascrips cybs_dfprofiler   parametos de entrada (merchantID =tc_pa_0xxxxxxxxx, environment =live/test) en la página de pago

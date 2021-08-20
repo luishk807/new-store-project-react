@@ -1,0 +1,37 @@
+access_key: 11751c5606063b2e83a0c742af7fae78
+profile_id: 50D84192-0CCA-42B8-9741-2546B98C2337
+card_type: 001
+card_expiry_date: 12-2021
+card_number: 4111111111111111
+card_cvn: 333
+bill_to_forename: test
+bill_to_surname: test
+bill_to_email: test@test.com
+bill_to_address_line1: 1 test street
+bill_to_address_city: test
+bill_to_address_country: US
+device_fingerprint_id: 1629431652127
+device_fingerprint_raw: true
+signature: s6ixIza5I8Ce6HeborLGtE9sVvpIhSnKSfMX/oeLY7U=
+signed_date_time: 2021-08-20T03:54:12Z
+signed_field_names: transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency,payment_method,bill_to_forename,bill_to_surname,bill_to_email,bill_to_phone,bill_to_address_line1,bill_to_address_city,bill_to_address_state,bill_to_address_country,bill_to_address_postal_cod,override_custom_receipt_page,merchant_defined_data2,merchant_defined_data3,user_po,line_item_count,device_fingerprint_id,customer_ip_address,tax_indicator,bill_to_address_postal_code,item_0_quantity,item_0_name,item_0_sku,item_0_tax_amount,item_0_unit_price
+unsigned_field_names: card_type,card_number,card_expiry_date,card_cvn
+merchant_defined_data2: Avenidaz.com
+merchant_defined_data3: https://www.avenidaz.com
+override_custom_receipt_page: https://www.avenidaz.com/stgeorgeprocess.js
+currency: USD
+locale: es-co
+payment_method: card
+reference_number: 1629431652127
+tax_indicator: Y
+transaction_type: sale
+transaction_uuid: 1629431652127
+item_0_quantity: 1
+item_0_sku: 133433
+item_0_name: test product
+item_0_unit_price: 33.00
+item_0_tax_amount: 7.9
+line_item_count: 1
+user_po: 1629431652127
+amount: 3333
+customer_ip_address: 154.21.22.7

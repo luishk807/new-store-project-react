@@ -1,4 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
+import sha256 from 'crypto-js/sha256';
+import Base64 from 'crypto-js/enc-base64';
 
 export const getCardType = (card) => {
   let type = null;
@@ -55,11 +57,44 @@ export const getCardType = (card) => {
 
 }
 
+export const encryptSign = async(params) => {
+  const dataComma = buildDataToSign(params);
+  console.log("dataCOmma", dataComma)
+  return signData(dataComma, process.env.STGEORGE_SECREY_KEY);
+}
+
+export const signData = (data, secretKey = null) => {
+   // return base64_encode(hash_hmac('sha256', $data, $secretKey, true));
+   return Base64.stringify(sha256(data, secretKey));
+}
+
+export const buildDataToSign = (params) => {
+  let dataToSign = [];
+  const signedFieldNames = params["signed_field_names"].split(",");
+  signedFieldNames.forEach(item => {
+    dataToSign.push(`${item}=${params[item]}`);
+  })
+
+  return commaSeparate(dataToSign);
+}
+
+export const commaSeparate = (dataToSign) => {
+  return dataToSign.join(',');
+}
+
+
 export const convertToSignatureDate = (d) => {
   const [ isoDate ] = d.toISOString().split(".");
 
   return `${isoDate}Z`;
 }
+
+export const uniqid = (prefix = "", random = false) => {
+  const sec = Date.now() * 1000 + Math.random() * 1000;
+  const id = sec.toString(16).replace(/\./g, "").padEnd(14, "0");
+  return `${prefix}${id}${random ? `.${Math.trunc(Math.random() * 100000000)}`:""}`;
+};
+
 
 // Información de identificación del dispositivo  
 // Ejecución del javascrips cybs_dfprofiler   parametos de entrada (merchantID =tc_pa_0xxxxxxxxx, environment =live/test) en la página de pago

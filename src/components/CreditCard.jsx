@@ -228,7 +228,7 @@ const CreditCard = ({
       signed_date_time: convertToSignatureDate(new Date()),
       reference_number: referenceNum,
       user_po: referenceNum,
-      override_custom_receipt_page: "https://www.avenidaz.com/stgeorgeprocess.js",
+      override_custom_receipt_page: "https://feature507.avenidaz.com/stgeorgeprocess",
       locale: 'en-US',
       device_fingerprint_raw: 'true',
       device_fingerprint_id: new Date().getTime(),

@@ -44,6 +44,9 @@ module.exports = {
     STGEORGE_SECREY_KEY: process.env.STGEORGE_SECREY_KEY,
     STGEORGE_MID: process.env.STGEORGE_MID,
     STGEORGE_URL: process.env.STGEORGE_URL,
+    STGEORGE_ORG_ID_LIVE: process.env.STGEORGE_ORG_ID_LIVE,
+    STGEORGE_ORG_ID_TEST: process.env.STGEORGE_ORG_ID_TEST,
+    STGEORGE_RETURN_URL: process.env.STGEORGE_RETURN_URL,
     IMAGE_URL: process.env.IMAGE_URL,
     GTM_ID: process.env.GTM_ID
   },

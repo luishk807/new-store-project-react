@@ -9,7 +9,12 @@ import sha256 from 'crypto-js/sha256';
 import Base64 from 'crypto-js/enc-base64';
 
 export const getSignature = async(data) => {
-  return Api.get(`st-george-bank`, data);
+  let dataToSign = {};
+  const signedFieldNames = data["signed_field_names"].split(",");
+  signedFieldNames.forEach(item => {
+    dataToSign[item]=`${data[item]}`;
+  })
+  return Api.get(`st-george-bank`, dataToSign);
 }
 
 export const uniqid = (prefix = "", random = false) => {

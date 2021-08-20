@@ -1,11 +1,16 @@
 // import Api from '../services/api';
 import axios, { post, put } from 'axios';
+import Api from '../services/api';
 import { getIP} from '../utils';
 import { formatFormDataRaw } from '../utils/products';
 import { v4 as uuidv4 } from 'uuid';
 import { cybs_dfprofiler, convertToSignatureDate } from '../utils/creditCard';
 import sha256 from 'crypto-js/sha256';
 import Base64 from 'crypto-js/enc-base64';
+
+export const getSignature = async(data) => {
+  return Api.get(`st-george-bank`, data);
+}
 
 export const uniqid = (prefix = "", random = false) => {
   const sec = Date.now() * 1000 + Math.random() * 1000;

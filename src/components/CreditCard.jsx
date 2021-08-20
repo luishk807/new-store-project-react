@@ -26,7 +26,7 @@ import Snackbar from './common/Snackbar';
 import Typography from './common/Typography';
 import { useTranslation } from 'next-i18next'
 import { ContactSupportOutlined } from '@material-ui/icons';
-
+import { getSignature } from '../api/stGeorgePayment';
 import { v4 as uuidv4 } from 'uuid';
 import sha256 from 'crypto-js/sha256';
 import Base64 from 'crypto-js/enc-base64';
@@ -160,8 +160,9 @@ const CreditCard = ({
         ...creditCardForm,
         creditCardExpireDate: currDate
       })
-      const encrypt = await encryptSign(formData);
-      console.log("encry", encrypt)
+      // const encrypt = await encryptSign(formData);
+      const encrypt = await getSignature(formData)
+      console.log("final", encrypt)
       setSignatureField(encrypt)
       //set form
 
@@ -213,7 +214,7 @@ const CreditCard = ({
     const fields = {
       card_number: 4111111111111111,
       card_expiry_date: "12-2021",
-      card_cvn: '333',
+      card_cvn: '3333',
       payment_method: 'card',
       card_type:"001",
       access_key: process.env.STGEORGE_ACCESS_KEY,

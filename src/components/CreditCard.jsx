@@ -155,14 +155,15 @@ const CreditCard = ({
     } else {
       //onSubmit(form);
       console.log("form", formData)
-      const currDate = moment(creditCardForm.creditCardExpireDate).format('MM-YYYY');
-      setCreditCardForm({
-        ...creditCardForm,
-        creditCardExpireDate: currDate
-      })
-      const encrypt = await encryptSign(formData);
-      console.log("encry", encrypt)
-      setSignatureField(encrypt)
+      // const currDate = moment(creditCardForm.creditCardExpireDate).format('MM-YYYY');
+      // setCreditCardForm({
+      //   ...creditCardForm,
+      //   creditCardExpireDate: currDate
+      // })
+      // const encrypt = await encryptSign(formData);
+      // console.log("encry", encrypt)
+      // setSignatureField(encrypt)
+      formRef.current.submit();
       //set form
 
 
@@ -210,44 +211,74 @@ const CreditCard = ({
 
     fethIP();
     let referenceNum = new Date().getTime(); // user numero de orden - 
-    const fields = {
-      card_number: 4111111111111111,
-      card_expiry_date: "12-2021",
+    // const fields = {
+    //   card_number: 4111111111111111,
+    //   card_expiry_date: "12-2021",
+    //   card_cvn: '333',
+    //   payment_method: 'card',
+    //   card_type:"001",
+    //   access_key: process.env.STGEORGE_ACCESS_KEY,
+    //   profile_id: process.env.STGEORGE_PROFILE_ID,
+    //   transaction_uuid: referenceNum,
+    //   merchant_defined_data2: "Avenidaz.com",
+    //   merchant_defined_data3: "https://www.avenidaz.com",
+    //   tax_indicator: "Y",
+    //   unsigned_field_names: 'card_type,card_number,card_expiry_date,card_cvn',
+    //   signed_field_names: 'transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency,payment_method,bill_to_forename,bill_to_surname,bill_to_email,bill_to_phone,bill_to_address_line1,bill_to_address_city,bill_to_address_state,bill_to_address_country,bill_to_address_postal_code,override_custom_receipt_page,merchant_defined_data2,merchant_defined_data3,user_po,line_item_count,device_fingerprint_id,device_fingerprint_raw,customer_ip_address,tax_indicator,item_0_quantity,item_0_name,item_0_sku,item_0_tax_amount,item_0_unit_price',
+    //   signed_date_time: convertToSignatureDate(new Date()),
+    //   reference_number: referenceNum,
+    //   user_po: referenceNum,
+    //   override_custom_receipt_page: "https://www.avenidaz.com/stgeorgeprocess.js",
+    //   locale: 'en-US',
+    //   device_fingerprint_raw: 'true',
+    //   device_fingerprint_id: new Date().getTime(),
+    //   transaction_type: "sale",
+    //   currency: "DOP",
+    //   amount:3333,
+    //   bill_to_forename:"test",
+    //   bill_to_surname:"test",
+    //   bill_to_email:"test@test.com",
+    //   bill_to_address_line1:"1 test street",
+    //   bill_to_address_city:"test",
+    //   bill_to_address_country:"US",
+    //   bill_to_address_postal_code:"12222",
+    //   customer_ip_address:'3333',
+    //   item_0_quantity:"1",
+    //   item_0_sku:"133433",
+    //   item_0_name:"test product",
+    //   item_0_unit_price:"33.00",
+    //   item_0_tax_amount:"7.9",
+    //   line_item_count:"1"
+    // }
+
+        const fields = {
+      card_number: "4111111111111111",
+      card_expiry_date: "12-2024",
       card_cvn: '333',
       payment_method: 'card',
       card_type:"001",
-      access_key: process.env.STGEORGE_ACCESS_KEY,
-      profile_id: process.env.STGEORGE_PROFILE_ID,
-      transaction_uuid: referenceNum,
-      merchant_defined_data2: "Avenidaz.com",
-      merchant_defined_data3: "https://www.avenidaz.com",
+      access_key: `${process.env.STGEORGE_ACCESS_KEY}`,
+      profile_id: `${process.env.STGEORGE_PROFILE_ID}`,
+      transaction_uuid: "eb5238c0-4c29-40bc-a2fd-10fec841bbd2",
       tax_indicator: "Y",
-      unsigned_field_names: 'card_type,card_number,card_expiry_date,card_cvn',
-      signed_field_names: 'transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency,payment_method,bill_to_forename,bill_to_surname,bill_to_email,bill_to_phone,bill_to_address_line1,bill_to_address_city,bill_to_address_state,bill_to_address_country,bill_to_address_postal_code,override_custom_receipt_page,merchant_defined_data2,merchant_defined_data3,user_po,line_item_count,device_fingerprint_id,device_fingerprint_raw,customer_ip_address,tax_indicator,item_0_quantity,item_0_name,item_0_sku,item_0_tax_amount,item_0_unit_price',
-      signed_date_time: convertToSignatureDate(new Date()),
-      reference_number: referenceNum,
-      user_po: referenceNum,
-      override_custom_receipt_page: "https://www.avenidaz.com/stgeorgeprocess.js",
+      unsigned_field_names: 'card_number',
+      signed_field_names: 'access_key,amount,bill_to_address_city,bill_to_address_country,bill_to_address_line1,bill_to_email,bill_to_forename,bill_to_surname,card_expiry_date,card_type,currency,customer_ip_address,device_fingerprint_id,device_fingerprint_raw,locale,payment_method,profile_id,reference_number,signed_date_time,signed_field_names,transaction_type,transaction_uuid,unsigned_field_names',
+      signed_date_time: "2021-08-20T11:33:43Z",
+      reference_number: '593aff18-ec39-4b16-a19a-c0772a7e9c77',
       locale: 'en-US',
       device_fingerprint_raw: 'true',
-      device_fingerprint_id: new Date().getTime(),
-      transaction_type: "sale",
+      device_fingerprint_id: "eb5238c0-4c29-40bc-a2fd-10fec841bbd2",
+      transaction_type: "authorization,create_payment_token",
       currency: "DOP",
-      amount:3333,
-      bill_to_forename:"test",
-      bill_to_surname:"test",
-      bill_to_email:"test@test.com",
-      bill_to_address_line1:"1 test street",
-      bill_to_address_city:"test",
+      amount:'3333',
+      bill_to_forename:"Elena",
+      bill_to_surname:"Tonra",
+      bill_to_email:"email@fake.test",
+      bill_to_address_line1:"Somewhere",
+      bill_to_address_city:"Santo Domingo",
       bill_to_address_country:"US",
       bill_to_address_postal_code:"12222",
       customer_ip_address:'3333',
-      item_0_quantity:"1",
-      item_0_sku:"133433",
-      item_0_name:"test product",
-      item_0_unit_price:"33.00",
-      item_0_tax_amount:"7.9",
-      line_item_count:"1"
     }
 
     configureError(fields)
@@ -260,11 +291,11 @@ const CreditCard = ({
     })
   }, [])
 
-  useEffect(() => {
-    if (signatureField) {
-      formRef.current.submit();
-    }
-  },[signatureField])
+  // useEffect(() => {
+  //   if (signatureField) {
+  //     formRef.current.submit();
+  //   }
+  // },[signatureField])
 
   // useEffect(() => {
   //   if (formRef.current) {
@@ -303,13 +334,14 @@ const CreditCard = ({
           <input type="hidden" name="bill_to_address_postal_code" value={formData.bill_to_address_postal_code}  />
           <input type="hidden" name="device_fingerprint_id" value={formData.device_fingerprint_id} />
           <input type="hidden" name="device_fingerprint_raw" value={formData.device_fingerprint_raw} />
-          <input type="hidden" name="signature" value={signatureField || ''} />
+          {/* <input type="hidden" name="signature" value={signatureField || ''} /> */}
+          <input type="hidden" name="signature" value="LvIiuP4gVVRSo2dvRDzylWi68t3hkh5l5ff0KzC/nDo=" />
           <input type="hidden" name="signed_date_time" value={formData.signed_date_time} />
           <input type="hidden" name="signed_field_names" value={formData.signed_field_names} />
           <input type="hidden" name="unsigned_field_names" value={formData.unsigned_field_names} />
-          <input type="hidden" name="merchant_defined_data2" value={formData.merchant_defined_data2}/>
+          {/* <input type="hidden" name="merchant_defined_data2" value={formData.merchant_defined_data2}/>
           <input type="hidden" name="merchant_defined_data3" value={formData.merchant_defined_data3} />
-          <input type="hidden" name="override_custom_receipt_page" value={formData.override_custom_receipt_page} />
+          <input type="hidden" name="override_custom_receipt_page" value={formData.override_custom_receipt_page} /> */}
           <input type="hidden" name="currency" value={formData.currency} />
           <input type="hidden" name="locale" value={formData.locale} />
           <input type="hidden" name="payment_method" value={formData.payment_method} />
@@ -317,15 +349,16 @@ const CreditCard = ({
           <input type="hidden" name="tax_indicator" value={formData.tax_indicator} />
           <input type="hidden" name="transaction_type" value={formData.transaction_type} />
           <input type="hidden" name="transaction_uuid" value={formData.transaction_uuid} />
-          <input type="hidden" name="item_0_quantity" value={formData.item_0_quantity} />
+          {/* <input type="hidden" name="item_0_quantity" value={formData.item_0_quantity} />
           <input type="hidden" name="item_0_sku" value={formData.item_0_sku} />
           <input type="hidden" name="item_0_name" value={formData.item_0_name} />
           <input type="hidden" name="item_0_unit_price" value={formData.item_0_unit_price} />
           <input type="hidden" name="item_0_tax_amount" value={formData.item_0_tax_amount} />
-          <input type="hidden" name="line_item_count" value={formData.line_item_count} />
-          <input type="hidden" name="user_po" value={formData.user_po} />
+          <input type="hidden" name="line_item_count" value={formData.line_item_count} /> */}
+          {/* <input type="hidden" name="user_po" value={formData.user_po} /> */}
           <input type="hidden" name="amount" value={formData.amount} />
-          <input type="hidden" name="customer_ip_address" value={myIP || ''} />
+          {/* <input type="hidden" name="customer_ip_address" value={myIP || ''} /> */}
+          <input type="hidden" name="customer_ip_address" value={formData.customer_ip_address} />
 
             <Grid item className={classes.itemSection} lg={12} xs={12}>
                 <Grid container className={classes.mainContainer}>

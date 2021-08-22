@@ -220,15 +220,15 @@ const CreditCard = ({
       access_key: process.env.STGEORGE_ACCESS_KEY,
       profile_id: process.env.STGEORGE_PROFILE_ID,
       transaction_uuid: referenceNum,
-      merchant_defined_data2: "Avenidaz.com",
-      merchant_defined_data3: "https://www.avenidaz.com",
+      // merchant_defined_data2: "Avenidaz.com",
+      // merchant_defined_data3: "https://www.avenidaz.com",
       tax_indicator: "Y",
       unsigned_field_names: 'card_type,card_number,card_expiry_date,card_cvn',
-      signed_field_names: 'transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency,payment_method,bill_to_forename,bill_to_surname,bill_to_email,bill_to_phone,bill_to_address_line1,bill_to_address_city,bill_to_address_state,bill_to_address_country,bill_to_address_postal_code,override_custom_receipt_page,merchant_defined_data2,merchant_defined_data3,user_po,line_item_count,device_fingerprint_id,device_fingerprint_raw,customer_ip_address,tax_indicator,item_0_quantity,item_0_name,item_0_sku,item_0_tax_amount,item_0_unit_price',
+      signed_field_names: 'access_key,amount,bill_to_address_city,bill_to_address_country,bill_to_address_line1,bill_to_email,bill_to_forename,bill_to_surname,currency,device_fingerprint_id,device_fingerprint_raw,locale,payment_method,profile_id,reference_number,signed_date_time,signed_field_names,transaction_type,transaction_uuid,unsigned_field_names',
       signed_date_time: convertToSignatureDate(new Date()),
       reference_number: referenceNum,
-      user_po: referenceNum,
-      override_custom_receipt_page: process.env.STGEORGE_RETURN_URL,
+      // user_po: referenceNum,
+      // override_custom_receipt_page: process.env.STGEORGE_RETURN_URL,
       locale: 'es-co',
       device_fingerprint_raw: 'true',
       device_fingerprint_id: new Date().getTime(),
@@ -242,13 +242,13 @@ const CreditCard = ({
       bill_to_address_city:"test",
       bill_to_address_country:"US",
       bill_to_address_postal_code:"12222",
-      customer_ip_address:'3333',
-      item_0_quantity:"1",
-      item_0_sku:"133433",
-      item_0_name:"test product",
-      item_0_unit_price:"33.00",
-      item_0_tax_amount:"7.9",
-      line_item_count:"1"
+      // customer_ip_address:'3333',
+      // item_0_quantity:"1",
+      // item_0_sku:"133433",
+      // item_0_name:"test product",
+      // item_0_unit_price:"33.00",
+      // item_0_tax_amount:"7.9",
+      // line_item_count:"1"
     }
 
     configureError(fields)
@@ -308,25 +308,25 @@ const CreditCard = ({
           <input type="hidden" name="signed_date_time" value={formData.signed_date_time} />
           <input type="hidden" name="signed_field_names" value={formData.signed_field_names} />
           <input type="hidden" name="unsigned_field_names" value={formData.unsigned_field_names} />
-          <input type="hidden" name="merchant_defined_data2" value={formData.merchant_defined_data2}/>
-          <input type="hidden" name="merchant_defined_data3" value={formData.merchant_defined_data3} />
-          <input type="hidden" name="override_custom_receipt_page" value={formData.override_custom_receipt_page} />
+          {/* <input type="hidden" name="merchant_defined_data2" value={formData.merchant_defined_data2}/>
+          <input type="hidden" name="merchant_defined_data3" value={formData.merchant_defined_data3} /> */}
+          {/* <input type="hidden" name="override_custom_receipt_page" value={formData.override_custom_receipt_page} /> */}
           <input type="hidden" name="currency" value={formData.currency} />
           <input type="hidden" name="locale" value={formData.locale} />
           <input type="hidden" name="payment_method" value={formData.payment_method} />
           <input type="hidden" name="reference_number" value={formData.reference_number} />
-          <input type="hidden" name="tax_indicator" value={formData.tax_indicator} />
+          {/* <input type="hidden" name="tax_indicator" value={formData.tax_indicator} /> */}
           <input type="hidden" name="transaction_type" value={formData.transaction_type} />
           <input type="hidden" name="transaction_uuid" value={formData.transaction_uuid} />
-          <input type="hidden" name="item_0_quantity" value={formData.item_0_quantity} />
+          {/* <input type="hidden" name="item_0_quantity" value={formData.item_0_quantity} />
           <input type="hidden" name="item_0_sku" value={formData.item_0_sku} />
           <input type="hidden" name="item_0_name" value={formData.item_0_name} />
           <input type="hidden" name="item_0_unit_price" value={formData.item_0_unit_price} />
           <input type="hidden" name="item_0_tax_amount" value={formData.item_0_tax_amount} />
-          <input type="hidden" name="line_item_count" value={formData.line_item_count} />
-          <input type="hidden" name="user_po" value={formData.user_po} />
+          <input type="hidden" name="line_item_count" value={formData.line_item_count} /> */}
+          {/* <input type="hidden" name="user_po" value={formData.user_po} /> */}
           <input type="hidden" name="amount" value={formData.amount} />
-          <input type="hidden" name="customer_ip_address" value={myIP || ''} />
+          {/* <input type="hidden" name="customer_ip_address" value={myIP || ''} /> */}
 
             <Grid item className={classes.itemSection} lg={12} xs={12}>
                 <Grid container className={classes.mainContainer}>

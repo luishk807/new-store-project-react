@@ -60,12 +60,22 @@ export const getCardType = (card) => {
 export const encryptSign = async(params) => {
   const dataComma = buildDataToSign(params);
   console.log("dataCOmma", dataComma)
-  return signData(dataComma, process.env.STGEORGE_SECREY_KEY);
+  return signData(dataComma, "2fd54ee1a04f43f584350fed975d64ef509b4455ed6e429eb4215b32929f844bc5ceb23a6c1c49fc8409e306bbce922e76c9cff0a7924b6bbe0abed63c13e54a13eee3e8eaf84a91849a2f6848d83523e3d8fbf79b3a437288055b81d4830a5f1ddb14df6a164d1383b0a30331b5a4336669ecd6f6a248108bc139ed96fa8fa8");
 }
 
 export const signData = (data, secretKey = null) => {
    // return base64_encode(hash_hmac('sha256', $data, $secretKey, true));
-   return Base64.stringify(sha256(data, secretKey));
+  // return Base64.stringify(sha256(data, secretKey));
+  return getSignaureTest(data)
+}
+
+
+export const getSignaureTest = (formData) => {
+  console.log("formData",formData)
+  // var signature = $('<input/>').attr('id', 'signature').attr('type', 'hidden').attr('name', 'signature');
+ return CryptoJS.HmacSHA256(formData, "2fd54ee1a04f43f584350fed975d64ef509b4455ed6e429eb4215b32929f844bc5ceb23a6c1c49fc8409e306bbce922e76c9cff0a7924b6bbe0abed63c13e54a13eee3e8eaf84a91849a2f6848d83523e3d8fbf79b3a437288055b81d4830a5f1ddb14df6a164d1383b0a30331b5a4336669ecd6f6a248108bc139ed96fa8fa8").toString(CryptoJS.enc.Base64);
+  //prepend the signature field to the form 
+  //$('#payment_form').prepend(signature);
 }
 
 export const buildDataToSign = (params) => {

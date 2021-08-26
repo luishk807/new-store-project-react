@@ -131,7 +131,7 @@ const CreditCard = ({
     }
   }
   const handleDeliveryForm = async (e) => {
-    e.preventDefault();
+ //   e.preventDefault();
     let errorFound = false;
     let key = '';
     console.log("hey",creditCardForm)
@@ -160,6 +160,7 @@ const CreditCard = ({
       //   ...creditCardForm,
       //   creditCardExpireDate: currDate
       // })
+      // const encrypt = await encryptSign(formData);
       const encrypt = await encryptSign(formData);
        console.log("encry", encrypt)
     //  const encrypt = getSignaureTest();
@@ -172,14 +173,6 @@ const CreditCard = ({
 
       //end of set form
     }
-  }
-
-
-  const getSignaureTest = (formData) => {
-    // var signature = $('<input/>').attr('id', 'signature').attr('type', 'hidden').attr('name', 'signature');
-   return CryptoJS.HmacSHA256(formData, process.env.STGEORGE_SECREY_KEY).toString(CryptoJS.enc.Base64);
-    //prepend the signature field to the form 
-    //$('#payment_form').prepend(signature);
   }
 
   const saveErrors = async (key, err = false, str = '') => {
@@ -219,7 +212,8 @@ const CreditCard = ({
   useEffect(() => {
 
     fethIP();
-    let referenceNum = new Date().getTime(); // user numero de orden - 
+  //  let referenceNum = new Date().getTime(); // user numero de orden - 
+    let referenceNum = Math.floor(Math.random() * 100000);
     const fields = {
       card_number: '4242424242424242',
       card_expiry_date: "12-2023",
@@ -228,20 +222,20 @@ const CreditCard = ({
       card_type:"001",
       access_key: process.env.STGEORGE_ACCESS_KEY,
       profile_id: process.env.STGEORGE_PROFILE_ID,
-      transaction_uuid: referenceNum,
       merchant_defined_data2: "AVENIDAZ",
-      merchant_defined_data3: "https://www.avenidaz.com",
+      merchant_defined_data3: "https://WWW.AVENIDAZ.COM",
       tax_indicator: "Y",
       unsigned_field_names: 'card_type,card_number,card_expiry_date,card_cvn',
       signed_field_names: 'line_item_count,item_0_quantity,item_0_sku,item_0_name,item_0_code,item_0_unit_price,item_0_tax_amount,ship_to_forename,ship_to_surname,ship_to_phone,ship_to_address_line1,ship_to_address_city,ship_to_address_state,ship_to_address_country,ship_to_address_postal_code,user_po,tax_indicator,customer_ip_address,merchant_defined_data2,merchant_defined_data3,device_fingerprint_id,device_fingerprint_raw,override_custom_receipt_page,access_key,profile_id,transaction_uuid,signed_field_names,unsigned_field_names,signed_date_time,locale,transaction_type,reference_number,amount,currency,payment_method,card_type,card_number,card_expiry_date,card_cvn,bill_to_forename,bill_to_surname,bill_to_email,bill_to_phone,bill_to_address_line1,bill_to_address_city,bill_to_address_state,bill_to_address_country,bill_to_address_postal_code',
       signed_date_time: convertToSignatureDate(new Date()),
       reference_number: referenceNum,
       user_po: referenceNum,
-      override_custom_receipt_page: "https://feature507.avenidaz.com/stgeorgeprocess",
+      override_custom_receipt_page: "https://WWW.AVENIDAZ.COM",
       locale: 'es-co',
       device_fingerprint_raw: 'true',
       device_fingerprint_id: new Date().getTime(),
       transaction_type: "sale",
+      transaction_uuid: Math.floor(Math.random() * 100000000),
       currency: "USD",
       amount:"100.00",
       bill_to_forename:'Ricardo',
@@ -322,11 +316,11 @@ const CreditCard = ({
     })
   }, [])
 
-  useEffect(() => {
-    if (signatureField) {
-      formRef.current.submit();
-    }
-  },[signatureField])
+  // useEffect(() => {
+  //   if (signatureField) {
+  //     formRef.current.submit();
+  //   }
+  // },[signatureField])
 
   // useEffect(() => {
   //   if (formRef.current) {
@@ -350,7 +344,7 @@ const CreditCard = ({
         /> */}
         {/* <form onSubmit={(e) => handleDeliveryForm(e)} action={process.env.STGEORGE_URL} className={classes.formFoot} autoComplete="off" method="post"> */}
         <form  onSubmit={handleDeliveryForm} ref={formRef} action={process.env.STGEORGE_URL} className={classes.formFoot} method="post">
-        <input type="hidden" name="signature" value={signatureField || ''} />
+        {/* <input type="hidden" name="signature" value={signatureField || ''} />
           <input type="hidden" name="access_key" value={formData.access_key}/>
           <input type="hidden" name="profile_id" value={formData.profile_id} />
           <input type="hidden" name="transaction_uuid" value={formData.transaction_uuid} />
@@ -363,7 +357,6 @@ const CreditCard = ({
           <input type="hidden" name="override_custom_receipt_page" value={formData.override_custom_receipt_page} />
           <input type="hidden" name="merchant_defined_data3" value={formData.merchant_defined_data3} />
           <input type="hidden" name="merchant_defined_data2" value={formData.merchant_defined_data2}/>
-          {/* <input type="hidden" name="customer_ip_address" value={formData.customer_ip_address} /> */}
           <input type="hidden" name="customer_ip_address" value={myIP || ''} />
           <input type="hidden" name="tax_indicator" value={formData.tax_indicator} />
           <input type="hidden" name="reference_number" value={formData.reference_number} />
@@ -402,7 +395,62 @@ const CreditCard = ({
         <input type="hidden" name="ship_to_address_city"  value={formData.ship_to_address_city}/>
         <input type="hidden" name="ship_to_address_state"  value={formData.ship_to_address_state}/>
         <input type="hidden" name="ship_to_address_country"  value={formData.ship_to_address_country}/>
-        <input type="hidden" name="ship_to_address_postal_code"  value={formData.ship_to_address_postal_code}/>
+        <input type="hidden" name="ship_to_address_postal_code"  value={formData.ship_to_address_postal_code}/> */}
+
+
+
+
+
+        <input type="hidden" name="signature" value={signatureField || ''} />
+        <input type="hidden" name="access_key" id="access_key" value={formData.access_key} />
+        <input type="hidden" name="profile_id" id="profile_id" value={formData.profile_id} />
+        <input type="hidden" name="transaction_uuid" id="transaction_uuid" value={formData.transaction_uuid} />
+        <input type="hidden" name="transaction_type" id="transaction_type" value="sale"/>
+        <input type="hidden" name="signed_field_names" id="signed_field_names" value={formData.signed_field_names}/>
+        <input type="hidden" name="unsigned_field_names" id="unsigned_field_names"  value={formData.unsigned_field_names}/>
+        <input type="hidden" name="signed_date_time" id="signed_date_time" value={formData.signed_date_time} />
+        <input type="hidden" name="locale" id="locale" value={formData.locale} />
+        <input type="hidden" name="device_fingerprint_id" id="device_fingerprint_id"  value={formData.device_fingerprint_id} />
+        <input type="hidden" name="device_fingerprint_raw" id="device_fingerprint_raw" value={formData.device_fingerprint_raw} />
+        <input type="hidden" name="override_custom_receipt_page" id ="override_custom_receipt_page" value={formData.override_custom_receipt_page} />
+        <input type="hidden" name="merchant_defined_data3" id ="merchant_defined_data3" value={formData.merchant_defined_data3} />
+        <input type="hidden" name="merchant_defined_data2" id ="merchant_defined_data2" value={formData.merchant_defined_data2} />
+        <input type="hidden" name="customer_ip_address" id="customer_ip_address" value={myIP || ''} />
+        <input type="hidden" name="tax_indicator" id="tax_indicator"  value={formData.tax_indicator} /> 
+        <input type="hidden" name="reference_number" id="reference_number" value={formData.reference_number} />
+        <input type="hidden" name="user_po" id="user_po"  value={formData.user_po} />
+        <input type="hidden" name="amount" id="amount" value={formData.amount} />
+        <input type="hidden" name="currency" id="currency" value={formData.currency} />
+        <input type="hidden" name="payment_method" id="payment_method" value={formData.payment_method} />
+        <input type="hidden" name="card_type" id="card_type" value={formData.card_type} />
+        <input type="hidden" name="card_number" id="card_number" value={formData.card_number} />
+        <input type="hidden" name="card_expiry_date" id="card_expiry_date" value={formData.card_expiry_date} />
+		    <input type="hidden" name="card_cvn" id="card_cvn" value={formData.card_cvn} />	 
+        <input type="hidden" name="item_0_quantity" id="item_0_quantity" value={formData.item_0_quantity} />	 
+        <input type="hidden" name="item_0_sku" id="item_0_sku" value={formData.item_0_sku} />	  
+        <input type="hidden" name="item_0_name" id="item_0_name" value={formData.item_0_name} />	  
+        <input type="hidden" name="item_0_code" id="item_0_code" value={formData.item_0_code} />	  
+        <input type="hidden" name="item_0_unit_price" id="item_0_unit_price" value={formData.item_0_unit_price} />	  
+        <input type="hidden" name="item_0_tax_amount" id="item_0_tax_amount" value={formData.item_0_tax_amount} />	  
+        <input type="hidden" name="line_item_count" id="line_item_count" value={formData.line_item_count} />	
+        <input type="hidden" name="bill_to_forename" id="bill_to_forename" value={formData.bill_to_forename} />
+        <input type="hidden" name="bill_to_surname" id="bill_to_surname" value={formData.bill_to_surname} />
+        <input type="hidden" name="bill_to_email" id="bill_to_email" value={formData.bill_to_email} />
+        <input type="hidden" name="bill_to_phone" id="bill_to_phone" value={formData.bill_to_phone} />
+        <input type="hidden" name="bill_to_address_line1" id="bill_to_address_line1" value={formData.bill_to_address_line1} />
+        <input type="hidden" name="bill_to_address_city" id="bill_to_address_city" value={formData.bill_to_address_city} />
+        <input type="hidden" name="bill_to_address_state" id="bill_to_address_state" value={formData.bill_to_address_state} />
+        <input type="hidden" name="bill_to_address_country" id="bill_to_address_country" value={formData.bill_to_address_country} />
+        <input type="hidden" name="bill_to_address_postal_code" id="bill_to_address_postal_code" value={formData.bill_to_address_postal_code} />
+		    <input type="hidden" name="ship_to_forename" id="ship_to_forename" value={formData.ship_to_forename} />
+        <input type="hidden" name="ship_to_surname" id="ship_to_surname" value={formData.ship_to_surname} />
+        <input type="hidden" name="ship_to_phone" id="ship_to_phone" value={formData.ship_to_phone} />
+        <input type="hidden" name="ship_to_address_line1" id="ship_to_address_line1" value={formData.ship_to_address_line1} />
+        <input type="hidden" name="ship_to_address_city" id="ship_to_address_city" value={formData.ship_to_address_city} />
+        <input type="hidden" name="ship_to_address_state" id="ship_to_address_state" value={formData.ship_to_address_state} />
+        <input type="hidden" name="ship_to_address_country" id="ship_to_address_country" value={formData.ship_to_address_country} />
+        <input type="hidden" name="ship_to_address_postal_code" id="ship_to_address_postal_code" value={formData.ship_to_address_postal_code} />
+
 
             <Grid item className={classes.itemSection} lg={12} xs={12}>
                 <Grid container className={classes.mainContainer}>
@@ -473,7 +521,7 @@ const CreditCard = ({
                           )
                         }
                     </Button> */}
-                    <input type="submit" className={`mainButton ${classes.processBtn}`} value={ 
+                    <input type="submit" id="submit" className={`mainButton ${classes.processBtn}`} value={ 
                           showPlaceOrderLoader ? (
                             <CircularProgress color='inherit' />
                           ) : (

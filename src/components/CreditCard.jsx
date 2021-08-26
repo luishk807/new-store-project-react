@@ -131,7 +131,7 @@ const CreditCard = ({
     }
   }
   const handleDeliveryForm = async (e) => {
- //   e.preventDefault();
+    e.preventDefault();
     let errorFound = false;
     let key = '';
     console.log("hey",creditCardForm)
@@ -316,11 +316,11 @@ const CreditCard = ({
     })
   }, [])
 
-  // useEffect(() => {
-  //   if (signatureField) {
-  //     formRef.current.submit();
-  //   }
-  // },[signatureField])
+  useEffect(() => {
+    if (signatureField) {
+      formRef.current.submit();
+    }
+  },[signatureField])
 
   // useEffect(() => {
   //   if (formRef.current) {
@@ -521,7 +521,7 @@ const CreditCard = ({
                           )
                         }
                     </Button> */}
-                    <input type="submit" id="submit" className={`mainButton ${classes.processBtn}`} value={ 
+                    <input type="submit" className={`mainButton ${classes.processBtn}`} value={ 
                           showPlaceOrderLoader ? (
                             <CircularProgress color='inherit' />
                           ) : (

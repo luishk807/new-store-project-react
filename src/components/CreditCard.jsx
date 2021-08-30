@@ -215,9 +215,9 @@ const CreditCard = ({
   //  let referenceNum = new Date().getTime(); // user numero de orden - 
     let referenceNum = Math.floor(Math.random() * 100000);
     const fields = {
-      card_number: '4242424242424242',
+      card_number: '4111111111111111',
       card_expiry_date: "12-2023",
-      card_cvn: '005',
+      card_cvn: '334',
       payment_method: 'card',
       card_type:"001",
       access_key: process.env.STGEORGE_ACCESS_KEY,
@@ -231,7 +231,7 @@ const CreditCard = ({
       reference_number: referenceNum,
       user_po: referenceNum,
       override_custom_receipt_page: "https://WWW.AVENIDAZ.COM",
-      locale: 'es-co',
+      locale: 'es',
       device_fingerprint_raw: 'true',
       device_fingerprint_id: new Date().getTime(),
       transaction_type: "sale",
@@ -401,7 +401,7 @@ const CreditCard = ({
 
 
 
-        <input type="hidden" name="signature" value={signatureField || ''} />
+        <input type="hidden" name="signature" id="signature" value={signatureField || ''} />
         <input type="hidden" name="access_key" id="access_key" value={formData.access_key} />
         <input type="hidden" name="profile_id" id="profile_id" value={formData.profile_id} />
         <input type="hidden" name="transaction_uuid" id="transaction_uuid" value={formData.transaction_uuid} />

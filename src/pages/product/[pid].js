@@ -298,6 +298,17 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       item.productImages = productInfo.productImages;
       item.slug = productInfo.slug
     }
+    console.log("hey me", item, 'and cart: ', cart)
+    console.log("test", Object.keys(cart).length)
+    if (cart && Object.values(cart).length) {
+      const getCartItem = cart.filter(item => item.id == item.id);
+
+      if (getCartItem) {
+        if (getCartItem.quantity == item.stock) {
+          setOutofStock(true)
+        }
+      }
+    }
     setSelectedProductItem(item);
   }
 
@@ -360,10 +371,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       const newQuantity = Number(total);
       itemAdd.quantity = currQuantity + newQuantity;
 
+      console.log("adding", itemAdd, " cart", cart)
       await addCart(itemAdd);
       
       setForceSwipeRefresh(!forceSwipeRefresh)
       setCartSwipeData(selectedProductItem)
+      if(itemAdd.quantity === itemAdd.stock) {
+        console.log("same")
+        setOutofStock(true)
+      }
       setSnack({
         severity: 'success',
         open: true,
@@ -845,7 +861,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                       outOfStock || !Object.keys(selectedProductItem).length ? (
                         <Button disabled className={`cartButtonDisabled ${classes.addCartBtn}`}>{ t('add_to_cart') }</Button>
                       ) : (
-                        <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>{ t('add_to_cart') }</Button>
+                        <Button onClick={onAddCart} className={`mainButton ${classes.addCartBtn}`}>{ t('add_to_cart') }fff</Button>
                       )
                     }
                     {/* <WishListIcon product={productInfo.id} /> */}

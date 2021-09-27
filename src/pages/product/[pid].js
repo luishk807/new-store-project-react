@@ -14,7 +14,7 @@ import moment from 'moment';
 
 import { getImageUrlByType } from 'src/utils/form';
 import { checkDiscountPrice, setBundleDiscount, checkBundlePrice } from 'src/utils/products';
-import { formatNumber, isAroundTime, capitalize, sortOptions, getCartTotalItems, removeDuplicatesByProperty } from 'src/utils';
+import { formatNumber, isAroundTime, capitalize, sortOptions, getCartTotalItems, removeDuplicatesByProperty, getCartItemById } from 'src/utils';
 import { noImageUrl } from 'config';
 import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
 import { ProductSample } from 'src/constants/samples/ProductSample';
@@ -298,6 +298,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       item.productImages = productInfo.productImages;
       item.slug = productInfo.slug
     }
+  
     setSelectedProductItem(item);
   }
 
@@ -359,7 +360,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       const currQuantity = Number(itemAdd.quantity);
       const newQuantity = Number(total);
       itemAdd.quantity = currQuantity + newQuantity;
-
       await addCart(itemAdd);
       
       setForceSwipeRefresh(!forceSwipeRefresh)
@@ -369,6 +369,11 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         open: true,
         text: t('product:messages.added_to_cart'),
       })
+
+      if (itemAdd.id == selectedProductItem.id &&  itemAdd.quantity >= selectedProductItem.stock) {
+          setOutofStock(true);
+      }
+
     }
   }
 
@@ -431,13 +436,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         const getDiscountItem = await setBundleDiscount(productInfo, selectedProductItem, currBundle);
         setDealPrice(getDiscountItem.retailPrice);
         setProductItem(getDiscountItem);
-
-        //check if variant is out of stock
-        if (!selectedProductItem.stock) {
-          setOutofStock(true);
-        } else {
-          setOutofStock(false);
-        }
     }
   }
 
@@ -465,12 +463,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         const getTotal = formatNumber(searchItem.retailPrice);
         setProductItem(searchItem);
         setDealPrice(getTotal)
-        // check if variant is out of stock
-        if (!getItem[0].stock) {
-          setOutofStock(true);
-        } else {
-          setOutofStock(false);
-        }
       }
     }
   }
@@ -706,6 +698,19 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
            {getProductPriceComponent(selectedProductItem.retailPrice ? selectedProductItem.retailPrice : `0.00`)}
         </Grid>
         )
+      }
+
+      if (!selectedProductItem.stock) {
+        setOutofStock(true);
+      } else {
+        setOutofStock(false);
+      }
+
+      if (cart && Object.keys(cart).length) {
+        const getCartItem = getCartItemById(cart, selectedProductItem);
+        if (getCartItem && getCartItem.quantity >= selectedProductItem.stock) {
+          setOutofStock(true);
+        }
       }
     }
   }, [selectedProductItem]);

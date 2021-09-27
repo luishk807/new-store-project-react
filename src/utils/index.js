@@ -302,6 +302,19 @@ export const getCartTotal = (obj) => {
   }
 }
 
+export const getCartItemById = (cart, item) => {
+  let getCartItem = null
+  if (cart && Object.keys(cart).length) {
+    Object.keys(cart).forEach(c => {
+       if (cart[c].id == item.id) {
+         getCartItem = cart[c];
+       }
+     })
+   }
+
+   return getCartItem
+}
+
 export const isAroundTime = (date1, date2) => {
   const today = new Date();
   const dStartDate = new Date(date1);

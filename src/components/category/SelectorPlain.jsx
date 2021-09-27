@@ -11,14 +11,14 @@ import {
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
-// import Modal from '../common/Modal';
-// import { ProductGallerySample } from '../../constants/samples/ProductCategoryIconsSample';
-// import { ADMIN_SECTIONS } from '../../constants/admin';
-// import { getItems } from '../../api';
-import ProgressBar from '../common/ProgressBar';
-import { getCategories } from '../../api/categories';
-// import { searchProductsByCat } from '../../api/products';
-import Icons from '../common/Icons';
+// import Modal from '@/common/Modal';
+// import { ProductGallerySample } from '@/constants/samples/ProductCategoryIconsSample';
+// import { ADMIN_SECTIONS } from '@/constants/admin';
+// import { getItems } from 'src/api';
+import ProgressBar from '@/common/ProgressBar';
+import { getCategories } from '@/api/categories';
+// import { searchProductsByCat } from '@/api/products';
+import Icons from '@/common/Icons';
 
 const styles = (theme) => ({
   root: {

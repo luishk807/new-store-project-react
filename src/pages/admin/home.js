@@ -7,11 +7,11 @@ import {
   Button,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
-import AdminLayoutTemplate from '../../components/common/Layout/AdminLayoutTemplate';
-import CardIcon from '../../components/common/CardIcon';
-import Icons from '../../components/common/Icons';
-import ProgressBar from '../../components/common/ProgressBar';
-import { ADMIN_SECTIONS, SECTIONS } from '../../constants/admin';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import CardIcon from 'src/components/common/CardIcon';
+import Icons from 'src/components/common/Icons';
+import ProgressBar from 'src/components/common/ProgressBar';
+import { ADMIN_SECTIONS, SECTIONS } from 'src/constants/admin';
 
 const styles = (theme) => ({});
 

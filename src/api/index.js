@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const getSections = async (section) => {
   const response = await Api.get(section);

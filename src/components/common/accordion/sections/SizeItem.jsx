@@ -8,7 +8,7 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import { getSizesByIds  } from '../../../../api/sizes';
+import { getSizesByIds  } from '@/api/sizes';
 
 const styles = (theme) => ({
   root: {

@@ -9,10 +9,10 @@ import {
 import moment from 'moment';
 import { useRouter } from 'next/router';
 
-import AdminLayoutTemplate from '../../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteProductDiscountsById, getProductDiscountsByProductId } from '../../../../api/productDiscounts';
-import Snackbar from '../../../../components/common/Snackbar';
-import HeaderSub from '../../../../components/product/HeaderSub';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import { deleteProductDiscountsById, getProductDiscountsByProductId } from 'src/api/productDiscounts';
+import Snackbar from 'src/components/common/Snackbar';
+import HeaderSub from 'src/components/product/HeaderSub';
 
 const styles = (theme) => ({
   root: {

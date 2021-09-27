@@ -8,10 +8,10 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import Snackbar from '../../../components/common/Snackbar';
-import { deletePromotionCodeById, getActivePromotionCodes } from '../../../api/promotionCodes'
-import HeaderSub from '../../../components/common/HeaderSub';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import Snackbar from 'src/components/common/Snackbar';
+import { deletePromotionCodeById, getActivePromotionCodes } from 'src/api/promotionCodes'
+import HeaderSub from 'src/components/common/HeaderSub';
 
 const styles = (theme) => ({
   noData: {

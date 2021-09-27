@@ -6,9 +6,9 @@ import {
 
 import { 
   ProductGallerySample,
- } from '../../constants/samples/ProductGallery';
+ } from '@/constants/samples/ProductGallery';
 
-import CardIcon from '../common/CardIcon';
+import CardIcon from '@/common/CardIcon';
 
 const styles = (theme) => ({
   cardFeature: {

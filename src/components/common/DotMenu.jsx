@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import { logout } from '../../api/auth';
+import { logout } from '@/api/auth';
 
 const styles = (theme) => ({})
 

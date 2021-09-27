@@ -6,10 +6,10 @@ import {
 } from '@material-ui/core';
 import * as T from 'prop-types';
 
-import Header from '../Header/Header';
-import Footer from '../Footer/Footer';
-import MobileFooter from '../../MobileFooter';
-import FabActionButtons from '../FabActionButtons';
+import Header from '@/common/Header/Header';
+import Footer from '@/common/Footer/Footer';
+import MobileFooter from '@/components/MobileFooter';
+import FabActionButtons from '@/common/FabActionButtons';
 
 const styles = (theme) => ({
   root: {

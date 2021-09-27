@@ -7,9 +7,9 @@ import {
   Button,  
 } from '@material-ui/core';
 
-import { validateForm } from '../../../../utils/form';
-import Snackbar from '../../Snackbar';
-import ProgressBar from '../../ProgressBar';
+import { validateForm } from '@/utils/form';
+import Snackbar from '@/common/Snackbar';
+import ProgressBar from '@/common/ProgressBar';
 
 const styles = (theme) => ({
   root: {

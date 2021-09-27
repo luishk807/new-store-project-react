@@ -1,6 +1,6 @@
-import { config } from '../../config'
+import { config } from 'config'
 import axios from 'axios'
-import { getCookie } from '../utils/cookie'
+import { getCookie } from '@/utils/cookie'
 
 const apiBaseUrl = config.backEndUrl + '/product-unified'
 

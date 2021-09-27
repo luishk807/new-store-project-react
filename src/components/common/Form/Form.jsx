@@ -23,19 +23,18 @@ import moment from 'moment'
 import { useTranslation } from 'next-i18next'
 import ColorPicker from 'material-ui-color-picker'
 
-import { loadMainOptions } from '../../../utils/form';
-import { FORM_SCHEMA, CATEGORY_ICONS } from '../../../../config';
-import { ADMIN_SECTIONS } from '../../../constants/admin';
-import { getImageUrlByType } from '../../../utils/form';
-import { removeCharacter } from '../../../utils';
-import Rate from '../../common/Rate/Rate';
-import { defaultPanama } from '../../../../config';
-import FileUploader from '../FileUploader';
-import Typography from '../Typography';
-import Snackbar from '../Snackbar';
-import Icons from '../Icons';
-import DialogModal from '../DialogModal';
-import ProgressBar from '../ProgressBar';
+import { loadMainOptions } from '@/utils/form';
+import { FORM_SCHEMA, CATEGORY_ICONS, defaultPanama } from 'config';
+import { ADMIN_SECTIONS } from '@/constants/admin';
+import { getImageUrlByType } from '@/utils/form';
+import { removeCharacter } from 'src/utils';
+import Rate from '@/common/Rate/Rate';
+import FileUploader from '@/common/FileUploader';
+import Typography from '@/common/Typography';
+import Snackbar from '@/common/Snackbar';
+import Icons from '@/common/Icons';
+import DialogModal from '@/common/DialogModal';
+import ProgressBar from '@/common/ProgressBar';
 
 const styles = (theme) => ({
   root: {

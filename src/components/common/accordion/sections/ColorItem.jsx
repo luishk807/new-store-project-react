@@ -8,8 +8,8 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import { getColorByIds } from '../../../../api/productColors';
-import ColorBlock from '../../ColorBlock';
+import { getColorByIds } from '@/api/productColors';
+import ColorBlock from '@/common/ColorBlock';
 
 const styles = (theme) => ({
   root: {

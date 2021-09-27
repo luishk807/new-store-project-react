@@ -6,11 +6,11 @@ import {
   Link,
 } from '@material-ui/core';
 
-import { getAllProductRatesById } from '../api/rate';
+import { getAllProductRatesById } from 'src/api/rate';
 import Typography from './common/Typography';
 import Rate from './common/Rate/Rate';
-import { getItemById } from '../api';
-import { getRatingAvg } from '../utils';
+import { getItemById } from 'src/api';
+import { getRatingAvg } from 'src/utils';
 
 const styles = (theme) => ({
   nameSection: {

@@ -8,12 +8,12 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import Snackbar from '../../../components/common/Snackbar';
-import ColorBlock from '../../../components/common/ColorBlock';
-import { deleteColorById, getColors } from '../../../api/colors'
-import HeaderSub from '../../../components/common/HeaderSub';
-import Icons from '../../../components/common/Icons';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import Snackbar from 'src/components/common/Snackbar';
+import ColorBlock from 'src/components/common/ColorBlock';
+import { deleteColorById, getColors } from 'src/api/colors'
+import HeaderSub from 'src/components/common/HeaderSub';
+import Icons from 'src/components/common/Icons';
 
 const styles = (theme) => ({
   noData: {

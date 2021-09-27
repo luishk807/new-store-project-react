@@ -7,9 +7,9 @@ import {
   Button,  
 } from '@material-ui/core';
 
-import { validateForm } from '../../../utils/form';
-import Snackbar from '../Snackbar';
-import Typography from '../Typography';
+import { validateForm } from '@/utils/form';
+import Snackbar from '@/common/Snackbar';
+import Typography from '@/common/Typography';
 import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({

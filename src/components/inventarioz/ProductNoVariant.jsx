@@ -14,7 +14,7 @@ import CategoryDropDown from './CategoryDropDown'
 import BrandDropDown from './BrandDropDown'
 import CustomDialog from './CustomDialog'
 import DepartmentDropDown from './DepartmentDropDown'
-import { saveProductNoVariant } from '../../services/inventarioz/product'
+import { saveProductNoVariant } from '@/services/inventarioz/product'
 import MessageAlert from './MessageAlert'
 import { useRouter } from 'next/router'
 

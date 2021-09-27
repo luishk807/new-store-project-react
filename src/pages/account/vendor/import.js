@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
-import ProductImport from '../../../components/product/Import';
+import ProductImport from 'src/components/product/Import';
 import { withStyles } from '@material-ui/core';
 
 const styles = (theme) => ({
@@ -14,7 +14,7 @@ const styles = (theme) => ({
     },
 });
 
-import VendorLayoutTemplate from '../../../components/common/Layout/VendorLayoutTemplate';
+import VendorLayoutTemplate from 'src/components/common/Layout/VendorLayoutTemplate';
 
 const ImportProducts = ({
     classes

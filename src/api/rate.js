@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const saveProductRate = async(data) => {
   return Api.post(`productrates`, data);

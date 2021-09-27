@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import * as T from 'prop-types';
 import moment from 'moment';
 
-import Icons from '../../Icons';
-import { config } from '../../../../../config';
-import { formatNumber } from '../../../../utils';
+import Icons from '@/common/Icons';
+import { config } from 'config';
+import { formatNumber } from 'src/utils';
 
 import { 
   withStyles, 

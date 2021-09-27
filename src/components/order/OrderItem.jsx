@@ -6,8 +6,8 @@ import {
   Button,
 } from '@material-ui/core';
 
-import ProgressBar from '../common/ProgressBar';
-import SimpleBox from '../product/SimpleBox';
+import ProgressBar from '@/components/common/ProgressBar';
+import SimpleBox from '@/components/product/SimpleBox';
 const styles = (theme) => ({
   root: {
     width: '100%'

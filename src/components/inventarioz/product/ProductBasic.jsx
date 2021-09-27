@@ -2,9 +2,9 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState } from 'react'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-import BrandDropDown from '../BrandDropDown'
-import DepartmentDropDown from '../DepartmentDropDown'
-import CategoryDropDown from '../CategoryDropDown'
+import BrandDropDown from '@/inventarioz/BrandDropDown'
+import DepartmentDropDown from '@/inventarioz/DepartmentDropDown'
+import CategoryDropDown from '@/inventarioz/CategoryDropDown'
 import {
     Grid,
     TextField,
@@ -15,7 +15,7 @@ import {
     Divider
 } from '@material-ui/core'
 import { useEffect } from 'react'
-import { getNoVariant } from '../../../services/inventarioz/product'
+import { getNoVariant } from '@/services/inventarioz/product'
 
 const useStyles = makeStyles((theme) => ({
     root: {

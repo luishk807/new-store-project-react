@@ -8,15 +8,15 @@ import {
   Button,
 } from '@material-ui/core';
 import moment from 'moment';
-// import { ADMIN_SECTIONS } from '../../../constants/admin';
+// import { ADMIN_SECTIONS } from 'src/constants/admin';
 
-// import ItemForm from '../../../components/common/Form/ItemForm';
-import Snackbar from '../../../components/common/Snackbar';
-import { deleteUserById, getUsers } from '../../../api/user';
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import HeaderSub from '../../../components/common/HeaderSub';
-import DialogModal from '../../../components/common/DialogModal';
-import Icons from '../../../components/common/Icons';
+// import ItemForm from 'src/components/common/Form/ItemForm';
+import Snackbar from 'src/components/common/Snackbar';
+import { deleteUserById, getUsers } from 'src/api/user';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import HeaderSub from 'src/components/common/HeaderSub';
+import DialogModal from 'src/components/common/DialogModal';
+import Icons from 'src/components/common/Icons';
 
 const styles = (theme) => ({
   noData: {

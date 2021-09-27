@@ -12,10 +12,10 @@ import {
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Icons from './Icons';
 import Dropdown from './Dropdown';
-import { getCategories } from '../../api/categories';
-import { getCatSearch } from '../../utils';
+import { getCategories } from '@/api/categories';
+import { getCatSearch } from 'src/utils';
 
-import { searchProducts } from '../../api/products';
+import { searchProducts } from '@/api/products';
 
 const styles = (theme) => ({
   searchBarInputContent: {

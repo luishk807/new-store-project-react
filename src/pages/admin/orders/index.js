@@ -9,11 +9,11 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteOrderById, getAllOrders } from '../../../api/orders';
-import Snackbar from '../../../components/common/Snackbar';
-import Icons from '../../../components/common/Icons';
-import DialogModal from '../../../components/common/DialogModal';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import { deleteOrderById, getAllOrders } from 'src/api/orders';
+import Snackbar from 'src/components/common/Snackbar';
+import Icons from 'src/components/common/Icons';
+import DialogModal from 'src/components/common/DialogModal';
 
 const styles = (theme) => ({
   root: {

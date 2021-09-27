@@ -8,12 +8,12 @@ import {
     TabContext,
     TabList
 } from '@material-ui/lab'
-import ProductOptions from '../ProductOptions'
-import Categories from '../Categories'
-import Brands from '../Brands'
-import Departments from '../Departments'
-import Suppliers from '../Suppliers'
-import ProductNoVariant from '../ProductNoVariant'
+import ProductOptions from '@/inventarioz/ProductOptions'
+import Categories from '@/inventarioz/Categories'
+import Brands from '@/inventarioz/Brands'
+import Departments from '@/inventarioz/Departments'
+import Suppliers from '@/inventarioz/Suppliers'
+import ProductNoVariant from '@/inventarioz/ProductNoVariant'
 
 const useStyles = makeStyles((theme) => {
     root: {

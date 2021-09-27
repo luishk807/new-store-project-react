@@ -8,12 +8,12 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import Typography from '../../components/common/Typography';
-import { USER_ACCOUNT_SECTIONS } from '../../constants/user'
-import CardIcon from '../../components/common/CardIcon';
-import Icons from '../../components/common/Icons';
-import UserLayoutTemplate from '../../components/common/Layout/UserLayoutTemplate';
-import { logout } from '../../api/auth';
+import Typography from 'src/components/common/Typography';
+import { USER_ACCOUNT_SECTIONS } from 'src/constants/user'
+import CardIcon from 'src/components/common/CardIcon';
+import Icons from 'src/components/common/Icons';
+import UserLayoutTemplate from 'src/components/common/Layout/UserLayoutTemplate';
+import { logout } from 'src/api/auth';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

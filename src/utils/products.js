@@ -1,5 +1,5 @@
-import { FORM_SCHEMA, ALLOW_FIELDS } from '../../config';
-import { isAroundTime } from '../utils';
+import { FORM_SCHEMA, ALLOW_FIELDS } from 'config';
+import { isAroundTime } from 'src/utils';
 
 export const formatForm = (form) => {
   const currentForm = form;

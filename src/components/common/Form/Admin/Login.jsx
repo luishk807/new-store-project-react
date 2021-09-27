@@ -7,11 +7,11 @@ import {
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
-import { ADMIN_URL } from '../../../../constants/admin';
-import { adminLogin } from '../../../../api/auth'
-import Snackbar from '../../Snackbar';
-import Typography from '../../Typography';
-import LoginForm from '../Login';
+import { ADMIN_URL } from '@/constants/admin';
+import { adminLogin } from '@/api/auth'
+import Snackbar from '@/common/Snackbar';
+import Typography from '@/common/Typography';
+import LoginForm from '@/common/Form/Login';
 
 const styles = (theme) => ({
   root: {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import Login from '../components/common/Form/Users/Login';
+import Login from 'src/components/common/Form/Users/Login';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const LoginPage = () => {

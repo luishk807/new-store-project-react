@@ -7,7 +7,7 @@ import {
   TextField,
 } from '@material-ui/core';
 
-import Typography from './common/Typography';
+import Typography from '@/common/Typography';
 import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({

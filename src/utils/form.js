@@ -1,7 +1,7 @@
-import { FORM_SCHEMA, CATEGORY_ICONS, IGNORE_FORM_FIELDS } from '../../config';
-import { ADMIN_SECTIONS } from '../constants/admin';
-import Api from '../services/api';
-import { getSections, getBasicAdmin, getBasicUser } from '../api';
+import { FORM_SCHEMA, CATEGORY_ICONS, IGNORE_FORM_FIELDS } from 'config';
+import { ADMIN_SECTIONS } from '@/constants/admin';
+import Api from '@/services/api';
+import { getSections, getBasicAdmin, getBasicUser } from 'src/api';
 
 export const getImageUrlByType = (type) => {
   if (!type) {

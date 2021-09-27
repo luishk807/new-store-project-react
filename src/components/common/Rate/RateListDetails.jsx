@@ -9,7 +9,7 @@ import {
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
-import Typography from '../Typography';
+import Typography from '@/common/Typography';
 import Rate from './Rate';
 
 const styles = (theme) => ({

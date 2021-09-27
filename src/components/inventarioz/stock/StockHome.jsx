@@ -12,9 +12,9 @@ import ProductResults from './ProductResults'
 import StockResults from './StockResults'
 import SearchInput from '../SearchInput'
 import StockImport from './StockImport'
-import { searchProduct } from '../../../services/inventarioz/product'
-import { getAllStocks } from '../../../services/inventarioz/stock'
-import { convertDataToTableData } from '../../../utils/materialtable'
+import { searchProduct } from '@/services/inventarioz/product'
+import { getAllStocks } from '@/services/inventarioz/stock'
+import { convertDataToTableData } from '@/utils/materialtable'
 
 // const useStyles = makeStyles((theme) => {
 //     root: {

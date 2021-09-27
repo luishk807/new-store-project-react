@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const getQuestions = async(data) => {
   return Api.get(`productquestions`, data);

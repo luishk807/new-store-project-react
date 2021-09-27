@@ -1,8 +1,8 @@
 import { getImageUrlByType } from './form';
-import { noImageUrl } from '../../config';
-import { getProductItemByIds } from '../api/productItems';
-import { getProductById } from '../api/products';
-import { getThumbnail } from '../utils/helpers/image'
+import { noImageUrl } from 'config';
+import { getProductItemByIds } from '@/api/productItems';
+import { getProductById } from '@/api/products';
+import { getThumbnail } from '@/utils/helpers/image'
 
 export const removeCharacter = (str) => {
   return str ? str.replace(/_/g, ' ') : str
@@ -302,6 +302,19 @@ export const getCartTotal = (obj) => {
   }
 }
 
+export const getCartItemById = (cart, item) => {
+  let getCartItem = null
+  if (cart && Object.keys(cart).length) {
+    Object.keys(cart).forEach(c => {
+       if (cart[c].id == item.id) {
+         getCartItem = cart[c];
+       }
+     })
+   }
+
+   return getCartItem
+}
+
 export const isAroundTime = (date1, date2) => {
   const today = new Date();
   const dStartDate = new Date(date1);
@@ -342,4 +355,20 @@ export const getRatingAvg = (data) => {
 
 export const getCatSearch = (data) => {
   return encodeURI(`/searchResult?cat=${data.id}&catn=${data.name}`);
+}
+
+export function removeDuplicatesByProperty(inputArray, propertyName) {
+  if (Array.isArray(inputArray)) {
+    const uniqueValues = [];
+    const returnArray = [];
+    inputArray.forEach((value) => {
+      // If the value is not there
+      if (!uniqueValues.includes(value[propertyName])) {
+        returnArray.push(value);
+        uniqueValues.push(value[propertyName])
+      }
+    });
+    return returnArray;
+  }
+  return inputArray;
 }

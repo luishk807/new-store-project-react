@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const getMainSliders = async(data) => {
   return Api.get(`image-boxes`, data);

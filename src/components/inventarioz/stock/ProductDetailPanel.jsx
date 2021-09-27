@@ -6,8 +6,8 @@ import {
 } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState, useEffect } from 'react'
-import { getProduct } from '../../../services/inventarioz/product'
-import { getBrand, getDepartment, getCategory, getProductVariants } from '../../../utils/helpers/product'
+import { getProduct } from '@/services/inventarioz/product'
+import { getBrand, getDepartment, getCategory, getProductVariants } from '@/utils/helpers/product'
 
 const useStyles = makeStyles((theme) => ({
     root: {

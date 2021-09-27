@@ -11,14 +11,14 @@ import {
   Select,
 } from '@material-ui/core';
 
-import { FORM_SCHEMA } from '../../../../config';
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import Snackbar from '../../../components/common/Snackbar';
-import OrderDetail from '../../../components/order/OrderDetail';
-import ProgressBar from '../../../components/common/ProgressBar';
-import { loadMainOptions, validateForm, handleFormResponse } from '../../../utils/form';
-import { getOrderById, saveOrderStatus, saveOrder } from '../../../api/orders';
-import OrderActivity from '../../../components/order/OrderActivity';
+import { FORM_SCHEMA } from 'config';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import Snackbar from 'src/components/common/Snackbar';
+import OrderDetail from 'src/components/order/OrderDetail';
+import ProgressBar from 'src/components/common/ProgressBar';
+import { loadMainOptions, validateForm, handleFormResponse } from 'src/utils/form';
+import { getOrderById, saveOrderStatus, saveOrder } from 'src/api/orders';
+import OrderActivity from 'src/components/order/OrderActivity';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

@@ -9,9 +9,9 @@ import {
   Button
 } from '@material-ui/core';
 
-import Typography from '../../../../components/common/Typography';
-import VendorLayoutTemplate from '../../../../components/common/Layout/VendorLayoutTemplate';
-import { getOrderByUser } from '../../../../api/orders';
+import Typography from 'src/components/common/Typography';
+import VendorLayoutTemplate from 'src/components/common/Layout/VendorLayoutTemplate';
+import { getOrderByUser } from 'src/api/orders';
 
 const styles = (theme) => ({
   root: {

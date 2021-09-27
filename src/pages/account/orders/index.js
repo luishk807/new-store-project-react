@@ -9,12 +9,12 @@ import {
   Hidden,
 } from '@material-ui/core';
 import moment from 'moment';
-import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
-import ProgressBar from '../../../components/common/ProgressBar';
-import LeftOrderColumn from '../../../components/common/Layout/Left/account/OrderLeftColumn';
-import OrderItem from '../../../components/order/OrderItem';
-import { getOrderByUser } from '../../../api/orders';
-import { formatNumber } from '../../../utils';
+import UserLayoutTemplate from 'src/components/common/Layout/UserLayoutTemplate';
+import ProgressBar from 'src/components/common/ProgressBar';
+import LeftOrderColumn from 'src/components/common/Layout/Left/account/OrderLeftColumn';
+import OrderItem from 'src/components/order/OrderItem';
+import { getOrderByUser } from 'src/api/orders';
+import { formatNumber } from 'src/utils';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

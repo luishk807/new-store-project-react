@@ -5,7 +5,7 @@ import {
     KeyboardDatePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import SupplierDropDown from '../SupplierDropDown'
+import SupplierDropDown from '@/inventarioz/SupplierDropDown'
 import {
     TextField,
     Grid

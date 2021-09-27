@@ -5,8 +5,8 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
-import SendForm from '../components/common/Form/SendForm';
+import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
+import SendForm from 'src/components/common/Form/SendForm';
 
 const styles = (theme) => ({
   root: {

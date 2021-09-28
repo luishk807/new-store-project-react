@@ -13,7 +13,7 @@ import {
 import moment from 'moment';
 
 import { getImageUrlByType } from 'src/utils/form';
-import { checkDiscountPrice, setBundleDiscount, checkBundlePrice } from 'src/utils/products';
+import { checkDiscountPrice, setBundleDiscount, checkBundlePrice, isOutOfStock } from 'src/utils/products';
 import { formatNumber, isAroundTime, capitalize, sortOptions, getCartTotalItems, removeDuplicatesByProperty, getCartItemById } from 'src/utils';
 import { noImageUrl } from 'config';
 import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
@@ -355,7 +355,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     } else {
       let total = getCartTotalItems(cartData, selectedProductItem);
       total = total ? total : 0;
-
       const itemAdd = Object.assign({}, selectedProductItem);
       const currQuantity = Number(itemAdd.quantity);
       const newQuantity = Number(total);
@@ -370,8 +369,12 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         text: t('product:messages.added_to_cart'),
       })
 
-      if (itemAdd.id == selectedProductItem.id &&  itemAdd.quantity >= selectedProductItem.stock) {
+      if (itemAdd.id == selectedProductItem.id) {
+        const outOfStockReached = isOutOfStock(itemAdd, cart);
+
+        if (outOfStockReached) {
           setOutofStock(true);
+        }
       }
 
     }
@@ -708,7 +711,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
       if (cart && Object.keys(cart).length) {
         const getCartItem = getCartItemById(cart, selectedProductItem);
-        if (getCartItem && getCartItem.quantity >= selectedProductItem.stock) {
+
+        const outOfStockReached = isOutOfStock(getCartItem, cart);
+        if (outOfStockReached) {
           setOutofStock(true);
         }
       }

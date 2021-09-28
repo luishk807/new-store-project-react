@@ -25,7 +25,7 @@ import Snackbar from 'src/components/common/Snackbar';
 import { getProductById } from 'src/api/products';
 import { getProductItemByIds } from 'src/api/productItems';
 import { formatNumber, getCartTotal, getImage } from 'src/utils';
-import { checkDiscountPrice, checkBundlePrice } from 'src/utils/products';
+import { checkDiscountPrice, checkBundlePrice, isOutOfStock } from 'src/utils/products';
 import { getImageUrlByType } from 'src/utils/form';
 import { getColorName } from 'src/utils/helpers/product'
 
@@ -186,13 +186,25 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     const index = resp.id.split("-")[1]
     const mainProduct = await getProductById(cart[index].productId);
     const currItem = cart[index];
+    
+    let getOutStock = null;
+
     if (resp.value > 0) {
       if (currItem.bundle) {
         const getDiscountItem = await checkBundlePrice(mainProduct, currItem, resp.value);
-        await updateCart(getDiscountItem)
+        
+        getOutStock = isOutOfStock(getDiscountItem, cart, true);
+        if (getOutStock <= currItem.stock) {
+          await updateCart(getDiscountItem)
+        }
       } else {
         const getDiscountItem = await checkDiscountPrice(mainProduct, currItem, resp.value);
-        await updateCart(getDiscountItem)
+      //  await updateCart(getDiscountItem)
+        getOutStock = isOutOfStock(getDiscountItem, cart, true);
+        if (getOutStock <= currItem.stock) {
+          await updateCart(getDiscountItem)
+        }
+        
       }
     }
   }
@@ -371,6 +383,8 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                   jump={item.bundle ? item.bundle.quantity : 0}  
                                   stock={item.stock} 
                                   data={item.quantity} 
+                                  cart={cart}
+                                  product={item}
                                   classes={{ root: classes.cartDropRoot}} 
                                   onChange={handleSelectChange} 
                                   id={`select-${key}`} 

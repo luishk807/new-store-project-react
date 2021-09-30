@@ -14,7 +14,7 @@ function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
-const SnackBar = React.memo(({ severity="success", open, onClose, content, anchorPost = null}) => {
+const SnackBar = ({ severity="success", open, onClose, content, anchorPost = null}) => {
   const [doOpen, setDoOpen] = useState(false);
   const [anchor, setAnchor] = useState({ 
     vertical: 'bottom', 
@@ -22,7 +22,6 @@ const SnackBar = React.memo(({ severity="success", open, onClose, content, ancho
   })
   useEffect(() => {
     let unmounted = false;
-
     if (!unmounted) {
       setDoOpen(open);
       if (anchorPost === 'top') {
@@ -33,7 +32,7 @@ const SnackBar = React.memo(({ severity="success", open, onClose, content, ancho
       }
     }
     return () => { unmounted = true };
-  }, [content]);
+  }, [content, open]);
 
   return (
     <Snack open={doOpen} onClose={onClose} autoHideDuration={6000} anchorOrigin={anchor}>
@@ -42,7 +41,7 @@ const SnackBar = React.memo(({ severity="success", open, onClose, content, ancho
       </Alert>
     </Snack>
   );
-});
+}
 
 SnackBar.protoTypes = {
   severity: T.string,

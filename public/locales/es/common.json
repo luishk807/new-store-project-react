@@ -51,6 +51,7 @@
     "saves": "Ahorraste",
     "promo": "Promo",
     "free": "Gratis",
+    "max_amount_reached": "Cantidad maxima del producto disponible",
     "message": {
         "you_saved": "Ahorraste",
         "discount_applied": "Descuento Aplicado",

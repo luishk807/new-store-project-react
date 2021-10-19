@@ -116,6 +116,8 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'special':
         return <Special className={classes.icon}/>
+      case 'christmas':
+        return <Christmas className={classes.icon}/>
       case 'sad':
         return <SentimentVeryDissatisfiedIcon className={classes.icon}/>
       case 'coupon':

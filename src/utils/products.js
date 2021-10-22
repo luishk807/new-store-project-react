@@ -128,6 +128,28 @@ export const isOutOfStock = (prod, cart = null, returnTotal = false) => {
   return returnTotal ? total : total >= prod.stock;
 }
 
+export const getLiveStock = (prod, cart) => {
+  let curTotal = 0;
+  
+  if (!prod) {
+    return;
+  }
+
+  if (Object.keys(cart).length) {
+    for(let key = 0; key < Object.keys(cart).length; key++) {
+      if (cart[key].id == prod.id) {
+        if(cart[key].bundle) {
+          curTotal += (Number(cart[key].bundle.quantity) * Number(cart[key].quantity));
+        } else if (!cart[key].bundle) {
+          curTotal += Number(cart[key].quantity)
+        }
+      }
+    }  
+  }
+  
+  return prod.stock - curTotal;
+}
+
 export const formatFormData = (form) => {
   const currentForm = form;
   const formData = new FormData();

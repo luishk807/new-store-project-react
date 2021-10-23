@@ -13,7 +13,7 @@ import {
 import moment from 'moment';
 
 import { getImageUrlByType } from 'src/utils/form';
-import { checkDiscountPrice, setBundleDiscount, checkBundlePrice } from 'src/utils/products';
+import { checkDiscountPrice, setBundleDiscount, checkBundlePrice, isOutOfStock, getLiveStock } from 'src/utils/products';
 import { formatNumber, isAroundTime, capitalize, sortOptions, getCartTotalItems, removeDuplicatesByProperty, getCartItemById } from 'src/utils';
 import { noImageUrl } from 'config';
 import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
@@ -197,6 +197,7 @@ const styles = (theme) => ({
     marginBottom: '2px',
     display: 'inline-block',
     color: 'grey',
+    borderRadius: '5px',
     '&:hover': {
       backgroundColor: '#f8be15',
       color: 'white',
@@ -252,6 +253,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [showProduct, setShowProduct] = useState(false);
   const [showBundles, setShowBundles] = useState(false);
 
+  const [selectedProductStock, setSelectedProductStock] = useState(null);
+
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedBundle, setSelectedBundle] = useState(null);
@@ -298,7 +301,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       item.productImages = productInfo.productImages;
       item.slug = productInfo.slug
     }
-  
+
     setSelectedProductItem(item);
   }
 
@@ -355,7 +358,6 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     } else {
       let total = getCartTotalItems(cartData, selectedProductItem);
       total = total ? total : 0;
-
       const itemAdd = Object.assign({}, selectedProductItem);
       const currQuantity = Number(itemAdd.quantity);
       const newQuantity = Number(total);
@@ -364,21 +366,39 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       
       setForceSwipeRefresh(!forceSwipeRefresh)
       setCartSwipeData(selectedProductItem)
+      setForceRefresh(!forceRefresh)
       setSnack({
         severity: 'success',
         open: true,
         text: t('product:messages.added_to_cart'),
       })
 
-      if (itemAdd.id == selectedProductItem.id &&  itemAdd.quantity >= selectedProductItem.stock) {
+      if (itemAdd.id == selectedProductItem.id) {
+        const outOfStockReached = isOutOfStock(itemAdd, cart);
+        if (outOfStockReached) {
           setOutofStock(true);
+        }
       }
 
+      if (cart && Object.keys(cart).length) {
+        const curtotal = getLiveStock(itemAdd, cart);
+      }
     }
   }
 
   useEffect(() => {
     if (Object.keys(cart).length) {
+      const outOfStockReached = isOutOfStock(selectedProductItem, cart);
+
+      let curtotal = 0;
+      if (cart && Object.keys(cart).length) {
+        curtotal = getLiveStock(selectedProductItem, cart);
+      }
+
+      if ((selectedProductItem.bundle && selectedProductItem.bundle.quantity > curtotal) || outOfStockReached) {
+        setOutofStock(true);
+      }
+
       setCartData(Object.values(cart));
     }
   }, [cart]);
@@ -395,24 +415,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   const loadBundles = async() => {
-    const getBundles = await getActiveProductBundlesByProductItemId(selectedProductItem.id)
-    if (getBundles) {
-      setBundles(getBundles);
+    if (selectedProductItem && Object.keys(selectedProductItem).length) {
+      const getBundles = await getActiveProductBundlesByProductItemId(selectedProductItem.id)
+      if (getBundles) {
+        setBundles(getBundles);
+      }
+    } else {
+      setBundles(null);
     }
   }
-
-  // Commented out because this does nothing with the results
-  // const handleDefaultSize = () => {
-  //   if (showData && selectedColor) {
-  //     const items = productInfo.productProductItems;
-  //     if (items && items.length) {
-  //       const getItem = items.filter(item => item.productColor === selectedColor.id)
-  //       if (getItem && getItem.length) {
-  //         const getSize = sizes.filter(size => size.id === getItem[0].productSize)
-  //       }
-  //     }
-  //   }
-  // }
 
   const handleBundleChange = async(e, bundle) => {
     if (e) {
@@ -421,7 +432,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
     let currBundle = bundle;
 
-    if (selectedBundle && selectedBundle.id === currBundle.id) {
+    if (selectedBundle && selectedBundle.id == currBundle.id) {
       setSelectedBundle(null);
       currBundle = null;
     } else {
@@ -432,10 +443,16 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     if (selectedProductItem) {
          const searchItem = selectedProductItem;
         searchItem['quantity'] = 1;
-
-        const getDiscountItem = await setBundleDiscount(productInfo, selectedProductItem, currBundle);
-        setDealPrice(getDiscountItem.retailPrice);
-        setProductItem(getDiscountItem);
+        if (!currBundle) {
+          searchItem.bundle = null;
+          const getDiscountItem = await setBundleDiscount(productInfo, searchItem, currBundle);
+          setProductItem(getDiscountItem);
+          setDealPrice(null);
+        } else {
+          const getDiscountItem = await setBundleDiscount(productInfo, selectedProductItem, currBundle);
+          setDealPrice(getDiscountItem.retailPrice);
+          setProductItem(getDiscountItem);
+        }
     }
   }
 
@@ -468,8 +485,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   const createBundleBlock = () => {
-    if(bundles && selectedProductItem) {
-      let stock = selectedProductItem.stock;
+    if(bundles && selectedProductItem && Object.keys(selectedProductItem).length) {
+      let stock = selectedProductStock;
       const validBundles = bundles.filter((bundle) => {
         return stock >= bundle.quantity
       })
@@ -621,7 +638,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
   useEffect(() => {
       createBundleBlock();
-  }, [selectedBundle]);
+  }, [selectedBundle, selectedProductStock]);
 
   useEffect(() => {
     if (bundleBlocks && bundleBlocks.length) {
@@ -643,11 +660,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
   useEffect(() => {
     loadImages(selectedProductItem)
+    loadBundles()
     if (selectedProductItem && Object.keys(selectedProductItem).length) {
-      loadBundles()
-    }
-    if (selectedProductItem) {
-
       const getProductPriceComponent = (value, isScratched = false) => {
         return (
           <>
@@ -708,10 +722,16 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
       if (cart && Object.keys(cart).length) {
         const getCartItem = getCartItemById(cart, selectedProductItem);
-        if (getCartItem && getCartItem.quantity >= selectedProductItem.stock) {
+
+        const outOfStockReached = isOutOfStock(getCartItem, cart);
+        if (outOfStockReached) {
           setOutofStock(true);
         }
       }
+
+      const total = getLiveStock(selectedProductItem, cart);
+
+      setSelectedProductStock(total);
     }
   }, [selectedProductItem]);
 
@@ -721,9 +741,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
   }, [productInfo]);
 
-  // useEffect(() => {
-  //   handleDefaultSize()
-  // }, [selectedColor]);
+  useEffect(() => {
+    const outOfStockReached = isOutOfStock(selectedProductItem, cart);
+    const total = getLiveStock(selectedProductItem, cart);
+    if (!total) {
+      setOutofStock(true);
+    } else {
+      setOutofStock(false);
+    }
+  }, [selectedProductStock]);
 
   useEffect(()=>{
     loadProductInfo();
@@ -823,7 +849,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                           <Grid item lg={6} xs={6}>
                             <QuantitySelectorB 
                               jump={selectedProductItem.bundle ? selectedProductItem.bundle.quantity : 0} 
-                              stock={selectedProductItem.stock} 
+                              stock={selectedProductStock} 
                               refresh={forceRefresh} 
                               onChange={handQuantitySelect} 
                               id="quant-select"

@@ -15,12 +15,13 @@ export const getCartTotalItems = (cart, item = null) => {
     if (item) {
       let getItems = null;
       if (item.bundle) {
-        getItems = cart.filter(cartItem => cartItem.id == item.id && cartItem.productColor == item.productColor && cartItem.productSize == item.productSize && (cartItem.bundle && cartItem.bundle.id == item.bundle.id));
+        getItems = cart.filter(cartItem => cartItem.id == item.id && cartItem.productColor == item.productColor && cartItem.productSize == item.productSize && cartItem.bundle && cartItem.bundle.id == item.bundle.id);
       } else {
-        getItems = cart.filter(cartItem => cartItem.id == item.id && cartItem.productColor == item.productColor && cartItem.productSize == item.productSize);
+        getItems = cart.filter(cartItem => cartItem.id == item.id && cartItem.productColor == item.productColor && !item.bundle && !cartItem.bundle && cartItem.productSize == item.productSize);
       }
       if (getItems && getItems.length) {
-        return getItems.map(item => item.quantity).reduce((prev, curr) => prev + curr)
+        const totalx = getItems.map(item => item.quantity).reduce((prev, curr) => prev + curr)
+        return totalx
       }
     } else {
       return cart.map(item => item.quantity).reduce((prev, curr) => prev + curr)
@@ -29,6 +30,27 @@ export const getCartTotalItems = (cart, item = null) => {
     return cart
   }
 }
+
+export const getCartItemIndex = (cart, item) => {
+  let keyFound = null;
+
+  if (cart && Object.keys(cart).length) 
+  {
+    for(let key = 0; key < Object.keys(cart).length; key++) {
+      if(cart[key].id == item.id) {
+        if (cart[key].bundle && item.bundle && item.bundle.id == cart[key].bundle.id) {
+          keyFound = key
+          break;
+        } else if (!item.bundle && !cart[key].bundle) {
+          keyFound = key
+          break;
+        }
+      }
+    }
+  }
+  return keyFound;
+}
+
 export const getDeliveryInfo = (order) => {
   let delivery = null;
   if (order.deliveryOptionId && order.deliveryOptionId === '1') {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 // import Link from 'next/link'
 import * as T from 'prop-types';
 import { useRouter } from 'next/router'
-import { fade } from '@material-ui/core/styles';
+import { alpha } from '@material-ui/core/styles';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -24,11 +24,11 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-import { ADMIN_URL, ADMIN_SECTIONS, SECTIONS } from '../../../constants/admin';
-import loadMain from '../../../redux/reducers'
-import { logout } from '../../../api/auth';
-import Icons from '../../common/Icons';
-import Modal from '../Modal';
+import { ADMIN_URL, ADMIN_SECTIONS, SECTIONS } from '@/constants/admin';
+import loadMain from '@/redux/reducers'
+import { logout } from '@/api/auth';
+import Icons from '@/common/Icons';
+import Modal from '@/common/Modal';
 
 
 const styles = (theme) => ({
@@ -96,9 +96,9 @@ const styles = (theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,

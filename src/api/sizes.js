@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const createSize = async(data) => {
   return Api.post(`product-sizes`, data);

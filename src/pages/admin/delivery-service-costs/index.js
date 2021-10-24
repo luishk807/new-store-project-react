@@ -9,12 +9,12 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import { deleteDeliveryServiceCostById, getDeliveryServiceCosts } from '../../../api/deliveryServiceCosts';
-import Snackbar from '../../../components/common/Snackbar';
-import Icons from '../../../components/common/Icons';
-import DialogModal from '../../../components/common/DialogModal';
-import ProgressBar from '../../../components/common/ProgressBar';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import { deleteDeliveryServiceCostById, getDeliveryServiceCosts } from 'src/api/deliveryServiceCosts';
+import Snackbar from 'src/components/common/Snackbar';
+import Icons from 'src/components/common/Icons';
+import DialogModal from 'src/components/common/DialogModal';
+import ProgressBar from 'src/components/common/ProgressBar';
 
 const styles = (theme) => ({
   root: {

@@ -8,9 +8,9 @@ import {
 import moment from 'moment';
 
 import OrderItem from './OrderItem';
-import { canceled_status, statusAllowedCancellation } from '../../../config';
-import { formatNumber, isNull, getDeliveryInfo } from '../../utils';
-import PrintButton from '../common/Print/PrintButton';
+import { canceled_status, statusAllowedCancellation } from 'config';
+import { formatNumber, isNull, getDeliveryInfo } from 'src/utils';
+import PrintButton from '@/components/common/Print/PrintButton';
 import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({

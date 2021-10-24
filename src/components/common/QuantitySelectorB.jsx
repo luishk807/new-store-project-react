@@ -6,8 +6,11 @@ import {
   ButtonGroup,
   Button
 } from '@material-ui/core';
+import { useTranslation } from 'next-i18next'
+
+import { isOutOfStock } from 'src/utils/products';
 import Snackbar from './Snackbar';
-import { createProductItem } from '../../api/productItems';
+import { createProductItem } from '@/api/productItems';
 
 const styles = (theme) => ({
   root: {
@@ -43,7 +46,7 @@ const styles = (theme) => ({
   },
 });
 
-const QuantitySelectorB = React.memo(({refresh, data = 1, jump = 0, stock, classes, id, onChange}) => {
+const QuantitySelectorB = React.memo(({refresh, data = 1, jump = 0, stock, classes, id, onChange, cart = null, product = null}) => {
   const [total, setTotal] = useState(0);
   const [currectRefresh, setCurrentRefresh] = useState(null)
   const [showData, setShowData] = useState(false);
@@ -52,8 +55,10 @@ const QuantitySelectorB = React.memo(({refresh, data = 1, jump = 0, stock, class
     open: false,
     text: '',
   });
+  const { t } = useTranslation(['common'])
 
   const onHandleDropDown = async(resp) => {
+
     let value = null;
 
     if (typeof resp === "boolean") {
@@ -73,11 +78,21 @@ const QuantitySelectorB = React.memo(({refresh, data = 1, jump = 0, stock, class
 
     let totalCheck = jump ? Number(value) * Number(jump) : Number(value);
 
-    if (stock && totalCheck > stock) {
+
+    let isOutStock = totalCheck > stock;
+
+    if (product && cart) {
+      const newProd = JSON.parse(JSON.stringify(product));
+      newProd.quantity = value;
+      const getStockResult = isOutOfStock(newProd, cart, true);
+      isOutStock = getStockResult > stock;
+    }
+
+    if (stock && isOutStock) {
       setSnack({
         severity: 'error',
         open: true,
-        text: 'Cantidad maxima del producto disponible',
+        text: t('max_amount_reached'),
       })
     } else {
       setTotal(value);
@@ -136,6 +151,8 @@ QuantitySelectorB.protoTypes = {
   id: T.string,
   jump: T.number,
   onChange: T.func,
+  cart: T.object,
+  product: T.object
 };
 
 export default withStyles(styles)(QuantitySelectorB);

@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Tabs, Tab } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import ProductHome from '../../../components/inventarioz/product/ProductHome';
-import HomeLayout from '../../../components/inventarioz/layouts/HomeLayout';
-import StockHome from '../../../components/inventarioz/stock/StockHome';
-import OrderHome from '../../../components/inventarioz/order/OrderHome';
+import ProductHome from 'src/components/inventarioz/product/ProductHome';
+import HomeLayout from 'src/components/inventarioz/layouts/HomeLayout';
+import StockHome from 'src/components/inventarioz/stock/StockHome';
+import OrderHome from 'src/components/inventarioz/order/OrderHome';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;

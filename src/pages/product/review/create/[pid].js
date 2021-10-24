@@ -6,11 +6,11 @@ import {
   Grid
 } from '@material-ui/core';
 
-import { getImageUrlByType } from '../../../../utils/form';
-import AddForm from '../../../../components/common/Form/AddForm';
-import { MAIN_SECTIONS } from '../../../../constants';
-import { getItemById } from '../../../../api';
-import { getThumbnail } from '../../../../utils/helpers/image'
+import { getImageUrlByType } from 'src/utils/form';
+import AddForm from 'src/components/common/Form/AddForm';
+import { MAIN_SECTIONS } from 'src/constants';
+import { getItemById } from 'src/api';
+import { getThumbnail } from 'src/utils/helpers/image'
 
 const styles = (theme) => ({
   root: {

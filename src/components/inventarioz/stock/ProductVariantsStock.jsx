@@ -19,11 +19,11 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 // import DeleteIcon from '@material-ui/icons/Delete'
 import { green } from '@material-ui/core/colors';
-import MessageAlert from '../MessageAlert'
-import CustomDialog from '../CustomDialog'
+import MessageAlert from '@/inventarioz/MessageAlert'
+import CustomDialog from '@/inventarioz/CustomDialog'
 import StockEntryFields from './StockEntryFields'
 import { useEffect, useState } from 'react'
-import { addStockEntry, getStock } from '../../../services/inventarioz/stock'
+import { addStockEntry, getStock } from '@/services/inventarioz/stock'
 
 const useStyles = makeStyles((theme) => ({
     root: {

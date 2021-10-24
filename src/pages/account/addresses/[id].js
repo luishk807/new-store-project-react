@@ -7,10 +7,10 @@ import {
   Grid,
 } from '@material-ui/core';
 
-import EditForm from '../../../components/common/Form/EditForm';
-import { USER_SECTIONS } from '../../../constants/user';
-import { defaultCountry } from '../../../../config';
-import UserLayoutTemplate from '../../../components/common/Layout/UserLayoutTemplate';
+import EditForm from 'src/components/common/Form/EditForm';
+import { USER_SECTIONS } from 'src/constants/user';
+import { defaultCountry } from 'config';
+import UserLayoutTemplate from 'src/components/common/Layout/UserLayoutTemplate';
 
 const styles = (theme) => ({
   root: {

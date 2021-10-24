@@ -6,11 +6,11 @@ import {
   Button,  
 } from '@material-ui/core';
 
-import Snackbar from '../../Snackbar';
-import Typography from '../../Typography';
-import LayoutTemplate from '../../Layout/LayoutTemplate';
-import { login } from '../../../../api/auth'
-import LoginForm from '../Login';
+import Snackbar from '@/common/Snackbar';
+import Typography from '@/common/Typography';
+import LayoutTemplate from '@/common/Layout/LayoutTemplate';
+import { login } from '@/api/auth'
+import LoginForm from '@/common/Form/Login';
 
 const styles = (theme) => ({
   root: {

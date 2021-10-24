@@ -5,10 +5,10 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-import { ADMIN_SECTIONS } from '../../../constants/admin';
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import EditForm from '../../../components/common/Form/EditForm';
-import { defaultCountry } from '../../../../config';
+import { ADMIN_SECTIONS } from 'src/constants/admin';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import EditForm from 'src/components/common/Form/EditForm';
+import { defaultCountry } from 'config';
 
 const styles = (theme) => ({
   root: {

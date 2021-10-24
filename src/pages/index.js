@@ -4,15 +4,15 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
-import ProductGallery from '../components/product/Gallery';
-import SelectorPlain from '../components/category/SelectorPlain';
-import NewArrival from '../components/home/NewArrival';
-import SweetBox from '../components/sweetbox';
-import ProductScroller from '../components/product/Scroller';
-import HomeCarrousel from '../components/home/Carrousel';
-import ImageBox from '../components/home/ImageBox';
-import ProductCategory from '../components/home/ProductCategory';
+import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
+import ProductGallery from 'src/components/product/Gallery';
+import SelectorPlain from 'src/components/category/SelectorPlain';
+import NewArrival from 'src/components/home/NewArrival';
+import SweetBox from 'src/components/sweetbox';
+import ProductScroller from 'src/components/product/Scroller';
+import HomeCarrousel from 'src/components/home/Carrousel';
+import ImageBox from 'src/components/home/ImageBox';
+import ProductCategory from 'src/components/home/ProductCategory';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({

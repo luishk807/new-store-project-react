@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const saveDeliveryService = async(data) => {
   return Api.post(`delivery-services`, data);

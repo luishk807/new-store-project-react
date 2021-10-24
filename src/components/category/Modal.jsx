@@ -8,8 +8,8 @@ import {
   TextField,
 } from '@material-ui/core';
 
-import Icons from '../common/Icons';
-import { getItems } from '../../api';
+import Icons from '@/components/common/Icons';
+import { getItems } from 'src/api';
 import CategoryModalProducts from './ModalProduct';
 import { useTranslation } from 'next-i18next'
 

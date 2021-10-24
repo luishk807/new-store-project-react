@@ -2,7 +2,7 @@ import React, {useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import ImageGallery from 'react-image-gallery';
 import { connect } from 'react-redux';
-import { updateCart,addCart } from '../../redux/actions/main';
+import { updateCart,addCart } from 'src/redux/actions/main';
 import { useRouter } from 'next/router';
 import {
   Grid,
@@ -12,26 +12,26 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import { getImageUrlByType } from '../../utils/form';
-import { checkDiscountPrice, setBundleDiscount, checkBundlePrice } from '../../utils/products';
-import { formatNumber, isAroundTime, capitalize, sortOptions, getCartTotalItems} from '../../utils';
-import { noImageUrl } from '../../../config';
-import LayoutTemplate from '../../components/common/Layout/LayoutTemplate';
-import { ProductSample } from '../../constants/samples/ProductSample';
-import Snackbar from '../../components/common/Snackbar';
-import QuantitySelectorB from '../../components/common/QuantitySelectorB';
-import { getActiveProductBundlesByProductItemId } from '../../api/productBundles';
-import { getProductBySlug, getProductById } from '../../api/products';
-import { getSizesByProductId } from '../../api/sizes';
-import { getColorsByProductId } from '../../api/productColors';
-import { getProductItemById } from '../../api/productItems';
-import ProgressBar from '../../components/common/ProgressBar';
-import RateFullView from '../../components/rate/FullView';
+import { getImageUrlByType } from 'src/utils/form';
+import { checkDiscountPrice, setBundleDiscount, checkBundlePrice, isOutOfStock, getLiveStock } from 'src/utils/products';
+import { formatNumber, isAroundTime, capitalize, sortOptions, getCartTotalItems, removeDuplicatesByProperty, getCartItemById } from 'src/utils';
+import { noImageUrl } from 'config';
+import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
+import { ProductSample } from 'src/constants/samples/ProductSample';
+import Snackbar from 'src/components/common/Snackbar';
+import QuantitySelectorB from 'src/components/common/QuantitySelectorB';
+import { getActiveProductBundlesByProductItemId } from 'src/api/productBundles';
+import { getProductBySlug, getProductById } from 'src/api/products';
+import { getSizesByProductId } from 'src/api/sizes';
+import { getColorsByProductId } from 'src/api/productColors';
+import { getProductItemById } from 'src/api/productItems';
+import ProgressBar from 'src/components/common/ProgressBar';
+import RateFullView from 'src/components/rate/FullView';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { getThumbnail } from '../../utils/helpers/image'
-import CartSwipe from '../../components/cart/Swipe';
-import { getColorName } from '../../utils/helpers/product'
+import { getThumbnail } from 'src/utils/helpers/image'
+import CartSwipe from 'src/components/cart/Swipe';
+import { getColorName } from 'src/utils/helpers/product'
 
 const styles = (theme) => ({
   root: {
@@ -197,6 +197,7 @@ const styles = (theme) => ({
     marginBottom: '2px',
     display: 'inline-block',
     color: 'grey',
+    borderRadius: '5px',
     '&:hover': {
       backgroundColor: '#f8be15',
       color: 'white',
@@ -252,6 +253,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   const [showProduct, setShowProduct] = useState(false);
   const [showBundles, setShowBundles] = useState(false);
 
+  const [selectedProductStock, setSelectedProductStock] = useState(null);
+
   const [selectedColor, setSelectedColor] = useState(null);
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedBundle, setSelectedBundle] = useState(null);
@@ -298,7 +301,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       item.productImages = productInfo.productImages;
       item.slug = productInfo.slug
     }
+
     setSelectedProductItem(item);
+  }
+
+  const getGalleryImage = (original, thumbnail) => {
+    return {
+      original: original,
+      thumbnail: thumbnail
+    }
   }
 
   const loadImages = (data) => {
@@ -306,29 +317,23 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     let imgs = [];
 
     if (data && data.productImages) {
-      imgs = data.productImages.map((img) => {
-        return {
-          original: `${imageUrl}/${img.img_url}`,
-          thumbnail: `${imageUrl}/${getThumbnail(img)}`,
-        }
-      });
-      setImages(imgs);
-    } else {
-      if (productInfo && productInfo.productImages && productInfo.productImages.length) {
-        imgs = productInfo.productImages.map((img) => {
-          return {
-            original: `${imageUrl}/${img.img_url}`,
-            thumbnail: `${imageUrl}/${getThumbnail(img)}`,
-          }
-        });
-      } else {
-        imgs.push({
-          original: `${noImageUrl.svg}`,
-          thumbnail: `${noImageUrl.svg}`,
-        });
-      }
-      setImages(imgs);
+      imgs = imgs.concat(data.productImages.map((img) => {
+        return getGalleryImage(`${imageUrl}/${img.img_url}`, `${imageUrl}/${getThumbnail(img)}`);
+      }));
     }
+
+    if (productInfo && productInfo.productImages && productInfo.productImages.length) {
+      imgs = imgs.concat(productInfo.productImages.map((img) => {
+        return getGalleryImage(`${imageUrl}/${img.img_url}`, `${imageUrl}/${getThumbnail(img)}`)
+      }));
+    } else {
+      if (!data) {
+        imgs.push(getGalleryImage(`${noImageUrl.svg}`,`${noImageUrl.svg}`));
+      }
+    }
+    // Remove any duplicate images
+    imgs = removeDuplicatesByProperty(imgs, 'original');
+    setImages(imgs);
   }
 
   const onAddCart = async() => {
@@ -353,26 +358,47 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     } else {
       let total = getCartTotalItems(cartData, selectedProductItem);
       total = total ? total : 0;
-
       const itemAdd = Object.assign({}, selectedProductItem);
       const currQuantity = Number(itemAdd.quantity);
       const newQuantity = Number(total);
       itemAdd.quantity = currQuantity + newQuantity;
-
       await addCart(itemAdd);
       
       setForceSwipeRefresh(!forceSwipeRefresh)
       setCartSwipeData(selectedProductItem)
+      setForceRefresh(!forceRefresh)
       setSnack({
         severity: 'success',
         open: true,
         text: t('product:messages.added_to_cart'),
       })
+
+      if (itemAdd.id == selectedProductItem.id) {
+        const outOfStockReached = isOutOfStock(itemAdd, cart);
+        if (outOfStockReached) {
+          setOutofStock(true);
+        }
+      }
+
+      if (cart && Object.keys(cart).length) {
+        const curtotal = getLiveStock(itemAdd, cart);
+      }
     }
   }
 
   useEffect(() => {
     if (Object.keys(cart).length) {
+      const outOfStockReached = isOutOfStock(selectedProductItem, cart);
+
+      let curtotal = 0;
+      if (cart && Object.keys(cart).length) {
+        curtotal = getLiveStock(selectedProductItem, cart);
+      }
+
+      if ((selectedProductItem.bundle && selectedProductItem.bundle.quantity > curtotal) || outOfStockReached) {
+        setOutofStock(true);
+      }
+
       setCartData(Object.values(cart));
     }
   }, [cart]);
@@ -389,24 +415,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
   }
 
   const loadBundles = async() => {
-    const getBundles = await getActiveProductBundlesByProductItemId(selectedProductItem.id)
-    if (getBundles) {
-      setBundles(getBundles);
+    if (selectedProductItem && Object.keys(selectedProductItem).length) {
+      const getBundles = await getActiveProductBundlesByProductItemId(selectedProductItem.id)
+      if (getBundles) {
+        setBundles(getBundles);
+      }
+    } else {
+      setBundles(null);
     }
   }
-
-  // Commented out because this does nothing with the results
-  // const handleDefaultSize = () => {
-  //   if (showData && selectedColor) {
-  //     const items = productInfo.productProductItems;
-  //     if (items && items.length) {
-  //       const getItem = items.filter(item => item.productColor === selectedColor.id)
-  //       if (getItem && getItem.length) {
-  //         const getSize = sizes.filter(size => size.id === getItem[0].productSize)
-  //       }
-  //     }
-  //   }
-  // }
 
   const handleBundleChange = async(e, bundle) => {
     if (e) {
@@ -415,7 +432,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
     let currBundle = bundle;
 
-    if (selectedBundle && selectedBundle.id === currBundle.id) {
+    if (selectedBundle && selectedBundle.id == currBundle.id) {
       setSelectedBundle(null);
       currBundle = null;
     } else {
@@ -426,16 +443,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     if (selectedProductItem) {
          const searchItem = selectedProductItem;
         searchItem['quantity'] = 1;
-
-        const getDiscountItem = await setBundleDiscount(productInfo, selectedProductItem, currBundle);
-        setDealPrice(getDiscountItem.retailPrice);
-        setProductItem(getDiscountItem);
-
-        //check if variant is out of stock
-        if (!selectedProductItem.stock) {
-          setOutofStock(true);
+        if (!currBundle) {
+          searchItem.bundle = null;
+          const getDiscountItem = await setBundleDiscount(productInfo, searchItem, currBundle);
+          setProductItem(getDiscountItem);
+          setDealPrice(null);
         } else {
-          setOutofStock(false);
+          const getDiscountItem = await setBundleDiscount(productInfo, selectedProductItem, currBundle);
+          setDealPrice(getDiscountItem.retailPrice);
+          setProductItem(getDiscountItem);
         }
     }
   }
@@ -464,19 +480,13 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         const getTotal = formatNumber(searchItem.retailPrice);
         setProductItem(searchItem);
         setDealPrice(getTotal)
-        // check if variant is out of stock
-        if (!getItem[0].stock) {
-          setOutofStock(true);
-        } else {
-          setOutofStock(false);
-        }
       }
     }
   }
 
   const createBundleBlock = () => {
-    if(bundles && selectedProductItem) {
-      let stock = selectedProductItem.stock;
+    if(bundles && selectedProductItem && Object.keys(selectedProductItem).length) {
+      let stock = selectedProductStock;
       const validBundles = bundles.filter((bundle) => {
         return stock >= bundle.quantity
       })
@@ -628,7 +638,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
   useEffect(() => {
       createBundleBlock();
-  }, [selectedBundle]);
+  }, [selectedBundle, selectedProductStock]);
 
   useEffect(() => {
     if (bundleBlocks && bundleBlocks.length) {
@@ -650,11 +660,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
 
   useEffect(() => {
     loadImages(selectedProductItem)
+    loadBundles()
     if (selectedProductItem && Object.keys(selectedProductItem).length) {
-      loadBundles()
-    }
-    if (selectedProductItem) {
-
       const getProductPriceComponent = (value, isScratched = false) => {
         return (
           <>
@@ -706,6 +713,25 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
         </Grid>
         )
       }
+
+      if (!selectedProductItem.stock) {
+        setOutofStock(true);
+      } else {
+        setOutofStock(false);
+      }
+
+      if (cart && Object.keys(cart).length) {
+        const getCartItem = getCartItemById(cart, selectedProductItem);
+
+        const outOfStockReached = isOutOfStock(getCartItem, cart);
+        if (outOfStockReached) {
+          setOutofStock(true);
+        }
+      }
+
+      const total = getLiveStock(selectedProductItem, cart);
+
+      setSelectedProductStock(total);
     }
   }, [selectedProductItem]);
 
@@ -715,9 +741,15 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
     }
   }, [productInfo]);
 
-  // useEffect(() => {
-  //   handleDefaultSize()
-  // }, [selectedColor]);
+  useEffect(() => {
+    const outOfStockReached = isOutOfStock(selectedProductItem, cart);
+    const total = getLiveStock(selectedProductItem, cart);
+    if (!total) {
+      setOutofStock(true);
+    } else {
+      setOutofStock(false);
+    }
+  }, [selectedProductStock]);
 
   useEffect(()=>{
     loadProductInfo();
@@ -729,8 +761,9 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       <div className={classes.root}>
         <Grid container>
           <Grid item lg={12} xs={12}>
-            <Grid container spacing={2}>
-              <Grid item lg={8} xs={12}>
+            <Grid container spacing={5}>
+              <Grid item lg={1} />
+              <Grid item lg={3} xs={12}>
               {
                 images.length ? (
                   <ImageGallery items={images} />
@@ -739,7 +772,8 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                 )
               }
               </Grid>
-              <Grid item lg={4} xs={12}>
+              <Grid item lg={2} />
+              <Grid item lg={5} xs={12}>
                 <Grid container>
                   <Grid item lg={12} xs={12}>
                    <Typography className={classes.productName} variant="h3" component="h3">{productInfo.name}</Typography>
@@ -815,7 +849,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                           <Grid item lg={6} xs={6}>
                             <QuantitySelectorB 
                               jump={selectedProductItem.bundle ? selectedProductItem.bundle.quantity : 0} 
-                              stock={selectedProductItem.stock} 
+                              stock={selectedProductStock} 
                               refresh={forceRefresh} 
                               onChange={handQuantitySelect} 
                               id="quant-select"
@@ -858,6 +892,7 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
                   </Grid> */}
                 </Grid>
               </Grid>
+              <Grid item lg={1} />
             </Grid>
           </Grid>
           {/* <Grid item lg={3} sm={12} className={classes.rateBox}>

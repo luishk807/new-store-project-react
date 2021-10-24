@@ -7,15 +7,15 @@ import {
 import {isMobile} from 'react-device-detect';
 import Slider from "react-slick";
 
-import { getAllCategories } from '../../api/categories';
-import { getProductByIds } from '../../api/products';
-import SweetBoxProducts from '../sweetbox/Products';
+import { getAllCategories } from '@/api/categories';
+import { getProductByIds } from '@/api/products';
+import SweetBoxProducts from '@/components/sweetbox/Products';
 import ImageBox from './ImageBox';
 
 import {
   getSweetBoxesByType
- } from '../../api/sweetbox';
- import CategorySelector from '../category/Selector';
+ } from '@/api/sweetbox';
+ import CategorySelector from '@/components/category/Selector';
 
 const styles = (theme) => ({
   root: {

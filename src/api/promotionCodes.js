@@ -1,4 +1,4 @@
-import Api from '../services/api';
+import Api from '@/services/api';
 
 export const createPromotionCode = async(data) => {
   return Api.post(`promotion-codes`, data);

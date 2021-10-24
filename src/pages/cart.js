@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
-import { updateCart, deleteCart } from '../redux/actions/main'
+import { updateCart, deleteCart } from 'src/redux/actions/main'
 
 import {
   Grid,
@@ -16,18 +16,18 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import LayoutTemplate from '../components/common/Layout/LayoutTemplate';
-import Typography from '../components/common/Typography';
-import QuantitySelectorB from '../components/common/QuantitySelectorB';
-import CartBox from '../components/cart/Block';
-import Icons from '../components/common/Icons';
-import Snackbar from '../components/common/Snackbar';
-import { getProductById } from '../api/products';
-import { getProductItemByIds } from '../api/productItems';
-import { formatNumber, getCartTotal, getImage } from '../utils';
-import { checkDiscountPrice, checkBundlePrice } from '../utils/products';
-import { getImageUrlByType } from '../utils/form';
-import { getColorName } from '../utils/helpers/product'
+import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
+import Typography from 'src/components/common/Typography';
+import QuantitySelectorB from 'src/components/common/QuantitySelectorB';
+import CartBox from 'src/components/cart/Block';
+import Icons from 'src/components/common/Icons';
+import Snackbar from 'src/components/common/Snackbar';
+import { getProductById } from 'src/api/products';
+import { getProductItemByIds } from 'src/api/productItems';
+import { formatNumber, getCartTotal, getImage } from 'src/utils';
+import { checkDiscountPrice, checkBundlePrice, isOutOfStock } from 'src/utils/products';
+import { getImageUrlByType } from 'src/utils/form';
+import { getColorName } from 'src/utils/helpers/product'
 
 const styles = makeStyles((theme) => ({
   root: {
@@ -186,13 +186,25 @@ const Cart = ({cart, updateCart, deleteCart}) => {
     const index = resp.id.split("-")[1]
     const mainProduct = await getProductById(cart[index].productId);
     const currItem = cart[index];
+    
+    let getOutStock = null;
+
     if (resp.value > 0) {
       if (currItem.bundle) {
         const getDiscountItem = await checkBundlePrice(mainProduct, currItem, resp.value);
-        await updateCart(getDiscountItem)
+        
+        getOutStock = isOutOfStock(getDiscountItem, cart, true);
+        if (getOutStock <= currItem.stock) {
+          await updateCart(getDiscountItem)
+        }
       } else {
         const getDiscountItem = await checkDiscountPrice(mainProduct, currItem, resp.value);
-        await updateCart(getDiscountItem)
+      //  await updateCart(getDiscountItem)
+        getOutStock = isOutOfStock(getDiscountItem, cart, true);
+        if (getOutStock <= currItem.stock) {
+          await updateCart(getDiscountItem)
+        }
+        
       }
     }
   }
@@ -371,6 +383,8 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                   jump={item.bundle ? item.bundle.quantity : 0}  
                                   stock={item.stock} 
                                   data={item.quantity} 
+                                  cart={cart}
+                                  product={item}
                                   classes={{ root: classes.cartDropRoot}} 
                                   onChange={handleSelectChange} 
                                   id={`select-${key}`} 

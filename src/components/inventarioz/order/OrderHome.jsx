@@ -9,7 +9,7 @@ import {
 } from '@material-ui/lab'
 import { useState } from 'react'
 
-import ClientEntryFields from '../client/ClientEntryFields'
+import ClientEntryFields from '@/inventarioz/client/ClientEntryFields'
 import Order from './Order'
 
 const useStyles = makeStyles((theme) => ({

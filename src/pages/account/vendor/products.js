@@ -8,11 +8,11 @@ import {
   Button,
 } from '@material-ui/core';
 
-import VendorLayoutTemplate from '../../../components/common/Layout/VendorLayoutTemplate';
-import { noImageUrl } from '../../../../config'; 
-import { deleteItem, getItems, getItemByFkId } from '../../../api';
-import ProgressBar from '../../../components/common/ProgressBar';
-import { getThumbnail } from '../../../utils/helpers/image'
+import VendorLayoutTemplate from 'src/components/common/Layout/VendorLayoutTemplate';
+import { noImageUrl } from 'config'; 
+import { deleteItem, getItems, getItemByFkId } from 'src/api';
+import ProgressBar from 'src/components/common/ProgressBar';
+import { getThumbnail } from 'src/utils/helpers/image'
 
 const styles = (theme) => ({
   root: {

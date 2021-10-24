@@ -2,10 +2,10 @@ import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
 import { Grid } from '@material-ui/core'
 import { useState } from 'react'
-import ProductResults from '../stock/ProductResults'
-import SearchInput from '../SearchInput'
-import { searchProduct } from '../../../services/inventarioz/product'
-import { convertDataToTableData } from '../../../utils/materialtable'
+import ProductResults from '@/inventarioz/stock/ProductResults'
+import SearchInput from '@/inventarioz/SearchInput'
+import { searchProduct } from '@/services/inventarioz/product'
+import { convertDataToTableData } from '@/utils/materialtable'
 
 const useStyles = makeStyles((theme) => ({
     root: {

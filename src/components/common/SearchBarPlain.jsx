@@ -9,12 +9,12 @@ import {
 import { useRouter } from 'next/router';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
-import { searchProductItemByFilter } from '../../api/productItems';
-import { searchProductsByFilter } from '../../api/products';
+import { searchProductItemByFilter } from '@/api/productItems';
+import { searchProductsByFilter } from '@/api/products';
 import { getImageBaseThumbnail } from '../../utils';
-import ProgressBar from '../common/ProgressBar';
+import ProgressBar from '@/common/ProgressBar';
 import { useTranslation } from 'next-i18next'
-import { getColorName } from '../../utils/helpers/product'
+import { getColorName } from '@/utils/helpers/product'
 
 const styles = (theme) => ({
   root: {

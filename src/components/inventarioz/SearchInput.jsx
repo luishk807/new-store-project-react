@@ -1,19 +1,19 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import PropTypes from 'prop-types'
-import { fade, makeStyles } from '@material-ui/core/styles'
+import { alpha, makeStyles } from '@material-ui/core/styles'
 import SearchIcon from '@material-ui/icons/Search'
 import InputBase from '@material-ui/core/InputBase'
 import { useState } from 'react'
-// import { searchProduct } from '../../services/inventarioz/product'
+// import { searchProduct } from '@/services/inventarioz/product'
 
 const useStyles = makeStyles((theme) => ({
     search: {
         position: 'relative',
         borderRadius: theme.shape.borderRadius,
-        backgroundColor: fade(theme.palette.common.white, 0.15),
+        backgroundColor: alpha(theme.palette.common.white, 0.15),
         '&:hover': {
-            backgroundColor: fade(theme.palette.common.white, 0.25),
+            backgroundColor: alpha(theme.palette.common.white, 0.25),
         },
         marginLeft: 0,
         width: '100%',

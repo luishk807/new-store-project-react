@@ -19,13 +19,13 @@ import {
 } from '@material-ui/lab';
 import { useRouter } from 'next/router';
 
-import { addItem, getItems, getItemById, getItemByFkId } from '../../../api';
-import { ADMIN_SECTIONS } from '../../../constants/admin';
-import { handleFormResponse, getImageUrlByType } from '../../../utils/form';
-import Icons from '../Icons';
-import ProductBox from '../ProductBox';
-import Typography from '../Typography'
-import Snackbar from '../Snackbar';
+import { addItem, getItems, getItemById, getItemByFkId } from 'src/api';
+import { ADMIN_SECTIONS } from '@/constants/admin';
+import { handleFormResponse, getImageUrlByType } from '@/utils/form';
+import Icons from '@/common/Icons';
+import ProductBox from '@/common/ProductBox';
+import Typography from '@/common/Typography'
+import Snackbar from '@/common/Snackbar';
 
 const styles = (theme) => ({
   root: {

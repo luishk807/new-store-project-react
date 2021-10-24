@@ -1,4 +1,4 @@
-import { config } from '../../../config'
+import { config } from 'config'
 import axios from 'axios'
 
 const apiBaseUrl = config.backEndUrl + config.apiBaseUrl + '/supplier'

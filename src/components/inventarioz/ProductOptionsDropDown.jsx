@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types'
 import DropDown from './DropDown'
 import { useEffect, useState } from 'react'
-import { getOptions } from '../../services/inventarioz/product'
+import { getOptions } from '@/services/inventarioz/product'
 
 const ProductOptionsDropDown = ({ onChange }) => {
     const [options, setOptions] = useState([])

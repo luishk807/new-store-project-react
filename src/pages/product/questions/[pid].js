@@ -7,13 +7,13 @@ import {
   withStyles,
 } from '@material-ui/core';
 import moment from 'moment';
-import LayoutTemplate from '../../../components/common/Layout/LayoutTemplate';
-import { getImageUrlByType } from '../../../utils/form';
-import { ADMIN_SECTIONS } from '../../../constants/admin';
-import { sendQuestion, getQuestionById } from '../../../api/questions';
-import { getItemById } from '../../../api';
-import AnswerProductQuestionsForm from '../../../components/common/AnswerProductQuestionsForm';
-import { getThumbnail } from '../../../utils/helpers/image'
+import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
+import { getImageUrlByType } from 'src/utils/form';
+import { ADMIN_SECTIONS } from 'src/constants/admin';
+import { sendQuestion, getQuestionById } from 'src/api/questions';
+import { getItemById } from 'src/api';
+import AnswerProductQuestionsForm from 'src/components/common/AnswerProductQuestionsForm';
+import { getThumbnail } from 'src/utils/helpers/image'
 
 const styles = (theme) => ({
   root: {

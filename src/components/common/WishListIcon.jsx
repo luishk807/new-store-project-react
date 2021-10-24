@@ -9,10 +9,10 @@ import {
 
 import Icons from './Icons';
 import Snackbar from './Snackbar';
-import { saveWishlist, getWishlistByUserId, deleteWishlistByUserId } from '../../api/wishlist';
-import { handleFormResponse } from '../../utils/form';
-import { verifyCookie } from '../../utils/cookie';
-import { WISHLIST_ICON  } from '../../constants/product';
+import { saveWishlist, getWishlistByUserId, deleteWishlistByUserId } from '@/api/wishlist';
+import { handleFormResponse } from '@/utils/form';
+import { verifyCookie } from '@/utils/cookie';
+import { WISHLIST_ICON  } from '@/constants/product';
 
 const styles = (theme) => ({
   wishlistIcon: {

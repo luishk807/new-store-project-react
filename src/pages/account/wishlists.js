@@ -7,15 +7,15 @@ import {
   Button,
 } from '@material-ui/core';
 
-import UserLayoutTemplate from '../../components/common/Layout/UserLayoutTemplate';
-import { deleteWishlistByUserId } from '../../api/wishlist';
-import { updateCart,addCart } from '../../redux/actions/main';
-import { getWishlistByUserId } from '../../api/wishlist';
-import { handleFormResponse } from '../../utils/form';
-import Icons from '../../components/common/Icons';
-import Snackbar from '../../components/common/Snackbar';
-import WishlistBox from '../../components/WishlistBox';
-import ProgressBar from '../../components/common/ProgressBar';
+import UserLayoutTemplate from 'src/components/common/Layout/UserLayoutTemplate';
+import { deleteWishlistByUserId } from 'src/api/wishlist';
+import { updateCart,addCart } from 'src/redux/actions/main';
+import { getWishlistByUserId } from 'src/api/wishlist';
+import { handleFormResponse } from 'src/utils/form';
+import Icons from 'src/components/common/Icons';
+import Snackbar from 'src/components/common/Snackbar';
+import WishlistBox from 'src/components/WishlistBox';
+import ProgressBar from 'src/components/common/ProgressBar';
 
 const styles = (theme) => ({
   root: {

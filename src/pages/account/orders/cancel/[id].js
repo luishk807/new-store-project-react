@@ -10,13 +10,13 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import ActionForm from '../../../../components/common/Form/Action/Add';
-import UserLayoutTemplate from '../../../../components/common/Layout/UserLayoutTemplate';
-import { handleFormResponse } from '../../../../utils/form';
-import { canceled_status } from '../../../../../config';
-import LeftOrderColumn from '../../../../components/common/Layout/Left/account/OrderLeftColumn';
-import Snackbar from '../../../../components/common/Snackbar';
-import { cancelOrder, getOrderById } from '../../../../api/orders';
+import ActionForm from 'src/components/common/Form/Action/Add';
+import UserLayoutTemplate from 'src/components/common/Layout/UserLayoutTemplate';
+import { handleFormResponse } from 'src/utils/form';
+import { canceled_status } from 'src/../config';
+import LeftOrderColumn from 'src/components/common/Layout/Left/account/OrderLeftColumn';
+import Snackbar from 'src/components/common/Snackbar';
+import { cancelOrder, getOrderById } from 'src/api/orders';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

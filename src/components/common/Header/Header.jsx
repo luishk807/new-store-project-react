@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import { connect } from 'react-redux';
-import { fade } from '@material-ui/core/styles';
+import { alpha } from '@material-ui/core/styles';
 import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
 import { 
@@ -10,11 +10,11 @@ import {
   Button,
   Grid,
 } from '@material-ui/core';
-import Icon from '../../../components/common/Icons';
-import { getCartTotalItems } from '../../../utils';
-import Typography from '../Typography';
-import loadMain from '../../../redux/reducers'
-import SearchBar from '../SearchBar';
+import Icon from '@/common/Icons';
+import { getCartTotalItems } from 'src/utils';
+import Typography from '@/common/Typography';
+import loadMain from '@/redux/reducers'
+import SearchBar from '@/common/SearchBar';
 import { useRouter } from 'next/router'
 import Locale from './Locale';
 
@@ -91,9 +91,9 @@ const styles = (theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
+    backgroundColor: alpha(theme.palette.common.white, 0.15),
     '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25),
+      backgroundColor: alpha(theme.palette.common.white, 0.25),
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,

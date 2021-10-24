@@ -1,9 +1,9 @@
-import * as t from '../types';
-import { decodeCookie } from '../../utils/cookie';
-import { getItemById, getItems } from '../../api';
-import { ADMIN_SECTIONS } from '../../constants/admin';
-import { CATEGORY_ICONS } from '../../../config';
-import { getVendorByUserId } from '../../api/vendor';
+import * as t from '@/redux/types';
+import { decodeCookie } from '@/utils/cookie';
+import { getItemById, getItems } from 'src/api';
+import { ADMIN_SECTIONS } from '@/constants/admin';
+import { getVendorByUserId } from '@/api/vendor';
+import { CATEGORY_ICONS } from 'config';
 
 import { 
   setUser,

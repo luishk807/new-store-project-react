@@ -1,8 +1,8 @@
 import { getImageUrlByType } from './form';
-import { noImageUrl } from '../../config';
-import { getProductItemByIds } from '../api/productItems';
-import { getProductById } from '../api/products';
-import { getThumbnail } from '../utils/helpers/image'
+import { noImageUrl } from 'config';
+import { getProductItemByIds } from '@/api/productItems';
+import { getProductById } from '@/api/products';
+import { getThumbnail } from '@/utils/helpers/image'
 
 export const removeCharacter = (str) => {
   return str ? str.replace(/_/g, ' ') : str
@@ -15,12 +15,13 @@ export const getCartTotalItems = (cart, item = null) => {
     if (item) {
       let getItems = null;
       if (item.bundle) {
-        getItems = cart.filter(cartItem => cartItem.id == item.id && cartItem.productColor == item.productColor && cartItem.productSize == item.productSize && (cartItem.bundle && cartItem.bundle.id == item.bundle.id));
+        getItems = cart.filter(cartItem => cartItem.id == item.id && cartItem.productColor == item.productColor && cartItem.productSize == item.productSize && cartItem.bundle && cartItem.bundle.id == item.bundle.id);
       } else {
-        getItems = cart.filter(cartItem => cartItem.id == item.id && cartItem.productColor == item.productColor && cartItem.productSize == item.productSize);
+        getItems = cart.filter(cartItem => cartItem.id == item.id && cartItem.productColor == item.productColor && !item.bundle && !cartItem.bundle && cartItem.productSize == item.productSize);
       }
       if (getItems && getItems.length) {
-        return getItems.map(item => item.quantity).reduce((prev, curr) => prev + curr)
+        const totalx = getItems.map(item => item.quantity).reduce((prev, curr) => prev + curr)
+        return totalx
       }
     } else {
       return cart.map(item => item.quantity).reduce((prev, curr) => prev + curr)
@@ -29,6 +30,27 @@ export const getCartTotalItems = (cart, item = null) => {
     return cart
   }
 }
+
+export const getCartItemIndex = (cart, item) => {
+  let keyFound = null;
+
+  if (cart && Object.keys(cart).length) 
+  {
+    for(let key = 0; key < Object.keys(cart).length; key++) {
+      if(cart[key].id == item.id) {
+        if (cart[key].bundle && item.bundle && item.bundle.id == cart[key].bundle.id) {
+          keyFound = key
+          break;
+        } else if (!item.bundle && !cart[key].bundle) {
+          keyFound = key
+          break;
+        }
+      }
+    }
+  }
+  return keyFound;
+}
+
 export const getDeliveryInfo = (order) => {
   let delivery = null;
   if (order.deliveryOptionId && order.deliveryOptionId === '1') {
@@ -302,6 +324,19 @@ export const getCartTotal = (obj) => {
   }
 }
 
+export const getCartItemById = (cart, item) => {
+  let getCartItem = null
+  if (cart && Object.keys(cart).length) {
+    Object.keys(cart).forEach(c => {
+       if (cart[c].id == item.id) {
+         getCartItem = cart[c];
+       }
+     })
+   }
+
+   return getCartItem
+}
+
 export const isAroundTime = (date1, date2) => {
   const today = new Date();
   const dStartDate = new Date(date1);
@@ -342,4 +377,20 @@ export const getRatingAvg = (data) => {
 
 export const getCatSearch = (data) => {
   return encodeURI(`/searchResult?cat=${data.id}&catn=${data.name}`);
+}
+
+export function removeDuplicatesByProperty(inputArray, propertyName) {
+  if (Array.isArray(inputArray)) {
+    const uniqueValues = [];
+    const returnArray = [];
+    inputArray.forEach((value) => {
+      // If the value is not there
+      if (!uniqueValues.includes(value[propertyName])) {
+        returnArray.push(value);
+        uniqueValues.push(value[propertyName])
+      }
+    });
+    return returnArray;
+  }
+  return inputArray;
 }

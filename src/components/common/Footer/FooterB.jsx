@@ -6,10 +6,10 @@ import {
   Link,
 } from '@material-ui/core';
 
-import Typography from '../Typography';
-import Icons from '../../common/Icons';
-import { config } from '../../../../config';
-import { FooterSample } from '../../../constants/samples/FooterSample';
+import Typography from '@/common/Typography';
+import Icons from '@/common/Icons';
+import { config } from 'config';
+import { FooterSample } from '@/constants/samples/FooterSample';
 
 const styles = (theme) => ({
   root: {

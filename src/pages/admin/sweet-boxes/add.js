@@ -4,10 +4,10 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-import { ADMIN_SECTIONS } from '../../../constants/admin';
-import AdminLayoutTemplate from '../../../components/common/Layout/AdminLayoutTemplate';
-import AddForm from '../../../components/common/Form/AddForm';
-import { defaultCountry } from '../../../../config';
+import { ADMIN_SECTIONS } from 'src/constants/admin';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import AddForm from 'src/components/common/Form/AddForm';
+import { defaultCountry } from 'config';
 
 const styles = (theme) => ({
   root: {

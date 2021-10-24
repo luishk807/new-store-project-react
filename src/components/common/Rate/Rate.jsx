@@ -5,11 +5,10 @@ import {
 } from '@material-ui/core';
 import Rating from '@material-ui/lab/Rating';
 
-import Typography from '../Typography';
+import Typography from '@/common/Typography';
 
-import { RateLabels } from '../../../../config';
+import { RateLabels, config } from 'config';
 import { useEffect, useState } from 'react';
-import { config } from '../../../../config';
 
 const styles = (theme) => ({
   root: {

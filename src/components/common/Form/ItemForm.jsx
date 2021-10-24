@@ -9,11 +9,11 @@ import {
 } from '@material-ui/core';
 import NumberFormat from 'react-number-format';
 
-import { noImageUrl } from '../../../../config'; 
-import { deleteItem, getItems, getItemByFkId } from '../../../api';
-import Icons from '../../../components/common/Icons';
-import Snackbar from '../../../components/common/Snackbar';
-import { ADMIN_SECTIONS } from '../../../constants/admin';
+import { noImageUrl } from 'config'; 
+import { deleteItem, getItems, getItemByFkId } from 'src/api';
+import Icons from '@/common/Icons';
+import Snackbar from '@/common/Snackbar';
+import { ADMIN_SECTIONS } from '@/constants/admin';
 
 const styles = (theme) => ({
   root: {

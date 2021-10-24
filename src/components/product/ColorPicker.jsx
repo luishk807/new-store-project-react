@@ -12,10 +12,10 @@ import {
   Autocomplete,
 } from '@material-ui/lab';
 
-import { removeCharacter } from '../../utils';
-import { FORM_SCHEMA } from '../../../config';
-import { getColors } from '../../api/colors';
-import ColorBlock from '../../components/common/ColorBlock';
+import { removeCharacter } from 'src/utils';
+import { FORM_SCHEMA } from 'config';
+import { getColors } from 'src/api/colors';
+import ColorBlock from 'src/components/common/ColorBlock';
 
 const styles = (theme) => ({
   root: {

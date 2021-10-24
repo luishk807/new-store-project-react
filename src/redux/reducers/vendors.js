@@ -1,4 +1,4 @@
-import * as t from '../types';
+import * as t from '@/redux/types';
 import HYDRATE from 'next-redux-wrapper';
 // reducers are your storages
 // const main = (state, action) { }

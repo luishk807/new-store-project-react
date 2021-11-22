@@ -4,7 +4,7 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-import { ADMIN_SECTIONS } from '@/constants/dmin';
+import { ADMIN_SECTIONS } from '@/constants/admin';
 import AddForm from '@/common/Form/AddForm';
 import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 

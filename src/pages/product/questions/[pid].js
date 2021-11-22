@@ -12,7 +12,7 @@ import { getImageUrlByType } from '@/utils/form';
 import { ADMIN_SECTIONS } from '@/constants/admin';
 import { sendQuestion, getQuestionById } from 'src/api/questions';
 import { getItemById } from 'src/api';
-import AnswerProductQuestionsForm from '@/redux/AnswerProductQuestionsForm';
+import AnswerProductQuestionsForm from '@/common/AnswerProductQuestionsForm';
 import { getThumbnail } from '@/utils/helpers/image'
 
 const styles = (theme) => ({

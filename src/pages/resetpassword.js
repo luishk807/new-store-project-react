@@ -7,11 +7,11 @@ import {
 } from '@material-ui/core';
 
 import { useRouter } from 'next/router';
-import Snackbar from 'src/components/common/Snackbar';
-import Typography from 'src/components/common/Typography';
-import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
-import { resetPassword } from 'src/api/auth'
-import ResetPassword from 'src/components/common/Form/Users/ResetPassword';
+import Snackbar from '@/common/Snackbar';
+import Typography from '@/common/Typography';
+import LayoutTemplate from '@/common/Layout/LayoutTemplate';
+import { resetPassword } from '@/api/auth'
+import ResetPassword from '@/common/Form/Users/ResetPassword';
 
 const styles = (theme) => ({
   root: {

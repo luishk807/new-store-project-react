@@ -10,7 +10,7 @@ import { validateForm, handleFormResponse } from '@/utils/form';
 import { FORM_SCHEMA } from 'config';
 import { capitalize } from 'src/utils';
 import { postItem } from 'src/api';
-import Form from '../Form';
+import Form from '@/common/Form/Form';
 
 const styles = (theme) => ({
   root: {

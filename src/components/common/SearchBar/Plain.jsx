@@ -11,7 +11,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 import { searchProductItemByFilter } from '@/api/productItems';
 import { searchProductsByFilter } from '@/api/products';
-import { getImageBaseThumbnail } from '../../utils';
+import { getImageBaseThumbnail } from 'src/utils';
 import ProgressBar from '@/common/ProgressBar';
 import { useTranslation } from 'next-i18next'
 import { getColorName } from '@/utils/helpers/product'
@@ -52,7 +52,13 @@ const styles = (theme) => ({
   }
 });
 
-const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
+const SearchBarPlain = ({
+  classes, 
+  onEnterKeyPress, 
+  returnObj = false, 
+  isAdmin = false,
+  searchItemsOnly = false
+}) => {
   const router = useRouter()
   const [showData, setShowData] = useState(false);
   const [showNotFound, setShowNotFound] = useState(false);
@@ -62,6 +68,11 @@ const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
   const [resultText, setResultText] = useState('');
   const { t } = useTranslation('colors');
 
+  const handleLinkClick = async(e, val) => {
+    e.preventDefault();
+    onEnterKeyPress(val)
+    resetTab()
+  }
   const searchProduct = async(value) => {
     setShowLoader(true);
     let getProd = [];
@@ -77,10 +88,13 @@ const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
         }),
       ]
     ).then(async(value) => {
+
       for (const item of value) {
+        console.log("vakues", item.productProductItems)
         getProd = getProd.concat(item)
       }
 
+      console.log("heee", getProd)
       if (getProd && getProd.length) {
         setProducts(getProd)
         setShowLoader(false);
@@ -89,6 +103,39 @@ const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
         setShowNoResult()
       }
     })
+    
+    // const [getProdItem, getProdx] = await Promise.all(
+    //   [
+    //     searchProductItemByFilter({
+    //       search: value,
+    //       fullDetail: isAdmin ? true : false
+    //     }),
+    //     searchProductsByFilter({
+    //       search: value,
+    //       fullDetail: isAdmin ? true : false
+    //     }),
+    //   ]
+    // )
+
+    // if(getProdItem) {
+    //   console.log("hey", getProdItem)
+    // }
+    // if(getProdx) {
+    //   console.log("heyxxx", getProdx)
+    // }
+    // .then(async(value) => {
+    //   for (const item of value) {
+    //     getProd = getProd.concat(item)
+    //   }
+
+    //   if (getProd && getProd.length) {
+    //     setProducts(getProd)
+    //     setShowLoader(false);
+    //     setShowResult(true)
+    //   } else {
+    //     setShowNoResult()
+    //   }
+    // })
   }
   
   const onKeyUp = (e) => {
@@ -194,18 +241,35 @@ const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
                         const img = getImageBaseThumbnail(product);
                         return (
                           <Grid item key={index} className={classes.resultItems} lg={12} xs={12}>
-                            <a href={product.productItemProduct ? `/admin/products/items/edit/${product.id}` : `/admin/products/${product.id}`}>
-                              <Grid container className={classes.itemContainer}>
-                                <Grid item lg={1} xs={1}>
-                                  {
-                                    img
-                                  }
-                                </Grid>
-                                {
-                                  prepareProductInfo(product)
-                                }
-                              </Grid>
-                            </a>
+                            {
+                              returnObj ? (
+                                <a href="#" onClick={(e) => handleLinkClick(e, product.id)}>
+                                  <Grid container className={classes.itemContainer}>
+                                    <Grid item lg={1} xs={1}>
+                                      {
+                                        img
+                                      }
+                                    </Grid>
+                                    {
+                                      prepareProductInfo(product)
+                                    }
+                                  </Grid>
+                                </a>
+                              ) : (
+                                <a href={product.productItemProduct ? `/admin/products/items/edit/${product.id}` : `/admin/products/${product.id}`}>
+                                  <Grid container className={classes.itemContainer}>
+                                    <Grid item lg={1} xs={1}>
+                                      {
+                                        img
+                                      }
+                                    </Grid>
+                                    {
+                                      prepareProductInfo(product)
+                                    }
+                                  </Grid>
+                                </a>
+                              )
+                            }
                           </Grid>
                       )})
                     }
@@ -241,7 +305,9 @@ const SearchBarPlain = ({classes, onEnterKeyPress, isAdmin = false}) => {
 SearchBarPlain.protoTypes = {
   classes: T.object,
   onEnterKeyPress: T.func,
-  isAdmin: T.bool
+  isAdmin: T.bool,
+  returnObj: T.bool,
+  searchItemsOnly: T.bool
 }
 
 export default withStyles(styles)(SearchBarPlain);

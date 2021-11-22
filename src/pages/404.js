@@ -7,11 +7,11 @@ import {
   TextField,
 } from '@material-ui/core';
 
-import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
-import Typography from 'src/components/common/Typography';
+import LayoutTemplate from '@/common/Layout/LayoutTemplate';
+import Typography from '@/common/Typography';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import Icons from 'src/components/common/Icons';
+import Icons from '@/common/Icons';
 
 const styles = (theme) => ({
   root: {

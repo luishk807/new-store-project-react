@@ -12,7 +12,7 @@ import {
 import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import Typography from '@/common/Typography';
 
-import Rate from '@/common/Rate/Rate';
+import Rate from './Rate';
 
 const styles = (theme) => ({
   root: {

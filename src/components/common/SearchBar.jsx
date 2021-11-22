@@ -10,8 +10,8 @@ import {
   Button
 } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Icons from '@/common/Icons';
-import Dropdown from '@/common/Dropdown';
+import Icons from './Icons';
+import Dropdown from './Dropdown';
 import { getCategories } from '@/api/categories';
 import { getCatSearch } from 'src/utils';
 

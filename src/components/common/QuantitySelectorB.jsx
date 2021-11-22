@@ -105,15 +105,10 @@ const QuantitySelectorB = React.memo(({refresh, data = 1, jump = 0, stock, class
     }
   };
 
-  useEffect(() => {
-    if (data !== total) {
-      setTotal(data)
-    }
-    setShowData(true);
-  }, [data])
   
   useEffect(()=> {
     let unmounted = false;
+
     if (!unmounted) {
       if (currectRefresh !== refresh) {
         setCurrentRefresh(refresh)

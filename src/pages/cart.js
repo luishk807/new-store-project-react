@@ -16,14 +16,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import LayoutTemplate from '@/common/Layout/LayoutTemplate';
-import Typography from '@/common/Typography';
-import QuantitySelectorB from '@/common/QuantitySelectorB';
-import CartBox from '@/components/cart/Block';
-import Icons from '@/common/Icons';
-import Snackbar from '@/common/Snackbar';
-import { getProductById } from '@/api/products';
-import { getProductItemByIds } from '@/api/productItems';
+import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
+import Typography from 'src/components/common/Typography';
+import QuantitySelectorB from 'src/components/common/QuantitySelectorB';
+import CartBox from 'src/components/cart/Block';
+import Icons from 'src/components/common/Icons';
+import Snackbar from 'src/components/common/Snackbar';
+import { getProductById } from 'src/api/products';
+import { getProductItemByIds } from 'src/api/productItems';
 import { formatNumber, getCartTotal, getImage } from 'src/utils';
 import { checkDiscountPrice, checkBundlePrice, isOutOfStock } from 'src/utils/products';
 import { getImageUrlByType } from 'src/utils/form';

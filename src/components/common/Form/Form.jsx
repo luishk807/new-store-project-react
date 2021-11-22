@@ -691,7 +691,7 @@ const Form = ({
             <FormControl fullWidth>
               <TextareaAutosize 
                 name={field} 
-                minRows={3} 
+                rowsMin={3} 
                 defaultValue={fields[field]}
                 onChange={formOnChange} 
                 placeholder={field} 

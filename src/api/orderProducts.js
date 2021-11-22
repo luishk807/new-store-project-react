@@ -5,14 +5,10 @@ export const getOrderProductsById = async(id) => {
   if (!verifyCookie()) {
     return;
   }
-  return Api.get(`order-products/${id}`);
-}
-
-export const getAdminOrderProductsById = async(id) => {
-  if (!verifyCookie()) {
-    return;
+  const data = {
+    order: id
   }
-  return Api.get(`order-products/admin/${id}`);
+  return Api.get(`order-products/${id}`);
 }
 
 export const getOrderProductsByIds = async(ids) => {
@@ -23,5 +19,5 @@ export const getOrderProductsByIds = async(ids) => {
     ids: ids
   }
   
-  return Api.get(`order-products/filters/bulk`, data);
+  return Api.get(`order-products`, data);
 }

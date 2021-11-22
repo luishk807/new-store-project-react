@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import Centered from '@/common/Layout/Centered'
+import Centered from 'src/components/common/Layout/Centered'
 import {
     TextField,
     Card,

@@ -7,10 +7,10 @@ import {
   Button
 } from '@material-ui/core';
 
-import { ADMIN_SECTIONS } from '@/constants/admin';
-import AddForm from '@/common/Form/AddForm';
+import { ADMIN_SECTIONS } from 'src/constants/admin';
+import AddForm from 'src/components/common/Form/AddForm';
 import { defaultCountry } from 'config';
-import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
 const styles = (theme) => ({
   root: {
     display: 'flex',

@@ -5,11 +5,11 @@ import {
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
-import { ADMIN_SECTIONS } from '@/constants/admin';
-import { getProductById } from '@/api/products';
-import AddForm from '@/common/Form/AddForm';
-import ProgressBar from '@/common/ProgressBar';
-import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
+import { ADMIN_SECTIONS } from 'src/constants/admin';
+import { getProductById } from 'src/api/products';
+import AddForm from 'src/components/common/Form/AddForm';
+import ProgressBar from 'src/components/common/ProgressBar';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {
@@ -65,7 +65,6 @@ const Add = ({classes}) => {
             title={`Discount for ${product.name}`}
             hideEntry={hideEntry}
             ignoreForm={ignoreForm}
-            successUrl={`/admin/products`} 
             customUrl={`/admin/products/discounts/${router.query.id}`}  
           />
         ) : (

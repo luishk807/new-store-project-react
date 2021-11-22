@@ -9,11 +9,11 @@ import {
 import moment from 'moment';
 import { useRouter } from 'next/router';
 
-import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import { deleteProductBundleById, getProductBundlesByIds } from '@/api/productBundles';
-import { getProductItemById } from '@/api/productItems';
-import Snackbar from '@/common/Snackbar';
-import Icons from '@/common/Icons';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import { deleteProductBundleById, getProductBundlesByIds } from 'src/api/productBundles';
+import { getProductItemById } from 'src/api/productItems';
+import Snackbar from 'src/components/common/Snackbar';
+import Icons from 'src/components/common/Icons';
 
 const styles = (theme) => ({
   root: {

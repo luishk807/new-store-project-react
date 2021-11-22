@@ -10,7 +10,7 @@ import {
 import { useRouter } from 'next/router';
 
 import Typography from '@/common/Typography';
-import Rate from '@/common/Rate/Rate';
+import Rate from './Rate';
 
 const styles = (theme) => ({
   root: {

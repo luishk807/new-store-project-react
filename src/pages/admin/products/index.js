@@ -9,14 +9,14 @@ import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { LIMIT } from 'config';
-import SearchBarPlain from '@/src/components/common/SearchBar/Plain';
-import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import Snackbar from '@/common/Snackbar';
-import ProgressBar from '@/common/ProgressBar';
-import DialogModal from '@/common/DialogModal';
+import SearchBarPlain from 'src/components/common/SearchBarPlain';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import Snackbar from 'src/components/common/Snackbar';
+import ProgressBar from 'src/components/common/ProgressBar';
+import DialogModal from 'src/components/common/DialogModal';
 import ProductModal from 'src/components/ProductModal';
 import { getImageBaseThumbnail } from 'src/utils';
-import { deleteProduct, getAdminProducts, searchProductsByFilter } from '@/api/products';
+import { deleteProduct, getAdminProducts, searchProductsByFilter } from 'src/api/products';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const useStyles = makeStyles((theme) => ({
@@ -107,7 +107,6 @@ const useStyles = makeStyles((theme) => ({
   itemHeaderFixed: {
     width: '100%',
     background: 'white',
-    zIndex: 1,
   },
   emptyData: {
     textAlign: 'center',

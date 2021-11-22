@@ -15,7 +15,7 @@ import { useTranslation } from 'next-i18next'
 import { formatNumber } from 'src/utils';
 import { defaultCountry } from 'config';
 import { validateForm, handleFormResponse } from 'src/utils/form';
-import { getAddressesByUser, getAddressById, createAddress } from 'src/api/addresses';
+import { getAddressesByUser, createAddress } from 'src/api/addresses';
 import Icons from '@/components/common/Icons';
 import Snackbar from '@/components/common/Snackbar';
 import ActionForm from '@/components/common/Form/Action/Add';
@@ -56,7 +56,7 @@ const styles = (theme) => ({
 });
 
 
-const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
+const AddressSelection = ({classes, userInfo, onSelected}) => {
   const [userAddress, setUserAddress] = useState(null);
   const [userAddresses, setUserAddresses] = useState([]);
   const [showAction, setShowAction] = useState(null);
@@ -78,12 +78,12 @@ const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
 
 
   const loadUserAddress = async() => {
-    let getAdd = null;
     const addresses = await getAddressesByUser()
+    let getAdd = addresses.filter(address => address.selected === true);
+
     if (addresses && !addresses.length || !addresses) {
       setShowAction('add');
     } else {
-      getAdd = addresses.filter(address => address.selected === true);
       if (!getAdd) {
         getAdd = addresses[0];
       }
@@ -114,10 +114,6 @@ const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
   }
 
   const handleDeliveryForm = async(subform) => {
-    subform = {
-      ...subform,
-      user: userId
-    }
     const confirm = await createAddress(subform);
     const resp = handleFormResponse(confirm);
     resetForm();
@@ -153,26 +149,14 @@ const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
       case 'list': {
         return (
           <Grid container className={classes.headerContainer}>
-            {
-              showTitle ? (
-                <>
-                <Grid item lg={9} xs={9} className={classes.headerTitleItem}>
-                { t('shipping_address') }
-                </Grid>
-                <Grid item lg={3} xs={3} className={classes.headerBtnItem}>
-                  <Button onClick={() => changeContent(null)} className={`mainButton`}>
-                  { t('cancel') }
-                  </Button>
-                </Grid>
-                </>
-              ) : (
-                <Grid item lg={3} xs={3} className={classes.headerBtnItem}>
-                  <Button onClick={() => changeContent(null)} className={`mainButton`}>
-                  { t('cancel') }
-                  </Button>
-                </Grid>
-              )
-            }
+            <Grid item lg={9} xs={9} className={classes.headerTitleItem}>
+              { t('shipping_address') }
+            </Grid>
+            <Grid item lg={3} xs={3} className={classes.headerBtnItem}>
+              <Button onClick={() => changeContent(null)} className={`mainButton`}>
+              { t('cancel') }
+              </Button>
+            </Grid>
             <Grid item lg={12} xs={12} className={classes.addressBox}>
               <RadioBox options={userAddresses} name="address" type="address" onSelected={handleRadioSelect} />
             </Grid>
@@ -195,7 +179,6 @@ const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
               }} 
               ignoreForm={['selected']}
               showCancel={true}
-              showTitle={showTitle}
               onCancel={handleDeliveryCancel}
               entryForm={form} 
               onSubmitAction={handleDeliveryForm}
@@ -208,27 +191,14 @@ const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
       default: {
         return (
           <Grid container className={classes.headerContainer}>
-            {
-              showTitle ? (
-                <>
-                <Grid item lg={9} xs={9} className={classes.headerTitleItem}>
-                    { t('shipping_address') }
-                </Grid>
-                <Grid item lg={3} xs={3} className={classes.headerBtnItem}>
-                  <Button onClick={() => changeContent('list')} className={`mainButton`}>
-                    { t('change') }
-                  </Button>
-                </Grid>
-                </>
-              ) : (
-                <Grid item lg={3} xs={3} className={classes.headerBtnItem}>
-                  <Button onClick={() => changeContent('list')} className={`mainButton`}>
-                    { t('change') }
-                  </Button>
-                </Grid>
-              )
-            }
-
+            <Grid item lg={9} xs={9} className={classes.headerTitleItem}>
+                { t('shipping_address') }
+            </Grid>
+            <Grid item lg={3} xs={3} className={classes.headerBtnItem}>
+              <Button onClick={() => changeContent('list')} className={`mainButton`}>
+                { t('change') }
+              </Button>
+            </Grid>
             {
               userAddress && (
                 <Grid item lg={12} xs={12} className={classes.addressBox}>
@@ -305,8 +275,7 @@ const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
 AddressSelection.protoTypes = {
   classes: T.object,
   data: T.object,
-  onSelected: T.func,
-  showTitle: T.bool
+  onSelected: T.func
 }
 
 const mapStateToProps = state => ({

@@ -9,8 +9,8 @@ import {
 import { formatNumber } from 'src/utils';
 import { getImage, getImageAsync, getImageBaseOnly} from 'src/utils';
 import { noImageUrl } from 'config';
-import { getProductDiscountsByProductIds } from '@/api/productDiscounts';
-import { getProductItemByIds } from '@/api/productItems';
+import { getProductDiscountsByProductIds } from 'src/api/productDiscounts';
+import { getProductItemByIds } from 'src/api/productItems';
 import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({

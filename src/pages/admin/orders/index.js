@@ -7,12 +7,10 @@ import {
   Button,
   Hidden,
 } from '@material-ui/core';
-import Pagination from '@material-ui/lab/Pagination';
 import moment from 'moment';
-import { LIMIT } from 'config';
 
 import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
-import { deleteOrderById, getAllOrdersWithFilter } from 'src/api/orders';
+import { deleteOrderById, getAllOrders } from 'src/api/orders';
 import Snackbar from 'src/components/common/Snackbar';
 import Icons from 'src/components/common/Icons';
 import DialogModal from 'src/components/common/DialogModal';
@@ -91,23 +89,11 @@ const styles = (theme) => ({
       display: 'block'
     }
   },
-  paginationItem: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  paginationContainer: {
-    padding: '20px 0px',
-  },
 });
 
 const Index = ({classes}) => {
   const [orders, setOrders] = useState([]);
   const [showData, setShowData] = useState(false);
-  const [showEmpty, setShowEmpty] = useState(false);
-  const [page, setPage] = useState(1);
-  const [paginationHtml, setPaginationHtml] = useState(null);
-  const [totalCount, setTotalCount] = useState(0);
   const [dialogContent, setDialogContent] = useState({
     open: false,
     value: null,
@@ -125,17 +111,9 @@ const Index = ({classes}) => {
   });
 
   const loadOrders = async() => {
-    const gOrders = await getAllOrdersWithFilter({
-      page: page,
-    });
-    
-    if (gOrders) {
-      setOrders('rows' in gOrders ? gOrders.rows : gOrders.items);
-      setTotalCount(gOrders.count)
-      if (!gOrders.count || !gOrders.rows) {
-        setShowEmpty(true);
-      }
-    }
+    const gOrders = await getAllOrders();
+    setOrders(gOrders);
+    setShowData(true);
   };
 
   const delItem = async(id) => {
@@ -155,21 +133,6 @@ const Index = ({classes}) => {
     })
   }
 
-  const handlePaginationChange = (event, value) => {
-    setPage(value);
-    setShowData(false)
-  }
-
-  const loadPagination = () => {
-    setPaginationHtml(
-      <Grid container className={classes.paginationContainer}>
-        <Grid item lg={12} xs={12} className={classes.paginationItem}>
-          <Pagination onChange={handlePaginationChange} size="large" showFirstButton showLastButton count={Math.round(totalCount / LIMIT )} page={page} variant="outlined" shape="rounded" />
-        </Grid>
-      </Grid>
-    )
-  }
-  
   const handleActionMenu = (e) => {
     setDialogContent({
       ...dialogContent,
@@ -190,22 +153,7 @@ const Index = ({classes}) => {
   }
 
   useEffect(() => {
-    if (orders && orders.length) {
-      setShowData(true);
-    }
-  }, [orders]);
-
-  useEffect(() => {
     loadOrders();
-    loadPagination();
-  }, [page]);
-
-  useEffect(() => {
-    loadPagination();
-  }, [totalCount]);
-
-  useEffect(() => {
-    setPage(1);
   }, []);
 
   return (
@@ -215,9 +163,6 @@ const Index = ({classes}) => {
           <h3>Orders</h3>
         </Grid>
       </Grid>
-      {
-        paginationHtml && !showEmpty && paginationHtml
-      }
       {
         showData && (
           <Grid container className={classes.mainContainer}>
@@ -313,9 +258,6 @@ const Index = ({classes}) => {
             }
           </Grid>
         )
-      }
-      {
-        paginationHtml && !showEmpty && paginationHtml
       }
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
       <DialogModal open={dialogContent.open} onClick={handleDialogClick} title={dialogContent.title} content={dialogContent.content} actionLabels={dialogContent.actionLabels} />

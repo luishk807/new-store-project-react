@@ -9,10 +9,10 @@ import {
 import moment from 'moment';
 import { useRouter } from 'next/router';
 
-import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import { deleteProductDiscountsById, getProductDiscountsByProductId } from '@/api/productDiscounts';
-import Snackbar from '@/common/Snackbar';
-import HeaderSub from '@/components/product/HeaderSub';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import { deleteProductDiscountsById, getProductDiscountsByProductId } from 'src/api/productDiscounts';
+import Snackbar from 'src/components/common/Snackbar';
+import HeaderSub from 'src/components/product/HeaderSub';
 
 const styles = (theme) => ({
   root: {
@@ -161,7 +161,7 @@ const Index = ({classes}) => {
                       </Grid>
                       <Grid item lg={2} xs={6} className={classes.itemColumn}>
                         {
-                          discount.percentage ? `%${discount.percentage}` : 'N/A'
+                          discount.percentage ? `%${discount.percentage * 100}` : 'N/A'
                         }
                       </Grid>
                       <Grid item lg={2} xs={6} className={classes.itemColumn}>

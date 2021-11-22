@@ -12,13 +12,13 @@ import {
 } from '@material-ui/core';
 
 import { FORM_SCHEMA } from 'config';
-import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import Snackbar from '@/common/Snackbar';
-import OrderDetail from '@/components/order/OrderDetail';
-import ProgressBar from '@/common/ProgressBar';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import Snackbar from 'src/components/common/Snackbar';
+import OrderDetail from 'src/components/order/OrderDetail';
+import ProgressBar from 'src/components/common/ProgressBar';
 import { loadMainOptions, validateForm, handleFormResponse } from 'src/utils/form';
 import { getOrderById, saveOrderStatus, saveOrder } from 'src/api/orders';
-import OrderActivity from '@/components/order/OrderActivity';
+import OrderActivity from 'src/components/order/OrderActivity';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
@@ -234,7 +234,7 @@ const Edit = ({classes}) => {
           showData ? (
             <Grid container className={classes.mainContainer}>
               <Grid item lg={12} xs={12} className={classes.userInfo}>
-                User: { order.orderUser ? `${order.orderUser.first_name} ${order.orderUser.last_name}` : 'Guest' }&nbsp;[<a href={`edit/${order.id}`}>Edit</a>]
+                User: { order.orderUser ? `${order.orderUser.first_name} ${order.orderUser.last_name}` : 'Guest' }
               </Grid>
               <Grid item lg={12} xs={12}>
                 <OrderDetail onRemoveDelivery={removeDeliveryService} classes={{ orderContainer: classes.orderDetailContainer }} order={order} isAdmin={true} />

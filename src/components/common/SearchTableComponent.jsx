@@ -1,6 +1,6 @@
 import { Button, makeStyles } from '@material-ui/core'
-import SearchInput from '@/inventarioz/SearchInput';
-import TableData from '@/common/TableData';
+import SearchInput from '@/components/inventarioz/SearchInput';
+import TableData from './TableData';
 import CheckboxList from '@/common/CheckboxList';
 import { capitalize } from 'src/utils';
 import PropTypes from 'prop-types';

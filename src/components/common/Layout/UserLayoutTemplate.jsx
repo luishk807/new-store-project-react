@@ -5,8 +5,8 @@ import {
   withStyles
 } from '@material-ui/core';
 
-import PrivatePage from '@/common/Private/User';
-import LayoutTemplate from '@/common/Layout/LayoutTemplate';
+import PrivatePage from '../Private/User';
+import LayoutTemplate from './LayoutTemplate';
 
 const styles = (theme) => ({
   root: {},

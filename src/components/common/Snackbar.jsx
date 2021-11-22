@@ -5,7 +5,7 @@ import {
   Snackbar as Snack,
 } from '@material-ui/core';
 import MuiAlert from '@material-ui/lab/Alert';
-import Typography from '@/common/Typography';
+import Typography from './Typography';
 
 // Type of severity
 // error, warning, info, success

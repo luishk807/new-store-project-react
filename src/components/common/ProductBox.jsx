@@ -7,8 +7,8 @@ import {
 } from '@material-ui/core';
 import { getImageBaseOnly } from 'src/utils';
 import { getProductById } from '@/api/products';
-import Icons from '@/common/Icons';
-import Typography from '@/common/Typography';
+import Icons from './Icons';
+import Typography from './Typography';
 
 const styles = (theme) => ({
   root: {

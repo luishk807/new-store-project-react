@@ -7,13 +7,13 @@ import {
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
-import { getProductById } from '@/api/products';
-import { createColor } from '@/api/colors';
-import { createColor as createProductColor } from '@/api/productColors';
-import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import Snackbar from '@/common/Snackbar';
-import ColorPicker from '@/components/product/ColorPicker';
-import Typography from '@/common/Typography';
+import { getProductById } from 'src/api/products';
+import { createColor } from 'src/api/colors';
+import { createColor as createProductColor } from 'src/api/productColors';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import Snackbar from 'src/components/common/Snackbar';
+import ColorPicker from 'src/components/product/ColorPicker';
+import Typography from 'src/components/common/Typography';
 
 const styles = (theme) => ({
   root: {

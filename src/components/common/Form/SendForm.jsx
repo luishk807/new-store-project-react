@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { validateForm, handleFormResponse } from '@/utils/form';
 import { capitalize } from 'src/utils';
 import { postItem } from 'src/api';
-import Form from '@/common/Form/Form';
+import Form from './Form';
 
 const styles = (theme) => ({
   root: {

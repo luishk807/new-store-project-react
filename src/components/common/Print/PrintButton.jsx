@@ -3,13 +3,13 @@ import * as T from 'prop-types';
 import ReactToPrint from 'react-to-print';
 
 import ProgressBar from '@/common/ProgressBar';
-import OrderTemplate from '@/common/Print/templates/OrderTemplate';
+import OrderTemplate from './templates/OrderTemplate';
 
 import { 
   withStyles, 
   Button
 } from '@material-ui/core';
-import Icons from '@/common/Icons';
+import Icons from '../Icons';
 
 
 const styles = (theme) => ({

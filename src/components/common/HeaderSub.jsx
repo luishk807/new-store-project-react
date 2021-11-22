@@ -6,7 +6,7 @@ import {
   Button,
 } from '@material-ui/core';
 import pluralize from 'pluralize';
-import Icons from '@/common/Icons';
+import Icons from './Icons';
 
 const styles = (theme) => ({
   root: {

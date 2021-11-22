@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { addItem } from 'src/api';
 import { validateForm, loadMainOptions, handleFormResponse, checkEnforceDates } from '@/utils/form';
 import { capitalize } from 'src/utils';
-import Form from '@/common/Form/Form';
+import Form from './Form';
 import { FORM_SCHEMA } from 'config';
 
 const styles = (theme) => ({

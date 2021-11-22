@@ -8,9 +8,9 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import { getAllSweetBoxes, deleteSweetBox } from '@/api/sweetbox';
-import Snackbar from '@/common/Snackbar';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import { getAllSweetBoxes, deleteSweetBox } from 'src/api/sweetbox';
+import Snackbar from 'src/components/common/Snackbar';
 
 const styles = (theme) => ({
   root: {

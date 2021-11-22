@@ -87,11 +87,7 @@ const RadioBox = React.memo(({
 }) => {
   const [itemOptions, setItemOptions] = useState(null);
   const [checkedOptions, setCheckedOptions] = useState({})
-  const [contentHtml, setContentHtml] = useState(null);
-  const [showContent, setShowContent] = useState(false);
-
-  const { t } = useTranslation('common')
-
+  const [contentHtml, setContentHtml] = useState([]);
   const handleSelect = async(evt) => {
     const opt = options.filter(item => item.id === evt.target.value);
     const checks = Object.assign({}, checkedOptions);
@@ -99,11 +95,10 @@ const RadioBox = React.memo(({
       checks[i] = false;
     }
     checks[evt.target.value] = true;
-  
     setCheckedOptions(checks)
     onSelected(opt)
-    setContentHtml(null);
   }
+  const { t } = useTranslation('common')
 
   useEffect(() => {
     let data = null;
@@ -129,49 +124,15 @@ const RadioBox = React.memo(({
 
     setCheckedOptions(checkOpts);
     setItemOptions(opts);
-  }, []);
+  }, [options]);
 
   useEffect(() => {
     loadContent();
   }, [checkedOptions, selected])
 
-  useEffect(() => {
-    if (contentHtml) {
-      setShowContent(true);
-    } else {
-      setShowContent(false);
-    }
-  }, [contentHtml])
-
   const loadContent = () => {
     let content = null;
     switch(type) {
-      case 'address_ne': {
-        content = itemOptions && itemOptions.map((option, index) => {
-          return (
-            <Grid container key={index}>
-              <Grid item lg={12} xs={10} className={classes.radioRadio}>
-                <div className={classes.radioItemRadio}>
-                  <Radio
-                    checked={checkedOptions[option.id]}
-                    onChange={handleSelect}
-                    value={option.id}
-                    name={name}
-                  />
-                </div>
-                <div className={classes.radioItemContent}>
-                  <p className={classes.radioTitle}>{option.name}</p>
-                  <p className={classes.radioDescription}>{option.address}</p>
-                  <p className={classes.radioDescription}>{option.addressDistrict.name} {option.addressCorregimiento.name}</p>
-                  <p className={classes.radioDescription}>{option.addressProvince.name}</p>
-                  <p className={classes.radioDescription}>{option.addressCountry.nicename}</p>
-                </div>
-              </Grid>
-            </Grid>
-          )
-        })
-        break;
-      }
       case 'address': {
         content = itemOptions && itemOptions.map((option, index) => {
           return (
@@ -348,9 +309,7 @@ const RadioBox = React.memo(({
       {
         title && (<h4 className={classes.mainTitle}>{title}</h4>)
       }
-      {
-        showContent && (contentHtml)
-      }
+      { contentHtml && contentHtml }
     </div>
   );
 })

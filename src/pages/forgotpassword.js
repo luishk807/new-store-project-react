@@ -6,11 +6,11 @@ import {
   Button,  
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
-import Snackbar from '@/common/Snackbar';
-import Typography from '@/common/Typography';
-import LayoutTemplate from '@/common/Layout/LayoutTemplate';
-import { requestResetPassword } from '@/api/auth'
-import ForgotPassword from '@/common/Form/Users/ForgotPassword';
+import Snackbar from 'src/components/common/Snackbar';
+import Typography from 'src/components/common/Typography';
+import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
+import { requestResetPassword } from 'src/api/auth'
+import ForgotPassword from 'src/components/common/Form/Users/ForgotPassword';
 
 const styles = (theme) => ({
   root: {

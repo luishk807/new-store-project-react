@@ -11,9 +11,9 @@ import {isMobile} from 'react-device-detect';
 import Pluralize from 'react-pluralize'
 import { connect } from 'react-redux';
 import { useTranslation } from 'next-i18next'
-import { getImage, getCartTotalItems, getCartTotal, getTotal } from 'src/utils';
-import Icons from '@/common/Icons';
-import { getColorName } from '@/utils/helpers/product'
+import { getImage, getCartTotalItems, getCartTotal, getTotal } from '../../utils';
+import Icons from '../../components/common/Icons';
+import { getColorName } from '../../utils/helpers/product'
 
 const styles = (theme) => ({
   root: {

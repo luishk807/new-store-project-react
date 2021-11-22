@@ -4,7 +4,7 @@ import TableData from '@/components/common/TableData';
 import FileUploader from '@/components/common/FileUploader';
 import { Button, FormControl, Snackbar, withStyles } from '@material-ui/core';
 import Papa from 'papaparse';
-import { importProducts } from '@/api/products';
+import { importProducts } from 'src/api/products';
 
 const styles = (theme) => ({
   root: {

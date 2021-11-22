@@ -13,14 +13,14 @@ import {
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 
-import Typography from '@/components/common/Typography';
+import Typography from '../../../components/common/Typography';
 import UserLayoutTemplate from './UserLayoutTemplate';
-import { USER_SECTIONS } from '@/constants/user';
-import Icons from '@/common/Icons';
-import AddForm from '@components/common/Form/AddForm';
-import { defaultCountry } from '@/config';
-import { logout } from '@/api/auth';
-import DotMenu from '@/components/common/DotMenu';
+import { USER_SECTIONS } from '../../../constants/user';
+import Icons from '../../common/Icons';
+import AddForm from '../../../components/common/Form/AddForm';
+import { defaultCountry } from '../../../../config';
+import { logout } from '../../../api/auth';
+import DotMenu from '../../../components/common/DotMenu';
 
 const styles = (theme) => ({
   root: {},

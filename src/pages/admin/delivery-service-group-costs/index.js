@@ -9,12 +9,12 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import { deleteDeliveryServiceCostGroupById, getDeliveryServiceGroupCosts } from '@/api/deliveryServiceGroupCosts';
-import Snackbar from '@/common/Snackbar';
-import Icons from '@/common/Icons';
-import DialogModal from '@/common/DialogModal';
-import ProgressBar from '@/common/ProgressBar';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import { deleteDeliveryServiceCostGroupById, getDeliveryServiceGroupCosts } from 'src/api/deliveryServiceGroupCosts';
+import Snackbar from 'src/components/common/Snackbar';
+import Icons from 'src/components/common/Icons';
+import DialogModal from 'src/components/common/DialogModal';
+import ProgressBar from 'src/components/common/ProgressBar';
 
 const styles = (theme) => ({
   root: {

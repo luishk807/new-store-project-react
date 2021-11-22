@@ -8,12 +8,12 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
-import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import { deleteDeliveryOptionById, getDeliveryOptions } from '@/api/deliveryOptions';
-import Snackbar from '@/common/Snackbar';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import { deleteDeliveryOptionById, getDeliveryOptions } from 'src/api/deliveryOptions';
+import Snackbar from 'src/components/common/Snackbar';
 import { getImage } from 'src/utils';
-import HeaderSub from '@/common/HeaderSub';
-import DialogModal from '@/common/DialogModal';
+import HeaderSub from 'src/components/common/HeaderSub';
+import DialogModal from 'src/components/common/DialogModal';
 
 const styles = (theme) => ({
   root: {

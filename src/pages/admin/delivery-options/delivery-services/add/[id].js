@@ -5,11 +5,11 @@ import {
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
-import { ADMIN_SECTIONS } from '@/constants/admin';
-import { getDeliveryOptionById } from '@/api/deliveryOptions';
-import AddForm from '@/common/Form/AddForm';
-import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import ProgressBar from '@/common/ProgressBar';
+import { ADMIN_SECTIONS } from 'src/constants/admin';
+import { getDeliveryOptionById } from 'src/api/deliveryOptions';
+import AddForm from 'src/components/common/Form/AddForm';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import ProgressBar from 'src/components/common/ProgressBar';
 
 const styles = (theme) => ({
   root: {

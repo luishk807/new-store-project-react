@@ -5,7 +5,7 @@ import {
   Link,
 } from '@material-ui/core';
 
-import Icons from '@/common/Icons';
+import Icons from './Icons';
 
 const styles = (theme) => ({
   categoryBtnContainer: {

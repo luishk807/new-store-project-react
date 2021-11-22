@@ -14,8 +14,8 @@ import {
 
 import { removeCharacter } from 'src/utils';
 import { FORM_SCHEMA } from 'config';
-import { getColors } from '@/api/colors';
-import ColorBlock from '@/common/ColorBlock';
+import { getColors } from 'src/api/colors';
+import ColorBlock from 'src/components/common/ColorBlock';
 
 const styles = (theme) => ({
   root: {

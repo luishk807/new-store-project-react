@@ -10,15 +10,15 @@ import { useRouter } from 'next/router';
 import Pagination from '@material-ui/lab/Pagination';
 
 import { LIMIT } from 'config';
-import Icons from '@/common/Icons';
-import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import Snackbar from '@/common/Snackbar';
-import ProgressBar from '@/common/ProgressBar';
+import Icons from 'src/components/common/Icons';
+import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import Snackbar from 'src/components/common/Snackbar';
+import ProgressBar from 'src/components/common/ProgressBar';
 import { getImageBaseOnly } from 'src/utils';
-import { getAdminProducts } from '@/api/products';
-import ProductBox from '@/common/ProductBox';
-import { getSweetBoxById } from '@/api/sweetbox';
-import { saveSweetBoxProductByProductIds } from '@/api/sweetBoxProduct';
+import { getAdminProducts } from 'src/api/products';
+import ProductBox from 'src/components/common/ProductBox';
+import { getSweetBoxById } from 'src/api/sweetbox';
+import { saveSweetBoxProductByProductIds } from 'src/api/sweetBoxProduct';
 
 const useStyles = makeStyles((theme) => ({
   root: {

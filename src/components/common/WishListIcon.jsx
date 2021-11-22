@@ -7,8 +7,8 @@ import {
   requirePropFactory
 } from '@material-ui/core';
 
-import Icons from '@/common/Icons';
-import Snackbar from '@/common/Snackbar';
+import Icons from './Icons';
+import Snackbar from './Snackbar';
 import { saveWishlist, getWishlistByUserId, deleteWishlistByUserId } from '@/api/wishlist';
 import { handleFormResponse } from '@/utils/form';
 import { verifyCookie } from '@/utils/cookie';

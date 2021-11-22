@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '@/constants/admin';
-import AdminLayoutTemplate from '@/redux/Layout/AdminLayoutTemplate';
+import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 import EditForm from '@/common/Form/EditForm';
 
 

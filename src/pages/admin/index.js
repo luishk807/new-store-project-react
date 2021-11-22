@@ -4,8 +4,8 @@ import {
   withStyles,
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
-import Login from 'src/components/common/Form/Admin/Login';
-import { verifyAuth } from 'src/api/auth';
+import Login from '@/common/Form/Admin/Login';
+import { verifyAuth } from '@/api/auth';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({});

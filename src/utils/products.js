@@ -27,6 +27,7 @@ export const checkDiscountPrice = async(product, selectedItem, quantity) => {
   if (!product || !selectedItem || !quantity) {
     return;
   }
+
   const originalItem = product.productProductItems.filter(item => item.id === selectedItem.id)[0];
 
   currProduct['quantity'] = quantity;
@@ -62,6 +63,17 @@ export const checkDiscountPrice = async(product, selectedItem, quantity) => {
     })
   }
   return currProduct;
+}
+
+export const addDiscountItem = async(item, quantity) => {
+  if (!item.bundle) {
+    const getDiscountItem = await checkDiscountPrice(item, item.selectedItem, quantity);
+    if (getDiscountItem && getDiscountItem.discount) {
+      item.productDiscount = getDiscountItem.discount.name
+    }
+    item.selectedItem = getDiscountItem;
+  }
+  item.quantity = quantity;
 }
 
 export const checkBundlePrice = async(product, selectedItem, quantity) => {
@@ -139,14 +151,16 @@ export const getLiveStock = (prod, cart) => {
     for(let key = 0; key < Object.keys(cart).length; key++) {
       if (cart[key].id == prod.id) {
         if(cart[key].bundle) {
-          curTotal += (Number(cart[key].bundle.quantity) * Number(cart[key].quantity));
+          const qty = Number(cart[key].quantity);
+          const bundleQty = Number(cart[key].bundle.quantity);
+          curTotal += (bundleQty * qty);
         } else if (!cart[key].bundle) {
-          curTotal += Number(cart[key].quantity)
+          const qty = Number(cart[key].quantity);
+          curTotal += qty
         }
       }
     }  
   }
-  
   return prod.stock - curTotal;
 }
 

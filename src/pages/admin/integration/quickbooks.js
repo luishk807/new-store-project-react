@@ -1,4 +1,4 @@
-import { config } from '../../../../config';
+import { config } from '@/config';
 import { makeStyles } from '@material-ui/core/styles'
 import { useEffect, useState } from 'react'
 import { getQuickbooksAuthUri, getQuickbooksStatus, disconnectQuickbooks } from '../../../services/integration'

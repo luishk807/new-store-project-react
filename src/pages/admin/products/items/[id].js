@@ -9,12 +9,12 @@ import {
 import moment from 'moment';
 import { useRouter } from 'next/router';
 
-import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
-import { deleteProductItemByID, getAllProductItemsByProductId } from 'src/api/productItems';
-import Snackbar from 'src/components/common/Snackbar';
+import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
+import { deleteProductItemByID, getAllProductItemsByProductId } from '@/api/productItems';
+import Snackbar from '@/common/Snackbar';
 import { getImage } from 'src/utils/';
-import HeaderSub from 'src/components/product/HeaderSub';
-import DialogModal from 'src/components/common/DialogModal';
+import HeaderSub from '@/components/product/HeaderSub';
+import DialogModal from '@/common/DialogModal';
 
 const styles = (theme) => ({
   root: {

@@ -23,6 +23,10 @@ export const getAddresses = async(data) => {
   return Api.get(`useraddresses`, data);
 }
 
+export const getAddressByUserId = async(id) => {
+  return Api.get(`useraddresses/addresses/user/${id}`);
+}
+
 export const getAddressesByUser = async(data) => {
   return Api.get(`useraddresses/addresses/user`, data);
 }

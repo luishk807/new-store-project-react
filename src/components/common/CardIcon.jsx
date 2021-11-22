@@ -8,7 +8,7 @@ import {
   CardActionArea,
   Link,
 } from '@material-ui/core';
-import Typography from './Typography';
+import Typography from '@/common/Typography';
 
 const styles = (theme) => ({
   root: {

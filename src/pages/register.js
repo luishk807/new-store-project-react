@@ -7,10 +7,10 @@ import {
   TextField,
 } from '@material-ui/core';
 
-import { USER_SECTIONS } from 'src/constants/user';
-import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
-import Typography from 'src/components/common/Typography';
-import AddForm from 'src/components/common/Form/AddForm';
+import { USER_SECTIONS } from '@/constants/user';
+import LayoutTemplate from '@/common/Layout/LayoutTemplate';
+import Typography from '@/common/Typography';
+import AddForm from '@/common/Form/AddForm';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

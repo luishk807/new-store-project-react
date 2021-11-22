@@ -2,7 +2,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import NextApp from 'next/app'
 import React from 'react'
 import 'styles.scss'
-import { wrapper } from 'src/redux/store';
+import { wrapper } from '@/redux/store';
 import { appWithTranslation } from 'next-i18next'
 import HttpsRedirect from 'react-https-redirect';
 

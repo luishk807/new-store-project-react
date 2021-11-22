@@ -10,7 +10,7 @@ import {
 
 import Icons from '@/components/common/Icons';
 import { getItems } from 'src/api';
-import CategoryModalProducts from './ModalProduct';
+import CategoryModalProducts from '@/components/category/ModalProduct';
 import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({

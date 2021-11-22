@@ -14,26 +14,26 @@ import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 import { defaultCountry, defaultPanama } from 'config';
-import CartBox from 'src/components/cart/Block';
-import Icons from 'src/components/common/Icons';
-import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
-import ActionForm from 'src/components/common/Form/Action/Add';
-import Snackbar from 'src/components/common/Snackbar';
-import AddressSelection from 'src/components/address/AddressSelection';
-import RadioBox from 'src/components/common/RadioBox';
-import PromotionalCode from 'src/components/PromotionalCode';
-import ProgressBar from 'src/components/common/ProgressBar';
-import { validateForm, handleFormResponse } from 'src/utils/form';
+import CartBox from '@/components/cart/Block';
+import Icons from '@/common/Icons';
+import LayoutTemplate from '@/common/Layout/LayoutTemplate';
+import ActionForm from '@/common/Form/Action/Add';
+import Snackbar from '@/common/Snackbar';
+import AddressSelection from '@/components/address/AddressSelection';
+import RadioBox from '@/common/RadioBox';
+import PromotionalCode from '@/components/PromotionalCode';
+import ProgressBar from '@/common/ProgressBar';
+import { validateForm, handleFormResponse } from '@/utils/form';
 import { returnDefaultOption } from 'src/utils';
-import { emptyCart } from 'src/redux/actions/main'
-import { getDeliveryServiceCostByFilter } from 'src/api/deliveryServiceCosts';
-import { getActiveDeliveryServicesByDeliveryOption } from 'src/api/deliveryOptionServices';
-import { getDeliveryServiceGroupCostByDeliveryOption } from 'src/api/deliveryServiceGroupCosts';
-import { getActivePromotionCodeByCode } from 'src/api/promotionCodes';
-import { processOrderByUser } from 'src/api/orders';
-import { getDeliveryOptions } from 'src/api/deliveryOptions';
-import { getProductItemByIds } from 'src/api/productItems';
-import { getActivePaymentOptions } from 'src/api/paymentOptions';
+import { emptyCart } from '@/redux/actions/main'
+import { getDeliveryServiceCostByFilter } from '@/api/deliveryServiceCosts';
+import { getActiveDeliveryServicesByDeliveryOption } from '@/api/deliveryOptionServices';
+import { getDeliveryServiceGroupCostByDeliveryOption } from '@/api/deliveryServiceGroupCosts';
+import { getActivePromotionCodeByCode } from '@/api/promotionCodes';
+import { processOrderByUser } from '@/api/orders';
+import { getDeliveryOptions } from '@/api/deliveryOptions';
+import { getProductItemByIds } from '@/api/productItems';
+import { getActivePaymentOptions } from '@/api/paymentOptions';
 
 
 

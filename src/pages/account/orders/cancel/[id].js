@@ -13,7 +13,7 @@ import moment from 'moment';
 import ActionForm from 'src/components/common/Form/Action/Add';
 import UserLayoutTemplate from 'src/components/common/Layout/UserLayoutTemplate';
 import { handleFormResponse } from 'src/utils/form';
-import { canceled_status } from 'src/../config';
+import { canceled_status } from '@/config';
 import LeftOrderColumn from 'src/components/common/Layout/Left/account/OrderLeftColumn';
 import Snackbar from 'src/components/common/Snackbar';
 import { cancelOrder, getOrderById } from 'src/api/orders';

@@ -16,6 +16,8 @@
     "delivery": "Envío",
     "grand_total": "Gran Total",
     "tax": "ITBMS",
+    "revert": "Revertir",
+    "new": "Nuevo",
     "cart_view": "Carrito",
     "price_with_discount": "Precio con Desc.",
     "discount_with_coupon": "Descuento con cupon",
@@ -51,6 +53,7 @@
     "saves": "Ahorraste",
     "promo": "Promo",
     "free": "Gratis",
+    "must_select_one_product": "Debe haber al menos un producto",
     "max_amount_reached": "Cantidad maxima del producto disponible",
     "message": {
         "you_saved": "Ahorraste",

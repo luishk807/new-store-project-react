@@ -1,7 +1,7 @@
-import ProductImport from 'src/components/product/Import';
+import ProductImport from '@/components/product/Import';
 import { withStyles } from '@material-ui/core';
 import * as T from 'prop-types';
-import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate'
+import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate'
 
 const styles = (theme) => ({
     root: {

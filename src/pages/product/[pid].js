@@ -16,22 +16,22 @@ import { getImageUrlByType } from 'src/utils/form';
 import { checkDiscountPrice, setBundleDiscount, checkBundlePrice, isOutOfStock, getLiveStock } from 'src/utils/products';
 import { formatNumber, isAroundTime, capitalize, sortOptions, getCartTotalItems, removeDuplicatesByProperty, getCartItemById } from 'src/utils';
 import { noImageUrl } from 'config';
-import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
-import { ProductSample } from 'src/constants/samples/ProductSample';
-import Snackbar from 'src/components/common/Snackbar';
-import QuantitySelectorB from 'src/components/common/QuantitySelectorB';
-import { getActiveProductBundlesByProductItemId } from 'src/api/productBundles';
-import { getProductBySlug, getProductById } from 'src/api/products';
-import { getSizesByProductId } from 'src/api/sizes';
-import { getColorsByProductId } from 'src/api/productColors';
-import { getProductItemById } from 'src/api/productItems';
-import ProgressBar from 'src/components/common/ProgressBar';
-import RateFullView from 'src/components/rate/FullView';
+import LayoutTemplate from '@/common/Layout/LayoutTemplate';
+import { ProductSample } from '@/constants/samples/ProductSample';
+import Snackbar from '@/common/Snackbar';
+import QuantitySelectorB from '@/common/QuantitySelectorB';
+import { getActiveProductBundlesByProductItemId } from '@/api/productBundles';
+import { getProductBySlug, getProductById } from '@/api/products';
+import { getSizesByProductId } from '@/api/sizes';
+import { getColorsByProductId } from '@/api/productColors';
+import { getProductItemById } from '@/api/productItems';
+import ProgressBar from '@/common/ProgressBar';
+import RateFullView from '@/components/rate/FullView';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { getThumbnail } from 'src/utils/helpers/image'
-import CartSwipe from 'src/components/cart/Swipe';
-import { getColorName } from 'src/utils/helpers/product'
+import { getThumbnail } from '@/utils/helpers/image'
+import CartSwipe from '@/components/cart/Swipe';
+import { getColorName } from '@/utils/helpers/product'
 
 const styles = (theme) => ({
   root: {

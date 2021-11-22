@@ -7,10 +7,10 @@ import {
   Button
 } from '@material-ui/core';
 
-import { ADMIN_SECTIONS } from 'src/constants/admin';
-import EditForm from 'src/components/common/Form/EditForm';
+import { ADMIN_SECTIONS } from '@/constants/admin';
+import EditForm from '@/common/Form/EditForm';
 import { defaultCountry } from 'config';
-import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {

@@ -506,6 +506,11 @@ export const FORM_SCHEMA = {
     label: 'Shipping Address',
     tKey: "shipping_address"
   },
+  shipping_addressB: {
+    type: FORM_TYPE.text,
+    label: 'Shipping AddressB',
+    tKey: "shipping_addressB"
+  },
   shipping_corregimiento: {
     type: FORM_TYPE.text,
     label: 'Shipping corregimiento',

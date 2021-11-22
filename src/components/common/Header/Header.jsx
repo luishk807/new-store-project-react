@@ -14,9 +14,9 @@ import Icon from '@/common/Icons';
 import { getCartTotalItems } from 'src/utils';
 import Typography from '@/common/Typography';
 import loadMain from '@/redux/reducers'
-import SearchBar from '@/common/SearchBar';
+import SearchBar from '@/src/components/common/SearchBar';
 import { useRouter } from 'next/router'
-import Locale from './Locale';
+import Locale from '@/common/Header/Locale';
 
 const styles = (theme) => ({
   root: {

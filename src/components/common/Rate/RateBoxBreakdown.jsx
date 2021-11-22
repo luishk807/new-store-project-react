@@ -7,7 +7,7 @@ import {
   LinearProgress
 } from '@material-ui/core';
 
-import Rate from './Rate';
+import Rate from '@/common/Rate/Rate';
 import { getRatingAvg } from 'src/utils';
 import { useTranslation } from 'next-i18next'
 

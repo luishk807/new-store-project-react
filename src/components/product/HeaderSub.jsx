@@ -7,8 +7,8 @@ import {
   Button,
 } from '@material-ui/core';
 
-import { getProductById } from 'src/api/products';
-import Icons from '@/components/common/Icons';
+import { getProductById } from '@/api/products';
+import Icons from '@/common/Icons';
 
 const styles = (theme) => ({
   root: {

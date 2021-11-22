@@ -9,11 +9,11 @@ import {
 import moment from 'moment';
 import { useRouter } from 'next/router';
 
-import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
-import { deleteColorById, getColorsByProductId } from 'src/api/productColors';
-import Snackbar from 'src/components/common/Snackbar';
-import ColorBlock from 'src/components/common/ColorBlock';
-import HeaderSub from 'src/components/product/HeaderSub';
+import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
+import { deleteColorById, getColorsByProductId } from '@/api/productColors';
+import Snackbar from '@/common/Snackbar';
+import ColorBlock from '@/common/ColorBlock';
+import HeaderSub from '@/components/product/HeaderSub';
 
 const styles = (theme) => ({
   root: {

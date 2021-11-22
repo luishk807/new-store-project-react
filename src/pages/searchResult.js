@@ -9,12 +9,12 @@ import { useRouter } from 'next/router';
 import Pagination from '@material-ui/lab/Pagination';
 
 import { getImage, getSortPriceRange } from 'src/utils';
-import Rate from 'src/components/common/Rate/Rate';
-import Typography from 'src/components/common/Typography';
-import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
-import { searchProductsByFilter } from 'src/api/products';
-import ProgressBar from 'src/components/common/ProgressBar';
-import TextEllipsis from 'src/components/common/TextEllipsis';
+import Rate from '@/common/Rate/Rate';
+import Typography from '@/common/Typography';
+import LayoutTemplate from '@/common/Layout/LayoutTemplate';
+import { searchProductsByFilter } from '@/api/products';
+import ProgressBar from '@/common/ProgressBar';
+import TextEllipsis from '@/common/TextEllipsis';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

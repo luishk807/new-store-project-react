@@ -22,7 +22,8 @@ const styles = (theme) => ({
 const Add = ({classes}) => {
   const form = {
     name: null,
-    icon: null
+    icon: null,
+    altUrl: null
   }
   
   return (

@@ -22,6 +22,10 @@ export const CATEGORY_ICONS = [
     value: 'special',
   },
   {
+    name: 'Blackfriday',
+    value: 'blackfriday',
+  },
+  {
     name: 'Hogar',
     value: 'home',
   },
@@ -371,6 +375,11 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.text,
     label: 'Address',
     tKey: "address"
+  },
+  altUrl: {
+    type: FORM_TYPE.text,
+    label: 'Alternate URL',
+    tKey: "altUrl"
   },
   addressB: {
     type: FORM_TYPE.text,

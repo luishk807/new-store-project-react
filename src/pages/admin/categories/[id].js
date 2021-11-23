@@ -25,6 +25,7 @@ const Edit = ({classes}) => {
   const id = router.query.id;
   const form = {
     name: null,
+    altUrl: null,
     status: null,
     icon: null
   }

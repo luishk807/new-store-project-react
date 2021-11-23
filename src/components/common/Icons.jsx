@@ -99,6 +99,7 @@ import Christmas from 'public/images/svg/categories/christmas.svg';
 import Others from 'public/images/svg/categories/others.svg';
 import NoImages from 'public/images/svg/noimage.svg';
 import Coupon from 'public/images/svg/coupon.svg';
+import Blackfriday from 'public/images/svg/categories/blackfridayb.svg';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import ExtensionIcon from '@material-ui/icons/ExtensionOutlined';
 
@@ -116,6 +117,8 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'special':
         return <Special className={classes.icon}/>
+      case 'blackfriday':
+        return <Blackfriday className={classes.icon}/>
       case 'christmas':
         return <Christmas className={classes.icon}/>
       case 'sad':

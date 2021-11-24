@@ -4,6 +4,8 @@
     "by": "By",
     "view_more": "View more",
     "rate_product": "Rate",
+    "saved_previous": "Saved ${{total}}",
+    "retail_previous": "Original ${{total}}",
     "no_product_found": "No product found",
     "messages": {
         "choose_quantity": "Please choose quantity",

@@ -26,10 +26,13 @@ const Add = ({classes}) => {
     altUrl: null
   }
   
+  const ignoreEntry=['altUrl'];
+  
   return (
     <AdminLayoutTemplate>
       <AddForm 
         adminSection={ADMIN_SECTIONS.category} 
+        ignoreForm={ignoreEntry} 
         customUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 
         cancelUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 
         successUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 

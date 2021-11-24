@@ -158,6 +158,17 @@ const styles = makeStyles((theme) => ({
     display: 'flex',
     padding: '15px 50px',
     fontSize: '1em',
+  },
+  previousPriceBoxSaved: {
+    background: 'red',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '.7em',
+    padding: '5px 7px',
+    margin: '8px 0px',
+  },
+  previousPriceBox: {
+    margin: '10px 0px'
   }
 }));
 
@@ -334,6 +345,25 @@ const Cart = ({cart, updateCart, deleteCart}) => {
                                   {
                                     loadPriceInfo(item)
                                   }
+                                  {
+                                    item.prevRetailPrice && (
+                                      <Grid item lg={12} xs={12} className={classes.previousPriceBox}>
+                                        <span>
+                                          <span className={classes.previousPriceBoxSaved}
+                                            >{ t('product:saved_previous', {
+                                              total: formatNumber(item.prevRetailPrice - 
+                                                Number(item.originalPrice ? item.originalPrice : item.retailPrice))
+                                            }) }
+                                          </span>&nbsp;
+                                          {
+                                            t('product:retail_previous', {
+                                              total: formatNumber(item.prevRetailPrice)
+                                            })
+                                          }
+                                        </span>
+                                      </Grid>
+                                    )
+                                  }
                                   <Grid item lg={12} xs={12} className={classes.cartPrice}>
                                     <Typography align="left" component="p">
                                       Sku: {item.sku}
@@ -473,7 +503,7 @@ const mapDispatchToProps = {
 /** This section is mandatory for next-18next translation to work */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['common', 'footer', 'colors']),
+    ...await serverSideTranslations(locale, ['common', 'footer', 'colors', 'product']),
   },
 })
 

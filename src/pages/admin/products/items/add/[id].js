@@ -32,6 +32,7 @@ const Add = ({classes}) => {
     productSize: null,
     stock: null,
     retailPrice: null,
+    prevRetailPrice: null,
     model: null,
     sku: null,
     productId: router.query.id,
@@ -41,7 +42,7 @@ const Add = ({classes}) => {
     }
   }
   
-  const ignoreForm = ['productId', 'image', 'sku'];
+  const ignoreForm = ['productId', 'image', 'sku', 'prevRetailPrice'];
   const hideEntry = ['productId'];
 
   const getProduct = async() => {

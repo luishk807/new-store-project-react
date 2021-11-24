@@ -4,6 +4,8 @@
     "by": "Por",
     "view_more": "Ver más",
     "rate_product": "Calificar",
+    "saved_previous": "Ahorra ${{total}}",
+    "retail_previous": "Original ${{total}}",
     "no_product_found": "Productos no encontrado",
     "messages": {
         "choose_quantity": "Favor seleccione cantidad",

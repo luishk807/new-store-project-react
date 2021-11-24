@@ -635,6 +635,11 @@ export const FORM_SCHEMA = {
     label: 'Retail Price',
     tKey: "retail_price"
   },
+  prevRetailPrice: {
+    type: FORM_TYPE.number,
+    label: 'Previous Retail Price',
+    tKey: "previous_retail_price"
+  },
   profitPercentage: {
     type: FORM_TYPE.number,
     label: 'Profit Percentage',

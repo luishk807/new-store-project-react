@@ -236,6 +236,17 @@ const styles = (theme) => ({
   },
   infoRowContentQuantity: {
     alignItems: 'center'
+  },
+  previousPriceBoxSaved: {
+    background: 'red',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '.7em',
+    padding: '5px 7px',
+    margin: '8px 0px',
+  },
+  previousPriceBox: {
+    margin: '10px 0px'
   }
 });
 
@@ -665,12 +676,31 @@ const Index = ({classes, data = ProductSample, cart, updateCart, addCart}) => {
       const getProductPriceComponent = (value, isScratched = false) => {
         return (
           <>
-            <Grid item lg={4} xs={4} className={classes.productPrice}>
+            <Grid item lg={4} xs={5} className={classes.productPrice}>
               <span>{ t('unit_price') }:</span>
             </Grid>
-            <Grid item lg={8} xs={8} className={[(isScratched) ? classes.productPriceScratch : {}, classes.productPriceNumber].join(' ')}>
+            <Grid item lg={8} xs={7} className={[(isScratched) ? classes.productPriceScratch : {}, classes.productPriceNumber].join(' ')}>
               <span>&nbsp;$ {value}</span>
             </Grid>
+            {
+            selectedProductItem.prevRetailPrice && (
+              <Grid item lg={12} xs={12} className={classes.previousPriceBox}>
+                <span>
+                  <span className={classes.previousPriceBoxSaved}
+                    >{ t('product:saved_previous', {
+                      total: formatNumber(selectedProductItem.prevRetailPrice - 
+                        Number(selectedProductItem.originalPrice ? selectedProductItem.originalPrice : selectedProductItem.retailPrice))
+                    }) }
+                  </span>&nbsp;
+                  {
+                    t('product:retail_previous', {
+                      total: formatNumber(selectedProductItem.prevRetailPrice)
+                    })
+                  }
+                </span>
+              </Grid>
+            )
+          }
           </>)
       }
       

@@ -25,14 +25,18 @@ const Edit = ({classes}) => {
   const id = router.query.id;
   const form = {
     name: null,
+    altUrl: null,
     status: null,
     icon: null
   }
   
+  const ignoreEntry=['altUrl'];
+
   return (
     <AdminLayoutTemplate>
       <EditForm 
         customUrl={`/admin/categories`} 
+        ignoreForm={ignoreEntry} 
         adminSection={ADMIN_SECTIONS.category} 
         cancelUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 
         successUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 

@@ -403,7 +403,8 @@ export const getRatingAvg = (data) => {
 }
 
 export const getCatSearch = (data) => {
-  return encodeURI(`/searchResult?cat=${data.id}&catn=${data.name}`);
+  const catUrl = data.altUrl ? data.altUrl : `?cat=${data.id}&catn=${data.name}`;
+  return encodeURI(`/searchResult${catUrl}`);
 }
 
 export function removeDuplicatesByProperty(inputArray, propertyName) {

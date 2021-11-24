@@ -14,7 +14,8 @@ const useStyles = makeStyles(theme => ({
         height: '60px',
     },
     img: {
-        width: '60px'
+        width: '60px',
+        backgroundColor: 'transparent'
     }
 }));
   

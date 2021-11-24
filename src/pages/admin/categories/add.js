@@ -4,9 +4,9 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-import { ADMIN_SECTIONS } from 'src/constants/admin';
-import AddForm from 'src/components/common/Form/AddForm';
-import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import { ADMIN_SECTIONS } from '@/constants/admin';
+import AddForm from '@/common/Form/AddForm';
+import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {
@@ -22,13 +22,17 @@ const styles = (theme) => ({
 const Add = ({classes}) => {
   const form = {
     name: null,
-    icon: null
+    icon: null,
+    altUrl: null
   }
+  
+  const ignoreEntry=['altUrl'];
   
   return (
     <AdminLayoutTemplate>
       <AddForm 
         adminSection={ADMIN_SECTIONS.category} 
+        ignoreForm={ignoreEntry} 
         customUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 
         cancelUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 
         successUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 

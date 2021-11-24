@@ -6,11 +6,11 @@ import {
   Button,  
 } from '@material-ui/core';
 
-import Snackbar from 'src/components/common/Snackbar';
-import Typography from 'src/components/common/Typography';
-import { login } from 'src/api/auth'
-import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
-import LoginFrom from 'src/components/common/Form/Login';
+import Snackbar from '@/common/Snackbar';
+import Typography from '@/common/Typography';
+import { login } from '@/api/auth'
+import LayoutTemplate from '@/common/Layout/LayoutTemplate';
+import LoginFrom from '@/common/Form/Login';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

@@ -9,7 +9,7 @@ import {
 import { saveItem, deleteItem } from 'src/api';
 import Api from '@/services/api';
 import { validateForm, loadMainOptions, handleFormResponse, checkEnforceDates } from '@/utils/form';
-import Form from './Form';
+import Form from '@/common/Form/Form';
 import { FORM_SCHEMA } from 'config';
 
 const styles = (theme) => ({

@@ -9,8 +9,8 @@ import {
   Grid
 } from '@material-ui/core';
 import classNames from 'classnames';
-import Typography from './Typography';
-import Snackbar from './Snackbar';
+import Typography from '@/common/Typography';
+import Snackbar from '@/common/Snackbar';
 import { getQuestions } from '@/api/questions';
 import { sendAnswer } from '@/api/answers';
 import { handleFormResponse } from '@/utils/form';

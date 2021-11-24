@@ -37,6 +37,18 @@ export const getAdminProductById = async(id) => {
   return Api.get(`products/full-detail/${id}`);
 }
 
+export const getAdminProductByIds = async(ids, page = null) => {  
+  if (!ids) {
+    return;
+  }
+  const data = {
+    ids: ids,
+    page: page
+  }
+  
+  return Api.get(`products/bulk/full-detail`,data);
+}
+
 export const getProductBySlug = async(id, filter = null) => {
   return Api.get(`products/k/${id}`, filter);
 }

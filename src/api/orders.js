@@ -15,6 +15,13 @@ export const getAllOrders = async(data) => {
   return Api.get(`orders/admin/orders/all`);
 }
 
+export const getAllOrdersWithFilter = async(filter) => {
+  if (!verifyCookie()) {
+    return;
+  }
+  return Api.get(`orders/admin/orders/pages/all`, filter);
+}
+
 export const getOrderByOrderNumber= async(data) => {
   return Api.get(`orders/${data.order_number}/${data.email}`);
 }
@@ -36,6 +43,14 @@ export const saveOrder = async(data, id) => {
   }
 
   return Api.save(`orders`, data);
+}
+
+export const saveAdminOrder = async(data, id) => {
+  if (!Object.keys(data).length) {
+    return;
+  }
+
+  return Api.save(`orders/admin/${id}`, data);
 }
 
 export const saveOrderStatus = async(data, id) => {

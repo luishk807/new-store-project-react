@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core';
-import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
-import SearchTableComponent from 'src/components/common/SearchTableComponent';
-import { search } from 'src/services/productUnified';
+import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
+import SearchTableComponent from '@/common/SearchTableComponent';
+import { search } from '@/services/productUnified';
 
 const useStyles = makeStyles(theme => ({
     root: {

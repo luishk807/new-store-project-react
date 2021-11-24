@@ -6,7 +6,7 @@ import {
   Button,
 } from '@material-ui/core';
 
-import ProgressBar from '@/components/common/ProgressBar';
+import ProgressBar from '@/common/ProgressBar';
 import SimpleBox from '@/components/product/SimpleBox';
 const styles = (theme) => ({
   root: {

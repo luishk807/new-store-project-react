@@ -14,9 +14,9 @@ import {
   ProductGalleryMiniBannerSample,
   ProductGalleryStoreLists,
   ProductGalleryLogoSample,
- } from 'src/constants/samples/ProductGallery';
+ } from '@/constants/samples/ProductGallery';
 
- import Typography from '@/components/common/Typography';
+ import Typography from '@/common/Typography';
 
 const styles = (theme) => ({
   listItemCont: {

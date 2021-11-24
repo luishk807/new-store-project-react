@@ -5,9 +5,9 @@ import {
   withStyles,
 } from '@material-ui/core';
 
-import { ADMIN_SECTIONS } from 'src/constants/admin';
-import EditForm from 'src/components/common/Form/EditForm';
-import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import { ADMIN_SECTIONS } from '@/constants/admin';
+import EditForm from '@/common/Form/EditForm';
+import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 
 const styles = (theme) => ({
   root: {
@@ -25,6 +25,7 @@ const Edit = ({classes}) => {
   const id = router.query.id;
   const form = {
     name: null,
+    altUrl: null,
     status: null,
     icon: null
   }

@@ -6,12 +6,12 @@ import {
   Button,
 } from '@material-ui/core';
 
-import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
-import ActionForm from 'src/components/common/Form/Action/Add';
-import Snackbar from 'src/components/common/Snackbar';
+import LayoutTemplate from '@/common/Layout/LayoutTemplate';
+import ActionForm from '@/common/Form/Action/Add';
+import Snackbar from '@/common/Snackbar';
 import { getOrderByOrderNumber } from 'src/api/orders';
-import { validateForm, handleFormResponse } from 'src/utils/form';
-import OrderDetail from 'src/components/order/OrderDetail';
+import { validateForm, handleFormResponse } from '@/utils/form';
+import OrderDetail from '@/components/order/OrderDetail';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 

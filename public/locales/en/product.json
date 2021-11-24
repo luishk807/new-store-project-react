@@ -4,7 +4,7 @@
     "by": "By",
     "view_more": "View more",
     "rate_product": "Rate",
-
+    "no_product_found": "No product found",
     "messages": {
         "choose_quantity": "Please choose quantity",
         "choose_color": "Please choose color",

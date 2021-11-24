@@ -84,6 +84,7 @@ module.exports = {
   env: {
     BACKEND_URL: process.env.BACKEND_URL,
     IMAGE_URL: process.env.IMAGE_URL,
-    GTM_ID: process.env.GTM_ID
+    GTM_ID: process.env.GTM_ID,
+    COUNTRY_TAX: process.env.COUNTRY_TAX
   },
 }

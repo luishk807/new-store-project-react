@@ -10,6 +10,33 @@ export const removeCharacter = (str) => {
 
 export const formatNumber = (x) => x ? Number.parseFloat(x).toFixed(2) : 0.00;
 
+export const checkOrderAddressIsEmpty = (userAddress) => {
+  return userAddress.shipping_address || userAddress.shipping_city || userAddress.shipping_corregimiento || userAddress.shipping_country || userAddress.shipping_district || userAddress.shipping_email || userAddress.shipping_name || userAddress.shipping_note || userAddress.shipping_phone || userAddress.shipping_province || userAddress.shipping_township || userAddress.shipping_zip || userAddress.shipping_zone;
+}
+
+export const cleanUserAddress = (userAddress) => {
+
+  let address = [];
+
+  address.push(userAddress.shipping_name);
+  address.push(userAddress.shipping_address);
+  address.push(userAddress.shipping_city);
+  address.push(userAddress.shipping_province);
+  address.push(userAddress.shipping_district);
+  address.push(userAddress.shipping_country);
+  address.push(userAddress.shipping_zone);
+  address.push(userAddress.shipping_township);
+  address.push(userAddress.shipping_zip);
+  address.push(userAddress.shipping_note);
+  address.push(userAddress.shipping_corregimiento);
+  address.push(userAddress.shipping_email);
+  address.push(userAddress.shipping_phone);
+
+  const cleanArry = address.filter(a => a);
+  
+  return cleanArry.join("<br/>");
+}
+
 export const getCartTotalItems = (cart, item = null) => {
   if (cart && cart.length) {
     if (item) {
@@ -304,7 +331,7 @@ export const getCartTotal = (obj) => {
 
   let newSubtotal = subtotal - couponTotal;
 
-  taxes = newSubtotal * 0.07;
+  taxes = newSubtotal * (Number(process.env.COUNTRY_TAX) / 100);
 
   grandTotal = taxes + newSubtotal + delivery;
 
@@ -376,7 +403,8 @@ export const getRatingAvg = (data) => {
 }
 
 export const getCatSearch = (data) => {
-  return encodeURI(`/searchResult?cat=${data.id}&catn=${data.name}`);
+  const catUrl = data.altUrl ? data.altUrl : `?cat=${data.id}&catn=${data.name}`;
+  return encodeURI(`/searchResult${catUrl}`);
 }
 
 export function removeDuplicatesByProperty(inputArray, propertyName) {
@@ -393,4 +421,45 @@ export function removeDuplicatesByProperty(inputArray, propertyName) {
     return returnArray;
   }
   return inputArray;
+}
+
+
+export const getFormatAddressText = (data) => {
+
+  let address = '';
+
+  if (data.shipping_name) {
+    address +=  `${data.shipping_name}\n`;
+  }
+  if (data.shipping_address) {
+    address += `${data.shipping_address}\n`;
+  }
+  if (data.shipping_province) {
+    address += `${data.shipping_province}\n`;
+  }
+  if (data.shipping_corregimiento) {
+    address += `${data.shipping_corregimiento}\n`;
+  }
+  if (data.shipping_district) {
+    address += `${data.shipping_district}\n`;
+  }
+  if (data.shipping_country) {
+    address += `${data.shipping_country}\n`;
+  }
+  if (data.shipping_address) {
+    address += `${data.shipping_address}\n`;
+  }
+
+  if (data.shipping_note) {
+    address += `Note: ${data.shipping_note}\n`;
+  }
+
+  if (data.shipping_email) {
+    address += `Email: ${data.shipping_email}\n`;
+  }
+  if (data.shipping_phone) {
+    address += `Phone: ${data.shipping_phone}\n`;
+  }
+
+  return address;
 }

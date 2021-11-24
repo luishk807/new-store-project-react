@@ -5,7 +5,7 @@ import {
   Grid
 } from '@material-ui/core';
 
-import LayoutTemplate from 'src/components/common/Layout/LayoutTemplate';
+import LayoutTemplate from '@/common/Layout/LayoutTemplate';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({

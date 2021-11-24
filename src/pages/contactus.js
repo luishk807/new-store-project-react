@@ -7,6 +7,8 @@ import {
 
 import LayoutTemplate from '@/common/Layout/LayoutTemplate';
 import SendForm from '@/common/Form/SendForm';
+import { useTranslation } from 'next-i18next'
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -19,6 +21,8 @@ const styles = (theme) => ({
 })
 
 const ContactUs = ({classes}) => {
+  const { t } = useTranslation(['footer']);
+
   const section = {
     name: 'Contact Us',
     url: 'contacts'
@@ -48,5 +52,12 @@ const ContactUs = ({classes}) => {
 ContactUs.protoTypes = {
   classes: T.object,
 }
+
+/** This section is mandatory for next-18next translation to work, only inside /pages */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['footer']),
+  },
+})
 
 export default withStyles(styles)(ContactUs);

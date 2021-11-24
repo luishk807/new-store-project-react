@@ -379,7 +379,7 @@ export const FORM_SCHEMA = {
   altUrl: {
     type: FORM_TYPE.text,
     label: 'Alternate URL',
-    tKey: "altUrl"
+    tKey: "alternative_address"
   },
   addressB: {
     type: FORM_TYPE.text,

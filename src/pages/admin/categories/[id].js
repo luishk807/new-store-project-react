@@ -30,10 +30,13 @@ const Edit = ({classes}) => {
     icon: null
   }
   
+  const ignoreEntry=['altUrl'];
+
   return (
     <AdminLayoutTemplate>
       <EditForm 
         customUrl={`/admin/categories`} 
+        ignoreForm={ignoreEntry} 
         adminSection={ADMIN_SECTIONS.category} 
         cancelUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 
         successUrl={`/admin/${ADMIN_SECTIONS.category.url}`} 

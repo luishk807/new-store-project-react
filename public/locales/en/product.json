@@ -7,6 +7,7 @@
     "saved_previous": "Saved ${{total}}",
     "retail_previous": "Original ${{total}}",
     "no_product_found": "No product found",
+    "on_sale": "On Sale",
     "messages": {
         "choose_quantity": "Please choose quantity",
         "choose_color": "Please choose color",

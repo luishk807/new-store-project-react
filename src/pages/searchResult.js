@@ -116,6 +116,15 @@ const styles = (theme) => ({
   },
   itemsItemContainer: {
     justifyContent: 'center',
+  },
+  discountPrice: {
+    background: 'red',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '.7em',
+    padding: '4px 8px',
+    borderRadius: '5px',
+    margin: '5px 0px',
   }
 });
 
@@ -130,7 +139,7 @@ const SearchResult = ({classes}) => {
   const [showResult, setShowResult] = useState(false);
   const [showEmpty, setShowEmpty] = useState(false);
   const { str, cat, catn, page } = router.query;
-  const { t } = useTranslation('search')
+  const { t } = useTranslation(['product'])
 
   const loadSearchStr = async() => {
     const pageIndex = page ? +page : 1;
@@ -193,6 +202,8 @@ const SearchResult = ({classes}) => {
                   data.map((data, index) => {
                   const sort = getSortPriceRange(data);
                   const prodImage = getImage(data);
+                  const foundDiscount = data.productProductItems.filter(item => item.prevRetailPrice)[0];
+                  
                   return (
                     <Grid key={index} item lg={2} xs={12} className={classes.itemMain}>
                       <Link href={`/product/${data.slug}`} color="inherit" underline="none">
@@ -204,6 +215,9 @@ const SearchResult = ({classes}) => {
                           </Grid>
                           <Grid item xs={7} lg={12} className={classes.itemInfo}>
                             <p className={classes.itemAmount}>{sort}</p>
+                            {
+                              foundDiscount && (<p className={classes.discountPrice}>{ t('on_sale') }</p>)
+                            }
                             <p align="center" variant="h4" component="h4" className={classes.itemTitle}>{data.name}</p>
                             <Rate className={classes.rateItem} data={0} disabled={true} />
                           </Grid>
@@ -240,7 +254,7 @@ SearchResult.protoTypes = {
 /** This section is mandatory for next-18next translation to work, only inside /pages */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['search', 'footer']),
+    ...await serverSideTranslations(locale, ['search', 'footer', 'product']),
   },
 })
 

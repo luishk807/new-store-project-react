@@ -14,6 +14,7 @@ import { getProductByCategory } from '@/api/products';
 import { noImageUrl } from 'config';
 import { getImageUrlByType } from '@/utils/form'
 import ProgressBar from '@/components/common/ProgressBar';
+import { useTranslation } from 'next-i18next'
 
 const styles = (theme) => ({
   root: {
@@ -33,12 +34,24 @@ const styles = (theme) => ({
   }, 
   img: {
     padding: 8,
+  },
+  discountPrice: {
+    background: 'red',
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: '.69em',
+    padding: '4px 8px',
+    borderRadius: '5px',
+    margin: '5px 0px',
+    textAlign: 'center',
   }
 });
 
 const CategoryModalProducts = React.memo(({classes, category}) => {
   const [products, setProducts] = useState([]);
   const [showData, setShowData] = useState(false)
+
+  const { t } = useTranslation('product')
 
   const imageUrl = getImageUrlByType('product');
 
@@ -68,6 +81,9 @@ const CategoryModalProducts = React.memo(({classes, category}) => {
             <Grid container>
               {
                 products.map((product, index) => {
+                  let foundDiscount = null;
+                  foundDiscount = product.productProductItems.filter(item => item.prevRetailPrice)[0];
+
                   const imgUrl = product.productImages && product.productImages.length ? 
                     (<img className={`img-fluid`} src={`${imageUrl}/${product.productImages[0].img_url}`} />) : 
                     (<img className={`img-fluid`} src={`${noImageUrl.img}`} alt={noImageUrl.alt}/>) 
@@ -84,7 +100,11 @@ const CategoryModalProducts = React.memo(({classes, category}) => {
                             {
                               product.name
                             }
+                            {
+                              foundDiscount && (<p className={classes.discountPrice}>{ t('product:on_sale') }</p>)
+                            }
                           </Grid>
+                          
                         </Grid>
                       </Button>
                     </Grid>
@@ -115,5 +135,5 @@ CategoryModalProducts.protoTypes = {
   classes: T.object,
   category: T.number,
 }
- 
+
 export default withStyles(styles)(CategoryModalProducts);

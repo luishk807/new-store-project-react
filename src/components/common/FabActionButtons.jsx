@@ -8,6 +8,9 @@ const useStyles = makeStyles(theme => ({
         bottom: '60px',
         right: '30px',
         zIndex: '180',
+        [theme.breakpoints.down('sm')]: {
+            right: '0px',
+        },
     },
     fabIcon: {
         width: '60px',

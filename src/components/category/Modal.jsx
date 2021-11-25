@@ -138,7 +138,7 @@ const CategoryModal = ({classes, open, onClose}) => {
             {
               categories && categories.map((data, index) => {
                 return (
-                  <div key={index} item xs={12} className={classes.iconContainer}>
+                  <div key={index} xs={12} className={classes.iconContainer}>
                     <Button onClick={()=>handleIconClick(index)} className={`${classes.catBtn} ${selectedCategory.id === data.id ? classes.catBtnClicked : '' }`}>
                       <Icons  name={data.icon} classes={{icon: classes.catIcons}} />
                     </Button>

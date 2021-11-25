@@ -9,9 +9,10 @@ import {
 import { getProducts } from 'src/api/products';
 import { getImageBaseThumbnail, getSortPriceRange } from 'src/utils';
 import Rate from '@/common/Rate/Rate';
+import DiscountLabel from '@/common/DiscountLabel';
 import ProgressBar from '@/common/ProgressBar';
-import { useTranslation } from 'next-i18next'
-import TextEllipsis from '@/common/TextEllipsis'
+import TextEllipsis from '@/common/TextEllipsis';
+import { useTranslation } from 'next-i18next';
 
 const styles = (theme) => ({
   root: {
@@ -77,13 +78,12 @@ const styles = (theme) => ({
 })
 
 const ProductScroller = ({classes}) => {
-  // const imageUrl = getImageUrlByType('product');
+  const { t } = useTranslation(['home', 'footer'])
   const loader = useRef(null);
   const [products, setProducts] = useState([]);
   const [showData, setShowData] = useState(false);
   const [page, setPage] = useState(1);
   const [endData, setEndData] = useState(false);
-  const { t } = useTranslation('home')
 
   const loadProducts = async() => {
     setShowData(false);
@@ -144,7 +144,7 @@ const ProductScroller = ({classes}) => {
    <div className={classes.root}>
       <Grid container className={classes.mainContainer} spacing={1}>
         <Grid item lg={12} xs={12} className={classes.sectionTitle}>
-          { t('message.products_you_might_like') }
+          { t('home:message:products_you_might_like') }
         </Grid>
         {
           showData && products.map((product, index) => {
@@ -163,6 +163,7 @@ const ProductScroller = ({classes}) => {
                     <p className={classes.amount}>
                       {rangePrice}
                     </p>
+                    <DiscountLabel data={product.productProductItems}/>
                     <Rate data={0} disabled={true} />
                   </div>
                 </Link>

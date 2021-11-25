@@ -14,7 +14,7 @@ import Typography from '@/common/Typography';
 import LayoutTemplate from '@/common/Layout/LayoutTemplate';
 import { searchProductsByFilter } from '@/api/products';
 import ProgressBar from '@/common/ProgressBar';
-import TextEllipsis from '@/common/TextEllipsis';
+import DiscountLabel from '@/common/DiscountLabel';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
@@ -130,8 +130,7 @@ const SearchResult = ({classes}) => {
   const [showResult, setShowResult] = useState(false);
   const [showEmpty, setShowEmpty] = useState(false);
   const { str, cat, catn, page } = router.query;
-  const { t } = useTranslation('search')
-
+  const { t } = useTranslation(['product', 'search', 'footer'])
   const loadSearchStr = async() => {
     const pageIndex = page ? +page : 1;
     const filters = {
@@ -179,7 +178,7 @@ const SearchResult = ({classes}) => {
         <Grid container>
           <Grid item lg={12} xs={12} className={classes.mainTitle}>
             <Typography align="left" variant="h4" component="span" className={classes.mainTitleTitle}>
-              { t('searching_for') } &ldquo;{str || catn}&rdquo;
+              { t('search:searching_for') } &ldquo;{str || catn}&rdquo;
             </Typography>
             <Typography align="left" variant="h6" component="span" className={classes.mainTitleSub}>{totalCount} { t('results') }</Typography>
           </Grid>
@@ -206,6 +205,7 @@ const SearchResult = ({classes}) => {
                             <p className={classes.itemAmount}>{sort}</p>
                             <p align="center" variant="h4" component="h4" className={classes.itemTitle}>{data.name}</p>
                             <Rate className={classes.rateItem} data={0} disabled={true} />
+                            <DiscountLabel data={data.productProductItems}/>
                           </Grid>
                         </Grid>
                       </Link>
@@ -240,7 +240,7 @@ SearchResult.protoTypes = {
 /** This section is mandatory for next-18next translation to work, only inside /pages */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['search', 'footer']),
+    ...await serverSideTranslations(locale, ['search', 'footer', 'product']),
   },
 })
 

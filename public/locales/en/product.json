@@ -8,6 +8,7 @@
     "retail_previous": "Original ${{total}}",
     "no_product_found": "No product found",
     "on_sale": "On Sale",
+    "buy_now": "Buy Now",
     "messages": {
         "choose_quantity": "Please choose quantity",
         "choose_color": "Please choose color",

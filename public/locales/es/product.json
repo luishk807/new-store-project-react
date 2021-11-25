@@ -8,6 +8,7 @@
     "retail_previous": "Original ${{total}}",
     "no_product_found": "Productos no encontrado",
     "on_sale": "Producto Rebajado",
+    "buy_now": "Comprar",
     "messages": {
         "choose_quantity": "Favor seleccione cantidad",
         "choose_color": "Favor seleccione color",

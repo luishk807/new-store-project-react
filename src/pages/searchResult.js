@@ -14,7 +14,7 @@ import Typography from '@/common/Typography';
 import LayoutTemplate from '@/common/Layout/LayoutTemplate';
 import { searchProductsByFilter } from '@/api/products';
 import ProgressBar from '@/common/ProgressBar';
-import TextEllipsis from '@/common/TextEllipsis';
+import DiscountLabel from '@/common/DiscountLabel';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
@@ -116,15 +116,6 @@ const styles = (theme) => ({
   },
   itemsItemContainer: {
     justifyContent: 'center',
-  },
-  discountPrice: {
-    background: 'red',
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: '.7em',
-    padding: '4px 8px',
-    borderRadius: '5px',
-    margin: '5px 0px',
   }
 });
 
@@ -139,8 +130,7 @@ const SearchResult = ({classes}) => {
   const [showResult, setShowResult] = useState(false);
   const [showEmpty, setShowEmpty] = useState(false);
   const { str, cat, catn, page } = router.query;
-  const { t } = useTranslation(['product'])
-
+  const { t } = useTranslation(['product', 'search', 'footer'])
   const loadSearchStr = async() => {
     const pageIndex = page ? +page : 1;
     const filters = {
@@ -188,7 +178,7 @@ const SearchResult = ({classes}) => {
         <Grid container>
           <Grid item lg={12} xs={12} className={classes.mainTitle}>
             <Typography align="left" variant="h4" component="span" className={classes.mainTitleTitle}>
-              { t('searching_for') } &ldquo;{str || catn}&rdquo;
+              { t('search:searching_for') } &ldquo;{str || catn}&rdquo;
             </Typography>
             <Typography align="left" variant="h6" component="span" className={classes.mainTitleSub}>{totalCount} { t('results') }</Typography>
           </Grid>
@@ -202,8 +192,6 @@ const SearchResult = ({classes}) => {
                   data.map((data, index) => {
                   const sort = getSortPriceRange(data);
                   const prodImage = getImage(data);
-                  const foundDiscount = data.productProductItems.filter(item => item.prevRetailPrice)[0];
-                  
                   return (
                     <Grid key={index} item lg={2} xs={12} className={classes.itemMain}>
                       <Link href={`/product/${data.slug}`} color="inherit" underline="none">
@@ -215,11 +203,9 @@ const SearchResult = ({classes}) => {
                           </Grid>
                           <Grid item xs={7} lg={12} className={classes.itemInfo}>
                             <p className={classes.itemAmount}>{sort}</p>
-                            {
-                              foundDiscount && (<p className={classes.discountPrice}>{ t('on_sale') }</p>)
-                            }
                             <p align="center" variant="h4" component="h4" className={classes.itemTitle}>{data.name}</p>
                             <Rate className={classes.rateItem} data={0} disabled={true} />
+                            <DiscountLabel data={data.productProductItems}/>
                           </Grid>
                         </Grid>
                       </Link>

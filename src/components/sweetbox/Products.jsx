@@ -11,6 +11,8 @@ import { getImage, getSortPriceRange } from 'src/utils';
 
 import TextEllipsis from '@/components/common/TextEllipsis';
 import Rate from '@/components/common/Rate/Rate';
+import DiscountLabel from '@/common/DiscountLabel';
+import { useTranslation } from 'next-i18next';
 
 const styles = (theme) => ({
   cardBtn: {
@@ -54,9 +56,14 @@ const styles = (theme) => ({
       textDecoration: 'underline'
     }
   },
+  discountLabel: {
+    justifyContent: 'start'
+  }
 });
 
 const SweetBoxProducts = React.memo(({classes, data, type = ''}) => {
+  const { t } = useTranslation(['search', 'footer', 'product'])
+
   const loadCardIcons = () => {
     const img = getImage(data);
     const priceRange = getSortPriceRange(data);
@@ -66,7 +73,7 @@ const SweetBoxProducts = React.memo(({classes, data, type = ''}) => {
             <Button className={classes.cardBtn}  href={`product/${data.slug}`}>
               <Grid container>
                 <Grid item lg={12} xs={12} className={classes.featureBtn}>
-                  Show Now
+                  {t('product:buy_now')}
                 </Grid>
                 <Grid item lg={12} xs={12}>
                 {
@@ -102,8 +109,11 @@ const SweetBoxProducts = React.memo(({classes, data, type = ''}) => {
                       />
                     </Grid>
                   </Hidden>
+                  <Grid item lg={12} xs={12}>
+                    <DiscountLabel data={data.productProductItems} classes={{root: classes.discountLabel}}/>
+                  </Grid>
                   <Grid item lg={12} xs={12} className={classes.singleItem}>
-                    <Button href={`product/${data.slug}`} className={`smallMainButton`}>Buy Now</Button>
+                    <Button href={`product/${data.slug}`} className={`smallMainButton`}>{t('product:buy_now')}</Button>
                   </Grid>
                 </Grid>
               </Grid>
@@ -132,6 +142,9 @@ const SweetBoxProducts = React.memo(({classes, data, type = ''}) => {
                   <TextEllipsis classes={classes.plainText} limit={40} variant="body1" type="p" text={data.name} />
                 </Grid>
                 <Grid item lg={12} xs={12} className={`${classes.textCenter}`}>
+                  <DiscountLabel data={data.productProductItems}/>
+                </Grid>
+                <Grid item lg={12} xs={12} className={`${classes.textCenter}`}>
                   {priceRange}
                 </Grid>
               </Grid>
@@ -156,6 +169,9 @@ const SweetBoxProducts = React.memo(({classes, data, type = ''}) => {
                     data={0} 
                     disabled={true} 
                   />
+                </Grid>
+                <Grid item lg={12} xs={12} className={`${classes.textCenter}`}>
+                  <DiscountLabel data={data.productProductItems}/>
                 </Grid>
                 <Grid item lg={12} xs={12} className={`${classes.textCenter}`}>
                   {priceRange}

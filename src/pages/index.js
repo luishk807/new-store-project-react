@@ -85,7 +85,7 @@ class ClassComponent extends Component {
 /** This section is mandatory for next-18next translation to work, only inside /pages */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['home', 'footer']),
+    ...await serverSideTranslations(locale, ['home', 'product', 'footer']),
   },
 })
 

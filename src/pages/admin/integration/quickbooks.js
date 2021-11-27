@@ -52,22 +52,27 @@ const QuickbooksConnect = () => {
         if (!qbStatus) {
             setHideQbConnectButton(false)
         } else {
+            console.log('qbStatus', qbStatus)
             const refreshToken = qbStatus && qbStatus.data && qbStatus.data.refreshToken
             let qbConnDetails = ''
-            if (refreshToken.expires) {
-                const future = moment(refreshToken.expires)
-                const today = moment()
-                qbConnDetails = `Refresh token expires in ${future.diff(today, 'days')} days (${refreshToken.expires}).`
-            }
-            const accessToken = qbStatus && qbStatus.data && qbStatus.data.accessToken
-            if (accessToken) {
-                qbConnDetails += ` Access token currently ${(accessToken.expired) ? 'expired' : 'not expired'}`
-            }
-            setQbConnectionDetails(qbConnDetails)
-            if (refreshToken.expired) {
-                setHideQbConnectButton(false)
+            if (refreshToken) {
+                if (refreshToken.expires) {
+                    const future = moment(refreshToken.expires)
+                    const today = moment()
+                    qbConnDetails = `Refresh token expires in ${future.diff(today, 'days')} days (${refreshToken.expires}).`
+                }
+                const accessToken = qbStatus && qbStatus.data && qbStatus.data.accessToken
+                if (accessToken) {
+                    qbConnDetails += ` Access token currently ${(accessToken.expired) ? 'expired' : 'not expired'}`
+                }
+                setQbConnectionDetails(qbConnDetails)
+                if (refreshToken.expired) {
+                    setHideQbConnectButton(false)
+                } else {
+                    setHideQbConnectButton(true)
+                }
             } else {
-                setHideQbConnectButton(true)
+                setHideQbConnectButton(false)
             }
         }
     }, [qbStatus])

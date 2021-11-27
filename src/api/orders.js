@@ -26,6 +26,10 @@ export const getOrderByOrderNumber= async(data) => {
   return Api.get(`orders/${data.order_number}/${data.email}`);
 }
 
+export const getAdminOrderByOrderNumber= async(order_number) => {
+  return Api.get(`orders/admin-order/${order_number}/admin`);
+}
+
 export const getOrderById = async(id) => {
   if (!id) {
     return;

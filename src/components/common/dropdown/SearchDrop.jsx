@@ -60,7 +60,7 @@ const styles = (theme) => ({
   }
 })
 
-const Dropdown = ({classes, options, onSelect, iconType}) => {
+const SearchDrop = ({classes, options, onSelect, iconType}) => {
   const [categoryDropMenuActive, setCategoryDropMenuActive] = useState(false);
   
   const handleDropDownMenOver = () => {
@@ -97,11 +97,11 @@ const Dropdown = ({classes, options, onSelect, iconType}) => {
    );
 }
  
-Dropdown.protoTypes = {
+SearchDrop.protoTypes = {
   classes: T.object,
   iconType: T.string,
   onSelect: T.func,
   options: T.array.isRequired,
 }
 
-export default withStyles(styles)(Dropdown);
+export default withStyles(styles)(SearchDrop);

@@ -3,18 +3,20 @@ import * as T from 'prop-types';
 import { 
   withStyles,
   Grid,
-  Link,
-  Button,
   Hidden,
+  Button,
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import moment from 'moment';
 import { LIMIT } from 'config';
-import AdminLayoutTemplate from 'src/components/common/Layout/AdminLayoutTemplate';
+import { ORDER_STATUS } from '@/constants/orders';
+import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 import { deleteOrderById, getAllOrdersWithFilter } from 'src/api/orders';
-import Snackbar from 'src/components/common/Snackbar';
-import Icons from 'src/components/common/Icons';
-import DialogModal from 'src/components/common/DialogModal';
+import Snackbar from '@/common/Snackbar';
+import Icons from '@/common/Icons';
+import DialogModal from '@/common/DialogModal';
+import Dropdown from '@/common/dropdown/Simple';
+import AdminOrderSearch from '@/common/SearchBar/AdminOrderSearch';
 
 const styles = (theme) => ({
   root: {
@@ -25,6 +27,12 @@ const styles = (theme) => ({
     height: 20,
     fill: 'black'
   },
+  filterIcon: {
+    width: 30,
+    height: 30,
+    fill: 'black',
+    margin: 15
+  },
   actionBtn: {
     margin: 2,
   },
@@ -32,13 +40,23 @@ const styles = (theme) => ({
     padding: 5,
   },
   headerTitle: {
-    padding: 20
+    padding: 20,
+    display: 'flex',
+    justifyContent: 'start'
+  },
+  headerAction: {
+    padding: 20,
+    display: 'flex',
+    justifyContent: 'end',
+    [theme.breakpoints.down('sm')]: {
+      padding: '20px 5px 20px 20px'
+    }
   },
   headerButton: {
     padding: 20
   },
   headerContainer: {
-    alignItems: 'center',
+    alignItems: 'start',
     justifyContent: 'space-between'
   },
   mainHeader: {
@@ -104,6 +122,11 @@ const Index = ({classes}) => {
   const [orders, setOrders] = useState([]);
   const [showData, setShowData] = useState(false);
   const [showEmpty, setShowEmpty] = useState(false);
+  const [filterList, setFilterList] = useState({
+    sortBy: null,
+    searchValue: null,
+    searchBy: null
+  });
   const [page, setPage] = useState(1);
   const [paginationHtml, setPaginationHtml] = useState(null);
   const [totalCount, setTotalCount] = useState(0);
@@ -125,7 +148,7 @@ const Index = ({classes}) => {
 
   const loadOrders = async() => {
     const gOrders = await getAllOrdersWithFilter({
-      page: page,
+      page: page
     });
     
     if (gOrders) {
@@ -178,6 +201,64 @@ const Index = ({classes}) => {
     })
   }
 
+  const handleDropDown = async(data) => {
+    setFilterList({
+      ...filterList,
+      sortBy: data.value
+    })
+    const sendData = {
+      page: page,
+      sortBy: data.value,
+      searchValue: filterList.searchValue,
+      searchBy: filterList.searchBy,
+    };
+
+    const gOrders = await getAllOrdersWithFilter(sendData);
+    
+    if (gOrders) {
+      setOrders('rows' in gOrders ? gOrders.rows : gOrders.items);
+      setTotalCount(gOrders.count)
+      if (!gOrders.count || !gOrders.rows) {
+        setShowEmpty(true);
+      }
+    } else {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `Order Not Found`,
+      })
+    }
+  }
+
+  const onSearchIconClick = async(e) => {
+    if (e) {
+      setFilterList({
+        ...filterList,
+        searchBy: e.searchBy,
+        searchValue: e.value
+      })
+
+      const gOrders = await getAllOrdersWithFilter({
+        page: page,
+        sortBy: filterList.sortBy,
+        searchValue: e.value,
+        searchBy: e.searchBy,
+      });
+      if (gOrders) {
+        setOrders('rows' in gOrders ? gOrders.rows : gOrders.items);
+        setTotalCount(gOrders.count)
+        if (!gOrders.count || !gOrders.rows) {
+          setShowEmpty(true);
+        }
+      } else {
+        setSnack({
+          severity: 'error',
+          open: true,
+          text: `Order Not Found`,
+        })
+      }
+    }
+  }
   const handleDialogClick = (e) => {
     setDialogContent({
       ...dialogContent,
@@ -210,9 +291,32 @@ const Index = ({classes}) => {
   return (
     <AdminLayoutTemplate>
       <Grid container className={classes.headerContainer}>
-        <Grid item className={classes.headerTitle}>
+        <Grid lg={2} xs={6} md={3} item className={classes.headerTitle}>
           <h3>Orders</h3>
         </Grid>
+        <Hidden smUp>
+          <Grid lg={2} xs={6} md={2} item className={classes.headerAction}>
+            <Dropdown 
+                options={ORDER_STATUS} 
+                align="right"
+                onSelect={handleDropDown} 
+                iconType="filter" 
+              />
+          </Grid>
+        </Hidden>
+        <Grid lg={6} xs={12} md={5} item className={classes.headerTitle}>
+          <AdminOrderSearch onClick={onSearchIconClick} placeholder="Type search" />
+        </Grid>
+        <Hidden smDown>
+          <Grid lg={2} xs={3} md={2} item className={classes.headerAction}>
+            <Dropdown 
+                options={ORDER_STATUS} 
+                align="right"
+                onSelect={handleDropDown} 
+                iconType="filter" 
+              />
+          </Grid>
+        </Hidden>
       </Grid>
       {
         paginationHtml && !showEmpty && paginationHtml

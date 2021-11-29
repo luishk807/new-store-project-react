@@ -102,7 +102,7 @@ import Coupon from 'public/images/svg/coupon.svg';
 import Blackfriday from 'public/images/svg/categories/blackfriday.svg';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import ExtensionIcon from '@material-ui/icons/ExtensionOutlined';
-
+import Filter from 'public/images/svg/filter.svg';
 import Typography from './Typography';
 
 const styles = (theme) => ({
@@ -117,6 +117,8 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'special':
         return <Special className={classes.icon}/>
+      case 'filter':
+        return <Filter className={classes.icon}/>
       case 'blackfriday':
         return <Blackfriday className={classes.icon}/>
       case 'christmas':

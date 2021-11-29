@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Icons from '@/common/Icons';
-import Dropdown from '@/common/Dropdown';
+import Dropdown from '@/src/components/common/dropdown/SearchDrop';
 import { getCategories } from '@/api/categories';
 import { getCatSearch } from 'src/utils';
 

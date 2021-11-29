@@ -60,6 +60,12 @@ const AdminOrderSearch = ({classes, onClick, icon = "search", placeholder = '', 
     })
   }
 
+  const handleKeyDown = (e) => {
+    if(e.keyCode == 13){
+      handleClick(e.target.value)
+   }
+  }
+
   const handleClick = (evt) => {
     onClick({
       value: textValue,
@@ -77,7 +83,15 @@ const AdminOrderSearch = ({classes, onClick, icon = "search", placeholder = '', 
         <Select classes={{root: classes.select}} defaultValue={SEARCH_OPTIONS[0]} data={SEARCH_OPTIONS} label="Search By" onSelect={handleSelectChange} />
       </Grid>
       <Grid item lg={7} md={7} xs={10}>
-        <TextField className={classes.texfield} id="outlined-basic" label={placeholder} variant="outlined" value={textValue} onChange={(e) => setTextValue(e.target.value)}/>
+        <TextField 
+          className={classes.texfield} 
+          id="outlined-basic" 
+          label={placeholder} 
+          variant="outlined" 
+          value={textValue} 
+          onChange={(e) => setTextValue(e.target.value)}
+          onKeyDown={handleKeyDown} 
+        />
       </Grid>
       <Grid item lg={2} md={2} xs={2}>
         <Button onClick={handleClick} className={classes.button}>

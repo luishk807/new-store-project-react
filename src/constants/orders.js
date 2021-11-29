@@ -56,7 +56,7 @@ export const SEARCH_OPTIONS = [
   },
   {
     name: 'Email',
-    value: 'email'
+    value: 'shipping_email'
   },
   {
     name: 'Name',

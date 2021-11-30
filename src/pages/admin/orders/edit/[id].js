@@ -132,7 +132,6 @@ const Edit = ({classes}) => {
     }
 
     if (form.address) {
-      console.log("address",form.address)
       formCopy['shipping_name'] = form.address.shipping_name;
       formCopy['shipping_address'] = form.address.shipping_address;
       formCopy['shipping_addressB'] = form.address.shipping_addressB;

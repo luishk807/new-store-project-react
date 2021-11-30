@@ -291,6 +291,7 @@ const OrderDetailEdit = ({classes, order, onRemoveDelivery, isAdmin = false, onO
   }
 
   const handleServiceOption = async(val) => {
+ 
     const { value, name } = val.target;
     const findDeliveryService = deliveryServices.filter(item => item.id === value);
     const deliveryFee = findDeliveryService[0].amount;
@@ -313,7 +314,7 @@ const OrderDetailEdit = ({classes, order, onRemoveDelivery, isAdmin = false, onO
       if (findDeliveryService[0] && findDeliveryService[0].id) {
         setOrderDetail({
           ...orderDetail,
-          'deliveryService': Number(findDeliveryService[0].id)
+          'deliveryServiceFee': findDeliveryService[0]
         })
       }
     }
@@ -343,8 +344,13 @@ const OrderDetailEdit = ({classes, order, onRemoveDelivery, isAdmin = false, onO
       if (data) {
         const getServices = data
         setDeliveryServices(getServices);
+        let foundService = null
         const loadDefault = returnDefaultOption(getServices);
-        if (loadDefault) {
+        if (order.deliveryServiceGroupCostId) {
+          foundService = getServices.filter(item => item.id == order.deliveryServiceGroupCostId)[0];
+          setSelectedDeliveryService(foundService);
+        }
+        if (loadDefault && !foundService) {
           setSelectedDeliveryService(loadDefault);
         }
       } else {

@@ -129,7 +129,7 @@ const RadioBox = React.memo(({
 
     setCheckedOptions(checkOpts);
     setItemOptions(opts);
-  }, []);
+  }, [options]);
 
   useEffect(() => {
     loadContent();

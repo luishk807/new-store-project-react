@@ -65,7 +65,7 @@
   },
   "devDependencies": {
     "@babel/preset-env": "^7.14.4",
-    "babel-plugin-styled-components": "^1.11.0-0"
+    "babel-plugin-styled-components": "^2.0.2"
   },
   "engines": {
     "node": "14.x",

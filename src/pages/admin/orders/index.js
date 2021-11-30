@@ -27,6 +27,11 @@ const styles = (theme) => ({
     height: 20,
     fill: 'black'
   },
+  actionIcon: {
+    width: 20,
+    height: 20,
+    fill: 'rgb(248,190,21)',
+  },
   filterIcon: {
     width: 30,
     height: 30,
@@ -35,6 +40,9 @@ const styles = (theme) => ({
   },
   actionBtn: {
     margin: 2,
+    '&:hover svg': {
+      fill: 'white',
+    }
   },
   mainContainer: {
     padding: 5,
@@ -457,10 +465,10 @@ const Index = ({classes}) => {
                       </Grid>
                       <Grid item lg={2} className={classes.itemAction}>
                         <Button className={`smallMainButton ${classes.actionBtn}`} href={`orders/${order.id}`}>
-                          Edit
+                          <Icons name="delete" classes={{icon: classes.actionIcon}}/>
                         </Button>
                         <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => handleActionMenu(order)}>
-                          Delete
+                        <Icons name="edit" classes={{icon: classes.actionIcon}}/>
                         </Button>
                       </Grid>
                       </Hidden>

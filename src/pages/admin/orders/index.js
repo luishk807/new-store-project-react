@@ -116,6 +116,15 @@ const styles = (theme) => ({
   paginationContainer: {
     padding: '20px 0px',
   },
+  yellowBackground: {
+    backgroundColor: '#D9D902',
+  },
+  greenBackground: {
+    backgroundColor: '#8ADF24',
+  },
+  blueBackground: {
+    backgroundColor: '#0FC6EB',
+  },
 });
 
 const Index = ({classes}) => {
@@ -269,6 +278,54 @@ const Index = ({classes}) => {
     }
   }
 
+  const updateColorRow = (item) => {
+    if (!item || !item.id) {
+      return (
+        <Grid item lg={1} xs={4} className={`${classes.itemName} ${classes.blueBackground}`}>
+        </Grid>
+      )
+    }
+  
+    switch(item.id) {
+      case '2': {
+        return (
+        <Grid item lg={1} xs={4} className={`${classes.itemName} ${classes.yellowBackground}`}>
+          {
+            item.name ? item.name : 'N/A'
+          }
+        </Grid>
+        )
+      }
+      case '3': {
+        return (
+        <Grid item lg={1} xs={4} className={`${classes.itemName} ${classes.greenBackground}`}>
+          {
+            item.name ? item.name : 'N/A'
+          }
+        </Grid>
+        )
+      }
+      case '9': {
+        return (
+        <Grid item lg={1} xs={4} className={`${classes.itemName} ${classes.blueBackground}`}>
+          {
+            item.name ? item.name : 'N/A'
+          }
+        </Grid>
+        )
+      }
+      default: {
+        return (
+          <Grid item lg={1} xs={4} className={`${classes.itemName}`}>
+            {
+              item.name ? item.name : 'N/A'
+            }
+          </Grid>
+        )
+      }
+    }
+  }
+  
   useEffect(() => {
     if (orders && orders.length) {
       setShowData(true);
@@ -375,11 +432,9 @@ const Index = ({classes}) => {
                         </Button>
                       </Grid>
                       <Hidden smDown>
-                      <Grid item lg={1} xs={4} className={classes.itemName}>
-                        {
-                          order.deliveryOrder ? order.deliveryOrder.name : 'N/A'
-                        }
-                      </Grid>
+                      {
+                        updateColorRow(order.deliveryOrder)
+                      }
                       <Grid item lg={1} xs={4} className={classes.itemLength}>
                         {
                           order.orderOrderProduct && order.orderOrderProduct.length ? order.orderOrderProduct.length : 0

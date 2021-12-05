@@ -61,6 +61,10 @@ export const saveOrderStatus = async(data, id) => {
   return Api.save(`orders/${id}`, data);
 }
 
+export const saveOrderStatusBulk = async(data) => {
+  return Api.save(`orders/admin-status/bulk/update`, data);
+}
+
 export const deleteOrderById = async(id) => {
   const config = {
     'cotent-Type': 'application/x-www-form-urlencoded'

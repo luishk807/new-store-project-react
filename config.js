@@ -714,7 +714,7 @@ export const LIMIT = 30;
 
 export const IGNORE_FORM_FIELDS = ['useDate', 'saved'];
 
-export const ALLOW_FIELDS = ['saved', 'id', 'items', 'totalSaved', 'paymentOptionId', 'deliveryOptionId', 'deliveryServiceId', 'promotionCodeId', 'promotionCode'];
+export const ALLOW_FIELDS = ['saved', 'id', 'ids', 'items', 'totalSaved', 'paymentOptionId', 'deliveryOptionId', 'deliveryServiceId', 'promotionCodeId', 'promotionCode'];
 
 const SYSTEM_CONFIGS = {
   enableRating: false

@@ -104,6 +104,9 @@ import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissa
 import ExtensionIcon from '@material-ui/icons/ExtensionOutlined';
 import Filter from 'public/images/svg/filter.svg';
 import Typography from './Typography';
+import SettingsIcon from '@material-ui/icons/Settings';
+import DoneIcon from '@material-ui/icons/Done';
+
 
 const styles = (theme) => ({
   icon: {
@@ -117,6 +120,10 @@ const Icons = ({classes, name}) => {
     switch(name) {
       case 'special':
         return <Special className={classes.icon}/>
+      case 'edit':
+        return <SettingsIcon className={classes.icon}/>
+      case 'goodMark':
+          return <DoneIcon className={classes.icon}/>
       case 'filter':
         return <Filter className={classes.icon}/>
       case 'blackfriday':

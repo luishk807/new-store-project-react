@@ -5,14 +5,16 @@ import {
   Grid,
   Hidden,
   Button,
+  Checkbox,
 } from '@material-ui/core';
 import Pagination from '@material-ui/lab/Pagination';
 import moment from 'moment';
 import { LIMIT } from 'config';
 import { ORDER_STATUS } from '@/constants/orders';
 import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import { deleteOrderById, getAllOrdersWithFilter } from 'src/api/orders';
+import { deleteOrderById, getAllOrdersWithFilter, saveOrderStatusBulk } from 'src/api/orders';
 import Snackbar from '@/common/Snackbar';
+import { loadMainOptions } from 'src/utils/form';
 import Icons from '@/common/Icons';
 import DialogModal from '@/common/DialogModal';
 import Dropdown from '@/common/dropdown/Simple';
@@ -27,6 +29,16 @@ const styles = (theme) => ({
     height: 20,
     fill: 'black'
   },
+  actionIcon: {
+    width: 20,
+    height: 20,
+    fill: 'rgb(248,190,21)',
+  },
+  actionIconBlack: {
+    width: 20,
+    height: 20,
+    fill: 'black',
+  },
   filterIcon: {
     width: 30,
     height: 30,
@@ -35,6 +47,9 @@ const styles = (theme) => ({
   },
   actionBtn: {
     margin: 2,
+    '&:hover svg': {
+      fill: 'white',
+    }
   },
   mainContainer: {
     padding: 5,
@@ -76,7 +91,7 @@ const styles = (theme) => ({
   },
   itemIndex: {
     textAlign: 'left',
-    padding: 5,
+    padding: '0px 20px',
   },
   itemName: {
     textAlign: 'center',
@@ -116,6 +131,24 @@ const styles = (theme) => ({
   paginationContainer: {
     padding: '20px 0px',
   },
+  selectStyle: {
+    padding: '8px 5px',
+    borderRadius: 5,
+  },
+  checkBoxSelectContainer: {
+    padding: '15px 13px',
+    display: 'flex',
+    '& button:not(:first-child)': {
+      marginLeft: 10,
+      padding: '9px 20px !important',
+    },
+    '& select': {
+      marginLeft: 10,
+    }
+  },
+  checkMarkItem: {
+    padding: '20px 0px',
+  },
   yellowBackground: {
     backgroundColor: '#D9D902',
   },
@@ -129,16 +162,21 @@ const styles = (theme) => ({
 
 const Index = ({classes}) => {
   const [orders, setOrders] = useState([]);
+  const [statuses, setStatuses] = useState([]);
   const [showData, setShowData] = useState(false);
   const [showEmpty, setShowEmpty] = useState(false);
+  const [reloadCheck, setReloadCheck] = useState(false);
+  const [page, setPage] = useState(1);
+  const [paginationHtml, setPaginationHtml] = useState(null);
+  const [totalCount, setTotalCount] = useState(0);
+  const [selectCheckbox, setSelectCheckbox] = useState(false);
+  const [selectedChecks, setSelectedChecks] = useState([])
+  const [selectedStatusChange, setSelectedStatusChange] = useState(null);
   const [filterList, setFilterList] = useState({
     sortBy: null,
     searchValue: null,
     searchBy: null
   });
-  const [page, setPage] = useState(1);
-  const [paginationHtml, setPaginationHtml] = useState(null);
-  const [totalCount, setTotalCount] = useState(0);
   const [dialogContent, setDialogContent] = useState({
     open: false,
     value: null,
@@ -149,6 +187,22 @@ const Index = ({classes}) => {
       false: "No"
     }
   })
+
+  const resetDialog = () => {
+    setDialogContent(
+      {
+        open: false,
+        value: null,
+        title: "Deleting Item",
+        content: "Are you sure, you want to delete this item?",
+        actionLabels: {
+          true: "Yes",
+          false: "No"
+        }
+      }
+    )
+  }
+
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -162,6 +216,7 @@ const Index = ({classes}) => {
     
     if (gOrders) {
       setOrders('rows' in gOrders ? gOrders.rows : gOrders.items);
+
       setTotalCount(gOrders.count)
       if (!gOrders.count || !gOrders.rows) {
         setShowEmpty(true);
@@ -182,6 +237,25 @@ const Index = ({classes}) => {
         severity: 'error',
         open: true,
         text: `ERROR: Order cannot be delete`,
+      })
+    })
+  }
+
+  const updateBulkStatus = async(data) => {
+    setSelectedStatusChange(null)
+    saveOrderStatusBulk(data).then((data) => {
+      setSnack({
+        severity: 'success',
+        open: true,
+        text: `Order updated`,
+      })
+      handleCheckCancel();
+      loadOrders()
+    }).catch((err) => {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `ERROR: Order cannot be updated`,
       })
     })
   }
@@ -239,6 +313,32 @@ const Index = ({classes}) => {
     }
   }
 
+  const handleStatusChange = (event) => {
+    if (!selectedChecks || (selectedChecks && !selectedChecks.length)) {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `You need to select an item`,
+      })
+      return;
+    }
+      setSelectedStatusChange(event.target.value)
+      const order_numbers = selectedChecks.map(item => {
+      const order_num = orders.filter(order => Number(order.id) === item)[0]
+      return order_num ? order_num.order_number : null;
+    }).join(",")
+    setDialogContent({
+      ...dialogContent,
+      open: true,
+      title: `Updating to '${event.target.options[event.target.selectedIndex].text}' the following order numbers?\r\n ${order_numbers}`,
+      content: "Are you sure, you want to update the items?",
+      value: {
+        type: 'update_status',
+        value: order_numbers
+      }
+    })
+  };
+
   const onSearchIconClick = async(e) => {
     if (e) {
       setFilterList({
@@ -274,8 +374,63 @@ const Index = ({classes}) => {
       open: false
     })
     if (e) {
-      delItem(dialogContent.value.id)
+      if (dialogContent.value && dialogContent.value.type) {
+        switch(dialogContent.value.type) {
+          case 'update_status': {
+            updateBulkStatus({
+              ids: dialogContent.value.value,
+              status: selectedStatusChange
+            });
+            break;
+          }
+        }
+      } else {
+        delItem(dialogContent.value.id)
+      }
+
     }
+    resetDialog();
+  }
+
+  const setAllChekboxes = (task) => {
+    let checks = [];
+    if (task) {
+      orders.forEach((item, index) => {
+        checks.push(Number(item.id));
+      })
+    }
+    setSelectedChecks(checks)
+    setReloadCheck(!reloadCheck);
+  }
+
+  const loadStatus = async() => {
+    const getBasic = await loadMainOptions();
+    if (getBasic?.orderStatus) {
+      setStatuses(getBasic.orderStatus);
+    }
+  }
+
+  const handleCheckSelect = (id) => {
+    const currChecks = selectedChecks;
+    if (currChecks && currChecks.length) {
+      const index = currChecks.indexOf(id);
+      if (index !== -1) {
+        currChecks.splice(index, 1);
+      }  else {
+        currChecks.push(id);
+      }
+    }
+    else {
+      currChecks.push(id);
+    }
+    setSelectedChecks(currChecks)
+    setReloadCheck(!reloadCheck);
+  }
+
+  
+  const handleCheckCancel = () => {
+    setSelectedChecks([]);
+    setSelectCheckbox(false)
   }
 
   const updateColorRow = (item) => {
@@ -339,9 +494,10 @@ const Index = ({classes}) => {
 
   useEffect(() => {
     loadPagination();
+    loadStatus();
   }, [totalCount]);
 
-  useEffect(() => {
+  useEffect(() => {    
     setPage(1);
   }, []);
 
@@ -379,6 +535,38 @@ const Index = ({classes}) => {
         paginationHtml && !showEmpty && paginationHtml
       }
       {
+        selectCheckbox ? (
+          <Grid container>
+            <Grid item lg={12} className={classes.checkBoxSelectContainer}>
+              <Button className={`smallSecondButtonDefault`} onClick={() => handleCheckCancel()}>Cancel</Button>
+              <Button className={`smallSecondButtonDefault`} onClick={() => setAllChekboxes(true)}>Check All</Button>
+              <Button className={`smallSecondButtonDefault`} onClick={() => setAllChekboxes(false)}>Uncheck All</Button>
+              <select
+                onChange={handleStatusChange}
+                className={classes.selectStyle}
+              >
+                <option value="">Select status</option>
+                {
+                  statuses.map((item, index) => {
+                    return (
+                      <option key={index} value={item.id}>{item.name}</option>
+                    )
+                  })
+                }
+              </select>
+            </Grid>
+          </Grid>
+        ) : (
+          <Grid container>
+            <Grid item lg={12} className={classes.checkMarkItem}>
+              <Button onClick={() => setSelectCheckbox(true)}>
+                <Icons name="goodMark" classes={{icon: classes.actionIconBlack }}/>
+              </Button>
+            </Grid>
+          </Grid>
+        )
+      }
+      {
         showData && (
           <Grid container className={classes.mainContainer}>
             <Hidden smDown>
@@ -411,12 +599,19 @@ const Index = ({classes}) => {
             </Hidden>
             {
               orders.map((order, index) => {
+                const isSelected = selectedChecks.indexOf(Number(order.id)) === -1 ? false : true;
+  
                 return (
                   <Grid key={index} item lg={12} xs={12} className={classes.mainItems}>
                     <Grid container className={classes.itemContainer}>
                       <Grid item lg={1} xs={2} className={classes.itemIndex}>
                         {
-                          index + 1
+                          selectCheckbox ? (
+                            <Checkbox 
+                              onChange={() => handleCheckSelect(Number(order.id))}
+                              checked={isSelected}
+                            />
+                          ) : (index + 1)
                         }
                       </Grid>
                       <Grid item lg={2} xs={7} className={classes.itemName}>
@@ -457,10 +652,10 @@ const Index = ({classes}) => {
                       </Grid>
                       <Grid item lg={2} className={classes.itemAction}>
                         <Button className={`smallMainButton ${classes.actionBtn}`} href={`orders/${order.id}`}>
-                          Edit
+                          <Icons name="edit" classes={{icon: classes.actionIcon}}/>
                         </Button>
                         <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => handleActionMenu(order)}>
-                          Delete
+                        <Icons name="delete" classes={{icon: classes.actionIcon}}/>
                         </Button>
                       </Grid>
                       </Hidden>

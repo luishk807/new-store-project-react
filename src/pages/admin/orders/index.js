@@ -12,7 +12,7 @@ import moment from 'moment';
 import { LIMIT } from 'config';
 import { ORDER_STATUS } from '@/constants/orders';
 import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import { deleteOrderById, getAllOrdersWithFilter, saveOrderStatusBulk } from 'src/api/orders';
+import { deleteOrderById, deleteOrderByOrderNumbers, getAllOrdersWithFilter, saveOrderStatusBulk,  } from 'src/api/orders';
 import Snackbar from '@/common/Snackbar';
 import { loadMainOptions } from 'src/utils/form';
 import Icons from '@/common/Icons';
@@ -284,6 +284,24 @@ const Index = ({classes}) => {
     })
   }
 
+  const deleteBulkIds = async(data) => {
+    deleteOrderByOrderNumbers(data).then((data) => {
+      setSnack({
+        severity: 'success',
+        open: true,
+        text: `Order deleted`,
+      })
+      handleCheckCancel();
+      loadOrders()
+    }).catch((err) => {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `ERROR: Order cannot be deleted`,
+      })
+    })
+  }
+
   const handlePaginationChange = (event, value) => {
     setPage(value);
     setShowData(false)
@@ -410,6 +428,12 @@ const Index = ({classes}) => {
             });
             break;
           }
+          case 'delete_items': {
+            deleteBulkIds({
+              ids: dialogContent.value.value
+            });
+            break;
+          }
         }
       } else {
         delItem(dialogContent.value.id)
@@ -458,6 +482,33 @@ const Index = ({classes}) => {
   const handleCheckCancel = () => {
     setSelectedChecks([]);
     setSelectCheckbox(false)
+  }
+
+  const hadleDeleteSelected = () => {
+    if (!selectedChecks || (selectedChecks && !selectedChecks.length)) {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `You need to select an item`,
+      })
+      return;
+    }
+
+    const order_numbers = selectedChecks.map(item => {
+      const order_num = orders.filter(order => Number(order.id) === item)[0]
+      return order_num ? order_num.order_number : null;
+    }).join(",");
+
+    setDialogContent({
+      ...dialogContent,
+      open: true,
+      title: `Deleting the following order numbers?\r\n ${order_numbers}`,
+      content: "Are you sure, you want to delete the items?",
+      value: {
+        type: 'delete_items',
+        value: order_numbers
+      }
+    })
   }
 
   const handleShowAllCheckBox = async(e) => {
@@ -598,6 +649,7 @@ const Index = ({classes}) => {
               <Button className={`smallSecondButtonDefault`} onClick={() => handleCheckCancel()}>Cancel</Button>
               <Button className={`smallSecondButtonDefault`} onClick={() => setAllChekboxes(true)}>Check All</Button>
               <Button className={`smallSecondButtonDefault`} onClick={() => setAllChekboxes(false)}>Uncheck All</Button>
+              <Button className={`smallSecondButtonDefault`} onClick={() => hadleDeleteSelected()}>Delete Selected</Button>
               <select
                 onChange={handleStatusChange}
                 className={classes.selectStyle}
@@ -622,12 +674,12 @@ const Index = ({classes}) => {
           </Grid>
         ) : (
           <Grid container>
-            <Grid item lg={10} xs={6}  className={classes.checkMarkItem}>
+            <Grid item lg={10} xs={2}  className={classes.checkMarkItem}>
               <Button onClick={() => setSelectCheckbox(true)}>
                 <Icons name="goodMark" classes={{icon: classes.actionIconBlack }}/>
               </Button>
             </Grid>
-            <Grid item lg={2} xs={6} className={classes.showAllCheckbox}>
+            <Grid item lg={2} xs={10} className={classes.showAllCheckbox}>
               <CheckBoxLabel 
                 name="Don't show completed"
                 defaultChecked={true}

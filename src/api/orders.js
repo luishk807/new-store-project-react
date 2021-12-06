@@ -72,6 +72,10 @@ export const deleteOrderById = async(id) => {
   return Api.delete(`orders/${id}`, {}, config);
 }
 
+export const deleteOrderByOrderNumbers = async(data) => {
+  return Api.delete(`orders/admin-delete/bulk/delete/${data.ids}`);
+}
+
 export const processOrderByUser = async(data) => {
   // if (!verifyCookie()) {
   //   return;

@@ -700,6 +700,9 @@ const Index = ({classes}) => {
                     Order Number
                   </Grid>
                   <Grid item lg={1} className={classes.itemName}>
+                    Shipping Name
+                  </Grid>
+                  <Grid item lg={1} className={classes.itemName}>
                     Delivery
                   </Grid>
                   <Grid item lg={1} className={classes.itemLength}>
@@ -714,7 +717,7 @@ const Index = ({classes}) => {
                   <Grid item lg={1} className={classes.itemDate}>
                     Date Created
                   </Grid>
-                  <Grid item lg={2} className={classes.itemAction}>
+                  <Grid item lg={1} className={classes.itemAction}>
                     Action
                   </Grid>
                 </Grid>
@@ -743,6 +746,11 @@ const Index = ({classes}) => {
                           order.order_number
                         }
                         </a>
+                      </Grid>
+                      <Grid item lg={1} className={classes.itemName}>
+                        {
+                          order.shipping_name
+                        }
                       </Grid>
                       <Grid item xs={3} className={classes.itemActionMobile}>
                         <Button className={classes.actionBtn} onClick={() => handleActionMenu(order)}>
@@ -773,7 +781,7 @@ const Index = ({classes}) => {
                           moment(order.createdAt).format('YYYY-MM-DD')
                         }
                       </Grid>
-                      <Grid item lg={2} className={classes.itemAction}>
+                      <Grid item lg={1} className={classes.itemAction}>
                         <Button className={`smallMainButton ${classes.actionBtn}`} href={`orders/${order.id}`}>
                           <Icons name="edit" classes={{icon: classes.actionIcon}}/>
                         </Button>

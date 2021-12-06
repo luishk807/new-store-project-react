@@ -61,11 +61,19 @@ export const saveOrderStatus = async(data, id) => {
   return Api.save(`orders/${id}`, data);
 }
 
+export const saveOrderStatusBulk = async(data) => {
+  return Api.save(`orders/admin-status/bulk/update`, data);
+}
+
 export const deleteOrderById = async(id) => {
   const config = {
     'cotent-Type': 'application/x-www-form-urlencoded'
   }
   return Api.delete(`orders/${id}`, {}, config);
+}
+
+export const deleteOrderByOrderNumbers = async(data) => {
+  return Api.delete(`orders/admin-delete/bulk/delete/${data.ids}`);
 }
 
 export const processOrderByUser = async(data) => {

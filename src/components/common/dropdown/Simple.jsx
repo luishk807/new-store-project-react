@@ -14,19 +14,19 @@ const styles = (theme) => ({
   categoryBtn: {
     borderRadius: 4,
     background: 'white',
-    border: '2px solid orange',
+    border: '2px solid rgb(248,190,21)',
     display: 'inline-block',
     padding: 10,
     '& svg': {
-      fill: 'orange',
+      fill: 'rgb(248,190,21)',
       zIndex: 1,
       width: 25,
     }
   },
   categoryBtnSelected: {
     borderRadius: 4,
-    background: 'orange',
-    border: '2px solid orange',
+    background: 'rgb(248,190,21)',
+    border: '2px solid rgb(248,190,21)',
     display: 'inline-block',
     padding: 10,
     '& svg': {
@@ -66,14 +66,14 @@ const styles = (theme) => ({
     padding: '8px 10px',
     display: 'inline-block',
     '&:hover': {
-      backgroundColor: 'orange',
+      backgroundColor: 'rgb(248,190,21)',
       color: 'white',
     }
   },
   categoryLinkSelected: {
     color: 'white',
     cursor: 'pointer',
-    background: 'orange',
+    background: 'rgb(248,190,21)',
     width: '100%',
     padding: '8px 10px',
     display: 'inline-block',

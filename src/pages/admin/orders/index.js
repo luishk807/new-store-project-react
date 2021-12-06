@@ -17,6 +17,7 @@ import Snackbar from '@/common/Snackbar';
 import { loadMainOptions } from 'src/utils/form';
 import Icons from '@/common/Icons';
 import DialogModal from '@/common/DialogModal';
+import CheckBoxLabel from '@/common/CheckBoxLabel';
 import Dropdown from '@/common/dropdown/Simple';
 import AdminOrderSearch from '@/common/SearchBar/AdminOrderSearch';
 
@@ -144,6 +145,22 @@ const styles = (theme) => ({
     },
     '& select': {
       marginLeft: 10,
+    },
+    [theme.breakpoints.down('sm')]: {
+      '& button': {
+        padding: '10px 0px !important'
+      },
+      flexDirection: 'column',
+      margin: 10,
+      padding: 0,
+      '& button:not(:first-child)': {
+        marginLeft: 0,
+        margin: '5px 0px',
+      },
+      '& select': {
+        marginLeft: 0,
+        textAlign: 'center'
+      },
     }
   },
   checkMarkItem: {
@@ -158,6 +175,11 @@ const styles = (theme) => ({
   blueBackground: {
     backgroundColor: '#0FC6EB',
   },
+  showAllCheckbox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'end',
+  }
 });
 
 const Index = ({classes}) => {
@@ -172,6 +194,8 @@ const Index = ({classes}) => {
   const [selectCheckbox, setSelectCheckbox] = useState(false);
   const [selectedChecks, setSelectedChecks] = useState([])
   const [selectedStatusChange, setSelectedStatusChange] = useState(null);
+  const [showCompletedOrders, setShowCompletedOrders] = useState(false)
+
   const [filterList, setFilterList] = useState({
     sortBy: null,
     searchValue: null,
@@ -294,6 +318,7 @@ const Index = ({classes}) => {
       sortBy: data.value,
       searchValue: filterList.searchValue,
       searchBy: filterList.searchBy,
+      showCompleted: showCompletedOrders,
     };
 
     const gOrders = await getAllOrdersWithFilter(sendData);
@@ -344,7 +369,8 @@ const Index = ({classes}) => {
       setFilterList({
         ...filterList,
         searchBy: e.searchBy,
-        searchValue: e.value
+        searchValue: e.value,
+        showCompleted: showCompletedOrders,
       })
 
       const gOrders = await getAllOrdersWithFilter({
@@ -352,6 +378,7 @@ const Index = ({classes}) => {
         sortBy: filterList.sortBy,
         searchValue: e.value,
         searchBy: e.searchBy,
+        showCompleted: showCompletedOrders,
       });
       if (gOrders) {
         setOrders('rows' in gOrders ? gOrders.rows : gOrders.items);
@@ -431,6 +458,36 @@ const Index = ({classes}) => {
   const handleCheckCancel = () => {
     setSelectedChecks([]);
     setSelectCheckbox(false)
+  }
+
+  const handleShowAllCheckBox = async(e) => {
+    const checkValue = !e.target.checked;
+    setShowCompletedOrders(checkValue)
+
+    const sendData = {
+      page: page,
+      sortBy: filterList.sortBy,
+      searchValue: filterList.searchValue,
+      searchBy: filterList.searchBy,
+      showCompleted: checkValue,
+    };
+
+    const gOrders = await getAllOrdersWithFilter(sendData);
+    
+    if (gOrders) {
+      setOrders('rows' in gOrders ? gOrders.rows : gOrders.items);
+      setTotalCount(gOrders.count)
+      if (!gOrders.count || !gOrders.rows) {
+        setShowEmpty(true);
+      }
+    } else {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `Order Not Found`,
+      })
+    }
+
   }
 
   const updateColorRow = (item) => {
@@ -537,7 +594,7 @@ const Index = ({classes}) => {
       {
         selectCheckbox ? (
           <Grid container>
-            <Grid item lg={12} className={classes.checkBoxSelectContainer}>
+            <Grid item lg={10} xs={12} className={classes.checkBoxSelectContainer}>
               <Button className={`smallSecondButtonDefault`} onClick={() => handleCheckCancel()}>Cancel</Button>
               <Button className={`smallSecondButtonDefault`} onClick={() => setAllChekboxes(true)}>Check All</Button>
               <Button className={`smallSecondButtonDefault`} onClick={() => setAllChekboxes(false)}>Uncheck All</Button>
@@ -555,13 +612,27 @@ const Index = ({classes}) => {
                 }
               </select>
             </Grid>
+            <Grid item lg={2} xs={12} className={classes.showAllCheckbox}>
+              <CheckBoxLabel 
+                name="Don't show completed"
+                defaultChecked={true}
+                onClick={handleShowAllCheckBox}
+               />
+            </Grid>
           </Grid>
         ) : (
           <Grid container>
-            <Grid item lg={12} className={classes.checkMarkItem}>
+            <Grid item lg={10} xs={6}  className={classes.checkMarkItem}>
               <Button onClick={() => setSelectCheckbox(true)}>
                 <Icons name="goodMark" classes={{icon: classes.actionIconBlack }}/>
               </Button>
+            </Grid>
+            <Grid item lg={2} xs={6} className={classes.showAllCheckbox}>
+              <CheckBoxLabel 
+                name="Don't show completed"
+                defaultChecked={true}
+                onClick={handleShowAllCheckBox}
+               />
             </Grid>
           </Grid>
         )
@@ -642,7 +713,7 @@ const Index = ({classes}) => {
                       </Grid>
                       <Grid item lg={2} xs={6} className={classes.itemStatus}>
                         {
-                          order.orderStatuses.name
+                          order?.orderStatuses?.name
                         }
                       </Grid>
                       <Grid item lg={1} xs={6} className={classes.itemDate}>

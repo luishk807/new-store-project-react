@@ -16,6 +16,7 @@
     "delivery": "Envío",
     "grand_total": "Gran Total",
     "tax": "ITBMS",
+    "taxable": "Aplicar Impuestos",
     "revert": "Revertir",
     "new": "Nuevo",
     "cart_view": "Carrito",

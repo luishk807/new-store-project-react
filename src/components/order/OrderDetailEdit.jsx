@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
 import * as T from 'prop-types';
 import {
   withStyles,
@@ -548,6 +549,14 @@ const OrderDetailEdit = ({classes, order, onRemoveDelivery, isAdmin = false, onO
     }
   }, [])
 
+  const taxableCheckboxLabel = { inputProps: { 'aria-label': 'Taxable' } };
+  const [taxableChecked, setTaxableChecked] = useState(order.taxable);
+  const handleTaxableChange = (e) => {
+    const taxable = e.target.checked;
+    order.taxable = taxable;
+    setTaxableChecked(taxable);
+  };
+
   return orderDetail && (
     <Grid item lg={12} xs={12} className={classes.root}>
       <Grid container className={classes.orderContainer}>
@@ -777,6 +786,18 @@ const OrderDetailEdit = ({classes, order, onRemoveDelivery, isAdmin = false, onO
                   }
                 </Grid>
 
+                <Grid container>
+                  <Grid item lg={12} xs={12}>
+                      <Grid container>
+                        <Grid item lg={6} xs={6}>
+                          { t('common:taxable') }
+                        </Grid>
+                        <Grid item lg={6} xs={6}>
+                          <Checkbox {...taxableCheckboxLabel} value="true" onChange={handleTaxableChange} checked={taxableChecked} />
+                        </Grid>
+                      </Grid>
+                  </Grid>
+                </Grid>
             </Grid>
           </Grid>
         </Grid>

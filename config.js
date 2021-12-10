@@ -699,7 +699,13 @@ export const FORM_SCHEMA = {
     type: FORM_TYPE.dateFull,
     label: 'End Date',
     tKey: "end_date"
-  }
+  },
+  // Don't like to be adding things in here each time a new field is added, this is sort of unmanageable the more you add
+  taxable: {
+    type: FORM_TYPE.checkbox,
+    label: 'Taxable',
+    tKey: "taxable"
+  },
 }
 
 export const noImageUrl = {

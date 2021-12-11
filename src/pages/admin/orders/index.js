@@ -387,7 +387,7 @@ const Index = ({classes}) => {
   };
 
   const onSearchIconClick = async(e) => {
-    if (e) {
+    if (e && e.searchBy && e.value) {
       setFilterList({
         ...filterList,
         searchBy: e.searchBy,
@@ -416,6 +416,12 @@ const Index = ({classes}) => {
           text: `Order Not Found`,
         })
       }
+    } else {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `Please type something to search`,
+      })
     }
   }
   const handleDialogClick = (e) => {

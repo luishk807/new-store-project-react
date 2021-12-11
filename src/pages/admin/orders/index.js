@@ -198,8 +198,10 @@ const Index = ({classes}) => {
 
   const [filterList, setFilterList] = useState({
     sortBy: null,
+    limit: LIMIT,
     searchValue: null,
-    searchBy: null
+    searchBy: null,
+    showCompleted: null
   });
   const [dialogContent, setDialogContent] = useState({
     open: false,
@@ -235,6 +237,7 @@ const Index = ({classes}) => {
 
   const loadOrders = async() => {
     const gOrders = await getAllOrdersWithFilter({
+      ...filterList,
       page: page
     });
     
@@ -333,6 +336,7 @@ const Index = ({classes}) => {
     })
     const sendData = {
       page: page,
+      limit: filterList.limit,
       sortBy: data.value,
       searchValue: filterList.searchValue,
       searchBy: filterList.searchBy,
@@ -393,6 +397,7 @@ const Index = ({classes}) => {
 
       const gOrders = await getAllOrdersWithFilter({
         page: page,
+        limit: filterList.limit,
         sortBy: filterList.sortBy,
         searchValue: e.value,
         searchBy: e.searchBy,
@@ -515,8 +520,14 @@ const Index = ({classes}) => {
     const checkValue = !e.target.checked;
     setShowCompletedOrders(checkValue)
 
+    setFilterList({
+      ...filterList,
+      showCompleted: checkValue,
+    })
+
     const sendData = {
       page: page,
+      limit: filterList.limit,
       sortBy: filterList.sortBy,
       searchValue: filterList.searchValue,
       searchBy: filterList.searchBy,

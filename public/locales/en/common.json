@@ -18,6 +18,7 @@
     "delivery": "Delivery",
     "grand_total": "Grand Total",
     "tax": "Tax",
+    "taxable": "Taxable",
     "cart_view": "Cart View",
     "price_with_discount": "Price with discount",
     "discount_with_coupon": "Discount with coupon",

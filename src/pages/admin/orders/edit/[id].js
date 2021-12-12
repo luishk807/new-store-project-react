@@ -151,11 +151,13 @@ const Edit = ({classes}) => {
       formCopy['shipping_district'] = order.shipping_district
       formCopy['shipping_zone'] = order.shipping_zone;
       formCopy['shipping_phone'] = order.shipping_phone;
-      formCopy['shipping_province'] =order.shipping_province;
+      formCopy['shipping_province'] = order.shipping_province;
       formCopy['shipping_country'] = order.shipping_country;
       formCopy['shipping_email'] = order.shipping_email;
       formCopy['shipping_note'] = order.shipping_note;
     }
+
+    formCopy['taxable'] = order.taxable;
 
     const getResp = await saveAdminOrder(formCopy, order.id);
     const resp = handleFormResponse(getResp);

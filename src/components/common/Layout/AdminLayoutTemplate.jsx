@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import Head from 'next/head';
 import {
   withStyles,
@@ -13,6 +13,7 @@ import Typography from '@/common/Typography';
 import PrivatePage from '@/common/Private/Admin';
 import { useRouter } from 'next/router';
 import { logout } from '@/api/auth';
+import { verifyCookie } from '@/utils/cookie';
 import Icons from '@/common/Icons';
 const styles = (theme) => ({
   root: {
@@ -33,6 +34,14 @@ const AdminLayoutTemplate = ({classes, children}) => {
       router.push('/')
     }
   }
+
+  useEffect(() => {
+    const check = verifyCookie();
+    if (!check) {
+      window.location.href="/admin"
+    }
+  })
+
   return (
     <PrivatePage>
       <section>

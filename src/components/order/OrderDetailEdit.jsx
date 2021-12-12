@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
 import * as T from 'prop-types';
 import {
   withStyles,
@@ -221,6 +222,7 @@ const OrderDetailEdit = ({classes, order, onRemoveDelivery, isAdmin = false, onO
     totalSaved:0,
     coupon: 0
   });
+  const isOrderTaxable = (typeof order.taxable === 'undefined') ? true : order.taxable;
 
   const { t } = useTranslation(['common', 'order', 'checkout'])
 
@@ -228,23 +230,27 @@ const OrderDetailEdit = ({classes, order, onRemoveDelivery, isAdmin = false, onO
     setProducts(recvProducts)
   }
 
-  const handleAddressMainAction = (e) => {
+  const setUserAddress = (data) => {
     setSavedUserAddress({
-      shipping_name: e.shipping_name,
-      shipping_address: e.shipping_address,
-      shipping_addressB: e.shipping_addressB,
-      shipping_province: e.shipping_province,
-      shipping_township: e.shipping_township,
-      shipping_corregimiento: e.shipping_corregimiento,
-      shipping_district: e.shipping_district,
-      shipping_zone: e.shipping_zone,
-      shipping_city: e.shipping_city,
-      shipping_country: e.shipping_country,
-      shipping_zip: e.shipping_zip,
-      shipping_note: e.shipping_note,
-      shipping_email: e.shipping_email,
-      shipping_phone: e.shipping_phone,
+      shipping_name: data.shipping_name,
+      shipping_address: data.shipping_address,
+      shipping_addressB: data.shipping_addressB,
+      shipping_province: data.shipping_province,
+      shipping_township: data.shipping_township,
+      shipping_corregimiento: data.shipping_corregimiento,
+      shipping_district: data.shipping_district,
+      shipping_zone: data.shipping_zone,
+      shipping_city: data.shipping_city,
+      shipping_country: data.shipping_country,
+      shipping_zip: data.shipping_zip,
+      shipping_note: data.shipping_note,
+      shipping_email: data.shipping_email,
+      shipping_phone: data.shipping_phone
     })
+  }
+
+  const handleAddressMainAction = (e) => {
+    setUserAddress(e);
   }
 
   const handlePromoCode = async(e) => {
@@ -272,22 +278,7 @@ const OrderDetailEdit = ({classes, order, onRemoveDelivery, isAdmin = false, onO
   }
 
   const handleRevertAddress = () => {
-    setSavedUserAddress({
-      shipping_name: order.shipping_name,
-      shipping_address: order.shipping_address,
-      shipping_addressB: order.shipping_addressB,
-      shipping_province: order.shipping_province,
-      shipping_township: order.shipping_township,
-      shipping_corregimiento: order.shipping_corregimiento,
-      shipping_district: order.shipping_district,
-      shipping_zone: order.shipping_zone,
-      shipping_city: order.shipping_city,
-      shipping_country: order.shipping_country,
-      shipping_zip: order.shipping_zip,
-      shipping_note: order.shipping_note,
-      shipping_email: order.shipping_email,
-      shipping_phone: order.shipping_phone,
-    });
+    setUserAddress(order);
   }
 
   const handleServiceOption = async(val) => {
@@ -405,7 +396,11 @@ const OrderDetailEdit = ({classes, order, onRemoveDelivery, isAdmin = false, onO
   
       let newSubtotal = Number(subtotal) - Number(coupontotal);
     
-      tax = newSubtotal * (Number(process.env.COUNTRY_TAX) / 100);
+      // I think this tax value is inconsistent with the value on server, this over here is divided by 100
+      // Also, I think maybe this calculations should be done on the server instead, so there is one
+      // single place of truth. Also, it would be an issue if someday the tax changes, and you'll have to go to two
+      // places to change the value
+      tax = (isOrderTaxable) ? (newSubtotal * (Number(process.env.COUNTRY_TAX) / 100)) : 0.0;
     
       grandtotal = Number(tax + newSubtotal + delivery);
 
@@ -547,6 +542,14 @@ const OrderDetailEdit = ({classes, order, onRemoveDelivery, isAdmin = false, onO
       handleRevertAddress();
     }
   }, [])
+
+  const taxableCheckboxLabel = { inputProps: { 'aria-label': 'Taxable' } };
+  const [taxableChecked, setTaxableChecked] = useState(order.taxable);
+  const handleTaxableChange = (e) => {
+    const taxable = e.target.checked;
+    order.taxable = taxable;
+    setTaxableChecked(taxable);
+  };
 
   return orderDetail && (
     <Grid item lg={12} xs={12} className={classes.root}>
@@ -777,6 +780,18 @@ const OrderDetailEdit = ({classes, order, onRemoveDelivery, isAdmin = false, onO
                   }
                 </Grid>
 
+                <Grid container>
+                  <Grid item lg={12} xs={12}>
+                      <Grid container>
+                        <Grid item lg={6} xs={6}>
+                          { t('common:taxable') }
+                        </Grid>
+                        <Grid item lg={6} xs={6}>
+                          <Checkbox {...taxableCheckboxLabel} value="true" onChange={handleTaxableChange} checked={taxableChecked} />
+                        </Grid>
+                      </Grid>
+                  </Grid>
+                </Grid>
             </Grid>
           </Grid>
         </Grid>

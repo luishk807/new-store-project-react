@@ -67,10 +67,12 @@ const AdminOrderSearch = ({classes, onClick, icon = "search", placeholder = '', 
   }
 
   const handleClick = (evt) => {
-    onClick({
-      value: textValue,
-      searchBy: selectedDrop
-    })
+    if (textValue) {
+      onClick({
+        value: textValue,
+        searchBy: selectedDrop
+      })
+    }
     setFilterList(
       [textValue]
     )
@@ -94,9 +96,17 @@ const AdminOrderSearch = ({classes, onClick, icon = "search", placeholder = '', 
         />
       </Grid>
       <Grid item lg={2} md={2} xs={2}>
-        <Button onClick={handleClick} className={classes.button}>
-          <Icons classes={{icon: classes.icon}} name={icon}/>
-        </Button>
+        {
+          textValue ? (
+            <Button onClick={handleClick} className={classes.button}>
+              <Icons classes={{icon: classes.icon}} name={icon}/>
+            </Button>
+          ) : (
+            <Button disabled className={classes.button}>
+              <Icons classes={{icon: classes.icon}} name={icon}/>
+            </Button>
+          )
+        }
       </Grid>
       <Grid item lg={12} md={12} xs={12}>
         <SearchFilterBtn data={filterList} onClick={handleRemoveFilter}/>

@@ -346,9 +346,9 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     } else {
       ignoreFields = ignoreFields.concat(['deliveryService']);
       isUserPickUp = true;
-      copyFormCheck['name'] = useAddress.name;
-      copyFormCheck['email'] = useAddress.email;
-      copyFormCheck['phone'] = useAddress.phone;
+      copyFormCheck['name'] = (useAddress.name) ? useAddress.name : `${userInfo.first_name} ${userInfo.last_name}`;
+      copyFormCheck['email'] = (useAddress.email) ? useAddress.email : userInfo.email;
+      copyFormCheck['phone'] = (useAddress.phone) ? useAddress.phone : userInfo.phone;
     }
 
     for (var i in copyFormCheck) {

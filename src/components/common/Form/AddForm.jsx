@@ -142,7 +142,7 @@ const AddForm = ({
       setSnack(resp);
       if (confirm.data.status) {
         setTimeout(() => {
-          router.push(successUrl);
+          window.location.href = successUrl;
         }, 1000);
       }
     }

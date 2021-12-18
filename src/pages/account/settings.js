@@ -42,7 +42,6 @@ const Settings = ({classes, userInfo}) => {
     password: null,
     phone: null,
     gender: null,
-    date_of_birth: null,
     mobile: null
   }
   
@@ -56,7 +55,15 @@ const Settings = ({classes, userInfo}) => {
   }, [])
   return (
     <UserLayoutTemplate>
-        <EditForm allowDelete={false} classes={{root: classes.formRoot}} showTitle={false} userSection={USER_SECTIONS.user} ignoreForm={ignoreEntry} id={user} entryForm={form} />
+        <EditForm 
+          allowDelete={false} 
+          classes={{root: classes.formRoot}} 
+          showTitle={false} 
+          userSection={USER_SECTIONS.user} 
+          ignoreForm={ignoreEntry} 
+          id={user} 
+          successUrl="/account"
+          entryForm={form} />
     </UserLayoutTemplate>
   );
 }

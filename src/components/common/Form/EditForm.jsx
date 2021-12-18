@@ -169,7 +169,7 @@ const EditForm = ({
       if (confirm.data.status) {
         setTimeout(() => {
           if (successUrl) {
-            router.push(successUrl);
+            window.location.href = successUrl;
           }
         }, 1000);
       }

@@ -109,10 +109,12 @@ const RadioBox = React.memo(({
     let data = null;
     let useSelected = selected;
     if (type === "address") {
-      let getFav = options.filter(item => item.selected === true);
-      data = getFav ? getFav[0].id : options[0].id;
-      if (!useSelected) {
-        useSelected = data;
+      if (!!options.length) {
+        let getFav = options.filter(item => item.selected === true);
+        data = !!getFav.length ? getFav[0].id : options[0].id;
+        if (!useSelected) {
+          useSelected = data;
+        }
       }
     } 
 

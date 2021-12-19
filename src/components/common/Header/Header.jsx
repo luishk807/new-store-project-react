@@ -180,7 +180,8 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
 
   useEffect(() => {
     loadMain()
-  }, [userInfo])
+  }, []);
+  
   return (
     <>
     <div className={classes.root}>

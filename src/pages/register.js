@@ -44,7 +44,6 @@ const Register = ({classes, data, showRegister}) => {
     password: null,
     phone: null,
     gender: null,
-    date_of_birth: null,
     mobile: null
   }
   const { t } = useTranslation('register');
@@ -63,7 +62,7 @@ const Register = ({classes, data, showRegister}) => {
               <Grid item lg={12} xs={12}>
                 <AddForm 
                   classes={{root: classes.formRoot}}
-                  customUrl={`/account`} 
+                  successUrl={`/account`} 
                   ignoreForm={ignoreEntry} 
                   userSection={USER_SECTIONS.user} 
                   entryForm={form}

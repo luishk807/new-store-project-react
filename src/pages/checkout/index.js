@@ -94,9 +94,9 @@ const Login = ({classes, inStatus, showRegister, onCancel}) => {
   return (
     <LayoutTemplate>
       <div className={classes.root}>
-        <Grid container spacing={2} alignItems="center" justify="center" direction="row">
+        <Grid container spacing={2} alignItems="center" justifyContent="center" direction="row">
           <Grid item lg={8} xs={12}>
-            <Grid container className={classes.itemContainer} spacing={2} justify="center" direction="row">
+            <Grid container className={classes.itemContainer} spacing={2} justifyContent="center" direction="row">
               <Grid item lg={12} xs={12}>
                 <Typography className={classes.mainTitle} align="center" variant="h3" component="p">{ t('checkout:message.sign_in_to_your_account') }</Typography>
               </Grid>

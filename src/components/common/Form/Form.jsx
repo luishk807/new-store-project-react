@@ -618,7 +618,7 @@ const Form = ({
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
             {
               userImagesCont && (
-                <Grid container justify="center">
+                <Grid container justifyContent="center">
                   <GridList cellHeight={160} className={classes.gridList} cols={2}>
                   {
                     userImagesCont
@@ -638,7 +638,7 @@ const Form = ({
           <Grid key={index} item lg={12} xs={12} className={classes.formItem}>
             {
               imageBoxImagesCont && (
-                <Grid container justify="center">
+                <Grid container justifyContent="center">
                   <GridList cellHeight={160} className={classes.gridList} cols={2}>
                   {
                     imageBoxImagesCont

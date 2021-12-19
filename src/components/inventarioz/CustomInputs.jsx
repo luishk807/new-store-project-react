@@ -49,7 +49,7 @@ const CustomInputs = (props) => {
 
     return (
         <div className={classes.root}>
-            <Grid container spacing={2} justify="flex-end">
+            <Grid container spacing={2} justifyContent="flex-end">
                 <Grid item sm={12}>
                     {inputs.map((input, i) => (
                         textFields(input, i)

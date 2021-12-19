@@ -53,9 +53,9 @@ const Register = ({classes, data, showRegister}) => {
   return (
     <LayoutTemplate>
       <div className={classes.root}>
-        <Grid container spacing={2} alignItems="center" justify="center" direction="row">
+        <Grid container spacing={2} alignItems="center" justifyContent="center" direction="row">
           <Grid item lg={5} xs={12}>
-            <Grid container spacing={2} alignItems="center" justify="center" direction="row">
+            <Grid container spacing={2} alignItems="center" justifyContent="center" direction="row">
               <Grid item lg={12} xs={12}>
                 <Typography align="center" variant="h6" component="p">{ t('register_account') }</Typography>
               </Grid>

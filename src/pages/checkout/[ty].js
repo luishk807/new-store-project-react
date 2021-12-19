@@ -4,37 +4,30 @@ import {
   withStyles,
   Grid,
   Button,
-  TextField,
   CircularProgress,
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import { connect } from 'react-redux';
-import { CompareSharp } from '@material-ui/icons';
 import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
-import { defaultCountry, defaultPanama } from 'config';
+import { defaultCountry } from 'config';
 import CartBox from '@/components/cart/Block';
-import Icons from '@/common/Icons';
 import LayoutTemplate from '@/common/Layout/LayoutTemplate';
-import ActionForm from '@/common/Form/Action/Add';
+import ConfirmationBlock from '@/common/ConfirmationBlock';
 import Snackbar from '@/common/Snackbar';
 import AddressSelection from '@/components/address/AddressSelection';
 import RadioBox from '@/common/RadioBox';
 import PromotionalCode from '@/components/PromotionalCode';
-import ProgressBar from '@/common/ProgressBar';
 import { validateForm, handleFormResponse } from '@/utils/form';
-import { returnDefaultOption } from 'src/utils';
+import { returnDefaultOption, getAddressFields } from 'src/utils';
 import { emptyCart } from '@/redux/actions/main'
-import { getDeliveryServiceCostByFilter } from '@/api/deliveryServiceCosts';
-import { getActiveDeliveryServicesByDeliveryOption } from '@/api/deliveryOptionServices';
 import { getDeliveryServiceGroupCostByDeliveryOption } from '@/api/deliveryServiceGroupCosts';
-import { getActivePromotionCodeByCode } from '@/api/promotionCodes';
 import { processOrderByUser } from '@/api/orders';
 import { getDeliveryOptions } from '@/api/deliveryOptions';
 import { getProductItemByIds } from '@/api/productItems';
 import { getActivePaymentOptions } from '@/api/paymentOptions';
-
+import { isLoggedIn } from '@/utils/auth';
 
 
 const styles = (theme) => ({
@@ -69,14 +62,6 @@ const styles = (theme) => ({
     justifyContent: 'center',
     padding: 10,
   },
-  orderResultPageTitle: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 10,
-    fontWeight: 'bold',
-    flexDirection: 'column',
-  },
   pageTitleContainer: {},
   pageContenContainer: {
     display: 'flex',
@@ -99,21 +84,6 @@ const styles = (theme) => ({
   addressBox: {
     padding: 10,
     margin: '10px 0px',
-  },
-  orderResultItemCont: {
-    textAlign: 'center'
-  },
-  linkStyle: {
-    paddingTop: 30,
-    display: 'inline-block',
-    '&:hover': {
-      textDecoration: 'underline'
-    }
-  },
-  orderResultIcon: {
-    width: 80,
-    height: 80,
-    fill: 'green',
   },
   promoCodeMain: {
     background: 'rgba(0,0,0,.03)',
@@ -154,19 +124,14 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   const [selectedDeliveryOption, setSelectedDeliveryOption] = useState(null)
   const [selectedPaymentOption, setSelectedPaymentOption] = useState(null)
   const [selectedDeliveryService, setSelectedDeliveryService] = useState(null)
-  const [selectedZone, setSelectedZone] = useState(null)
-  const [selectedCorregimiento, setSelectedCorregimiento] = useState(null)
   const [deliveryOptions, setDeliveryOptions] = useState([])
   const [deliveryServices, setDeliveryServices] = useState([])
-  const [forceAddressRefresh, setForceAdddressRefresh] = useState(null);
+  const [forceAddressRefresh, setForceAddressRefresh] = useState(null);
   const [paymentOptions, setPaymentOptions] = useState(null)
   const [form, setForm] = useState(null);
   const [showDeliveryServices, setShowDeliveryServices] = useState(false);
-  const [disableFields, setDisabledFields] = useState([]);
   const [isUser, setIsUser] = useState(false);
   const [address, setAddress] = useState({});
-  const [showAddressLoader, setShowAddressLoader] = useState(false);
-  const [guestAddress, setGuestAddress] = useState({});
   const [orderResult, setOrderResult] = useState(null);
   const [selectedPromotionCode, setSelectedPromotionCode] = useState(null);
   const [total, setTotal] = useState({});
@@ -177,7 +142,8 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   });
   const { t } = useTranslation('checkout')
 
-  const handleDeliveryForm = (getForm) => {
+  const handleAddressFormSubmit = (getForm) => {
+    console.log("heyeee",getForm)
     setForm({
       ...form,
       address: getForm
@@ -241,50 +207,33 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     setSelectedPaymentOption(val[0]);
   }
 
-  const handleFormChange = async(add) => {
+  const handleAddressFormChange = async(add) => {
     if (add && add.key && 'val' in add) {
       if (add.key && add.key === "zone") {
         setSelectedZone(add.val)
       }
-      if (add.key && add.key === "corregimiento") {
-        setSelectedCorregimiento(add.val)
-      }
-      setGuestAddress({
-        ...guestAddress,
+      setAddress({
+        ...address,
         [add.key]: add.val
-      })
-    } else if (add && add.target && add.target.name === "promoCode") {
-      setForm({
-        ...form,
-        'promoCode': add.target.value,
       })
     }
   }
 
-  const handleAddressSelection = async(evt) => {
-    const fetchedAddress = Object.assign({}, guestAddress);
+  const handleAddressSelection = async(addr) => {
+    let fetchedAddress = {};
+    fetchedAddress['name'] = addr.name;
+    fetchedAddress['addressB'] = addr.addressB;
+    fetchedAddress['address'] = addr.address;
+    fetchedAddress['email'] = addr.email;
+    fetchedAddress['phone'] = addr.phone;
+    fetchedAddress['note'] = addr.note;
+    fetchedAddress['province'] = addr.addressProvince && addr.addressProvince.name ? addr.addressProvince.name : addr.province ? addr.province : null;
+    fetchedAddress['district'] = addr.addressDistrict && addr.addressDistrict.name ? addr.addressDistrict.name : addr.district ? addr.district : null;
+    fetchedAddress['corregimiento'] = addr.addressCorregimiento && addr.addressCorregimiento.iso ? addr.addressCorregimiento.iso : addr.district ? addr.corregimiento : null;
+    // fetchedAddress['zone'] = addr.addressZone && addr.addressZone.name ? addr.addressZone.name : addr.zone ? addr.zone : null;
+    fetchedAddress['country'] = addr.addressCountry  && addr.addressCountry.name ? addr.addressCountry.name : addr.district ? addr.country : null;
 
-    fetchedAddress.name = evt.name;
-    fetchedAddress.addressB = evt.addressB;
-    fetchedAddress.address = evt.address;
-    fetchedAddress.email = evt.email;
-    fetchedAddress.phone = evt.phone;
-    fetchedAddress.note = evt.note;
-    fetchedAddress.province = evt.addressProvince && evt.addressProvince.name ? evt.addressProvince.name : evt.province ? evt.province : null;
-    fetchedAddress.district = evt.addressDistrict && evt.addressDistrict.name ? evt.addressDistrict.name : evt.district ? evt.district : null;
-    fetchedAddress.corregimiento = evt.addressCorregimiento && evt.addressCorregimiento.iso ? evt.addressCorregimiento.iso : evt.district ? evt.corregimiento : null;
-    // fetchedAddress.zone = evt.addressZone && evt.addressZone.name ? evt.addressZone.name : evt.zone ? evt.zone : null;
-    fetchedAddress.country = evt.addressCountry  && evt.addressCountry.name ? evt.addressCountry.name : evt.district ? evt.country : null;
-
-    if (fetchedAddress.zone) {
-      setSelectedZone(fetchedAddress.zone)
-    }
-
-    if (evt.addressCorregimient) {
-      setSelectedCorregimiento(fetchedAddress.corregimiento)
-    }
-
-    await setAddress(fetchedAddress)
+    setAddress(fetchedAddress)
   }
 
   const handleCartTotal = async(evt) => {
@@ -324,31 +273,45 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
     }
     let errorFound = true;
     let key = '';
-    let ignoreFields = ['address', 'cart', 'userid'];
-    let saveAddress = false;
+    let ignoreFields = ['address', 'cart'];
+    // let saveAddress = false;
     let isUserPickUp = false;
     const copyFormCheck = Object.assign({}, form);
-    ignoreFields = ['cart', 'userid', 'delivery'];
+    ignoreFields = ['cart', 'delivery'];
     copyFormCheck['paymentOption'] = selectedPaymentOption;
     copyFormCheck['deliveryOption'] = selectedDeliveryOption;
     copyFormCheck['deliveryService'] = selectedDeliveryService;
-    const useAddress = isUser ? Object.assign({}, address) : Object.assign({}, guestAddress)
+
+    let useAddress = getAddressFields(selectedDeliveryOption?.id, address);
+
     if (selectedDeliveryOption.id != 1) {
       isUserPickUp = false;
       ignoreFields = ignoreFields.concat(['addressB', 'zone', 'note']);
       if (!selectedDeliveryService) {
         ignoreFields = ignoreFields.concat(['deliveryService']);
       }
-      saveAddress = true;
+     // saveAddress = true;
       for(const key in useAddress) {
         copyFormCheck[key] = useAddress[key];
       }
     } else {
       ignoreFields = ignoreFields.concat(['deliveryService']);
       isUserPickUp = true;
-      copyFormCheck['name'] = (useAddress.name) ? useAddress.name : `${userInfo.first_name} ${userInfo.last_name}`;
-      copyFormCheck['email'] = (useAddress.email) ? useAddress.email : userInfo.email;
-      copyFormCheck['phone'] = (useAddress.phone) ? useAddress.phone : userInfo.phone;
+      let ship_name = useAddress?.name;
+      let ship_email = useAddress?.email;
+      let ship_phone = useAddress?.phone;
+      if (!useAddress.name && isUser) {
+        ship_name = `${userInfo?.first_name} ${userInfo?.last_name}`;
+      }
+      if (!useAddress.email && isUser) {
+        ship_email = userInfo?.email;
+      }
+      if (!useAddress.phone && isUser) {
+        ship_phone = userInfo?.phone;
+      }
+      copyFormCheck['name'] = ship_name
+      copyFormCheck['email'] = ship_email;
+      copyFormCheck['phone'] = ship_phone;
     }
 
     for (var i in copyFormCheck) {
@@ -466,17 +429,10 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   }, [total.delivery, selectedPromotionCode, cart])
   
   const resetAddress = useCallback(() => {
-    setShowAddressLoader(true);
     setShowDeliveryServices(false);
+
     if (selectedDeliveryOption) {
       if (selectedDeliveryOption.id == 1) {
-        if (!isUser) {
-          setAddress({
-            name: null,
-            email: null,
-            phone: null,
-          })
-        }
         setForm({
           ...form,
           'deliveryService': null,
@@ -489,45 +445,15 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
         })
 
         setSelectedDeliveryService(null);
-        setForceAdddressRefresh(selectedDeliveryOption.id)
+        setForceAddressRefresh(selectedDeliveryOption?.id)
       } else {
-        const address = {
-          name: null,
-          address: null,
-          addressB: null,
-          email: null,
-          phone: null,
-          province: defaultPanama.province,
-          district: defaultPanama.district,
-          corregimiento: null,
-          // zone: null,
-          country: defaultCountry,
-          note: null,
-        }
         loadServices(selectedDeliveryOption)
-        if (selectedDeliveryOption.id == 2) {
-          setDisabledFields(['province', 'district']);
-          address.province = defaultPanama.province;
-          address.district = defaultPanama.district;
-        } else {
-          setDisabledFields([]);
-          address.province = null;
-          address.district = null;
-        }
-        if (!isUser) {
-          setAddress(address)
-          setGuestAddress(address)
-        }
-        setForceAdddressRefresh(selectedDeliveryOption.id)
+        setForceAddressRefresh(selectedDeliveryOption?.id)
       }
     }
+    let useAddress = getAddressFields(selectedDeliveryOption?.id);
+    setAddress(useAddress)
   }, [selectedDeliveryOption])
-
-  useEffect(() => {
-    if (showAddressLoader) {
-      setShowAddressLoader(false);
-    }
-  }, [address])
 
   useEffect(() => {
     if (selectedDeliveryService) {
@@ -553,38 +479,14 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
   }, [selectedPaymentOption]);
 
   useEffect(() => {
-    let form = {
-      userid: userInfo.id
-    }
+    const isLogged = isLoggedIn();
 
-    setAddress({
-      name: null,
-      email: null,
-      phone: null,
-    })
-    if (userInfo.id) {
+    if (isLogged) {
       setIsUser(true)
     }
 
-    setGuestAddress(
-      {
-        name: null,
-        address: null,
-        addressB: null,
-        email: null,
-        phone: null,
-        province: null,
-        district: null,
-        corregimiento: null,
-        // zone: null,
-        country: defaultCountry.name,
-        note: null,
-      }
-    )
-
     loadDelivery();
     loadPayment();
-    setForm(form);
   }, [userInfo])
 
   useEffect(() => {
@@ -624,30 +526,21 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
                       <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
                         <RadioBox selected={form.delivery} onSelected={handleDeliveryOption} options={deliveryOptions} name="delivery" type="deliveryOption" title={t('delivery_options')} />
                       </Grid>
-                      <Grid item lg={12} xs={12} className={classes.contentBoxSection}>
-                        {
-                          isUser ? (
-                              <AddressSelection onSelected={handleAddressSelection} />
-                            ) : showAddressLoader ? (
-                              <ProgressBar />
-                            ) : (
-                              <ActionForm 
-                                classes={{root: classes.formRoot}}
-                                formSection={{
-                                  name: selectedDeliveryOption && selectedDeliveryOption.id == 1 ? t('delivery_option_pickup') :  t('delivery_option_delivery') ,
-                                }} 
-                                disableFields={disableFields}
-                                resetPanamaSection={forceAddressRefresh}
-                                forceRefresh={forceAddressRefresh}
-                                onFormChange={handleFormChange}
-                                ignoreForm={['province', 'district', 'corregimiento', 'email', 'note', 'addressB', 'zone', 'phone', 'country']}
-                                entryForm={address} 
-                                onSubmitAction={handleDeliveryForm}
-                                showCancel={false}
-                                type="dynamic"
-                              />
-                            )
-                        }
+                      <Grid item lg={12} xs={12} className={classes.contentBoxSection}>       
+                        <AddressSelection 
+                          onSelected={handleAddressSelection} 
+                          classes={{root: classes.formRoot}}
+                          defaultFormSection={{
+                            name: selectedDeliveryOption && selectedDeliveryOption.id == 1 ? t('delivery_option_pickup') :  t('delivery_option_delivery') ,
+                          }} 
+                          selectedDeliveryOption={selectedDeliveryOption}
+                          resetPanamaSection={forceAddressRefresh}
+                          forceRefresh={forceAddressRefresh}
+                          onFormChange={handleAddressFormChange}
+                          onSubmitAction={handleAddressFormSubmit}
+                          defaultShowCancel={false}
+                          defaultType={isUser ? null : 'dynamic'}
+                        />
                       </Grid>
                       {
                         showDeliveryServices && (
@@ -693,24 +586,11 @@ const Home = React.memo(({userInfo, classes, cart, emptyCart}) => {
         }
         {
           showThankyou && orderResult && (
-            <>
-            <Grid container className={classes.pageTitleContainer}>
-              <Grid className={classes.orderResultPageTitle} item lg={12} xs={12}>
-                <div><Icons name="success" classes={{icon: classes.orderResultIcon}} /></div>
-                <h1>Gracias!</h1>
-              </Grid>
-            </Grid>
-            <Grid container className={classes.pageContenContainer}>
-              <Grid item lg={6} xs={12} className={classes.orderResultItemCont}>
-                <p>Hemos recibido su orden y su numero de confirmación es:<br/>
-                <b>{orderResult.order_num}</b>,<br/>le enviamos a su correo electrónico los datos para realizar el pago de acuerdo al método seleccionado</p>
-                <p>Recuerde realizar su pago dentro de las 24 horas, de lo contrario su orden será cancelada automáticamente</p>
-                <p>
-                  <a href="/" className={classes.linkStyle}>Regresar a la pagina principal</a>
-                </p>
-              </Grid>
-            </Grid>
-            </>
+            <ConfirmationBlock
+              type="order_confirm"
+              data={orderResult.order_num}
+              url="/"
+            />
           )
         }
       </div>

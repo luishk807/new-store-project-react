@@ -1,11 +1,64 @@
 import { getImageUrlByType } from './form';
-import { noImageUrl } from 'config';
+import { noImageUrl, defaultCountry, defaultPanama } from 'config';
 import { getProductItemByIds } from '@/api/productItems';
 import { getProductById } from '@/api/products';
 import { getThumbnail } from '@/utils/helpers/image'
 
 export const removeCharacter = (str) => {
   return str ? str.replace(/_/g, ' ') : str
+}
+
+export const getAddressFields = (opt, dFields = null) => {
+  const delivery_option = opt ? +opt : null;
+
+  let fields = {
+    name: null,
+    email: null,
+    phone: null,
+  }
+
+  if (delivery_option !== 1) {
+    fields = {
+      name: null,
+      email: null,
+      phone: null,
+      address: null,
+      addressB: null,
+      province: null,
+      district: null,
+      corregimiento: null,
+      // zone: null,
+      country: defaultCountry,
+      note: null,
+    }
+    if (delivery_option == 2) {
+      fields.province = defaultPanama.province;
+      fields.district = defaultPanama.district;
+    } else {
+      fields.province = null;
+      fields.district = null;
+    }
+  }
+
+  let newField = {};
+  if (dFields) {
+    for(const key in fields) {
+      let found = false;
+      for(const key_b in dFields) {
+        if (key == key_b) {
+          newField[key] = dFields[key_b];
+          found = true;
+        }
+      }
+      if (!found) {
+        
+        newField[key] = fields[key];
+      }
+    }
+  } else {
+    newField = fields;
+  }
+  return newField;
 }
 
 export const formatNumber = (x) => x ? Number.parseFloat(x).toFixed(2) : 0.00;

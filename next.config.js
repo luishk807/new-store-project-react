@@ -65,7 +65,13 @@ module.exports = {
     ],
   },
   pageExtensions: ['mdx', 'jsx', 'js', 'ts', 'tsx'],
-  webpack(config) {
+  webpack(config, { isServer }) {
+    // Fixes npm packages that depend on `fs` module
+    if (!isServer) {
+      config.node = {
+        fs: 'empty'
+      }
+    }
     config.module.rules.push({
       test: /\.svg$/,
       issuer: {

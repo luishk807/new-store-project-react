@@ -14,6 +14,7 @@ import Icon from '@/common/Icons';
 import { getCartTotalItems } from 'src/utils';
 import Typography from '@/common/Typography';
 import loadMain from '@/redux/reducers'
+import { isLoggedIn } from '@/utils/auth';
 import SearchBar from '@/src/components/common/SearchBar';
 import { useRouter } from 'next/router'
 import Locale from '@/common/Header/Locale';
@@ -166,6 +167,7 @@ const styles = (theme) => ({
 
 const Header = ({classes, data, userInfo, loadMain, cart}) => {
   const [openCategory, setOpenCategory] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
   const [cartData, setCartData] = useState(null);
   const [cartTotal, setCartTotal] = useState(0);
   const router = useRouter()
@@ -179,6 +181,12 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
   }, [cart]);
 
   useEffect(() => {
+    if (isLoggedIn()) {
+      setIsUserLoggedIn(true);
+    } else {
+      setIsUserLoggedIn(false);
+    }
+
     loadMain()
   }, []);
   
@@ -221,7 +229,7 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
                 <Button href="/account" color="inherit" className='d-none d-sm-block'>
                   <PermIdentityOutlinedIcon className={classes.accountIcon} />
                   {
-                    userInfo.first_name && (
+                    isUserLoggedIn && (
                       <Typography className={classes.userName} variant="subtitle2">{userInfo.first_name}</Typography>
                     )
                   }

@@ -18,6 +18,11 @@
         "error": "Código invalido",
         "success": "Código aplicado"
     },
+    "confirmation": {
+        "title": "Gracias!",
+        "back_to_home_page": "Regresar a la pagina principal",
+        "main_message": "Hemos recibido su orden y su numero de confirmación es:\n\r{{order_num}},\n\r\n\rle enviamos a su correo electrónico los datos para realizar el pago de acuerdo al método seleccionado\n\r\n\rRecuerde realizar su pago dentro de las 24 horas, de lo contrario su orden será cancelada automáticamente"
+    },
     "message": {
         "sign_in_to_your_account": "Entre a su cuenta",
         "insert_coupon": "Introduzca el código"

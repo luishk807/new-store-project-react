@@ -14,6 +14,7 @@ import { useTranslation } from 'next-i18next'
 import { getImage, getCartTotalItems, getCartTotal, getTotal } from 'src/utils';
 import Icons from '@/common/Icons';
 import { getColorName } from '@/utils/helpers/product'
+import { isLoggedIn } from '@/utils/auth';
 
 const styles = (theme) => ({
   root: {
@@ -81,6 +82,7 @@ const Swipe = React.memo(({
   const [showData, setShowData] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [cartData, setCartData] = useState(null);
+  const [checkoutBtnHtml, setCheckoutBtnHtml] = useState(null);
   const [cartItemsTotal, setCartItemsTotal] = useState(0);
   const [cartTotal, setCartTotal] = useState({});
   const [checkUpdate, setCheckUpdate] = useState(false)
@@ -116,6 +118,19 @@ const Swipe = React.memo(({
     }
   }, [data, forceUpdate])
 
+  useEffect(() => {
+    const checkUserLoggedIn = isLoggedIn();
+
+    if (checkUserLoggedIn) {
+      setCheckoutBtnHtml(
+        <Button href="/checkout/f=e" className={`mainButton`}>{ t('common:checkout') }</Button>
+      )
+    } else {
+      setCheckoutBtnHtml(
+        <Button href="/checkout" className={`mainButton`}>{ t('common:checkout') }</Button>
+      )
+    }
+  }, [])
 
   const handleCloseCart = () => {
     setCartOpen(false);
@@ -151,7 +166,9 @@ const Swipe = React.memo(({
                   <Button className={`secondButton`} href="/cart">{ t('cart') }</Button>
                 </Grid>
                 <Grid item lg={6} xs={6}>
-                  <Button className={`mainButton`} href={`${userInfo.id ? '/checkout/f=e' : '/checkout'}`}>{ t('checkout') } ({`$${cartTotal ? cartTotal.subtotal : ''}` })</Button>
+                  {
+                    checkoutBtnHtml
+                  }
                 </Grid>
               </Grid>
             </Grid>

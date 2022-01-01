@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import { 
-  withStyles,
-  Grid,
+  withStyles
 } from '@material-ui/core';
-import { useRouter } from 'next/router';
 
 import { validateForm, handleFormResponse } from '@/utils/form';
-import { capitalize } from 'src/utils';
 import { postItem } from 'src/api';
 import Form from '@/common/Form/Form';
+import SimpleCaptcha from '../../../lib/captcha'
 
 const styles = (theme) => ({
   root: {
@@ -26,7 +24,7 @@ const styles = (theme) => ({
   },
 });
 
-const AddForm = ({
+const SendForm = ({
   classes, 
   formSection, 
   entryForm, 
@@ -45,6 +43,7 @@ const AddForm = ({
     text: '',
   });
   const [form, setForm] = useState({})
+  const [captcha, setCaptcha] = useState(null)
 
   const formOnChange = (e, edrop = null) => {
     const { name, value } = edrop ? edrop : e.target;
@@ -67,34 +66,58 @@ const AddForm = ({
   }
 
   const handleSubmit = async (e) => {
-    let errorFound = false;
-    let key = '';
-    for (var i in form) {
-      errorFound = await validateForm(i, form[i]);
-      key = i;
-      if (!errorFound){
-        saveErrors(name)
-        break;
-      } else {
-        saveErrors(name, true, `${name} is required`)
+    if (captcha.validate()) {
+      let errorFound = false;
+      let key = '';
+      for (var i in form) {
+        errorFound = await validateForm(i, form[i]);
+        key = i;
+        if (!errorFound){
+          saveErrors(name)
+          break;
+        } else {
+          saveErrors(name, true, `${name} is required`)
+        }
       }
-    }
-    if (!errorFound) {
+      if (!errorFound) {
+        setSnack({
+          severity: 'error',
+          open: true,
+          text: `Unable to send form, ${i} is required`
+        })
+      } else {
+        const formSubmit = form;
+        const confirm = await postItem(section.url, formSubmit)
+        const resp = handleFormResponse(confirm);
+        setSnack(resp);
+      }
+    } else {
       setSnack({
         severity: 'error',
         open: true,
-        text: `Unable to send form, ${i} is required`
+        text: 'Favor introducir la respuesta de la suma'
       })
-    } else {
-      const formSubmit = form;
-      const confirm = await postItem(section.url, formSubmit)
-      const resp = handleFormResponse(confirm);
-      setSnack(resp);
     }
   }
 
   const onCloseSnack = () => {
     setSnack({...snack, open: false})
+  }
+
+  const setupCaptcha = () => {
+    setCaptcha(new SimpleCaptcha({
+      inputElementSelector: '#captchaInput',
+      captchaId: 'captchaId',
+      styles: {
+          width: 100,
+          height: 40,
+          textBaseline: 'top',
+          font: '24px Times New Roman',
+          textAlign: 'left',
+          fillStyle: '#ddd',
+          direction: 'ltr'
+      }
+    }))
   }
 
   useEffect(() => {
@@ -112,7 +135,13 @@ const AddForm = ({
     setShowForm(true)
   }, [entryForm])
 
-  
+  /** Setup captcha when the form is shown */
+  useEffect(() => {
+    if (showForm) {
+      setupCaptcha()
+    }
+  }, [showForm])
+
   return showForm && (
     <div className={classes.root}>
       <Form 
@@ -126,11 +155,12 @@ const AddForm = ({
         type={type}
         onCloseSnack={onCloseSnack}
       />
+      <input id="captchaInput" type="text" placeholder="Introduzca el resultado..."></input>
     </div>
   );
 }
 
-AddForm.protoTypes = {
+SendForm.protoTypes = {
   classes: T.object,
   formSection: T.object,
   entryForm: T.object,
@@ -141,4 +171,4 @@ AddForm.protoTypes = {
   ignoreForm: T.array,
 }
 
-export default withStyles(styles)(AddForm);
+export default withStyles(styles)(SendForm);

@@ -162,11 +162,11 @@ const RadioBox = React.memo(({
                   />
                 </div>
                 <div className={classes.radioItemContent}>
-                  <p className={classes.radioTitle}>{option.name}</p>
-                  <p className={classes.radioDescription}>{option.address}</p>
-                  <p className={classes.radioDescription}>{option.addressDistrict.name} {option.addressCorregimiento.name}</p>
-                  <p className={classes.radioDescription}>{option.addressProvince.name}</p>
-                  <p className={classes.radioDescription}>{option.addressCountry.nicename}</p>
+                  <p className={classes.radioTitle}>{option?.name}</p>
+                  <p className={classes.radioDescription}>{option?.address}</p>
+                  <p className={classes.radioDescription}>{option?.addressDistrict?.name} {option?.addressCorregimiento?.name}</p>
+                  <p className={classes.radioDescription}>{option?.addressProvince?.name}</p>
+                  <p className={classes.radioDescription}>{option?.addressCountry?.nicename}</p>
                 </div>
               </Grid>
             </Grid>
@@ -188,11 +188,11 @@ const RadioBox = React.memo(({
                   />
                 </div>
                 <div className={classes.radioItemContent}>
-                  <p className={classes.radioTitle}>{option.name} {option.selected && '[Default]'}</p>
-                  <p className={classes.radioDescription}>{option.address}</p>
-                  <p className={classes.radioDescription}>{option.addressDistrict.name} {option.addressCorregimiento.name}</p>
-                  <p className={classes.radioDescription}>{option.addressProvince.name}</p>
-                  <p className={classes.radioDescription}>{option.addressCountry.nicename}</p>
+                  <p className={classes.radioTitle}>{option?.name} {option.selected && '[Default]'}</p>
+                  <p className={classes.radioDescription}>{option?.address}</p>
+                  <p className={classes.radioDescription}>{option?.addressDistrict?.name} {option?.addressCorregimiento?.name}</p>
+                  <p className={classes.radioDescription}>{option?.addressProvince?.name}</p>
+                  <p className={classes.radioDescription}>{option?.addressCountry?.nicename}</p>
                 </div>
               </Grid>
               <Grid item lg={2} xs={3} className={classes.radioTotal}>

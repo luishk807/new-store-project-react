@@ -137,14 +137,21 @@ const AddForm = ({
         text: errorText
       })
     } else {
-      const confirm = await addItem(section.url, form);
-      const resp = handleFormResponse(confirm);
-      setSnack(resp);
-      if (confirm.data.status) {
-        setTimeout(() => {
-          window.location.href = successUrl;
-        }, 1000);
-      }
+      addItem(section.url, form).then(confirm => {
+        const resp = handleFormResponse(confirm);
+        setSnack(resp);
+        if (confirm.data.status) {
+          setTimeout(() => {
+            if (successUrl) {
+              window.location.href = successUrl;
+            }
+          }, 1000);
+        }
+      }).catch(err => {
+        const resp = handleFormResponse(err.response);
+        setSnack(resp);
+      })
+
     }
   }
   const saveErrors = async (key, err = false, str = '') => {

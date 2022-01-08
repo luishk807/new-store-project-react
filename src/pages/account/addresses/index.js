@@ -12,7 +12,7 @@ import {
 import Typography from 'src/components/common/Typography';
 import CardIcon from 'src/components/common/CardIcon';
 import Icons from 'src/components/common/Icons';
-import { getAddressesByUser, deleteAddress, updateAddress } from 'src/api/addresses';
+import { getAddressesByUser, setUserFavAddress, deleteAddress, updateAddress } from 'src/api/addresses';
 import UserLayoutTemplate from 'src/components/common/Layout/UserLayoutTemplate';
 import AddressBox from 'src/components/address/AddressBox';
 import Snackbar from 'src/components/common/Snackbar';
@@ -71,28 +71,18 @@ const Index = ({classes, userInfo}) => {
 
   const addressSet = async(id) => {
     let snackResp = null;
-    let data = null;
-    const selectedData = await addresses.filter((address) => address.id === id)
-    if (selectedData[0].selected) {
-      data = {
-        unfavorite: id,
-        user: userInfo.id,
+    setUserFavAddress(id).then(confirm => {
+      if (confirm.data.status) {
+        snackResp = handleFormResponse(confirm)
+      } else {
+        snackResp = handleFormResponse(confirm)
       }
-    } else {
-      data = {
-        favorite: id,
-        user: userInfo.id,
-      }
-    }
-
-    const res = await updateAddress(data, id);
-    if (res.status) {
-      snackResp = handleFormResponse(res)
-    } else {
-      snackResp = handleFormResponse(res)
-    }
-    setSnack(snackResp)
-    loadAddresses();
+      setSnack(snackResp)
+      loadAddresses();
+    }).catch(err => {
+      const resp = handleFormResponse(err.response);
+      setSnack(resp);
+    })
   }
 
   const addressDelete = async(id) => {

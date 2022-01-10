@@ -95,5 +95,9 @@
     "end_date": "End Date",
     "quantity": "Quantity",
     "selectYour": "Select your",
-    "promoCode": "Promotional Code"
+    "promoCode": "Promotional Code",
+    "error_message_window": {
+        "error_field": "Unable to complete, {{field}} is required",
+        "error_complete": "Unable to complete, {{total}} must be completed"
+    }
 }

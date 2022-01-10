@@ -2,7 +2,6 @@
     "login": "Login",
     "already_have_account": "Already have an account",
     "register_account": "Register account",
-
     "message": {
         "opening_an_account": "Creating an account you accept the ",
         "terms_of_use": "Terms of use",

@@ -66,7 +66,9 @@ const Register = ({classes, data, showRegister}) => {
                   ignoreForm={ignoreEntry} 
                   userSection={USER_SECTIONS.user} 
                   entryForm={form}
+                  showCancel={false}
                   showTitle={false}
+                  submitCustomName={t("common:next")}
                 />
               </Grid>
               <Grid item lg={12} xs={12} className={classes.terms}>
@@ -99,7 +101,7 @@ Register.protoTypes = {
 /** This section is mandatory for next-18next translation to work */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['register', 'forms', 'footer']),
+    ...await serverSideTranslations(locale, ['register', 'forms', 'footer', 'common', 'product']),
   },
 })
  

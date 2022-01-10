@@ -393,7 +393,7 @@ const Form = ({
                 name={field} 
                 defaultValue={fields[field]}
                 onChange={formOnChange}
-                label={removeCharacter( t(FORM_SCHEMA[field].tKey) )} 
+                label={removeCharacter(t(FORM_SCHEMA[field].tKey))} 
               />
             </FormControl>
           </Grid>

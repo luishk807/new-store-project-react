@@ -7,7 +7,9 @@ import {
 import { validateForm, handleFormResponse } from '@/utils/form';
 import { postItem } from 'src/api';
 import Form from '@/common/Form/Form';
-import SimpleCaptcha from '../../../lib/captcha'
+import { FORM_SCHEMA } from 'config';
+import { useTranslation } from 'next-i18next';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const styles = (theme) => ({
   root: {
@@ -22,6 +24,11 @@ const styles = (theme) => ({
       width: '100%',
     }
   },
+  captcha: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });
 
 const SendForm = ({
@@ -42,6 +49,7 @@ const SendForm = ({
     open: false,
     text: '',
   });
+  const { t } = useTranslation(['common']);
   const [form, setForm] = useState({})
   const [captcha, setCaptcha] = useState(null)
 
@@ -66,58 +74,46 @@ const SendForm = ({
   }
 
   const handleSubmit = async (e) => {
-    if (captcha.validate()) {
+    if (captcha) {
       let errorFound = false;
       let key = '';
       for (var i in form) {
         errorFound = await validateForm(i, form[i]);
         key = i;
         if (!errorFound){
-          saveErrors(name)
+          saveErrors(key)
           break;
         } else {
-          saveErrors(name, true, `${name} is required`)
+          saveErrors(key, true, `${key} is required`)
         }
       }
+      const field_key = FORM_SCHEMA[i].label
       if (!errorFound) {
         setSnack({
           severity: 'error',
           open: true,
-          text: `Unable to send form, ${i} is required`
+          text: `Unable to send form, ${field_key} is required`
         })
       } else {
         const formSubmit = form;
         const confirm = await postItem(section.url, formSubmit)
         const resp = handleFormResponse(confirm);
         setSnack(resp);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000)
       }
     } else {
       setSnack({
         severity: 'error',
         open: true,
-        text: 'Favor introducir la respuesta de la suma'
+        text: t('common:captcha_verify')
       })
     }
   }
 
   const onCloseSnack = () => {
     setSnack({...snack, open: false})
-  }
-
-  const setupCaptcha = () => {
-    setCaptcha(new SimpleCaptcha({
-      inputElementSelector: '#captchaInput',
-      captchaId: 'captchaId',
-      styles: {
-          width: 100,
-          height: 40,
-          textBaseline: 'top',
-          font: '24px Times New Roman',
-          textAlign: 'left',
-          fillStyle: '#ddd',
-          direction: 'ltr'
-      }
-    }))
   }
 
   useEffect(() => {
@@ -135,12 +131,9 @@ const SendForm = ({
     setShowForm(true)
   }, [entryForm])
 
-  /** Setup captcha when the form is shown */
-  useEffect(() => {
-    if (showForm) {
-      setupCaptcha()
-    }
-  }, [showForm])
+  function onChange(value) {
+    setCaptcha(value);
+  }
 
   return showForm && (
     <div className={classes.root}>
@@ -153,9 +146,16 @@ const SendForm = ({
         showCancelBtn={showCancel}
         snack={snack}
         type={type}
+        childrenPos="bottom"
         onCloseSnack={onCloseSnack}
-      />
-      <input id="captchaInput" type="text" placeholder="Introduzca el resultado..."></input>
+      >
+        <div className={classes.captcha}>
+          <ReCAPTCHA
+            sitekey={process.env.GOOGLE_RECHAPTCHA_SITE_V2}
+            onChange={onChange}
+          />
+        </div>
+      </Form>
     </div>
   );
 }

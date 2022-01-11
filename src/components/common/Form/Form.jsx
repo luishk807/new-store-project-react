@@ -163,6 +163,7 @@ const Form = ({
   id,
   submitCustomName,
   children,
+  childrenPos = "top",
   basicParams,
   fileOnSave,
   imageBoxOnSave,
@@ -830,7 +831,7 @@ const Form = ({
             )
           }
           {
-            children && (
+            children && childrenPos == "top" && (
               <Grid item lg={12} xs={12}>
                 {children}
               </Grid>
@@ -841,6 +842,13 @@ const Form = ({
             (
               <Grid item lg={12} xs={12}>
                 <ProgressBar />
+              </Grid>
+            )
+          }
+          {
+            children && childrenPos == "bottom" && (
+              <Grid item lg={12} xs={12}>
+                {children}
               </Grid>
             )
           }
@@ -903,6 +911,7 @@ Form.protoTypes = {
   formCancel: T.func,
   formDelete: T.func,
   children: T.node,
+  childrenPos: T.string,
   hideEntry: T.object,
   cancelCustonName: T.string,
   snack: T.object,

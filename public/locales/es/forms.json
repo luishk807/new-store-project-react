@@ -95,5 +95,9 @@
     "end_date": "Fecha Final",
     "quantity": "Cantidad",
     "selectYour": "Seleccione su",
-    "promoCode": "Codigo promocional"
+    "promoCode": "Codigo promocional",
+    "error_message_window": {
+        "error_field": "No se puede completar, se requiere {{field}}",
+        "error_complete": "No se puede completar {{total}} debe completarse"
+    }
 }

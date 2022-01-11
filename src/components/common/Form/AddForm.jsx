@@ -6,6 +6,9 @@ import {
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 import { addItem } from 'src/api';
 import { validateForm, loadMainOptions, handleFormResponse, checkEnforceDates } from '@/utils/form';
 import { capitalize } from 'src/utils';
@@ -42,8 +45,10 @@ const AddForm = ({
   ignoreForm, 
   children, 
   customUrl = null,
+  submitCustomName,
   cancelUrl = null,
-  successUrl = null
+  successUrl = null,
+  showCancel = true
 }) => {
   const router = useRouter()
   const [section, setSection] = useState({});
@@ -55,6 +60,9 @@ const AddForm = ({
     open: false,
     text: '',
   });
+
+  const { t } = useTranslation('forms');
+
   const [form, setForm] = useState(entryForm)
   
   const formOnChange = (e, edrop = null) => {
@@ -125,10 +133,16 @@ const AddForm = ({
       }
     }
     if (!errorFound) {
-      let errorText = `Unable to Add ${capitalize(section.name)}, ${capitalize(i)} is required`;
+      const field_key = t(FORM_SCHEMA[i].tKey);
+
+      let errorText = t('forms:error_message_window.error_field', {
+        field: field_key
+      })
 
       if (form[i] && form[i].length) {
-        errorText = `Unable to Add ${capitalize(section.name)}, ${capitalize(i)} must be completed`;
+        errorText = t('forms:error_message_window.error_complete', {
+          field: field_key
+        })
       }
 
       setSnack({
@@ -271,6 +285,7 @@ const AddForm = ({
         classes={classes}
         hideEntry={hideEntry}
         errors={errors} 
+        showCancelBtn={showCancel}
         id={id}
         isAdmin={isAdmin}
         showTitle={showTitle}
@@ -283,6 +298,7 @@ const AddForm = ({
         type="submit"
         children={children}
         snack={snack}
+        submitCustomName={submitCustomName}
         onCloseSnack={onCloseSnack}
       />
     </div>
@@ -305,6 +321,8 @@ AddForm.protoTypes = {
   customUrl: T.string,
   ignoreForm: T.array,
   children: T.node,
+  submitCustomName: T.string,
+  showCancel: T.bool,
   hideEntry: T.object
 }
 

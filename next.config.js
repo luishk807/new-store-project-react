@@ -65,7 +65,13 @@ module.exports = {
     ],
   },
   pageExtensions: ['mdx', 'jsx', 'js', 'ts', 'tsx'],
-  webpack(config) {
+  webpack(config, { isServer }) {
+    // Fixes npm packages that depend on `fs` module
+    if (!isServer) {
+      config.node = {
+        fs: 'empty'
+      }
+    }
     config.module.rules.push({
       test: /\.svg$/,
       issuer: {
@@ -85,6 +91,8 @@ module.exports = {
     BACKEND_URL: process.env.BACKEND_URL,
     IMAGE_URL: process.env.IMAGE_URL,
     GTM_ID: process.env.GTM_ID,
-    COUNTRY_TAX: process.env.COUNTRY_TAX
+    COUNTRY_TAX: process.env.COUNTRY_TAX,
+    GOOGLE_RECHAPTCHA_SITE_V2: process.env.GOOGLE_RECHAPTCHA_SITE_V2,
+    GOOGLE_RECHAPTCHA_SERVER_V2: process.env.GOOGLE_RECHAPTCHA_SERVER_V2
   },
 }

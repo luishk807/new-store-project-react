@@ -59,19 +59,21 @@ const AddressBox = ({classes, data, onClickEdit, onClickRemove, onClickSet}) => 
               )
             }
           </Grid>
-          <Grid item lg={12} className={classes.title}>{data.name}</Grid>
-          <Grid item lg={12} className={classes.content}>{data.address}</Grid>
+          <Grid item lg={12} className={classes.title}>{data?.name}</Grid>
+          <Grid item lg={12} className={classes.content}>{data?.address}</Grid>
           {
             data.addressB && (
-              <Grid item lg={12} className={classes.content}>{data.addressB}</Grid>
+              <Grid item lg={12} className={classes.content}>{data?.addressB}</Grid>
             )
           }
           <Grid item lg={12} className={classes.content}>
-              {`${data.addressDistrict.name} ${data.addressCorregimiento.name}`}</Grid>
-          <Grid item lg={12} className={classes.content}>{data.addressProvince.name}</Grid>
-          <Grid item lg={12} className={classes.content}>{data.addressCountry.nicename}</Grid>
-          <Grid item lg={12} className={classes.content}>{ t('addresses:phone') }: {data.phone}</Grid>
-          <Grid item lg={12} className={classes.content}>{ t('addresses:mobile') }: {data.mobile}</Grid>
+          { data.addressDistrict && `${data.addressDistrict?.name}`}
+          { data.addressCorregimiento && `${data.addressCorregimiento?.name}`}
+          </Grid>
+          <Grid item lg={12} className={classes.content}>{data.addressProvince?.name}</Grid>
+          <Grid item lg={12} className={classes.content}>{data.addressCountry?.nicename}</Grid>
+          <Grid item lg={12} className={classes.content}>{ t('addresses:phone') }: {data?.phone}</Grid>
+          <Grid item lg={12} className={classes.content}>{ t('addresses:mobile') }: {data?.mobile}</Grid>
           {
             data.note && (
               <Grid item lg={12} className={classes.content}>Note: {data.note}</Grid>

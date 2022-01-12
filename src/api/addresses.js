@@ -8,6 +8,10 @@ export const updateAddress = async(data, id) => {
   return Api.save(`useraddresses/${id}`, data);
 }
 
+export const setUserFavAddress = async(id) => {
+  return Api.save(`useraddresses/favorite/${id}/address`);
+}
+
 export const createAddress = async(data) => {
   return Api.post(`useraddresses`, data);
 }

@@ -23,7 +23,7 @@ const Terms = ({classes}) => {
   return (
     <LayoutTemplate>
       <div className={classes.root}>
-        <Grid container spacing={2} alignItems="center" justify="center" direction="row">
+        <Grid container spacing={2} alignItems="center" justifyContent="center" direction="row">
           <Grid item lg={8} xs={12} className={classes.termItem}>
             <h3>Términos y Condiciones</h3>
             <br/>

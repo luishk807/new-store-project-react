@@ -309,7 +309,7 @@ const Order = () => {
                     </Accordion>
                 </Grid>
             </Grid>
-            <Grid container spacing={1} justify="space-between" >
+            <Grid container spacing={1} justifyContent="space-between" >
                 <Grid item xs={12}>
                     <Accordion defaultExpanded>
                         <AccordionSummary

@@ -25,7 +25,7 @@ const Nosotros = ({classes}) => {
   return (
     <LayoutTemplate>
       <div className={classes.root}>
-        <Grid container spacing={2} alignItems="center" justify="center" direction="row">
+        <Grid container spacing={2} alignItems="center" justifyContent="center" direction="row">
           <Grid item lg={8} className={classes.title}>
               <h3>{ t('nosotros') }</h3>
           </Grid>

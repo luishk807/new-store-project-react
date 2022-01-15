@@ -68,7 +68,7 @@ const notFound = ({classes, data}) => {
   return (
     <LayoutTemplate>
       <div className={classes.root}>
-        <Grid container spacing={2} alignItems="center" justify="center" direction="row" className={classes.mainContent}>
+        <Grid container spacing={2} alignItems="center" justifyContent="center" direction="row" className={classes.mainContent}>
           <Grid item lg={5} xs={12} className={classes.info}>
             <h3>404</h3>
             <p>

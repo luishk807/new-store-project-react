@@ -44,7 +44,6 @@ const Register = ({classes, data, showRegister}) => {
     password: null,
     phone: null,
     gender: null,
-    date_of_birth: null,
     mobile: null
   }
   const { t } = useTranslation('register');
@@ -54,20 +53,22 @@ const Register = ({classes, data, showRegister}) => {
   return (
     <LayoutTemplate>
       <div className={classes.root}>
-        <Grid container spacing={2} alignItems="center" justify="center" direction="row">
+        <Grid container spacing={2} alignItems="center" justifyContent="center" direction="row">
           <Grid item lg={5} xs={12}>
-            <Grid container spacing={2} alignItems="center" justify="center" direction="row">
+            <Grid container spacing={2} alignItems="center" justifyContent="center" direction="row">
               <Grid item lg={12} xs={12}>
                 <Typography align="center" variant="h6" component="p">{ t('register_account') }</Typography>
               </Grid>
               <Grid item lg={12} xs={12}>
                 <AddForm 
                   classes={{root: classes.formRoot}}
-                  customUrl={`/account`} 
+                  successUrl={`/account`} 
                   ignoreForm={ignoreEntry} 
                   userSection={USER_SECTIONS.user} 
                   entryForm={form}
+                  showCancel={false}
                   showTitle={false}
+                  submitCustomName={t("common:next")}
                 />
               </Grid>
               <Grid item lg={12} xs={12} className={classes.terms}>
@@ -100,7 +101,7 @@ Register.protoTypes = {
 /** This section is mandatory for next-18next translation to work */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['register', 'forms', 'footer']),
+    ...await serverSideTranslations(locale, ['register', 'forms', 'footer', 'common', 'product']),
   },
 })
  

@@ -135,10 +135,15 @@ const Add = ({
       })
       setRefresh(forceRefresh)
       setErrors(newErrors);
-      setShowForm(true)
+      setShowForm(false)
     }
   }, [forceRefresh])
 
+  useEffect(() => {
+    if (!showForm)  {
+      setShowForm(true)
+    }
+  }, [form])
   
   return showForm && (
     <div className={classes.root}>

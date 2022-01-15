@@ -10,8 +10,8 @@ import { connect } from 'react-redux';
 import { useTranslation } from 'next-i18next'
 
 import { getCartTotal, getTotal, getImage } from 'src/utils';
-import { getImageUrlByType } from 'src/utils/form';
-import { getColorName } from 'src/utils/helpers/product'
+import { getColorName } from '@/utils/helpers/product'
+import { isLoggedIn } from '@/utils/auth';
 
 const styles = (theme) => ({
   root: {
@@ -107,10 +107,30 @@ const Index = React.memo(({
 }) => {
   const [products, setProducts] = useState([]);
   const [totals, setTotals] = useState({});
+  const [checkoutHtml, setCheckoutHtml] = useState(null);
   const { t } = useTranslation(['common', 'colors'])
 
   const dispathGetTotal = useMemo(() => (obj) => {
     return getCartTotal(obj);
+  }, [])
+
+  useEffect(() => {
+    if (showCheckout) {
+      const checkUserLoggedIn = isLoggedIn();
+      if (checkUserLoggedIn) {
+        setCheckoutHtml(
+          <Grid item lg={12} xs={12} >
+            <Button href="/checkout/f=e" className={`mainButton`}>{ t('common:checkout') }</Button>
+          </Grid>
+        )
+      } else {
+        setCheckoutHtml(
+          <Grid item lg={12} xs={12} >
+            <Button href="/checkout" className={`mainButton`}>{ t('common:checkout') }</Button>
+          </Grid>
+        )
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -285,11 +305,7 @@ const Index = React.memo(({
           )
         }
         {
-          showCheckout && (
-            <Grid item lg={12} xs={12} >
-              <Button href={`${userInfo.id ? '/checkout/f=e' : '/checkout'}`} className={`mainButton`}>{ t('common:checkout') }</Button>
-            </Grid>
-          )
+          checkoutHtml
         }
       </Grid>
     </div>

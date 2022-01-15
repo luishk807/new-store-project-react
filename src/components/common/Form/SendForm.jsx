@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import { 
-  withStyles,
-  Grid,
+  withStyles
 } from '@material-ui/core';
-import { useRouter } from 'next/router';
 
 import { validateForm, handleFormResponse } from '@/utils/form';
-import { capitalize } from 'src/utils';
 import { postItem } from 'src/api';
 import Form from '@/common/Form/Form';
+import { FORM_SCHEMA } from 'config';
+import { useTranslation } from 'next-i18next';
+import ReCAPTCHA from "react-google-recaptcha";
 
 const styles = (theme) => ({
   root: {
@@ -24,9 +24,14 @@ const styles = (theme) => ({
       width: '100%',
     }
   },
+  captcha: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
 });
 
-const AddForm = ({
+const SendForm = ({
   classes, 
   formSection, 
   entryForm, 
@@ -44,7 +49,9 @@ const AddForm = ({
     open: false,
     text: '',
   });
+  const { t } = useTranslation(['common']);
   const [form, setForm] = useState({})
+  const [captcha, setCaptcha] = useState(null)
 
   const formOnChange = (e, edrop = null) => {
     const { name, value } = edrop ? edrop : e.target;
@@ -67,29 +74,41 @@ const AddForm = ({
   }
 
   const handleSubmit = async (e) => {
-    let errorFound = false;
-    let key = '';
-    for (var i in form) {
-      errorFound = await validateForm(i, form[i]);
-      key = i;
-      if (!errorFound){
-        saveErrors(name)
-        break;
-      } else {
-        saveErrors(name, true, `${name} is required`)
+    if (captcha) {
+      let errorFound = false;
+      let key = '';
+      for (var i in form) {
+        errorFound = await validateForm(i, form[i]);
+        key = i;
+        if (!errorFound){
+          saveErrors(key)
+          break;
+        } else {
+          saveErrors(key, true, `${key} is required`)
+        }
       }
-    }
-    if (!errorFound) {
+      const field_key = FORM_SCHEMA[i].label
+      if (!errorFound) {
+        setSnack({
+          severity: 'error',
+          open: true,
+          text: `Unable to send form, ${field_key} is required`
+        })
+      } else {
+        const formSubmit = form;
+        const confirm = await postItem(section.url, formSubmit)
+        const resp = handleFormResponse(confirm);
+        setSnack(resp);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000)
+      }
+    } else {
       setSnack({
         severity: 'error',
         open: true,
-        text: `Unable to send form, ${i} is required`
+        text: t('common:captcha_verify')
       })
-    } else {
-      const formSubmit = form;
-      const confirm = await postItem(section.url, formSubmit)
-      const resp = handleFormResponse(confirm);
-      setSnack(resp);
     }
   }
 
@@ -112,7 +131,10 @@ const AddForm = ({
     setShowForm(true)
   }, [entryForm])
 
-  
+  function onChange(value) {
+    setCaptcha(value);
+  }
+
   return showForm && (
     <div className={classes.root}>
       <Form 
@@ -124,13 +146,21 @@ const AddForm = ({
         showCancelBtn={showCancel}
         snack={snack}
         type={type}
+        childrenPos="bottom"
         onCloseSnack={onCloseSnack}
-      />
+      >
+        <div className={classes.captcha}>
+          <ReCAPTCHA
+            sitekey={process.env.GOOGLE_RECHAPTCHA_SITE_V2}
+            onChange={onChange}
+          />
+        </div>
+      </Form>
     </div>
   );
 }
 
-AddForm.protoTypes = {
+SendForm.protoTypes = {
   classes: T.object,
   formSection: T.object,
   entryForm: T.object,
@@ -141,4 +171,4 @@ AddForm.protoTypes = {
   ignoreForm: T.array,
 }
 
-export default withStyles(styles)(AddForm);
+export default withStyles(styles)(SendForm);

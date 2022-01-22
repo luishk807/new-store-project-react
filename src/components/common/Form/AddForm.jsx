@@ -7,8 +7,7 @@ import {
 import { useRouter } from 'next/router';
 
 import { useTranslation } from 'next-i18next';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-
+import Captcha from '@/common/Captcha';
 import { addItem } from 'src/api';
 import { validateForm, loadMainOptions, handleFormResponse, checkEnforceDates } from '@/utils/form';
 import { capitalize } from 'src/utils';
@@ -27,7 +26,7 @@ const styles = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     }
-  },
+  }
 });
 
 const AddForm = ({
@@ -48,13 +47,15 @@ const AddForm = ({
   submitCustomName,
   cancelUrl = null,
   successUrl = null,
-  showCancel = true
+  showCancel = true,
+  captchaEnabled = false
 }) => {
   const router = useRouter()
   const [section, setSection] = useState({});
   const [errors, setErrors] = useState({});
   const [isAdmin, setIsAdmin] = useState(false);
   const [showForm, setShowForm] = useState(false);
+  const [captcha, setCaptcha] = useState(null)
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -117,57 +118,65 @@ const AddForm = ({
   }
 
   const handleSubmit = async (e) => {
-    let errorFound = false;
-    let key = '';
-    
-    await checkEnforceDates(form, ignoreForm);
-
-    for (var i in form) {
-      errorFound = await validateForm(i, form[i], ignoreForm);
-      key = i;
-      if (!errorFound){
-        saveErrors(name)
-        break;
-      } else {
-        saveErrors(name, true, `${name} is required`)
+    if (captcha) {
+      let errorFound = false;
+      let key = '';
+      
+      await checkEnforceDates(form, ignoreForm);
+  
+      for (var i in form) {
+        errorFound = await validateForm(i, form[i], ignoreForm);
+        key = i;
+        if (!errorFound){
+          saveErrors(name)
+          break;
+        } else {
+          saveErrors(name, true, `${name} is required`)
+        }
       }
-    }
-    if (!errorFound) {
-      const field_key = t(FORM_SCHEMA[i].tKey);
-
-      let errorText = t('forms:error_message_window.error_field', {
-        field: field_key
-      })
-
-      if (form[i] && form[i].length) {
-        errorText = t('forms:error_message_window.error_complete', {
+      if (!errorFound) {
+        const field_key = t(FORM_SCHEMA[i].tKey);
+        let errorText = t('forms:error_message_window.error_field', {
           field: field_key
         })
+  
+        if (form[i] && form[i].length) {
+          errorText = t('error_message_window.error_complete', {
+            field: field_key
+          })
+        }
+  
+        setSnack({
+          severity: 'error',
+          open: true,
+          text: errorText
+        })
+      } else {
+        addItem(section.url, form).then(confirm => {
+          const resp = handleFormResponse(confirm);
+          setSnack(resp);
+          if (confirm.data.status) {
+            setTimeout(() => {
+              if (successUrl) {
+                window.location.href = successUrl;
+              }
+            }, 1000);
+          }
+        }).catch(err => {
+          const resp = handleFormResponse(err.response);
+          setSnack(resp);
+        })
+  
       }
-
+    } else {
       setSnack({
         severity: 'error',
         open: true,
-        text: errorText
+        text: t('common:captcha_verify')
       })
-    } else {
-      addItem(section.url, form).then(confirm => {
-        const resp = handleFormResponse(confirm);
-        setSnack(resp);
-        if (confirm.data.status) {
-          setTimeout(() => {
-            if (successUrl) {
-              window.location.href = successUrl;
-            }
-          }, 1000);
-        }
-      }).catch(err => {
-        const resp = handleFormResponse(err.response);
-        setSnack(resp);
-      })
-
     }
   }
+
   const saveErrors = async (key, err = false, str = '') => {
     await setErrors({
       ...errors,
@@ -257,6 +266,17 @@ const AddForm = ({
     } catch(err) {}
   }
 
+  function onCaptchaChange(value) {
+    setCaptcha(value);
+  }
+
+  useEffect(() => {
+    // just run once if captcha is not needed
+    if (!captchaEnabled) {
+      setCaptcha(true)
+    }
+  }, []);
+
   useEffect(() => {
     let unmounted = false;
     let newErrors = {}
@@ -275,33 +295,70 @@ const AddForm = ({
   }, [entryForm])
   
   return showForm && (
-    <div className={classes.root}>
-      <Form 
-        title={title ? title : section.name} 
-        fileOnSave={handleSave} 
-        fileLimit={fileLimit}
-        fields={form} 
-        basicParams={basicParams}
-        classes={classes}
-        hideEntry={hideEntry}
-        errors={errors} 
-        showCancelBtn={showCancel}
-        id={id}
-        isAdmin={isAdmin}
-        showTitle={showTitle}
-        onChange={formOnChange} 
-        imageBoxOnSave={handleImageBoxSave}
-        imageBoxAddMore={addMoreImageBox}
-        onSubmit={handleSubmit} 
-        formSubmit={handleSubmit}
-        formCancel={handleCancel}
-        type="submit"
-        children={children}
-        snack={snack}
-        submitCustomName={submitCustomName}
-        onCloseSnack={onCloseSnack}
-      />
-    </div>
+    <>
+      {
+        captchaEnabled ? (
+          <div className={classes.root}>
+            <Form 
+              title={title ? title : section.name} 
+              fileOnSave={handleSave} 
+              fileLimit={fileLimit}
+              fields={form} 
+              basicParams={basicParams}
+              classes={classes}
+              hideEntry={hideEntry}
+              errors={errors} 
+              showCancelBtn={showCancel}
+              id={id}
+              isAdmin={isAdmin}
+              showTitle={showTitle}
+              onChange={formOnChange} 
+              imageBoxOnSave={handleImageBoxSave}
+              imageBoxAddMore={addMoreImageBox}
+              onSubmit={handleSubmit} 
+              formSubmit={handleSubmit}
+              formCancel={handleCancel}
+              type="submit"
+              snack={snack}
+              submitCustomName={submitCustomName}
+              onCloseSnack={onCloseSnack}
+              childrenPos="bottom"
+            >
+              <Captcha onChange={onCaptchaChange} />
+            </Form>
+          </div>
+        ) : (
+          <div className={classes.root}>
+            <Form 
+              title={title ? title : section.name} 
+              fileOnSave={handleSave} 
+              fileLimit={fileLimit}
+              fields={form} 
+              basicParams={basicParams}
+              classes={classes}
+              hideEntry={hideEntry}
+              errors={errors} 
+              showCancelBtn={showCancel}
+              id={id}
+              isAdmin={isAdmin}
+              showTitle={showTitle}
+              onChange={formOnChange} 
+              imageBoxOnSave={handleImageBoxSave}
+              imageBoxAddMore={addMoreImageBox}
+              onSubmit={handleSubmit} 
+              formSubmit={handleSubmit}
+              formCancel={handleCancel}
+              type="submit"
+              snack={snack}
+              submitCustomName={submitCustomName}
+              onCloseSnack={onCloseSnack}
+            >
+              {children}
+            </Form>
+          </div>
+        )
+      }
+    </>
   );
 }
 
@@ -323,7 +380,8 @@ AddForm.protoTypes = {
   children: T.node,
   submitCustomName: T.string,
   showCancel: T.bool,
-  hideEntry: T.object
+  hideEntry: T.object,
+  captchaEnabled: T.bool
 }
 
 export default withStyles(styles)(AddForm);

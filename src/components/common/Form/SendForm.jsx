@@ -3,13 +3,12 @@ import * as T from 'prop-types';
 import { 
   withStyles
 } from '@material-ui/core';
-
+import { FORM_SCHEMA } from 'config';
+import { useTranslation } from 'next-i18next';
 import { validateForm, handleFormResponse } from '@/utils/form';
 import { postItem } from 'src/api';
 import Form from '@/common/Form/Form';
-import { FORM_SCHEMA } from 'config';
-import { useTranslation } from 'next-i18next';
-import ReCAPTCHA from "react-google-recaptcha";
+import Captcha from '@/common/Captcha';
 
 const styles = (theme) => ({
   root: {
@@ -23,11 +22,6 @@ const styles = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     }
-  },
-  captcha: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
   }
 });
 
@@ -39,7 +33,9 @@ const SendForm = ({
   type,
   showTitle,
   ignoreForm, 
-  showCancel
+  showCancel,
+  childrenPos,
+  captchaEnabled
 }) => {
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
@@ -131,32 +127,55 @@ const SendForm = ({
     setShowForm(true)
   }, [entryForm])
 
-  function onChange(value) {
+  useEffect(() => {
+    // just run once if captcha is not needed
+    if (!captchaEnabled) {
+      setCaptcha(true)
+    }
+  }, []);
+
+  function onCaptchaChange(value) {
     setCaptcha(value);
   }
 
   return showForm && (
-    <div className={classes.root}>
-      <Form 
-        title={section.name} 
-        fields={form} 
-        errors={errors} 
-        onChange={formOnChange} 
-        formSubmit={handleSubmit} 
-        showCancelBtn={showCancel}
-        snack={snack}
-        type={type}
-        childrenPos="bottom"
-        onCloseSnack={onCloseSnack}
-      >
-        <div className={classes.captcha}>
-          <ReCAPTCHA
-            sitekey={process.env.GOOGLE_RECHAPTCHA_SITE_V2}
-            onChange={onChange}
-          />
-        </div>
-      </Form>
-    </div>
+    <>
+      {
+        captchaEnabled ? (
+          <div className={classes.root}>
+            <Form 
+              title={section.name} 
+              fields={form} 
+              errors={errors} 
+              onChange={formOnChange} 
+              formSubmit={handleSubmit} 
+              showCancelBtn={showCancel}
+              snack={snack}
+              type={type}
+              childrenPos="bottom"
+              onCloseSnack={onCloseSnack}
+            >
+              <Captcha onChange={onCaptchaChange} />
+            </Form>
+          </div>
+        ) : (
+          <div className={classes.root}>
+            <Form 
+              title={section.name} 
+              fields={form} 
+              errors={errors} 
+              onChange={formOnChange} 
+              formSubmit={handleSubmit} 
+              showCancelBtn={showCancel}
+              snack={snack}
+              type={type}
+              childrenPos={childrenPos}
+              onCloseSnack={onCloseSnack}
+            />
+          </div>
+        )
+      }
+    </>
   );
 }
 
@@ -169,6 +188,8 @@ SendForm.protoTypes = {
   showTitle: T.bool,
   customUrl: T.string,
   ignoreForm: T.array,
+  childrenPos: T.string,
+  captchaEnabled: T.bool,
 }
 
 export default withStyles(styles)(SendForm);

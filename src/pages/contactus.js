@@ -43,6 +43,7 @@ const ContactUs = ({classes}) => {
           entryForm={form} 
           type="email"
           showCancel={false}
+          captchaEnabled={true}
         />
       </div>
     </LayoutTemplate>

@@ -3,7 +3,7 @@ import * as T from 'prop-types';
 import {
   withStyles,
   Grid,
-  GridList,
+  ImageList,
   GridListTile,
   GridListTileBar,
   IconButton,
@@ -620,11 +620,11 @@ const Form = ({
             {
               userImagesCont && (
                 <Grid container justifyContent="center">
-                  <GridList cellHeight={160} className={classes.gridList} cols={2}>
+                  <ImageList rowHeight={160} className={classes.gridList} cols={2}>
                   {
                     userImagesCont
                   }
-                  </GridList>
+                  </ImageList>
                 </Grid>
               )
             }
@@ -640,11 +640,11 @@ const Form = ({
             {
               imageBoxImagesCont && (
                 <Grid container justifyContent="center">
-                  <GridList cellHeight={160} className={classes.gridList} cols={2}>
+                  <ImageList rowHeight={160} className={classes.gridList} cols={2}>
                   {
                     imageBoxImagesCont
                   }
-                  </GridList>
+                  </ImageList>
                 </Grid>
               )
             }

@@ -26,6 +26,7 @@ const styles = (theme) => ({
 
 const Add = ({classes}) => {
    const router = useRouter()
+   console.log("router", router.query)
    const id = router.query.id;
 
   const form = {
@@ -41,16 +42,18 @@ const Add = ({classes}) => {
     country: defaultCountry
   }
 
+  const ignoreEntry = ['mobile','phone', 'province', 'district', 'corregimiento', 'addressB', 'zone', 'country']
+
   return (
     <AdminLayoutTemplate>
       <Grid container>
         <Grid item lg={12}>
           <AddForm 
-            customUrl={`/admin/useraddresses/${id}`} 
-            cancelUrl={`/admin/useraddresses/${id}`} 
-            successUrl={`/admin/useraddresses/${id}`} 
-            ignoreForm={['mobile','phone', 'province', 'district', 'corregimiento', 'addressB', 'zone', 'country']}
-            name={ADMIN_SECTIONS.address.key} 
+            customUrl={`/admin/user-addresses/${id}`} 
+            cancelUrl={`/admin/user-addresses/${id}`} 
+            successUrl={`/admin/user-addresses/${id}`} 
+            ignoreForm={ignoreEntry}
+            adminSection={ADMIN_SECTIONS.userAddress} 
             id={id} 
             entryForm={form} />
         </Grid>
@@ -63,11 +66,38 @@ Add.protoTypes = {
   classes: T.object
 }
 
+/** this section is important for dynamic path, you must set all posible params */
+export async function getStaticPaths(params) {
+  const paths_t = [
+    { 
+      params: { 
+        id: `${params.id}` 
+      } 
+    },
+  ];
+
+  return {
+      paths: paths_t,
+      fallback: true
+  }
+}
+
 /** This section is mandatory for next-18next translation to work */
-export const getStaticProps = async ({ locale }) => ({
-  props: {
-    ...await serverSideTranslations(locale, ['forms']),
-  },
-})
+export async function getStaticProps({locale, params}) {
+  // params contains the post `id`.
+  // If the route is like /posts/1, then params.id is 1
+  const post = params.id
+
+  return {
+    props: {
+      posts: [{id: post}],
+      ...await serverSideTranslations(locale, ['forms']),
+    }
+  }
+}
 
 export default withStyles(styles)(Add);
+
+
+
+

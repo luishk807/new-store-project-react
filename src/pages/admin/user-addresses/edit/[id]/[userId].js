@@ -8,10 +8,9 @@ import {
 } from '@material-ui/core';
 
 import { ADMIN_SECTIONS } from '@/constants/admin';
-import AddForm from '@/common/Form/AddForm';
+import EditForm from '@/common/Form/EditForm';
 import { defaultCountry } from 'config';
 import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -24,9 +23,10 @@ const styles = (theme) => ({
   },
 });
 
-const Add = ({classes}) => {
+const Edit = ({classes}) => {
    const router = useRouter()
    const id = router.query.id;
+   const uid = router.query.userId;
 
   const form = {
     name: null,
@@ -38,36 +38,30 @@ const Add = ({classes}) => {
     district: null,
     corregimiento: null,
     zone: null,
-    country: defaultCountry
+    country: defaultCountry,
   }
 
   return (
     <AdminLayoutTemplate>
       <Grid container>
         <Grid item lg={12}>
-          <AddForm 
-            customUrl={`/admin/useraddresses/${id}`} 
-            cancelUrl={`/admin/useraddresses/${id}`} 
-            successUrl={`/admin/useraddresses/${id}`} 
+          <EditForm 
+            customUrl={`/admin/user-addresses/${uid}`} 
+            cancelUrl={`/admin/user-addresses/${uid}`} 
+            successUrl={`/admin/user-addresses/${uid}`} 
             ignoreForm={['mobile','phone', 'province', 'district', 'corregimiento', 'addressB', 'zone', 'country']}
-            name={ADMIN_SECTIONS.address.key} 
+            adminSection={ADMIN_SECTIONS.userAddress} 
             id={id} 
-            entryForm={form} />
+            entryForm={form} 
+          />
         </Grid>
       </Grid>
     </AdminLayoutTemplate>
   );
 }
 
-Add.protoTypes = {
+Edit.protoTypes = {
   classes: T.object
 }
 
-/** This section is mandatory for next-18next translation to work */
-export const getStaticProps = async ({ locale }) => ({
-  props: {
-    ...await serverSideTranslations(locale, ['forms']),
-  },
-})
-
-export default withStyles(styles)(Add);
+export default withStyles(styles)(Edit);

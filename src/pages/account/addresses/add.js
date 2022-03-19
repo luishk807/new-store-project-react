@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 
 import AddForm from 'src/components/common/Form/AddForm';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { USER_SECTIONS } from 'src/constants/user';
 import { defaultCountry } from 'config';
 import UserLayoutTemplate from 'src/components/common/Layout/UserLayoutTemplate';
@@ -60,4 +61,12 @@ const Add = ({classes}) => {
 Add.protoTypes = {
   classes: T.object,
 }
+
+/** This section is mandatory for next-18next translation to work, only inside /pages */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['forms', 'footer']),
+  },
+})
+
 export default withStyles(styles)(Add);

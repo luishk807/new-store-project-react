@@ -6,13 +6,12 @@ import {
   Button, 
   TextField,
 } from '@material-ui/core';
-
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { USER_SECTIONS } from '@/constants/user';
 import LayoutTemplate from '@/common/Layout/LayoutTemplate';
 import Typography from '@/common/Typography';
 import AddForm from '@/common/Form/AddForm';
-import { useTranslation } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -68,6 +67,7 @@ const Register = ({classes, data, showRegister}) => {
                   entryForm={form}
                   showCancel={false}
                   showTitle={false}
+                  captchaEnabled={true}
                   submitCustomName={t("common:next")}
                 />
               </Grid>

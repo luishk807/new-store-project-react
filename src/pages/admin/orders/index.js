@@ -7,10 +7,10 @@ import {
   Button,
   Checkbox,
 } from '@material-ui/core';
-import Pagination from '@material-ui/lab/Pagination';
 import moment from 'moment';
 import { LIMIT } from 'config';
 import { ORDER_STATUS } from '@/constants/orders';
+import Pagination from '@/common/Pagination';
 import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 import { deleteOrderById, deleteOrderByOrderNumbers, getAllOrdersWithFilter, saveOrderStatusBulk,  } from 'src/api/orders';
 import Snackbar from '@/common/Snackbar';
@@ -124,14 +124,6 @@ const styles = (theme) => ({
       display: 'block'
     }
   },
-  paginationItem: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  paginationContainer: {
-    padding: '20px 0px',
-  },
   selectStyle: {
     padding: '8px 5px',
     borderRadius: 5,
@@ -186,18 +178,17 @@ const Index = ({classes}) => {
   const [orders, setOrders] = useState([]);
   const [statuses, setStatuses] = useState([]);
   const [showData, setShowData] = useState(false);
-  const [showEmpty, setShowEmpty] = useState(false);
   const [reloadCheck, setReloadCheck] = useState(false);
-  const [page, setPage] = useState(1);
-  const [paginationHtml, setPaginationHtml] = useState(null);
-  const [totalCount, setTotalCount] = useState(0);
   const [selectCheckbox, setSelectCheckbox] = useState(false);
   const [selectedChecks, setSelectedChecks] = useState([])
   const [selectedStatusChange, setSelectedStatusChange] = useState(null);
-  const [showCompletedOrders, setShowCompletedOrders] = useState(false)
+  const [showCompletedOrders, setShowCompletedOrders] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(false)
+  const [totalCounts, setTotalCounts] = useState(0)
 
   const [filterList, setFilterList] = useState({
     sortBy: null,
+    page: 1,
     limit: LIMIT,
     searchValue: null,
     searchBy: null,
@@ -235,20 +226,13 @@ const Index = ({classes}) => {
     text: '',
   });
 
-  const loadOrders = async() => {
-    const gOrders = await getAllOrdersWithFilter({
+  const loadOrders = async(page) => {
+    const sendData = {
       ...filterList,
       page: page
-    });
-    
-    if (gOrders) {
-      setOrders('rows' in gOrders ? gOrders.rows : gOrders.items);
+    };
 
-      setTotalCount(gOrders.count)
-      if (!gOrders.count || !gOrders.rows) {
-        setShowEmpty(true);
-      }
-    }
+    fetchOrders(sendData);
   };
 
   const delItem = async(id) => {
@@ -258,7 +242,11 @@ const Index = ({classes}) => {
         open: true,
         text: `Order Deleted`,
       })
-      loadOrders()
+      const sendData = {
+        ...filterList,
+        page: 1
+      };
+      loadOrders(sendData)
     }).catch((err) => {
       setSnack({
         severity: 'error',
@@ -305,19 +293,12 @@ const Index = ({classes}) => {
     })
   }
 
-  const handlePaginationChange = (event, value) => {
-    setPage(value);
+  const handlePaginationChange = (value) => {
+    setFilterList({
+      ...filterList,
+      page: value
+    })
     setShowData(false)
-  }
-
-  const loadPagination = () => {
-    setPaginationHtml(
-      <Grid container className={classes.paginationContainer}>
-        <Grid item lg={12} xs={12} className={classes.paginationItem}>
-          <Pagination onChange={handlePaginationChange} size="large" showFirstButton showLastButton count={Math.round(totalCount / LIMIT )} page={page} variant="outlined" shape="rounded" />
-        </Grid>
-      </Grid>
-    )
   }
   
   const handleActionMenu = (e) => {
@@ -335,7 +316,7 @@ const Index = ({classes}) => {
       sortBy: data.value
     })
     const sendData = {
-      page: page,
+      page: filterList.page,
       limit: filterList.limit,
       sortBy: data.value,
       searchValue: filterList.searchValue,
@@ -343,21 +324,7 @@ const Index = ({classes}) => {
       showCompleted: showCompletedOrders,
     };
 
-    const gOrders = await getAllOrdersWithFilter(sendData);
-    
-    if (gOrders) {
-      setOrders('rows' in gOrders ? gOrders.rows : gOrders.items);
-      setTotalCount(gOrders.count)
-      if (!gOrders.count || !gOrders.rows) {
-        setShowEmpty(true);
-      }
-    } else {
-      setSnack({
-        severity: 'error',
-        open: true,
-        text: `Order Not Found`,
-      })
-    }
+    fetchOrders(sendData)
   }
 
   const handleStatusChange = (event) => {
@@ -395,27 +362,16 @@ const Index = ({classes}) => {
         showCompleted: showCompletedOrders,
       })
 
-      const gOrders = await getAllOrdersWithFilter({
-        page: page,
+      const dataToSend = {
+        page: filterList.page,
         limit: filterList.limit,
         sortBy: filterList.sortBy,
         searchValue: e.value,
         searchBy: e.searchBy,
         showCompleted: showCompletedOrders,
-      });
-      if (gOrders) {
-        setOrders('rows' in gOrders ? gOrders.rows : gOrders.items);
-        setTotalCount(gOrders.count)
-        if (!gOrders.count || !gOrders.rows) {
-          setShowEmpty(true);
-        }
-      } else {
-        setSnack({
-          severity: 'error',
-          open: true,
-          text: `Order Not Found`,
-        })
       }
+
+      fetchOrders(dataToSend)
     }
   }
   const handleDialogClick = (e) => {
@@ -526,7 +482,7 @@ const Index = ({classes}) => {
     })
 
     const sendData = {
-      page: page,
+      page: filterList.page,
       limit: filterList.limit,
       sortBy: filterList.sortBy,
       searchValue: filterList.searchValue,
@@ -534,14 +490,14 @@ const Index = ({classes}) => {
       showCompleted: checkValue,
     };
 
-    const gOrders = await getAllOrdersWithFilter(sendData);
-    
+    fetchOrders(sendData)
+  }
+
+  const fetchOrders = async(params) => {
+    const gOrders = await getAllOrdersWithFilter(params);
     if (gOrders) {
       setOrders('rows' in gOrders ? gOrders.rows : gOrders.items);
-      setTotalCount(gOrders.count)
-      if (!gOrders.count || !gOrders.rows) {
-        setShowEmpty(true);
-      }
+      setTotalCounts(gOrders?.count)
     } else {
       setSnack({
         severity: 'error',
@@ -549,7 +505,6 @@ const Index = ({classes}) => {
         text: `Order Not Found`,
       })
     }
-
   }
 
   const updateColorRow = (item) => {
@@ -601,24 +556,17 @@ const Index = ({classes}) => {
   }
   
   useEffect(() => {
+    setForceUpdate(!forceUpdate)
     if (orders && orders.length) {
       setShowData(true);
+    } else {
+      setShowData(false);
     }
   }, [orders]);
 
   useEffect(() => {
-    loadOrders();
-    loadPagination();
-  }, [page]);
-
-  useEffect(() => {
-    loadPagination();
-    loadStatus();
-  }, [totalCount]);
-
-  useEffect(() => {    
-    setPage(1);
-  }, []);
+    loadOrders(filterList.page);
+  }, [filterList.page]);
 
   return (
     <AdminLayoutTemplate>
@@ -650,9 +598,13 @@ const Index = ({classes}) => {
           </Grid>
         </Hidden>
       </Grid>
-      {
-        paginationHtml && !showEmpty && paginationHtml
-      }
+      <Pagination 
+        onPageClick={handlePaginationChange}
+        onTotalChange={loadStatus}
+        showData={showData}
+        total={totalCounts}
+        refresh={forceUpdate}
+      >
       {
         selectCheckbox ? (
           <Grid container>
@@ -678,7 +630,7 @@ const Index = ({classes}) => {
             <Grid item lg={2} xs={12} className={classes.showAllCheckbox}>
               <CheckBoxLabel 
                 name="Don't show completed"
-                defaultChecked={true}
+                defaultChecked={!showCompletedOrders}
                 onClick={handleShowAllCheckBox}
                />
             </Grid>
@@ -693,7 +645,7 @@ const Index = ({classes}) => {
             <Grid item lg={2} xs={10} className={classes.showAllCheckbox}>
               <CheckBoxLabel 
                 name="Don't show completed"
-                defaultChecked={true}
+                defaultChecked={!showCompletedOrders}
                 onClick={handleShowAllCheckBox}
                />
             </Grid>
@@ -809,9 +761,7 @@ const Index = ({classes}) => {
           </Grid>
         )
       }
-      {
-        paginationHtml && !showEmpty && paginationHtml
-      }
+      </Pagination>
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
       <DialogModal open={dialogContent.open} onClick={handleDialogClick} title={dialogContent.title} content={dialogContent.content} actionLabels={dialogContent.actionLabels} />
     </AdminLayoutTemplate>

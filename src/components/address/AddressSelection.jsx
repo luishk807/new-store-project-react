@@ -12,14 +12,17 @@ import {
 import { connect } from 'react-redux';
 import { finished } from 'stream';
 import { useTranslation } from 'next-i18next'
-import { formatNumber } from 'src/utils';
-import { defaultCountry } from 'config';
+import { formatNumber, getAddressFields } from 'src/utils';
+import { isLoggedIn } from '@/utils/auth';
+import { defaultCountry, defaultPanama } from 'config';
 import { validateForm, handleFormResponse } from 'src/utils/form';
 import { getAddressesByUser, getAddressById, createAddress } from 'src/api/addresses';
 import Icons from '@/components/common/Icons';
 import Snackbar from '@/components/common/Snackbar';
 import ActionForm from '@/components/common/Form/Action/Add';
 import RadioBox from '@/components/common/RadioBox';
+import { ContactSupportOutlined } from '@material-ui/icons';
+
 
 const styles = (theme) => ({
   root: {
@@ -56,12 +59,35 @@ const styles = (theme) => ({
 });
 
 
-const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
+const AddressSelection = ({
+  classes, 
+  onSelected, 
+  userId, 
+  showTitle = true,
+  entryForm,
+  defaultFormSection,
+  defaultDisableFields,
+  defaultIgnoreFields,
+  defaultShowCancel,
+  resetPanamaSection,
+  forceRefresh,
+  onFormChange,
+  onSubmitAction,
+  defaultType,
+  selectedDeliveryOption
+}) => {
   const [userAddress, setUserAddress] = useState(null);
   const [userAddresses, setUserAddresses] = useState([]);
   const [showAction, setShowAction] = useState(null);
   const [addresses, setAddresses] = useState([]);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [hideFields, setHideFields] = useState(null);
+  const [disabledFields, setDisabledFields] = useState(null);
+  const [ignoreFields, setIgnoreFields] = useState(null);
+  const [formSection, setFormSection] = useState({});
+  const [showCancelOption, setShowCancelOption] = useState(true);
   const [showData, setShowData] = useState(false);
+  const [formType, setFormType] = useState('action')
   const [form, setForm] = useState({});
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -79,18 +105,17 @@ const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
 
   const loadUserAddress = async() => {
     let getAdd = null;
-    const addresses = await getAddressesByUser()
+    const addresses = isUserLoggedIn ? await getAddressesByUser() : null;
     if (addresses && !addresses.length || !addresses) {
-      setShowAction('add');
+      setShowAction('add')
     } else {
-      getAdd = addresses.filter(address => address.selected === true);
-      if (!getAdd) {
+      getAdd = addresses.filter(address => address.selected === true)[0];
+      if (!getAdd || (getAdd && !getAdd.length)) {
         getAdd = addresses[0];
       }
-
-      let getSimple = formatSimpleAddress(getAdd[0]);
+      let getSimple = formatSimpleAddress(getAdd);
       setUserAddresses(addresses);
-      setUserAddress(getAdd[0])
+      setUserAddress(getAdd)
       onSelected(getSimple);
       setShowAction(null);
     }
@@ -98,33 +123,37 @@ const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
   }
 
   const formatSimpleAddress = (add) => {
-    return {
-      name: add.name,
-      address: add.address,
-      addressB: add.addressB,
-      email: add.email,
-      phone: add.phone,
-      province: add.addressProvince,
-      district: add.addressDistrict,
-      corregimiento: add.addressCorregimiento,
-      // zone: add.addressZone,
-      none: add.note,
-      country: add.addressCountry,
-    }
+    const add_val = {
+      name: add?.name,
+      address: add?.address,
+      addressB: add?.addressB,
+      email: add?.email,
+      phone: add?.phone,
+      province: add?.addressProvince,
+      district: add?.addressDistrict,
+      corregimiento: add?.addressCorregimiento,
+      // zone: add?.addressZone,
+      none: add?.note,
+      country: add?.addressCountry,
+    } 
+    return add_val;
   }
 
   const handleDeliveryForm = async(subform) => {
-    subform = {
-      ...subform,
-      user: userId
+    if (!isUserLoggedIn) {
+      onSubmitAction(subform)
+    } else {
+      subform = {
+        ...subform
+      }
+      const confirm = await createAddress(subform);
+      const resp = handleFormResponse(confirm);
+      resetForm();
+      onSelected(subform);
+      loadUserAddress()
+      changeContent(null);
+      setSnack(resp);
     }
-    const confirm = await createAddress(subform);
-    const resp = handleFormResponse(confirm);
-    resetForm();
-    onSelected(subform);
-    loadUserAddress()
-    changeContent(null);
-    setSnack(resp);
   }
 
   const handleDeliveryCancel = async() => {
@@ -147,6 +176,13 @@ const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
     }
     changeContent(null)
   }
+
+  const handleOnChangeForm = (e) => {
+    if (onFormChange) {
+      onFormChange(e)
+    }
+  }
+
 
   const loadActionHtml = () => {
     switch(showAction) {
@@ -190,16 +226,19 @@ const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
           <Grid container className={classes.headerContainer}>
             <ActionForm 
               classes={{root: classes.formRoot}}
-              formSection={{
-                name: 'Direccion de entrega',
-              }} 
-              ignoreForm={['selected']}
-              showCancel={true}
+              formSection={formSection} 
+              ignoreForm={ignoreFields}
+              hideEntry={hideFields}
+              showCancel={showCancelOption}
               showTitle={showTitle}
+              disableFields={disabledFields}
+              resetPanamaSection={resetPanamaSection}
+              forceRefresh={forceRefresh}
+              onFormChange={handleOnChangeForm}
               onCancel={handleDeliveryCancel}
               entryForm={form} 
               onSubmitAction={handleDeliveryForm}
-              type="action"
+              type={formType}
             />
           </Grid>
         )
@@ -272,25 +311,61 @@ const AddressSelection = ({classes, onSelected, userId, showTitle = true }) => {
   }
 
   const resetForm = () => {
-    setForm({
-      name: null,
-      email: null,
-      phone: null,
-      address: null,
-      addressB: null,
-      province: null,
-      district: null,
-      corregimiento: null,
-      // zone: null,
-      country: defaultCountry,
-      note: null,
-      selected: true
-    })
+    const deliveryOption = +selectedDeliveryOption?.id;
+
+    let defaultIgnoreFields = ['country'];
+    let defaultHideFields = [];
+
+    let fields = getAddressFields(deliveryOption);
+
+    if (deliveryOption !== 1) {
+      if (deliveryOption == 2) {
+        defaultIgnoreFields =  defaultIgnoreFields.concat(['province', 'district']);
+        defaultHideFields = defaultHideFields.concat(['province', 'district']);
+      } 
+      if (isUserLoggedIn) {
+        fields = {
+          ...fields,
+          selected: true
+        }
+      }
+    }
+    setHideFields(defaultHideFields);
+    setIgnoreFields(defaultIgnoreFields);
+    setDisabledFields(defaultIgnoreFields);
+    setForm(fields)
   }
+
   useEffect(() => {
-   resetForm()
-   loadUserAddress();
+    // TODO: finish setting up the initial setting with remaning fields
+   let setFormSect = defaultFormSection ? defaultFormSection : {
+    name: 'Direccion de entrega',
+   }
+
+   let setIgnoreSec = defaultIgnoreFields ? defaultIgnoreFields : ['selected'];
+
+   if (defaultDisableFields) {
+    setDisabledFields(defaultDisableFields)
+   }
+   if (defaultType) {
+    setFormType(defaultType)
+   }
+   if (typeof defaultShowCancel !== "null") {
+    setShowCancelOption(defaultShowCancel)
+   }
+
+   setIgnoreFields(setIgnoreSec);
+
+   setFormSection(setFormSect)
+
+   const getUserLogged = isLoggedIn();
+   setIsUserLoggedIn(getUserLogged)
   }, [])
+
+  useEffect(() => {
+    loadUserAddress();
+    resetForm()
+  }, [selectedDeliveryOption])
 
   return showData && (
     <div className={classes.root}>
@@ -306,7 +381,19 @@ AddressSelection.protoTypes = {
   classes: T.object,
   data: T.object,
   onSelected: T.func,
-  showTitle: T.bool
+  showTitle: T.bool,
+
+  entryForm: T.object,
+  defaultFormSection: T.object,
+  defaultDisableFields: T.object,
+  defaultIgnoreFields: T.object,
+  defaultShowCancel: T.bool,
+  forceRefresh: T.bool,
+  resetPanamaSection: T.bool,
+  onFormChange: T.func,
+  onSubmitAction: T.func,
+  selectedDeliveryOption: T.obj,
+  defaultType: T.string
 }
 
 const mapStateToProps = state => ({

@@ -18,7 +18,8 @@ const styles = (theme) => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
+    width: '60%',
+    margin: '0px auto',
     textAlign: 'center',
   },
 });
@@ -38,7 +39,8 @@ const EditForm = ({
   allowDelete,
   customUrl = null,
   cancelUrl = null,
-  successUrl = null
+  successUrl = null,
+  usePreviousUrl
 }) => {
   const router = useRouter()
   const [errors, setErrors] = useState({});
@@ -163,16 +165,23 @@ const EditForm = ({
         formSubmit['imageBox'] = imageBox;
         formSubmit['saved'] = imageBoxDelete;
       }
-      const confirm = await saveItem(section.url, id, formSubmit)
-      const resp = handleFormResponse(confirm);
-      setSnack(resp);
-      if (confirm.data.status) {
-        setTimeout(() => {
-          if (successUrl) {
-            window.location.href = successUrl;
-          }
-        }, 1000);
-      }
+
+      saveItem(section.url, id, formSubmit).then(confirm => {
+        const resp = handleFormResponse(confirm);
+        setSnack(resp);
+        if (confirm.data.status) {
+          setTimeout(() => {
+            if (successUrl) {
+              window.location.href = successUrl;
+            } else if (usePreviousUrl) {
+              router.back();
+            }
+          }, 1000);
+        }
+      }).catch(err => {
+        const resp = handleFormResponse(err.response);
+        setSnack(resp);
+      })
     }
   }
   const saveErrors = async (key, err = false, str = '') => {
@@ -338,7 +347,8 @@ EditForm.protoTypes = {
   showTitle: T.bool,
   entryForm: T.object,
   ignoreForm: T.array,
-  children: T.node
+  children: T.node,
+  usePreviousUrl: T.bool
 }
 
 export default withStyles(styles)(EditForm);

@@ -53,6 +53,7 @@ const Edit = ({classes}) => {
         classes={{root: classes.formRoot}} 
         userSection={USER_SECTIONS.userAddress} 
         id={id} 
+        usePreviousUrl={true}
         entryForm={form} 
       />
     </UserLayoutTemplate>

@@ -1,34 +1,38 @@
 import Api from '@/services/api';
 
 export const saveAddress = async(data, id) => {
-  return Api.post(`useraddresses/${id}`, data);
+  return Api.post(`user-addresses/${id}`, data);
 }
 
 export const updateAddress = async(data, id) => {
-  return Api.save(`useraddresses/${id}`, data);
+  return Api.save(`user-addresses/${id}`, data);
+}
+
+export const setUserFavAddress = async(id) => {
+  return Api.save(`user-addresses/favorite/${id}/address`);
 }
 
 export const createAddress = async(data) => {
-  return Api.post(`useraddresses`, data);
+  return Api.post(`user-addresses`, data);
 }
 
 export const deleteAddress = async(id) => {
   const config = {
     'cotent-Type': 'application/x-www-form-urlencoded'
   }
-  return Api.delete(`useraddresses/${id}`, {}, config);
+  return Api.delete(`user-addresses/${id}`, {}, config);
 }
 
 export const getAddresses = async(data) => {
-  return Api.get(`useraddresses`, data);
+  return Api.get(`user-addresses`, data);
 }
 
 export const getAddressByUserId = async(id) => {
-  return Api.get(`useraddresses/addresses/user/${id}`);
+  return Api.get(`user-addresses/addresses/user/${id}`);
 }
 
 export const getAddressesByUser = async(data) => {
-  return Api.get(`useraddresses/addresses/user`, data);
+  return Api.get(`user-addresses/addresses/user`, data);
 }
 
 export const getAddressById = async(id) => {
@@ -38,5 +42,5 @@ export const getAddressById = async(id) => {
   const data = {
     id: id
   }
-  return Api.get(`useraddresses`, data);
+  return Api.get(`user-addresses`, data);
 }

@@ -66,7 +66,7 @@ export const ADMIN_SECTIONS = {
     name: 'User Address',
     names: 'User Addresses',
     key: 'userAddress',
-    url: 'useraddresses',
+    url: 'user-addresses/user',
     option: 'useraddress'
   },
   'country': {
@@ -122,7 +122,7 @@ export const ADMIN_SECTIONS = {
     name: 'Address',
     names: 'address',
     key: 'address',
-    url: 'useraddresses',
+    url: 'user-addresses',
     option: 'address'
   },
   'imageBox': {

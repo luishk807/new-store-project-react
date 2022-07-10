@@ -22,6 +22,7 @@ const styles = (theme) => ({
     fill: 'white',
     zIndex: 1,
     width: 25,
+    height: '100%'
   },
   categoryDropdownContainer: {
     position: 'absolute',

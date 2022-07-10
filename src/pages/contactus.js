@@ -43,6 +43,7 @@ const ContactUs = ({classes}) => {
           entryForm={form} 
           type="email"
           showCancel={false}
+          captchaEnabled={true}
         />
       </div>
     </LayoutTemplate>
@@ -56,7 +57,7 @@ ContactUs.protoTypes = {
 /** This section is mandatory for next-18next translation to work, only inside /pages */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['footer']),
+    ...await serverSideTranslations(locale, ['footer', 'common']),
   },
 })
 

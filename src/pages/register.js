@@ -6,13 +6,12 @@ import {
   Button, 
   TextField,
 } from '@material-ui/core';
-
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { USER_SECTIONS } from '@/constants/user';
 import LayoutTemplate from '@/common/Layout/LayoutTemplate';
 import Typography from '@/common/Typography';
 import AddForm from '@/common/Form/AddForm';
-import { useTranslation } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -66,7 +65,10 @@ const Register = ({classes, data, showRegister}) => {
                   ignoreForm={ignoreEntry} 
                   userSection={USER_SECTIONS.user} 
                   entryForm={form}
+                  showCancel={false}
                   showTitle={false}
+                  captchaEnabled={true}
+                  submitCustomName={t("common:next")}
                 />
               </Grid>
               <Grid item lg={12} xs={12} className={classes.terms}>
@@ -99,7 +101,7 @@ Register.protoTypes = {
 /** This section is mandatory for next-18next translation to work */
 export const getStaticProps = async ({ locale }) => ({
   props: {
-    ...await serverSideTranslations(locale, ['register', 'forms', 'footer']),
+    ...await serverSideTranslations(locale, ['register', 'forms', 'footer', 'common', 'product']),
   },
 })
  

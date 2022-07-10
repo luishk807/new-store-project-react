@@ -3,11 +3,12 @@ import * as T from 'prop-types';
 import { 
   withStyles
 } from '@material-ui/core';
-
+import { FORM_SCHEMA } from 'config';
+import { useTranslation } from 'next-i18next';
 import { validateForm, handleFormResponse } from '@/utils/form';
 import { postItem } from 'src/api';
 import Form from '@/common/Form/Form';
-import SimpleCaptcha from '../../../lib/captcha'
+import Captcha from '@/common/Captcha';
 
 const styles = (theme) => ({
   root: {
@@ -21,7 +22,7 @@ const styles = (theme) => ({
     [theme.breakpoints.down('sm')]: {
       width: '100%',
     }
-  },
+  }
 });
 
 const SendForm = ({
@@ -32,7 +33,9 @@ const SendForm = ({
   type,
   showTitle,
   ignoreForm, 
-  showCancel
+  showCancel,
+  childrenPos,
+  captchaEnabled
 }) => {
   const [errors, setErrors] = useState({});
   const [showForm, setShowForm] = useState(false);
@@ -42,6 +45,7 @@ const SendForm = ({
     open: false,
     text: '',
   });
+  const { t } = useTranslation(['common']);
   const [form, setForm] = useState({})
   const [captcha, setCaptcha] = useState(null)
 
@@ -66,58 +70,46 @@ const SendForm = ({
   }
 
   const handleSubmit = async (e) => {
-    if (captcha.validate()) {
+    if (captcha) {
       let errorFound = false;
       let key = '';
       for (var i in form) {
         errorFound = await validateForm(i, form[i]);
         key = i;
         if (!errorFound){
-          saveErrors(name)
+          saveErrors(key)
           break;
         } else {
-          saveErrors(name, true, `${name} is required`)
+          saveErrors(key, true, `${key} is required`)
         }
       }
+      const field_key = FORM_SCHEMA[i].label
       if (!errorFound) {
         setSnack({
           severity: 'error',
           open: true,
-          text: `Unable to send form, ${i} is required`
+          text: `Unable to send form, ${field_key} is required`
         })
       } else {
         const formSubmit = form;
         const confirm = await postItem(section.url, formSubmit)
         const resp = handleFormResponse(confirm);
         setSnack(resp);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000)
       }
     } else {
       setSnack({
         severity: 'error',
         open: true,
-        text: 'Favor introducir la respuesta de la suma'
+        text: t('common:captcha_verify')
       })
     }
   }
 
   const onCloseSnack = () => {
     setSnack({...snack, open: false})
-  }
-
-  const setupCaptcha = () => {
-    setCaptcha(new SimpleCaptcha({
-      inputElementSelector: '#captchaInput',
-      captchaId: 'captchaId',
-      styles: {
-          width: 100,
-          height: 40,
-          textBaseline: 'top',
-          font: '24px Times New Roman',
-          textAlign: 'left',
-          fillStyle: '#ddd',
-          direction: 'ltr'
-      }
-    }))
   }
 
   useEffect(() => {
@@ -135,28 +127,55 @@ const SendForm = ({
     setShowForm(true)
   }, [entryForm])
 
-  /** Setup captcha when the form is shown */
   useEffect(() => {
-    if (showForm) {
-      setupCaptcha()
+    // just run once if captcha is not needed
+    if (!captchaEnabled) {
+      setCaptcha(true)
     }
-  }, [showForm])
+  }, []);
+
+  function onCaptchaChange(value) {
+    setCaptcha(value);
+  }
 
   return showForm && (
-    <div className={classes.root}>
-      <Form 
-        title={section.name} 
-        fields={form} 
-        errors={errors} 
-        onChange={formOnChange} 
-        formSubmit={handleSubmit} 
-        showCancelBtn={showCancel}
-        snack={snack}
-        type={type}
-        onCloseSnack={onCloseSnack}
-      />
-      <input id="captchaInput" type="text" placeholder="Introduzca el resultado..."></input>
-    </div>
+    <>
+      {
+        captchaEnabled ? (
+          <div className={classes.root}>
+            <Form 
+              title={section.name} 
+              fields={form} 
+              errors={errors} 
+              onChange={formOnChange} 
+              formSubmit={handleSubmit} 
+              showCancelBtn={showCancel}
+              snack={snack}
+              type={type}
+              childrenPos="bottom"
+              onCloseSnack={onCloseSnack}
+            >
+              <Captcha onChange={onCaptchaChange} />
+            </Form>
+          </div>
+        ) : (
+          <div className={classes.root}>
+            <Form 
+              title={section.name} 
+              fields={form} 
+              errors={errors} 
+              onChange={formOnChange} 
+              formSubmit={handleSubmit} 
+              showCancelBtn={showCancel}
+              snack={snack}
+              type={type}
+              childrenPos={childrenPos}
+              onCloseSnack={onCloseSnack}
+            />
+          </div>
+        )
+      }
+    </>
   );
 }
 
@@ -169,6 +188,8 @@ SendForm.protoTypes = {
   showTitle: T.bool,
   customUrl: T.string,
   ignoreForm: T.array,
+  childrenPos: T.string,
+  captchaEnabled: T.bool,
 }
 
 export default withStyles(styles)(SendForm);

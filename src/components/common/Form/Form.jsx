@@ -3,7 +3,7 @@ import * as T from 'prop-types';
 import {
   withStyles,
   Grid,
-  GridList,
+  ImageList,
   GridListTile,
   GridListTileBar,
   IconButton,
@@ -163,6 +163,7 @@ const Form = ({
   id,
   submitCustomName,
   children,
+  childrenPos = "top",
   basicParams,
   fileOnSave,
   imageBoxOnSave,
@@ -393,7 +394,7 @@ const Form = ({
                 name={field} 
                 defaultValue={fields[field]}
                 onChange={formOnChange}
-                label={removeCharacter( t(FORM_SCHEMA[field].tKey) )} 
+                label={removeCharacter(t(FORM_SCHEMA[field].tKey))} 
               />
             </FormControl>
           </Grid>
@@ -619,11 +620,11 @@ const Form = ({
             {
               userImagesCont && (
                 <Grid container justifyContent="center">
-                  <GridList cellHeight={160} className={classes.gridList} cols={2}>
+                  <ImageList rowHeight={160} className={classes.gridList} cols={2}>
                   {
                     userImagesCont
                   }
-                  </GridList>
+                  </ImageList>
                 </Grid>
               )
             }
@@ -639,11 +640,11 @@ const Form = ({
             {
               imageBoxImagesCont && (
                 <Grid container justifyContent="center">
-                  <GridList cellHeight={160} className={classes.gridList} cols={2}>
+                  <ImageList rowHeight={160} className={classes.gridList} cols={2}>
                   {
                     imageBoxImagesCont
                   }
-                  </GridList>
+                  </ImageList>
                 </Grid>
               )
             }
@@ -830,7 +831,7 @@ const Form = ({
             )
           }
           {
-            children && (
+            children && childrenPos == "top" && (
               <Grid item lg={12} xs={12}>
                 {children}
               </Grid>
@@ -841,6 +842,13 @@ const Form = ({
             (
               <Grid item lg={12} xs={12}>
                 <ProgressBar />
+              </Grid>
+            )
+          }
+          {
+            children && childrenPos == "bottom" && (
+              <Grid item lg={12} xs={12}>
+                {children}
               </Grid>
             )
           }
@@ -903,6 +911,7 @@ Form.protoTypes = {
   formCancel: T.func,
   formDelete: T.func,
   children: T.node,
+  childrenPos: T.string,
   hideEntry: T.object,
   cancelCustonName: T.string,
   snack: T.object,

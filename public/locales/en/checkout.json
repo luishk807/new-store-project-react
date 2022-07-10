@@ -18,6 +18,11 @@
         "error": "Invalid Code",
         "success": "Code Applied"
     },
+    "confirmation": {
+        "title": "Gracias!",
+        "back_to_home_page": "Back to home page",
+        "main_message": "We received your order and your order confirmation is:\n\r{{order_num}},\n\r\n\rYou will receive an email with information on how to send your payment based on your the payment method you selected\n\r\n\rRemember to make the payment for your order within 24 hours otherwise your order will be automtically cancelled"
+    },
     "message": {
         "sign_in_to_your_account": "Sign in to your account",
         "insert_coupon": "Insert code"

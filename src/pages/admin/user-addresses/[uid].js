@@ -169,7 +169,7 @@ const Index = ({classes}) => {
                         </Grid>
                       </Hidden>
                       <Grid item lg={3} xs={10} className={classes.itemColumn}>
-                        <a href={`edit/${item.id}`}>
+                        <a href={`edit/${item.id}/${userId}`}>
                         {
                           item.address
                         }

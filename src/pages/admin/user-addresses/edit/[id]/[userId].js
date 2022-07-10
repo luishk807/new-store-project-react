@@ -64,4 +64,41 @@ Edit.protoTypes = {
   classes: T.object
 }
 
+/** this section is important for dynamic path, you must set all posible params */
+export async function getStaticPaths(params) {
+  const paths_t = [
+    { 
+      params: { 
+        userId: `${params.userId}` ,
+        id: `${params.id}` 
+      } 
+    },
+  ];
+
+  return {
+      paths: paths_t,
+      fallback: true
+  }
+}
+
+export async function getStaticProps({locale, params}) {
+  // params contains the post `id`.
+  // If the route is like /posts/1, then params.id is 1
+  const paths_t = [
+    { 
+      params: { 
+        userId: `${params.userId}` ,
+        id: `${params.id}` 
+      } 
+    },
+  ];
+
+  return {
+    props: {
+      posts: paths_t,
+    }
+  }
+}
+
+
 export default withStyles(styles)(Edit);

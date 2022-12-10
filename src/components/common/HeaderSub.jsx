@@ -27,16 +27,24 @@ const styles = (theme) => ({
   },
 });
 
-const HeaderSub = ({ classes, name, previousUrl, addUrl, disableAddButton }) => {
+const HeaderSub = ({ classes, name, previousUrl, addUrl, parent = null, disableAddButton }) => {
   const [urlName, setUrlName] = useState(name);
   const [title, setTitle] = useState(name);
 
   useEffect(() => {
     if (name.includes('-')) {
       let new_name = name.replace(/-/g, " ");
-      setTitle(new_name);
+      if (parent && parent.first_name) {
+        setTitle(`${new_name} for ${parent.first_name}`)
+      } else {
+        setTitle(new_name);
+      }
     } else {
-      setTitle(name);
+      if (parent && parent.first_name) {
+        setTitle(`${name} for ${parent.first_name}`)
+      } else {
+        setTitle(name);
+      }
     }
     const pName = pluralize.plural(name);
     setUrlName(pName)
@@ -49,7 +57,13 @@ const HeaderSub = ({ classes, name, previousUrl, addUrl, disableAddButton }) => 
       </Grid>
       {!disableAddButton &&
       <Grid item className={classes.headerTitle} lg={2} xs={5}>
-        <Button className={`mainButton`} href={addUrl ? addUrl : `/admin/${urlName}/add`}>Add {title}</Button>
+        {
+          parent ? (
+            <Button className={`mainButton`} href={addUrl ? addUrl : `/admin/${urlName}/add/${parent?.id}`}>Add {title}</Button>
+          ) : (
+            <Button className={`mainButton`} href={addUrl ? addUrl : `/admin/${urlName}/add`}>Add {title}</Button>
+          )
+        }
       </Grid>
       }
     </Grid>
@@ -61,6 +75,7 @@ HeaderSub.propTypes = {
   name: T.string,
   previousUrl: T.string,
   addUrl: T.string,
+  parent: T.object,
   disableAddButton: T.bool
 }
 

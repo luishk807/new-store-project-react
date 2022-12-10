@@ -8,6 +8,7 @@ import { ADMIN_SECTIONS } from '@/constants/admin';
 import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 import AddForm from '@/common/Form/AddForm';
 import { defaultCountry } from 'config';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
   root: {
@@ -44,5 +45,12 @@ const Add = ({classes}) => {
 Add.protoTypes = {
   classes: T.object
 }
+
+/** This section is mandatory for next-18next translation to work */
+export const getStaticProps = async ({ locale }) => ({
+  props: {
+    ...await serverSideTranslations(locale, ['forms']),
+  },
+})
 
 export default withStyles(styles)(Add);

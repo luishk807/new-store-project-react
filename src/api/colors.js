@@ -1,4 +1,5 @@
 import Api from '@/services/api';
+import { verifyCookie } from '@/utils/cookie';
 
 export const createColor = async(data) => {
   return Api.post(`colors`, data);
@@ -10,6 +11,13 @@ export const deleteColorById = async(id) => {
 
 export const getColors = async(data) => {
   return Api.get(`colors`, data);
+}
+
+export const getAllColorsWithFilter = async(filter) => {
+  if (!verifyCookie()) {
+    return;
+  }
+  return Api.get(`colors/admin/colors/pages/all`, filter);
 }
 
 export const getColorsById = async(id) => {

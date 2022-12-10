@@ -7,10 +7,11 @@ import {
   Button,
 } from '@material-ui/core';
 import moment from 'moment';
-
+import { useRouter } from 'next/router';
 import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 import Snackbar from '@/common/Snackbar';
-import { deleteVendorById, getVendors } from '@/api/vendor'
+import { deleteUserAddressById, getAllUserAddressesByUser } from '@/api/userAddresses';
+import { getUsersAdminById } from '@/api/user';
 import HeaderSub from '@/common/HeaderSub';
 import Icons from '@/common/Icons';
 
@@ -71,46 +72,65 @@ const styles = (theme) => ({
 });
 
 const Index = ({classes}) => {
-  const [vendors, setVendors] = useState([]);
+  const [addresses, setAddresses] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
+  const [userId, setUserId] = useState(null);
   const [showData, setShowData] = useState(false);
+  const [showUser, setShowUser] = useState(false);
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
     text: '',
   });
 
-  const loadVendors = async() => {
-    const gVendors = await getVendors();
-    if (gVendors) {
-      setVendors(gVendors);
+  const router = useRouter();
+
+  const loadUserAddresses = async() => {
+    const id = router.query.uid;
+    const [gAddresses, userInfo] = await Promise.all([
+      getAllUserAddressesByUser(id),
+      getUsersAdminById(id)
+    ])
+    if (gAddresses) {
+      setAddresses(gAddresses);
       setShowData(true);
+    }
+    if (userInfo) {
+      setUserInfo(userInfo);
+      setUserId(userInfo?.id);
+      setShowUser(true)
     }
   };
 
   const delItem = async(id) => {
-    deleteVendorById(id).then((data) => {
+    deleteUserAddressById(id).then((data) => {
       setSnack({
         severity: 'success',
         open: true,
-        text: `Vendor Deleted`,
+        text: `Address Deleted`,
       })
-      loadVendors()
+      loadUserAddresses()
     }).catch((err) => {
       setSnack({
         severity: 'error',
         open: true,
-        text: `ERROR: Vendor cannot be delete`,
+        text: `ERROR: Address cannot be delete`,
       })
     })
   }
 
   useEffect(() => {
-    loadVendors()
+    loadUserAddresses()
   }, []);
 
   return (
     <AdminLayoutTemplate>
-      <HeaderSub name="vendor" />
+      {
+        showUser && (
+          <HeaderSub parent={userInfo} name="user-addresses" />
+        )
+      }
+      
       {
         showData ? (
           <Grid container className={classes.mainContainer}>
@@ -118,23 +138,26 @@ const Index = ({classes}) => {
             <Grid item lg={12} xs={12} className={classes.mainHeader}>
               <Grid container className={classes.itemContainer}>
                 <Grid item lg={1} className={classes.itemIndex}></Grid>
-                <Grid item lg={4} className={classes.itemColumn}>
-                  Name
+                <Grid item lg={3} className={classes.itemColumn}>
+                  Address
                 </Grid>
                 <Grid item lg={2} className={classes.itemColumn}>
-                  Status
+                  District
                 </Grid>
                 <Grid item lg={2} className={classes.itemColumn}>
-                  Date Created
+                  Province
                 </Grid>
-                <Grid item lg={3} className={classes.itemAction}>
+                <Grid item lg={2} className={classes.itemColumn}>
+                  Created
+                </Grid>
+                <Grid item lg={2} className={classes.itemAction}>
                   Action
                 </Grid>
               </Grid>
             </Grid>
             </Hidden>
             {
-              vendors.map((item, index) => {
+              addresses.map((item, index) => {
                 return (
                   <Grid key={index} item lg={12} xs={12} className={classes.mainItems}>
                     <Grid container className={classes.itemContainer}>
@@ -145,10 +168,10 @@ const Index = ({classes}) => {
                           }
                         </Grid>
                       </Hidden>
-                      <Grid item lg={4} xs={10} className={classes.itemColumn}>
-                        <a href={`vendors/${item.id}`}>
+                      <Grid item lg={3} xs={10} className={classes.itemColumn}>
+                        <a href={`edit/${item.id}/${userId}`}>
                         {
-                          item.name
+                          item.address
                         }
                         </a>
                       </Grid>
@@ -158,7 +181,12 @@ const Index = ({classes}) => {
                       <Hidden xsDown>
                         <Grid item lg={2} xs={6} className={classes.itemColumn}>
                           {
-                            item.vendorStatus.name
+                            item.addressDistrict?.name
+                          }
+                        </Grid>
+                        <Grid item lg={2} xs={6} className={classes.itemColumn}>
+                          {
+                            item.addressProvince?.name
                           }
                         </Grid>
                         <Grid item lg={2} xs={6} className={classes.itemColumn}>
@@ -166,8 +194,8 @@ const Index = ({classes}) => {
                             moment(item.createdAt).format('YYYY-MM-DD')
                           }
                         </Grid>
-                        <Grid item lg={3} className={classes.itemAction}>
-                          <Button className={`smallMainButton ${classes.actionBtn}`} href={`/admin/vendors/${item.id}`}>
+                        <Grid item lg={2} className={classes.itemAction}>
+                          <Button className={`smallMainButton ${classes.actionBtn}`} href={`/admin/user-addresses/edit/${item.id}/${userId}`}>
                             Edit
                           </Button>
                           <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => delItem(item.id)}>
@@ -184,7 +212,7 @@ const Index = ({classes}) => {
         ) : (
           <Grid container className={classes.mainContainer}>
             <Grid item lg={12} xs={12} className={classes.noData}>
-              No vendors found
+              No addresses found
             </Grid>
           </Grid>
         )

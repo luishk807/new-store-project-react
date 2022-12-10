@@ -8,11 +8,11 @@ import {
   Button,
 } from '@material-ui/core';
 import moment from 'moment';
-// import { ADMIN_SECTIONS } from '@/constants/admin';
 
-// import ItemForm from '@/common/Form/ItemForm';
+import { LIMIT } from 'config';
+import Pagination from '@/common/Pagination';
 import Snackbar from '@/common/Snackbar';
-import { deleteUserById, getUsers } from '@/api/user';
+import { deleteUserById, getAllUsersWithFilter } from '@/api/user';
 import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 import HeaderSub from '@/common/HeaderSub';
 import DialogModal from '@/common/DialogModal';
@@ -77,11 +77,20 @@ const styles = (theme) => ({
 const Index = ({classes}) => {
   const [users, setUsers] = useState([]);
   const [showData, setShowData] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(false)
+  const [totalCounts, setTotalCounts] = useState(0)
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
     text: '',
   });
+  
+  const [filterList, setFilterList] = useState({
+    sortBy: null,
+    page: 1,
+    limit: LIMIT,
+  });
+  
   const [dialogContent, setDialogContent] = useState({
     open: false,
     value: null,
@@ -92,11 +101,23 @@ const Index = ({classes}) => {
       false: "No"
     }
   })
-  const loadUsers = async() => {
-    const gUsers = await getUsers();
+  const loadUsers = async(page) => {
+    const sendData = {
+      page: filterList.page,
+      limit: filterList.limit,
+      sortBy: filterList.sortBy,
+    };
+    const gUsers = await getAllUsersWithFilter(sendData);
+
     if (gUsers) {
-      setUsers(gUsers);
-      setShowData(true);
+      setUsers('rows' in gUsers ? gUsers.rows : gUsers.items);
+      setTotalCounts(gUsers?.count)
+    } else {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `Users Not Found`,
+      })
     }
   };
 
@@ -140,13 +161,41 @@ const Index = ({classes}) => {
     })
   }
 
+  const handlePaginationChange = (value) => {
+    setFilterList({
+      ...filterList,
+      page: value
+    })
+    setShowData(false)
+  }
+  
   useEffect(() => {
-    loadUsers()
-  }, []);
+    setForceUpdate(!forceUpdate)
+    if (users && users.length) {
+      setShowData(true);
+    } else {
+      setShowData(false);
+    }
+  }, [users]);
+
+  const loadStatus = async() => {
+    console.log("got in status")
+  }
+
+  useEffect(() => {
+    loadUsers(filterList.page);
+  }, [filterList.page]);
 
   return (
     <AdminLayoutTemplate>
       <HeaderSub name="user" />
+      <Pagination 
+        onPageClick={handlePaginationChange}
+        onTotalChange={loadStatus}
+        showData={showData}
+        total={totalCounts}
+        refresh={forceUpdate}
+      >
       {
         showData ? (
           <Grid container className={classes.mainContainer}>
@@ -160,16 +209,13 @@ const Index = ({classes}) => {
                 <Grid item lg={2} className={classes.itemColumn}>
                   Role
                 </Grid>
-                <Grid item lg={1} className={classes.itemColumn}>
-                  Addresses
-                </Grid>
                 <Grid item lg={2} className={classes.itemColumn}>
                   Status
                 </Grid>
                 <Grid item lg={1} className={classes.itemColumn}>
                   Date Created
                 </Grid>
-                <Grid item lg={2} className={classes.itemAction}>
+                <Grid item lg={3} className={classes.itemAction}>
                   Action
                 </Grid>
               </Grid>
@@ -199,13 +245,6 @@ const Index = ({classes}) => {
                             item.userRoles.name
                           }
                       </Grid>
-                      <Grid item lg={1} xs={5} className={classes.itemColumn}>
-                         <a href={`/admin/useraddresses/${item.id}`}>
-                          {
-                            item.userAddresses && item.userAddresses.length
-                          }
-                          </a>
-                      </Grid>
                       <Grid item lg={2} xs={2} className={classes.itemColumnMobileHide}>
                         <Icons name="delete" classes={{icon: `${classes.icon}`}}/>
                       </Grid>
@@ -220,9 +259,12 @@ const Index = ({classes}) => {
                             moment(item.createdAt).format('YYYY-MM-DD')
                           }
                         </Grid>
-                        <Grid item lg={2} className={classes.itemAction}>
+                        <Grid item lg={3} className={classes.itemAction}>
                           <Button className={`smallMainButton ${classes.actionBtn}`} href={`/admin/users/${item.id}`}>
                             Edit
+                          </Button>
+                          <Button className={`smallMainButton ${classes.actionBtn}`} href={`/admin/user-addresses/${item.id}`}>
+                            Address
                           </Button>
                           <Button className={`smallMainButton ${classes.actionBtn}`} onClick={() => handleActionMenu(item)}>
                             Delete
@@ -243,6 +285,7 @@ const Index = ({classes}) => {
           </Grid>
         )
       }
+      </Pagination>
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
       <DialogModal open={dialogContent.open} onClick={handleDialogClick} title={dialogContent.title} content={dialogContent.content} actionLabels={dialogContent.actionLabels} />
     </AdminLayoutTemplate>

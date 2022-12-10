@@ -456,7 +456,7 @@ export const getRatingAvg = (data) => {
 }
 
 export const isEmpty = (str) => {
-  return !str || str !== 'null';
+  return !str || str === 'null';
 };
 
 export const getCatSearch = (data) => {

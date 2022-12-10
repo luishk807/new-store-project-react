@@ -455,8 +455,12 @@ export const getRatingAvg = (data) => {
   return parseFloat(totalAvg / length).toFixed(1);
 }
 
+export const isEmpty = (str) => {
+  return !str || str === 'null';
+};
+
 export const getCatSearch = (data) => {
-  const catUrl = data.altUrl ? data.altUrl : `?cat=${data.id}&catn=${data.name}`;
+  const catUrl = !isEmpty(data.altUrl) ? data.altUrl : `?cat=${data.id}&catn=${data.name}`;
   return encodeURI(`/searchResult${catUrl}`);
 }
 

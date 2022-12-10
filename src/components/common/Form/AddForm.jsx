@@ -62,7 +62,7 @@ const AddForm = ({
     text: '',
   });
 
-  const { t } = useTranslation('forms');
+  const { t } = useTranslation(['forms']);
 
   const [form, setForm] = useState(entryForm)
   
@@ -152,7 +152,8 @@ const AddForm = ({
           text: errorText
         })
       } else {
-        addItem(section.url, form).then(confirm => {
+        const postUrl = id ? `${section.url}/${id}` : section.url;
+        addItem(postUrl, form).then(confirm => {
           const resp = handleFormResponse(confirm);
           setSnack(resp);
           if (confirm.data.status) {

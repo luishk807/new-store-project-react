@@ -66,7 +66,7 @@ export const USER_SECTIONS = {
     name: 'User Address',
     names: 'User Addresses',
     key: 'userAddress',
-    url: 'useraddresses',
+    url: 'user-addresses',
     option: 'useraddress'
   },
 }

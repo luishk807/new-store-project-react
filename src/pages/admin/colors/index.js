@@ -8,10 +8,12 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
+import { LIMIT } from 'config';
+import Pagination from '@/common/Pagination';
 import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 import Snackbar from '@/common/Snackbar';
 import ColorBlock from '@/common/ColorBlock';
-import { deleteColorById, getColors } from '@/api/colors'
+import { deleteColorById, getAllColorsWithFilter } from '@/api/colors'
 import HeaderSub from '@/common/HeaderSub';
 import Icons from '@/common/Icons';
 
@@ -74,17 +76,38 @@ const styles = (theme) => ({
 const Index = ({classes}) => {
   const [colors, setColors] = useState([]);
   const [showData, setShowData] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(false)
+  const [totalCounts, setTotalCounts] = useState(0)
+
+  const [filterList, setFilterList] = useState({
+    sortBy: null,
+    page: 1,
+    limit: LIMIT,
+  });
+
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
     text: '',
   });
 
-  const loadColors = async() => {
-    const gColors = await getColors();
+  const loadColors = async(page) => {
+    const sendData = {
+      page: filterList.page,
+      limit: filterList.limit,
+      sortBy: filterList.sortBy,
+    };
+    const gColors = await getAllColorsWithFilter(sendData);
+
     if (gColors) {
-      setColors(gColors);
-      setShowData(true);
+      setColors('rows' in gColors ? gColors.rows : gColors.items);
+      setTotalCounts(gColors?.count)
+    } else {
+      setSnack({
+        severity: 'error',
+        open: true,
+        text: `Colors Not Found`,
+      })
     }
   };
 
@@ -105,13 +128,41 @@ const Index = ({classes}) => {
     })
   }
 
+  const handlePaginationChange = (value) => {
+    setFilterList({
+      ...filterList,
+      page: value
+    })
+    setShowData(false)
+  }
+  
   useEffect(() => {
-    loadColors()
-  }, []);
+    setForceUpdate(!forceUpdate)
+    if (colors && colors.length) {
+      setShowData(true);
+    } else {
+      setShowData(false);
+    }
+  }, [colors]);
+
+  const loadStatus = async() => {
+    console.log("got in status")
+  }
+
+  useEffect(() => {
+    loadColors(filterList.page);
+  }, [filterList.page]);
 
   return (
     <AdminLayoutTemplate>
       <HeaderSub name="color" />
+      <Pagination 
+        onPageClick={handlePaginationChange}
+        onTotalChange={loadStatus}
+        showData={showData}
+        total={totalCounts}
+        refresh={forceUpdate}
+      >
       {
         showData ? (
           <Grid container className={classes.mainContainer}>
@@ -196,6 +247,7 @@ const Index = ({classes}) => {
           </Grid>
         )
       }
+      </Pagination>
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
     </AdminLayoutTemplate>
   );

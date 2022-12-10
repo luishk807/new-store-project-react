@@ -26,6 +26,7 @@ const styles = (theme) => ({
 const Edit = ({classes}) => {
    const router = useRouter()
    const id = router.query.id;
+   const uid = router.query.userId;
 
   const form = {
     name: null,
@@ -45,11 +46,11 @@ const Edit = ({classes}) => {
       <Grid container>
         <Grid item lg={12}>
           <EditForm 
-            customUrl={`/admin/useraddresses/${id}`} 
-            cancelUrl={`/admin/useraddresses/${id}`} 
-            successUrl={`/admin/useraddresses/${id}`} 
+            customUrl={`/admin/user-addresses/${uid}`} 
+            cancelUrl={`/admin/user-addresses/${uid}`} 
+            successUrl={`/admin/user-addresses/${uid}`} 
             ignoreForm={['mobile','phone', 'province', 'district', 'corregimiento', 'addressB', 'zone', 'country']}
-            adminSection={ADMIN_SECTIONS.address} 
+            adminSection={ADMIN_SECTIONS.userAddress} 
             id={id} 
             entryForm={form} 
           />
@@ -62,5 +63,42 @@ const Edit = ({classes}) => {
 Edit.protoTypes = {
   classes: T.object
 }
+
+/** this section is important for dynamic path, you must set all posible params */
+export async function getStaticPaths(params) {
+  const paths_t = [
+    { 
+      params: { 
+        userId: `${params.userId}` ,
+        id: `${params.id}` 
+      } 
+    },
+  ];
+
+  return {
+      paths: paths_t,
+      fallback: true
+  }
+}
+
+export async function getStaticProps({locale, params}) {
+  // params contains the post `id`.
+  // If the route is like /posts/1, then params.id is 1
+  const paths_t = [
+    { 
+      params: { 
+        userId: `${params.userId}` ,
+        id: `${params.id}` 
+      } 
+    },
+  ];
+
+  return {
+    props: {
+      posts: paths_t,
+    }
+  }
+}
+
 
 export default withStyles(styles)(Edit);

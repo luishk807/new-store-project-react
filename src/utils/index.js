@@ -460,7 +460,7 @@ export const isEmpty = (str) => {
 };
 
 export const getCatSearch = (data) => {
-  const catUrl = isEmpty(data.altUrl) ? data.altUrl : `?cat=${data.id}&catn=${data.name}`;
+  const catUrl = !isEmpty(data.altUrl) ? data.altUrl : `?cat=${data.id}&catn=${data.name}`;
   return encodeURI(`/searchResult${catUrl}`);
 }
 

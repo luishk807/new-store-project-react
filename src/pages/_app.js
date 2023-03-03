@@ -5,12 +5,15 @@ import 'styles.scss'
 import { wrapper } from '@/redux/store';
 import { appWithTranslation } from 'next-i18next'
 import HttpsRedirect from 'react-https-redirect';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 
 import TagManager from 'react-gtm-module';
 
 const tagManagerArgs = {
   gtmId: `${process.env.GTM_ID}`
 }
+
+const theme = createTheme();
 
 if (process.browser) {
   TagManager.initialize(tagManagerArgs);
@@ -24,9 +27,11 @@ class App extends NextApp {
   render() {
     const { Component, pageProps } = this.props
     return (
-      <HttpsRedirect>
-        <Component {...pageProps} />
-      </HttpsRedirect>
+      <ThemeProvider theme={theme}>
+        <HttpsRedirect>
+          <Component {...pageProps} />
+        </HttpsRedirect>
+      </ThemeProvider>
     )
   }
 }

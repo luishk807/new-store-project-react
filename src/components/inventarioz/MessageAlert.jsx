@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
-import MuiAlert from '@material-ui/lab/Alert';
+import Alert from '@mui/material/Alert';
 import { Snackbar } from '@material-ui/core'
 import { useState, useEffect } from 'react'
 
-function Alert(props) {
+function AlertComp(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
@@ -29,7 +29,7 @@ const MessageAlert = ({ open, autoHideDuration, onClose, message }) => {
 
     return (
         <Snackbar open={snackOpen} autoHideDuration={autoHideDuration} onClose={snackOnClose}>
-            <Alert onClose={alertOnClose} severity={snackMessage.severity}><div>{ snackMessage.message }</div></Alert>
+            <AlertComp onClose={alertOnClose} severity={snackMessage.severity}><div>{ snackMessage.message }</div></AlertComp>
         </Snackbar>
     )
 }

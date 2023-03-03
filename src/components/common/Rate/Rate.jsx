@@ -3,7 +3,7 @@ import * as T from 'prop-types';
 import {
   withStyles,
 } from '@material-ui/core';
-import Rating from '@material-ui/lab/Rating';
+import Rating from '@mui/material/Rating';
 
 import Typography from '@/common/Typography';
 

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
 import { connect } from 'react-redux';
 import { alpha } from '@material-ui/core/styles';
-import PermIdentityOutlinedIcon from '@material-ui/icons/PermIdentityOutlined';
-import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { 
   withStyles, 
   Link,
@@ -213,7 +213,7 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
             <Grid container className={classes.headerContainerRightin}>
               <Grid item lg={4} md={2} xs={4}>
                 <Button href="/cart" color="inherit" className={classes.cartBtn}>
-                  <ShoppingCartOutlinedIcon className={classes.cartIcon} />
+                  <ShoppingCartIcon className={classes.cartIcon} />
                   {
                     Object.keys(cart).length > 0 && (
                       <div className={classes.cartTotal}>
@@ -227,7 +227,7 @@ const Header = ({classes, data, userInfo, loadMain, cart}) => {
               </Grid>
               <Grid item lg={5} md={8} xs={4}>
                 <Button href="/account" color="inherit" className='d-none d-sm-block'>
-                  <PermIdentityOutlinedIcon className={classes.accountIcon} />
+                  <PermIdentityIcon className={classes.accountIcon} />
                   {
                     isUserLoggedIn && (
                       <Typography className={classes.userName} variant="subtitle2">{userInfo.first_name}</Typography>

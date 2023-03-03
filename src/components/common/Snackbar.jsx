@@ -4,13 +4,13 @@ import {
   Grid,
   Snackbar as Snack,
 } from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
+import Alert from '@mui/material/Alert';
 import Typography from '@/common/Typography';
 
 // Type of severity
 // error, warning, info, success
 
-function Alert(props) {
+function AlertComp(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
 
@@ -36,9 +36,9 @@ const SnackBar = ({ severity="success", open, onClose, content, anchorPost = nul
 
   return (
     <Snack open={doOpen} onClose={onClose} autoHideDuration={6000} anchorOrigin={anchor}>
-      <Alert onClose={() => setDoOpen(false)} severity={severity}>
+      <AlertComp onClose={() => setDoOpen(false)} severity={severity}>
         {content}
-      </Alert>
+      </AlertComp>
     </Snack>
   );
 }

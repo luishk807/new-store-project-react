@@ -1,6 +1,5 @@
 
 const { parsed: localEnv } = require('dotenv').config()
-const webpack = require('webpack')
 const { i18n } = require('./next-i18next.config')
 
 const securityHeaders = [
@@ -48,41 +47,35 @@ module.exports = {
       },
     ]
   },
-  module: {
-    rules: [
-      //...
-      {
-        test: /\.(png|jp(e*)g|svg|gif)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: 'images/[hash]-[name].[ext]',
-            },
-          },
-        ],
-      },
-    ],
-  },
+  // module: {
+  //   rules: [
+  //     //...
+  //     {
+  //       test: /\.(png|jp(e*)g|svg|gif)$/,
+  //       use: [
+  //         {
+  //           loader: 'file-loader',
+  //           options: {
+  //             name: 'images/[hash]-[name].[ext]',
+  //           },
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // },
+  swcMinify: true,
   pageExtensions: ['mdx', 'jsx', 'js', 'ts', 'tsx'],
-  webpack5: false,
-  webpack(config, { isServer }) {
-    // Fixes npm packages that depend on `fs` module
-    if (!isServer) {
-      config.node = {
-        fs: 'empty'
-      }
-    }
-    config.module.rules.push({
-      test: /\.svg$/,
-      issuer: {
-        test: /\.(js|ts)x?$/,
-      },
+  webpack: (config) => {
+    config.module.rules.push(      {
+      test: /\.(jpe?g|png|svg|gif|ico|eot|ttf|woff|woff2|mp4|pdf|webm)$/,
       use: ['@svgr/webpack'],
+      // type: 'asset/resource',
+      // generator: {
+      //   filename: 'images/[hash]-[name].[ext]'
+      // },
     });
-    config.plugins.push(new webpack.EnvironmentPlugin(localEnv));
 
-    return config;
+      return config;
   },
   i18n: {
     ...i18n,

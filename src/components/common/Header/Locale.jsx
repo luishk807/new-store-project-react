@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import { Menu, MenuItem, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 import { useState } from 'react'
-import LanguageIcon from '@material-ui/icons/Language';
+import LanguageIcon from '@mui/icons-material/Language';
 import Cookies from 'js-cookie';
 
 const useStyles = makeStyles(theme => ({

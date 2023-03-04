@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { debounce } from '@mui/material/utils';
 import * as T from 'prop-types';
 import ReactDOM from 'react-dom';
 import { alpha } from '@material-ui/core/styles';
@@ -118,6 +119,7 @@ const SearchBar = ({classes}) => {
   const [currentValue, setCurrentValue] = useState('');
   const [dropDownOptions, setDropDownOptions] = useState([]);
   const refLists = useRef([]);
+  const inputValue = useRef();
 
   const setFocus = async(direction) => {
     let focusIndex = currentTab;
@@ -185,17 +187,18 @@ const SearchBar = ({classes}) => {
     refLists.current = [];
   }
 
-  const handleOnChange = async(evt) => {
-    setCurrentValue(evt.target.value)
+  const handleOnChange = debounce(async(evt) => {
+    const name = evt.target.value;
+    setCurrentValue(name)
     resetTab()
-    if (evt.target.value.length && evt.target.value.length > 3) {
-      const getResult = await searchProducts(evt.target.value);
+    if (name.length && name.length > 3) {
+      const getResult = await searchProducts(name);
       if (getResult.length) {
         setOptions(getResult);
         setShowResult(true)
       }
     }
-  }
+  }, 1000);
 
   const getElRef = (el) => {
     if (el && !refLists.current.includes(el)) {
@@ -227,13 +230,13 @@ const SearchBar = ({classes}) => {
               </Button>
             </div>
             <InputBase
-              value={currentValue}
+              // value={currentValue}
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,
                 input: classes.inputInput,
               }}
-              onChange={handleOnChange}
+              onChange={(e) => handleOnChange(e)}
               onFocus={resetTab}
               onKeyDown={onKeyDown}
               inputProps={{ 'aria-label': 'search' }}

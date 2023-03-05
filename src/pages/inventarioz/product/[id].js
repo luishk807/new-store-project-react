@@ -16,7 +16,7 @@ import {
     TabPanel,
     TabContext,
     TabList
-} from '@material-ui/lab'
+} from '@mui/lab'
 
 const ProductDetail = () => {
     const router = useRouter()

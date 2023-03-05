@@ -7,7 +7,7 @@ import {
   Checkbox,
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
-import Pagination from '@material-ui/lab/Pagination';
+import Pagination from '@mui/lab/Pagination';
 
 import { LIMIT } from 'config';
 import Icons from '@/common/Icons';

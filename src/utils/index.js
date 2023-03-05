@@ -211,7 +211,7 @@ export const getImage = (product) => {
       getProductItemByIds(ids).then((prod, index) => {
         image = prod.filter((item, index) => {
           if (item.productImages && item.productImages.length) {
-            return item.item.productImages[0]
+            return item?.item?.productImages[0]
           }
         })
         if (image && image.length) {

@@ -25,7 +25,7 @@ import Mastercard from 'public/images/svg/cc-master.svg';
 import Visa from 'public/images/svg/cc-visa.svg';
 import Discovery from 'public/images/svg/cc-discover.svg';
 import Cart from 'public/images/svg/cart.svg';
-import { ShoppingCartIcon as ShoppingCartOutlinedIcon } from '@mui/icons-material/ShoppingCart';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import Twitter from 'public/images/svg/social-twitter.svg';
 import Facebook from 'public/images/svg/social-facebook.svg';
 import Pininterest from 'public/images/svg/social-pinterest.svg';

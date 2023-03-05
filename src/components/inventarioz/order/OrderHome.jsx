@@ -6,7 +6,7 @@ import {
     TabPanel,
     TabContext,
     TabList
-} from '@material-ui/lab'
+} from '@mui/lab'
 import { useState } from 'react'
 
 import ClientEntryFields from '@/inventarioz/client/ClientEntryFields'

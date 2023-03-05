@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import * as T from 'prop-types';
 import { 
   withStyles,
@@ -93,24 +93,20 @@ const styles = (theme) => ({
 });
 
 const CategoryModal = ({classes, open, onClose}) => {
-  const [openCategory, setOpenCategory] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [showData, setShowData] = useState(false);
   const { t } = useTranslation('home')
 
-  const getCategories = async() => {
-    const categories = await getItems('categories');
-    setSelectedCategory(categories[0])
-    setCategories(categories);
-    setShowData(true)
-  }
-  const handleIconClick = async(id) => {
+  const handleIconClick = useCallback(async(id) => {
     setSelectedCategory(categories[id]);
-  }
+  }, [])
 
   useEffect(() => {
-    getCategories();
+    (async() => {
+      const categories = await getItems('categories');
+      setSelectedCategory(categories[0])
+      setCategories(categories);
+    })()
   }, [open])
 
   return (

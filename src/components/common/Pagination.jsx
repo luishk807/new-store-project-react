@@ -5,7 +5,7 @@ import {
   Grid,
 } from '@material-ui/core';
 import { LIMIT } from 'config';
-import Pagination from '@material-ui/lab/Pagination';
+import Pagination from '@mui/lab/Pagination';
 
 const styles = (theme) => ({
   paginationItem: {

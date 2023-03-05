@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import * as T from 'prop-types';
 import { 
   withStyles,
@@ -34,7 +34,9 @@ const Login = ({classes, onSubmit, inStatus}) => {
     open: false,
     text: '',
   });
+
   const [form, setForm] = useState({})
+
   const formOnChange = (e, edrop = null) => {
     if (e.keyCode === 13) { // Enter
       handleSubmit()
@@ -50,6 +52,7 @@ const Login = ({classes, onSubmit, inStatus}) => {
   }
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
     let errorFound = false;
     let key = '';
     for (var i in form) {
@@ -123,9 +126,9 @@ const Login = ({classes, onSubmit, inStatus}) => {
           <Grid container spacing={2}>
             <Grid item lg={12} xs={12}>
               <TextField
+                onChange={formOnChange}
                 error={errors.email.error}
                 name="email"
-                onChange={formOnChange}
                 id="filled-error"
                 label={ t('forms:email') }
                 className={classes.formTextField}
@@ -133,14 +136,14 @@ const Login = ({classes, onSubmit, inStatus}) => {
             </Grid>
             <Grid item lg={12} xs={12}>
               <TextField
+                onChange={formOnChange}
                 error={errors.password.error}
-                  name="password"
-                  onChange={formOnChange}
-                  type="password"
-                  id="filled-error"
-                  className={classes.formTextField}
-                  label={ t('forms:password') }
-                  onKeyUp={formOnChange}
+                name="password"
+                type="password"
+                id="filled-error"
+                className={classes.formTextField}
+                label={ t('forms:password') }
+                onKeyUp={formOnChange}
                 />
             </Grid>
             <Grid item lg={12} xs={12}>

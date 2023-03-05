@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
-import { 
+import {
   Grid,
   FormControl,
   FormHelperText,
@@ -8,9 +8,9 @@ import {
   withStyles,
 } from '@material-ui/core';
 import ColorPick from 'material-ui-color-picker';
-import { 
+import {
   Autocomplete,
-} from '@material-ui/lab';
+} from '@mui/lab';
 
 import { removeCharacter } from 'src/utils';
 import { FORM_SCHEMA } from 'config';
@@ -37,9 +37,9 @@ const styles = (theme) => ({
   },
 });
 
-const ColorPicker = React.memo(({ 
-  classes, 
-  name, 
+const ColorPicker = React.memo(({
+  classes,
+  name,
   onChange
 }) => {
   const [colors, setColors] = useState([]);
@@ -53,7 +53,7 @@ const ColorPicker = React.memo(({
     useCustom: false,
   });
 
-  const loadColors = async() => {
+  const loadColors = async () => {
     const gColor = await getColors()
     gColor.push({
       name: "Add Custom",
@@ -69,7 +69,7 @@ const ColorPicker = React.memo(({
     setShowData(true);
   }
 
-  const handleFormChange = (e, {color}) => {
+  const handleFormChange = (e, { color }) => {
     if (e) {
       setProductColor({
         ...productColor,
@@ -85,7 +85,7 @@ const ColorPicker = React.memo(({
       }
     }
   };
-  
+
   const handleDropColorChange = (color) => {
     if (!color) {
       setProductColor({
@@ -97,7 +97,7 @@ const ColorPicker = React.memo(({
       })
       setIsCustom(false)
       return;
-    } 
+    }
     if (color.id < 0) {
       setProductColor({
         ...productColor,
@@ -117,7 +117,7 @@ const ColorPicker = React.memo(({
     }
     setSelectedColor(color)
   };
-  
+
   useEffect(() => {
     loadColors();
   }, []);
@@ -131,64 +131,64 @@ const ColorPicker = React.memo(({
 
   return showData && (
     <>
-    <Grid item lg={12} xs={12} className={classes.root}>
-      <FormControl fullWidth variant="outlined">
-        <Autocomplete
-          className={classes.whiteBackground}
-          name={name}
-          options={colors}
-          onChange={(e, value) => {
-            handleDropColorChange(value)
-          }}
-          getOptionLabel={(option) => option.name}
-          value={selectedColor}
-          renderOption={(option) => (
-            <React.Fragment>
-              <Grid container>
-                <Grid item lg={9} xs={9}>
-                  {option.name}
+      <Grid item lg={12} xs={12} className={classes.root}>
+        <FormControl fullWidth variant="outlined">
+          <Autocomplete
+            className={classes.whiteBackground}
+            name={name}
+            options={colors}
+            onChange={(e, value) => {
+              handleDropColorChange(value)
+            }}
+            getOptionLabel={(option) => option.name}
+            value={selectedColor}
+            renderOption={(option) => (
+              <React.Fragment>
+                <Grid container>
+                  <Grid item lg={9} xs={9}>
+                    {option.name}
+                  </Grid>
+                  <Grid item lg={3} xs={3}>
+                    <ColorBlock classes={{ colorBlock: classes.colorBlock }} color={option.color} />
+                  </Grid>
                 </Grid>
-                <Grid item lg={3} xs={3}>
-                <ColorBlock classes={{colorBlock: classes.colorBlock}} color={option.color}/>
-                </Grid>
-              </Grid>
-            </React.Fragment>
-          )}
-          renderInput={(params) => <TextField {...params} label={FORM_SCHEMA[name].label} variant="outlined" inputProps={{
-            ...params.inputProps,
-            autoComplete: 'new-password', // disable autocomplete and autofill
-          }}/>}
-        />
-      </FormControl>
-    </Grid>
-    {
-      isCustom && (
-        <Grid className={classes.colorCustom} container>
-          <Grid item lg={12} xs={12} className={classes.root}>
-            <FormControl fullWidth variant="outlined">
-              <ColorPick
+              </React.Fragment>
+            )}
+            renderInput={(params) => <TextField {...params} label={FORM_SCHEMA[name].label} variant="outlined" inputProps={{
+              ...params.inputProps,
+              autoComplete: 'new-password', // disable autocomplete and autofill
+            }} />}
+          />
+        </FormControl>
+      </Grid>
+      {
+        isCustom && (
+          <Grid className={classes.colorCustom} container>
+            <Grid item lg={12} xs={12} className={classes.root}>
+              <FormControl fullWidth variant="outlined">
+                <ColorPick
                   name='color'
                   defaultValue={colors[0].color}
-                  onChange={(color) => handleFormChange(null, {color: color})}
+                  onChange={(color) => handleFormChange(null, { color: color })}
                   className={classes.colorInput}
                 />
-              <FormHelperText id={name}>Choose {name}</FormHelperText>
-            </FormControl>
+                <FormHelperText id={name}>Choose {name}</FormHelperText>
+              </FormControl>
+            </Grid>
+            <Grid item lg={12} xs={12} className={classes.formItem}>
+              <FormControl fullWidth variant="outlined">
+                <TextField
+                  variant="outlined"
+                  name="name"
+                  value={productColor ? productColor.name : ''}
+                  onChange={(e) => handleFormChange(e, { color: '' })}
+                  label={removeCharacter(FORM_SCHEMA['name'].label)}
+                />
+              </FormControl>
+            </Grid>
           </Grid>
-          <Grid item lg={12} xs={12} className={classes.formItem}>
-            <FormControl fullWidth variant="outlined">
-              <TextField 
-                variant="outlined" 
-                name="name"
-                value={productColor ? productColor.name : ''}
-                onChange={(e) => handleFormChange(e, {color: ''})}
-                label={removeCharacter(FORM_SCHEMA['name'].label)} 
-              />
-            </FormControl>
-          </Grid>
-        </Grid>
-      )
-    }
+        )
+      }
     </>
   );
 })

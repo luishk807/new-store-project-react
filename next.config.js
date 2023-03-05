@@ -47,32 +47,12 @@ module.exports = {
       },
     ]
   },
-  // module: {
-  //   rules: [
-  //     //...
-  //     {
-  //       test: /\.(png|jp(e*)g|svg|gif)$/,
-  //       use: [
-  //         {
-  //           loader: 'file-loader',
-  //           options: {
-  //             name: 'images/[hash]-[name].[ext]',
-  //           },
-  //         },
-  //       ],
-  //     },
-  //   ],
-  // },
   swcMinify: true,
   pageExtensions: ['mdx', 'jsx', 'js', 'ts', 'tsx'],
   webpack: (config) => {
     config.module.rules.push(      {
       test: /\.(jpe?g|png|svg|gif|ico|eot|ttf|woff|woff2|mp4|pdf|webm)$/,
       use: ['@svgr/webpack'],
-      // type: 'asset/resource',
-      // generator: {
-      //   filename: 'images/[hash]-[name].[ext]'
-      // },
     });
 
       return config;

@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import * as T from 'prop-types';
 import { 
   withStyles,
-  Grid,
 } from '@material-ui/core';
 
 import LayoutTemplate from '@/common/Layout/LayoutTemplate';
 import SendForm from '@/common/Form/SendForm';
-import { useTranslation } from 'next-i18next'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 
 const styles = (theme) => ({
@@ -21,8 +19,6 @@ const styles = (theme) => ({
 })
 
 const ContactUs = ({classes}) => {
-  const { t } = useTranslation(['footer']);
-
   const section = {
     name: 'Contact Us',
     url: 'contacts'

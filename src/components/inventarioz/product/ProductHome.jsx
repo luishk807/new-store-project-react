@@ -7,7 +7,7 @@ import {
     TabPanel,
     TabContext,
     TabList
-} from '@material-ui/lab'
+} from '@mui/lab'
 import ProductOptions from '@/inventarioz/ProductOptions'
 import Categories from '@/inventarioz/Categories'
 import Brands from '@/inventarioz/Brands'

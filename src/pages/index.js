@@ -1,19 +1,15 @@
-import React, { Component } from 'react';
+import React, { Component, lazy, Suspense} from 'react';
 import { 
   Grid,
   withStyles,
 } from '@material-ui/core';
 
 import LayoutTemplate from '@/common/Layout/LayoutTemplate';
-import ProductGallery from '@/components/product/Gallery';
-import SelectorPlain from '@/components/category/SelectorPlain';
-import NewArrival from '@/components/home/NewArrival';
-import SweetBox from '@/components/sweetbox';
-import ProductScroller from '@/components/product/Scroller';
-import HomeCarrousel from '@/components/home/Carrousel';
-import ImageBox from '@/components/home/ImageBox';
-import ProductCategory from '@/components/home/ProductCategory';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+const SweetBox = lazy(() => import('@/components/sweetbox'));
+const ProductScroller = lazy(() => import('@/components/product/Scroller'));
+const ImageBox = lazy(() => import('@/components/home/ImageBox'));
+const ProductCategory = lazy(() => import('@/components/home/ProductCategory'));
 
 const styles = (theme) => ({
   root: {
@@ -36,7 +32,6 @@ const styles = (theme) => ({
   },
   listItemCont: {
     textAlign: 'center',
-  //  background: '#f8be15 !important',
     margin: 5,
     borderRadius: 5,
     border: '2px solid #f8be15',
@@ -59,6 +54,9 @@ const styles = (theme) => ({
   },
 });
 
+const LoadingComp = () => {
+  return <h1>loading</h1>
+}
 class ClassComponent extends Component {
   render () {
     const { classes } = this.props;
@@ -66,15 +64,29 @@ class ClassComponent extends Component {
       <LayoutTemplate classes={{root: classes.layoutClass}}>
         <Grid container className="main-section">
           <Grid item lg={12} xs={12}>
-            <ProductCategory />
+            <Suspense fallback={<LoadingComp />}>
+              <ProductCategory />
+            </Suspense>
           </Grid>
           <Grid item lg={12} xs={12}>
-            <SweetBox type={1} />
-            <ImageBox name="mini-slider" />
-            <ImageBox name="main-slider" showTitle={true} />
-            <SweetBox type={2} />
-            <ImageBox name="marcas" showTitle={true} />
-            <ProductScroller />
+            <Suspense fallback={<LoadingComp />}>
+              <SweetBox type={1} />
+            </Suspense>
+            <Suspense fallback={<LoadingComp />}>
+              <ImageBox name="mini-slider" />
+            </Suspense>
+            <Suspense fallback={<LoadingComp />}>
+              <ImageBox name="main-slider" showTitle={true} />
+            </Suspense>
+            <Suspense fallback={<LoadingComp />}>
+              <SweetBox type={2} />
+            </Suspense>
+            <Suspense fallback={<LoadingComp />}>
+              <ImageBox name="marcas" showTitle={true} />
+            </Suspense>
+            <Suspense fallback={<LoadingComp />}>
+              <ProductScroller />
+            </Suspense>
           </Grid>
         </Grid>
       </LayoutTemplate>

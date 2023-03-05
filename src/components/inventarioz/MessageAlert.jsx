@@ -4,7 +4,7 @@ import { Snackbar } from '@material-ui/core'
 import { useState, useEffect } from 'react'
 
 function AlertComp(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
+    return <Alert elevation={6} variant="filled" {...props} />;
 }
 
 const MessageAlert = ({ open, autoHideDuration, onClose, message }) => {

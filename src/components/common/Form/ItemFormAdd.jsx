@@ -16,7 +16,7 @@ import {
 } from '@material-ui/core';
 import { 
   Autocomplete,
-} from '@material-ui/lab';
+} from '@mui/lab';
 import { useRouter } from 'next/router';
 
 import { addItem, getItems, getItemById, getItemByFkId } from 'src/api';

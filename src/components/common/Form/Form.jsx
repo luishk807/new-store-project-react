@@ -18,7 +18,7 @@ import {
 } from '@material-ui/core';
 import { 
   Autocomplete,
-} from '@material-ui/lab';
+} from '@mui/lab';
 import moment from 'moment'
 import { useTranslation } from 'next-i18next'
 import ColorPicker from 'material-ui-color-picker'

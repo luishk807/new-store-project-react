@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import * as T from 'prop-types';
 import { 
   withStyles,
@@ -77,17 +77,16 @@ const styles = (theme) => ({
 const CategorySelector = ({classes, cubeSize, showTitle}) => {
   const router = useRouter();
   const [categories, setCategories] = useState([]);
-  const [open, setOpen] = useState(true);
 
-  const loadCategories = async() => {
+  const loadCategories = useCallback(async() => {
     const categories = await getCategories();
     setCategories(categories);
-  }
+  }, []);
 
-  const goToSearch = async(data) => {
+  const goToSearch = useCallback(async(data) => {
     const url = await getCatSearch(data);
     router.push(url)
-  }
+  }, []);
 
   useEffect(() => {
     loadCategories();

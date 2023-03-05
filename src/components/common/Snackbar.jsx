@@ -1,23 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import * as T from 'prop-types';
-import { 
-  Grid,
-  Snackbar as Snack,
-} from '@material-ui/core';
+import { Snackbar as Snack } from '@material-ui/core';
 import Alert from '@mui/material/Alert';
-import Typography from '@/common/Typography';
 
 // Type of severity
 // error, warning, info, success
 
-function AlertComp(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
+const AlertComp = (props) => {
+  return <Alert elevation={6} variant="filled" {...props} />;
 }
 
-const SnackBar = ({ severity="success", open, onClose, content, anchorPost = null}) => {
+const SnackBar = ({ severity = "success", open, onClose, content, anchorPost = null }) => {
   const [doOpen, setDoOpen] = useState(false);
-  const [anchor, setAnchor] = useState({ 
-    vertical: 'bottom', 
+  const [anchor, setAnchor] = useState({
+    vertical: 'bottom',
     horizontal: 'center'
   })
   useEffect(() => {

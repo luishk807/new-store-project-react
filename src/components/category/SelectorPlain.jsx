@@ -26,18 +26,6 @@ const styles = (theme) => ({
     overflowX: 'auto',
     height: '100%',
     position: 'relative',
-    // '&::-webkit-scrollbar-track':{
-    //   backgroundColor: '#F5F5F5',
-    // },
-    // '&::-webkit-scrollbar': {
-    //   width: 6,
-    //   height: 6,
-    //   backgroundColor: '#F5F5F5',
-    // },
-    // '&::-webkit-scrollbar-thumb': {
-    //   borderRadius: 10,
-    //   backgroundColor: '#cccccc',
-    // }
   },
   listItemCont: {
     display: 'inline-block',
@@ -69,7 +57,7 @@ const styles = (theme) => ({
       justifyContent: 'start',
     },
   },
-
+  cubeItems: {},
   cubeMainTitle: {
     color: 'white',
     textAlign: 'center', 

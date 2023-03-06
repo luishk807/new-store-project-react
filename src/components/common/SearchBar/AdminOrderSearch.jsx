@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import * as T from 'prop-types';
 import { 
   withStyles,
   TextField,
   Button,
-  Grid
+  Grid,
+  debounce
 } from '@material-ui/core';
 
 import { SEARCH_OPTIONS } from '@/constants/orders';
@@ -45,9 +46,9 @@ const styles = (theme) => ({
 });
 
 const AdminOrderSearch = ({classes, onClick, icon = "search", placeholder = '', searchOption = true}) => {
-  const [textValue, setTextValue] = useState('');
   const [selectedDrop, setSelectedDrop] = useState(null);
   const [filterList, setFilterList] = useState([]);
+  const inputRef = useRef();
 
   const handleSelectChange = (e) => {
     setSelectedDrop(e);
@@ -55,7 +56,7 @@ const AdminOrderSearch = ({classes, onClick, icon = "search", placeholder = '', 
 
   const handleRemoveFilter = (e) => {
     onClick({
-      value: textValue,
+      value: inputRef.current.value,
       searchBy: selectedDrop
     })
   }
@@ -67,16 +68,17 @@ const AdminOrderSearch = ({classes, onClick, icon = "search", placeholder = '', 
   }
 
   const handleClick = (evt) => {
-    if (textValue) {
+    const searchStr = inputRef.current.value;
+    if (searchStr) {
       onClick({
-        value: textValue,
+        value: searchStr,
         searchBy: selectedDrop
       })
     }
     setFilterList(
-      [textValue]
+      [searchStr]
     )
-    setTextValue('')
+    inputRef.current.value = ''
   }
 
   return (
@@ -90,14 +92,13 @@ const AdminOrderSearch = ({classes, onClick, icon = "search", placeholder = '', 
           id="outlined-basic" 
           label={placeholder} 
           variant="outlined" 
-          value={textValue} 
-          onChange={(e) => setTextValue(e.target.value)}
+          inputRef={inputRef}
           onKeyDown={handleKeyDown} 
         />
       </Grid>
       <Grid item lg={2} md={2} xs={2}>
         {
-          textValue ? (
+          inputRef.current ? (
             <Button onClick={handleClick} className={classes.button}>
               <Icons classes={{icon: classes.icon}} name={icon}/>
             </Button>

@@ -1,11 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import * as T from 'prop-types';
 import { 
   withStyles,
-  Grid,
   Button, 
   Modal,
-  TextField,
 } from '@material-ui/core';
 
 import Icons from '@/components/common/Icons';
@@ -13,7 +11,7 @@ import { getItems } from 'src/api';
 import CategoryModalProducts from '@/components/category/ModalProduct';
 import { useTranslation } from 'next-i18next'
 
-const styles = (theme) => ({
+const styles = () => ({
   catIcons: {
     width: 40,
     height: 40,
@@ -93,10 +91,8 @@ const styles = (theme) => ({
 });
 
 const CategoryModal = ({classes, open, onClose}) => {
-  const [openCategory, setOpenCategory] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [showData, setShowData] = useState(false);
   const { t } = useTranslation('home')
 
   const getCategories = async() => {
@@ -105,12 +101,16 @@ const CategoryModal = ({classes, open, onClose}) => {
     setCategories(categories);
     setShowData(true)
   }
-  const handleIconClick = async(id) => {
+  const handleIconClick = useCallback(async(id) => {
     setSelectedCategory(categories[id]);
-  }
+  }, [])
 
   useEffect(() => {
-    getCategories();
+    (async() => {
+      const categories = await getItems('categories');
+      setSelectedCategory(categories[0])
+      setCategories(categories);
+    })()
   }, [open])
 
   return (

@@ -67,7 +67,16 @@ const styles = (theme) => ({
   }
 });
 
-const AddressMainBox = ({classes, onAddressSubmit, initialAddress = null, userId = null, deliveryOption, showTitle, updateAddress, onHandleRevert: revertAddress }) => {
+const AddressMainBox = ({
+  classes, 
+  onAddressSubmit, 
+  initialAddress = null, 
+  userId = null, 
+  deliveryOption, 
+  showTitle, 
+  updateAddress, 
+  onHandleRevert: revertAddress 
+}) => {
   const [disableFields, setDisabledFields] = useState([]);
   const [forceAddressRefresh, setForceAdddressRefresh] = useState(null);
   const [savedUserAddress, setSavedUserAddress] = useState(null);

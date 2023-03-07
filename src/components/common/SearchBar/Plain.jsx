@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import * as T from 'prop-types';
 import {
   withStyles,
   Grid,
   FormControl,
   TextField,
+  debounce
 } from '@material-ui/core';
 import { useRouter } from 'next/router';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
@@ -65,7 +66,7 @@ const SearchBarPlain = ({
   const [showResult, setShowResult] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
   const [products, setProducts] = useState([]);
-  const [resultText, setResultText] = useState('');
+  const inputRef = useRef();
   const { t } = useTranslation('colors');
 
   const handleLinkClick = async(e, val) => {
@@ -90,11 +91,9 @@ const SearchBarPlain = ({
     ).then(async(value) => {
 
       for (const item of value) {
-        console.log("vakues", item.productProductItems)
         getProd = getProd.concat(item)
       }
 
-      console.log("heee", getProd)
       if (getProd && getProd.length) {
         setProducts(getProd)
         setShowLoader(false);
@@ -139,8 +138,8 @@ const SearchBarPlain = ({
   }
   
   const onKeyUp = (e) => {
-    if (e.keyCode === 13 && resultText) {
-      onEnterKeyPress(resultText)
+    if (e.keyCode === 13 && inputRef.current.value) {
+      onEnterKeyPress(inputRef.current.value)
     }
   }
 
@@ -149,14 +148,14 @@ const SearchBarPlain = ({
     setShowNotFound(true);
   }
 
-  const onFormChange = (e) => {
-    setResultText(e.target.value)
-    if (e.target.value.length > 3) {
-      searchProduct(e.target.value);
+  const onFormChange = debounce(() => {
+    const searchStr = inputRef.current.value;
+    if (searchStr.length > 3) {
+      searchProduct(searchStr);
     } else {
       resetTab(false);
     }
-  }
+  }, 1000)
 
   const resetTab = (deleteValue = true) => {
     setShowResult(false);
@@ -164,7 +163,7 @@ const SearchBarPlain = ({
     setProducts([]);
     setShowLoader(false);
     if (deleteValue) {
-      setResultText('');
+      inputRef.current.value = '';
     }
   }
 
@@ -229,7 +228,7 @@ const SearchBarPlain = ({
                   className={classes.inputColor}
                   onChange={onFormChange}
                   onKeyUp={onKeyUp}
-                  value={resultText}
+                  inputRef={inputRef}
                   name="search-product"
                   label={`Search for product`} 
                 />

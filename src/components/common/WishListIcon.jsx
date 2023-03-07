@@ -44,7 +44,7 @@ const WishListIcon = ({classes, product, onMouseOver, onClick}) => {
   const onWishlistClick = async() => {
     let snackRep = null;
     if (!cookie) {
-      router.push("/login")
+      router.push("/login?login")
     }  else {
       const icon = returnIcon();
       let resp = null;

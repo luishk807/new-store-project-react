@@ -4,13 +4,11 @@ import * as T from 'prop-types';
 import { 
   withStyles, 
   Grid,
-  Paper,
-  Button,
 } from '@material-ui/core';
 
 import { getMainSliders } from '@/api/imageBoxes';
 
-const styles = (theme) => ({
+const styles = () => ({
   root: {
     width: '100%',
   },

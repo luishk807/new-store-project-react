@@ -7,7 +7,8 @@ import {
   InputBase,
   Grid,
   Hidden,
-  Button
+  Button,
+  debounce
 } from '@material-ui/core';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Icons from '@/common/Icons';
@@ -115,9 +116,10 @@ const SearchBar = ({classes}) => {
   const [options, setOptions] = useState([]);
   const [currentTab, setCurrentTab] = useState(null);
   const [showResults, setShowResult] = useState(false);
-  const [currentValue, setCurrentValue] = useState('');
   const [dropDownOptions, setDropDownOptions] = useState([]);
+  const [validButton, setValidButton] = useState(true);
   const refLists = useRef([]);
+  const inputRef = useRef();
 
   const setFocus = async(direction) => {
     let focusIndex = currentTab;
@@ -141,11 +143,12 @@ const SearchBar = ({classes}) => {
   const onKeyDown = (evt) => {
     if (evt.keyCode === 13) {
       evt.preventDefault();
+      const searcStr = evt.target.value;
       clearInput();
       if (evt.target.id) {
         window.location.href = `/product/${evt.target.id}`;
       } else {
-        window.location.href = `/searchResult?str=${currentValue}`;
+        window.location.href = `/searchResult?str=${searcStr}`;
       }
     } else if (evt.keyCode === 9) {
       setShowResult(false)
@@ -159,13 +162,15 @@ const SearchBar = ({classes}) => {
   }
 
   const onSearchIconClick = () => {
-    if (currentValue.length > 3) {
-      window.location.href = `/searchResult?str=${currentValue}`;
+    const searcStr = input.current.value;
+    if (searcStr.length > 3) {
+      window.location.href = `/searchResult?str=${searcStr}`;
+      setValidButton(true)
     }
   }
 
   const clearInput = () => {
-    setCurrentValue('')
+    inputRef.current.value = '';
     resetTab()
   }
 
@@ -185,31 +190,33 @@ const SearchBar = ({classes}) => {
     refLists.current = [];
   }
 
-  const handleOnChange = async(evt) => {
-    setCurrentValue(evt.target.value)
+  const handleOnChange = debounce(async(evt) => {
+    const name = evt.target.value;
     resetTab()
-    if (evt.target.value.length && evt.target.value.length > 3) {
-      const getResult = await searchProducts(evt.target.value);
+    if (name.length && name.length > 3) {
+      const getResult = await searchProducts(name);
       if (getResult.length) {
         setOptions(getResult);
         setShowResult(true)
       }
     }
-  }
-
+  }, 1000);
+  
   const getElRef = (el) => {
     if (el && !refLists.current.includes(el)) {
       refLists.current.push(el);
     }
   }
 
-  const fetchCategories = async() => {
-    let cat = await getCategories();
-    setDropDownOptions(cat);
-  }
-
   useEffect(() => {
-    fetchCategories();
+    (async() => {
+      let active = true;
+      const categories = await getCategories();
+      if (active) {
+        setDropDownOptions(categories);
+      }
+      return (() => { active = false })
+    })()
   }, [])
 
   return (
@@ -222,12 +229,12 @@ const SearchBar = ({classes}) => {
           </Hidden>
           <div className={classes.searchBarInputContent}>
             <div className={`AppBarBackColor ${classes.searchIcon}`}>
-              <Button onClick={onSearchIconClick}>
+              <Button onClick={(e) => validButton && onSearchIconClick(e)}>
                 <Icons classes={{icon: classes.icon}} name="search"/>
               </Button>
             </div>
             <InputBase
-              value={currentValue}
+              inputRef={inputRef}
               placeholder="Search…"
               classes={{
                 root: classes.inputRoot,

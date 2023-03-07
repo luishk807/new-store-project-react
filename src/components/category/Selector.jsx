@@ -1,17 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
-import { 
+import {
   withStyles,
   Grid,
-  Button,
 } from '@material-ui/core';
-import { useRouter } from 'next/router';
-
 import { getCategories } from '@/api/categories';
-import Icons from '@/common/Icons';
-import { getCatSearch } from 'src/utils';
+import CategoryIcons from './CategoryIcons';
 
-const styles = (theme) => ({
+const styles = () => ({
   root: {
     display: 'flex',
     overflowX: 'auto',
@@ -21,29 +17,12 @@ const styles = (theme) => ({
     position: 'absolute',
     backgroundColor: 'black'
   },
+  cubeItems: {},
   cubeMainTitle: {
     color: 'white',
-    textAlign: 'center', 
+    textAlign: 'center',
     textTransform: 'uppercase',
     padding: 5,
-  },
-  cubeBtn: {
-    borderRadius: 0,
-    width: '100%',
-    textAlign: 'center',
-    '&:hover': {
-      background: 'white',
-      '& div': {
-        color: 'inherit',
-      },
-      '& svg': {
-        fill: 'rgb(248,190,12)',
-      }
-    },
-    '& span': {
-      display: 'flex',
-      flexDirection: 'column'
-    }
   },
   cubeTitleContainer: {
     width: '100%',
@@ -52,48 +31,23 @@ const styles = (theme) => ({
     width: '100%',
     overflowY: 'auto',
   },
-  cubeItems: {
-  },
-  cubeIconHolder: {
-    width: '100%',
-  },
-  cubeIcon: {
-    width: 50,
-    height: 50,
-    fill: 'white',
-  },
-  cubeName: {
-    width: '100%',
-    color: 'white',
-    fontSize: '.8em',
-  },
-  cardBlockHolders: {
-    '& span': {
-      flexDirection: 'column'
-    }
-  }
 });
 
-const CategorySelector = ({classes, cubeSize, showTitle}) => {
-  const router = useRouter();
+const CategorySelector = ({ classes, cubeSize, showTitle }) => {
   const [categories, setCategories] = useState([]);
-  const [open, setOpen] = useState(true);
-
-  const loadCategories = async() => {
-    const categories = await getCategories();
-    setCategories(categories);
-  }
-
-  const goToSearch = async(data) => {
-    const url = await getCatSearch(data);
-    router.push(url)
-  }
 
   useEffect(() => {
-    loadCategories();
+    (async () => {
+      let unmounted = true
+      const categories = await getCategories();
+      if (unmounted) {
+        setCategories(categories);
+      }
+      return (() => unmounted = false)
+    })()
   }, [])
 
-  return categories && (
+  return (
     <div className={classes.root}>
       {
         showTitle && (
@@ -104,21 +58,8 @@ const CategorySelector = ({classes, cubeSize, showTitle}) => {
       }
       <Grid container className={`${classes.cubeCategoryContainer}`}>
         {
-          categories && categories.map((data, index) => {
-            return (
-              <Grid item lg={cubeSize ? Number(cubeSize) : 12} key={index} className={classes.cubeItems}>
-                <Button onClick={() => goToSearch(data)} className={`cardRoot2 ${classes.cardBlockHolders}`}>
-                  <div className={classes.cubeIconHolder}>
-                    <Icons name={data.icon} classes={{icon: classes.cubeIcon}} />
-                  </div>
-                  <div className={classes.cubeName}>
-                    {
-                      data.name
-                    }
-                  </div>
-                </Button>
-              </Grid>
-            )
+          categories && categories.map((category, index) => {
+            return <CategoryIcons key={index} category={category} size={cubeSize} />
           })
         }
       </Grid>

@@ -324,7 +324,7 @@ const Index = ({
       <div className={classes.root}>
         <Grid container>
           <Grid item lg={12} xs={12}>
-            <Grid container spacing={5}>
+            <Grid container>
               <Grid item lg={1} />
               <Grid item lg={3} xs={12}>
                 <ImageComp products={productInfo} selectedProduct={selectedProductItem} />

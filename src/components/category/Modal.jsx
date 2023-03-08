@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as T from 'prop-types';
 import { 
   withStyles,
@@ -11,7 +11,7 @@ import { getItems } from 'src/api';
 import CategoryModalProducts from '@/components/category/ModalProduct';
 import { useTranslation } from 'next-i18next'
 
-const styles = () => ({
+const styles = (theme) => ({
   catIcons: {
     width: 40,
     height: 40,
@@ -99,18 +99,13 @@ const CategoryModal = ({classes, open, onClose}) => {
     const categories = await getItems('categories');
     setSelectedCategory(categories[0])
     setCategories(categories);
-    setShowData(true)
   }
-  const handleIconClick = useCallback(async(id) => {
+  const handleIconClick = async(id) => {
     setSelectedCategory(categories[id]);
-  }, [])
+  }
 
   useEffect(() => {
-    (async() => {
-      const categories = await getItems('categories');
-      setSelectedCategory(categories[0])
-      setCategories(categories);
-    })()
+    getCategories();
   }, [open])
 
   return (

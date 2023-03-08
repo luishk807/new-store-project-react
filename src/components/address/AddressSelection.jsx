@@ -105,21 +105,26 @@ const AddressSelection = ({
 
   const loadUserAddress = async() => {
     let getAdd = null;
-    const addresses = isUserLoggedIn ? await getAddressesByUser() : null;
-    if (addresses && !addresses.length || !addresses) {
-      setShowAction('add')
-    } else {
-      getAdd = addresses.filter(address => address.selected === true)[0];
-      if (!getAdd || (getAdd && !getAdd.length)) {
-        getAdd = addresses[0];
+    setShowData(false); 
+    try {
+      const addresses = isUserLoggedIn ? await getAddressesByUser() : null;
+      if (addresses && !addresses.length || !addresses) {
+        setShowAction('add')
+      } else {
+        getAdd = addresses.filter(address => address.selected === true)[0];
+        if (!getAdd || (getAdd && !getAdd.length)) {
+          getAdd = addresses[0];
+        }
+        let getSimple = formatSimpleAddress(getAdd);
+        setUserAddresses(addresses);
+        setUserAddress(getAdd)
+        onSelected(getSimple);
+        setShowAction(null);
+        setShowData(true); 
       }
-      let getSimple = formatSimpleAddress(getAdd);
-      setUserAddresses(addresses);
-      setUserAddress(getAdd)
-      onSelected(getSimple);
-      setShowAction(null);
+    } catch (err) {
+      setShowData(false); 
     }
-    setShowData(true); 
   }
 
   const formatSimpleAddress = (add) => {

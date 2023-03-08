@@ -5,6 +5,9 @@ import {
 } from '@material-ui/core';
 import * as T from 'prop-types';
 import { useTranslation } from 'next-i18next'
+import {
+  formatNumber,
+} from 'src/utils';
 
 const styles = (theme) => ({
   root: {

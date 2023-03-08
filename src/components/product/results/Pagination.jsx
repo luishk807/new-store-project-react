@@ -6,8 +6,6 @@ const PaginationComp = ({
   page,
   count,
 }) => {
-  console.log('page', count);
-  console.log("curr", page)
   return (
     <Pagination
       onChange={onPageChange}

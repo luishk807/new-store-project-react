@@ -2,27 +2,29 @@ import Pagination from '@material-ui/lab/Pagination';
 import * as T from 'prop-types';
 
 const PaginationComp = ({
-  onPageChange,
-  currentPage,
-  pageCount,
+  onChange: onPageChange,
+  page,
+  count,
 }) => {
+  console.log('page', count);
+  console.log("curr", page)
   return (
-      <Pagination 
-        onChange={onPageChange} 
-        page={currentPage} 
-        count={pageCount} 
-        variant="outlined" 
-        size="large" 
-        shape="rounded" 
-      />
+    <Pagination
+      onChange={onPageChange}
+      page={page}
+      count={count}
+      variant="outlined"
+      size="large"
+      shape="rounded"
+    />
   )
 }
 
 PaginationComp.propTypes = {
   classes: T.object,
-  onPageChange: T.func,
-  currentPage: T.number,
-  pageCount: T.number,
+  onChange: T.func,
+  page: T.number,
+  count: T.number,
 };
 
 export default PaginationComp;

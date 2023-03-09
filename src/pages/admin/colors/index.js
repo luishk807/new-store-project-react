@@ -91,7 +91,7 @@ const Index = ({classes}) => {
     text: '',
   });
 
-  const loadColors = async(page) => {
+  const loadColors = async() => {
     const sendData = {
       page: filterList.page,
       limit: filterList.limit,

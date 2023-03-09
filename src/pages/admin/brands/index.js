@@ -8,9 +8,11 @@ import {
 } from '@material-ui/core';
 import moment from 'moment';
 
+import { LIMIT } from 'config';
+import Pagination from '@/common/Pagination';
 import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 import Snackbar from '@/common/Snackbar';
-import { deleteBrandById, getBrands } from '@/api/brands'
+import { deleteBrandById, getAllBrandsWithFilter } from '@/api/brands'
 import HeaderSub from '@/common/HeaderSub';
 import Icons from '@/common/Icons';
 
@@ -73,6 +75,13 @@ const styles = (theme) => ({
 const Index = ({classes}) => {
   const [brands, setBrands] = useState([]);
   const [showData, setShowData] = useState(false);
+  const [forceUpdate, setForceUpdate] = useState(false)
+  const [totalCounts, setTotalCounts] = useState(0)
+  const [filterList, setFilterList] = useState({
+    sortBy: null,
+    page: 1,
+    limit: LIMIT,
+  });
   const [snack, setSnack] = useState({
     severity: 'success',
     open: false,
@@ -80,12 +89,51 @@ const Index = ({classes}) => {
   });
 
   const loadBrands = async() => {
-    const gBrands = await getBrands();
-    if (gBrands) {
-      setBrands(gBrands);
-      setShowData(true);
+    // const gBrands = await getBrands();
+    // if (gBrands) {
+    //   setBrands(gBrands);
+    //   setShowData(true);
+    // }
+
+    const sendData = {
+      page: filterList.page,
+      limit: filterList.limit,
+      sortBy: filterList.sortBy,
+    };
+
+    try {
+      const gBrands = await getAllBrandsWithFilter(sendData);
+    
+      if (gBrands) {
+        setBrands('rows' in gBrands ? gBrands.rows : gBrands.items);
+        setTotalCounts(gBrands?.count)
+      } else {
+        setSnack({
+          severity: 'error',
+          open: true,
+          text: `Brands not Found`,
+        })
+      }
+    } catch (err) {
+      setBrands([])
     }
   };
+
+  useEffect(() => {
+    if (brands.length) {
+      setShowData(true);
+    } else {
+      setShowData(false);
+    }
+  }, [brands]);
+
+  const handlePaginationChange = (value) => {
+    setFilterList({
+      ...filterList,
+      page: value
+    })
+    setShowData(false)
+  }
 
   const delItem = async(id) => {
     deleteBrandById(id).then((data) => {
@@ -104,13 +152,24 @@ const Index = ({classes}) => {
     })
   }
 
+  const loadStatus = async() => {
+    console.log("got in status")
+  }
+
   useEffect(() => {
-    loadBrands()
-  }, []);
+    loadBrands(filterList.page);
+  }, [filterList.page]);
 
   return (
     <AdminLayoutTemplate>
       <HeaderSub name="brand" />
+      <Pagination 
+        onPageClick={handlePaginationChange}
+        onTotalChange={loadStatus}
+        showData={showData}
+        total={totalCounts}
+        refresh={forceUpdate}
+      >
       {
         showData ? (
           <Grid container className={classes.mainContainer}>
@@ -189,6 +248,7 @@ const Index = ({classes}) => {
           </Grid>
         )
       }
+      </Pagination>
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
     </AdminLayoutTemplate>
   );

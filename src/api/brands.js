@@ -16,6 +16,10 @@ export const getBrandsById = async(id) => {
   return Api.get(`brands/${id}`);
 }
 
+export const getAllBrandsWithFilter = async(filter) => {
+  return Api.get(`brands/admin/brands/pages/all`, filter);
+}
+
 export const getBrandByIds = async(ids) => {
   if (!ids) {
     return;

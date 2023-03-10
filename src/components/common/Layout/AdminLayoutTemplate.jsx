@@ -15,6 +15,7 @@ import { useRouter } from 'next/router';
 import { logout } from '@/api/auth';
 import { verifyCookie } from '@/utils/cookie';
 import Icons from '@/common/Icons';
+import { OrderListsProvider } from '@/context/OrderListsContext';
 const styles = (theme) => ({
   root: {
     marginTop: 100,
@@ -44,19 +45,21 @@ const AdminLayoutTemplate = ({classes, children}) => {
 
   return (
     <PrivatePage>
-      <section>
-        <Head>
-          <title>AvenidaZ.com</title>
-          <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/>
-        </Head>
-        <Header />
-        <Grid container className={classes.root}>
-          <Grid item xs={12} lg={12}>
-            {children}
+      <OrderListsProvider>
+        <section>
+          <Head>
+            <title>AvenidaZ.com</title>
+            <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1"/>
+          </Head>
+          <Header />
+          <Grid container className={classes.root}>
+            <Grid item xs={12} lg={12}>
+              {children}
+            </Grid>
           </Grid>
-        </Grid>
-        <Footer />
-      </section>
+          <Footer />
+        </section>
+      </OrderListsProvider>
     </PrivatePage>
   )
 }

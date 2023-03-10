@@ -12,6 +12,7 @@
       "@/api/*": ["src/api/*"],
       "@/constants/*": ["src/constants/*"],
       "@/common/*": ["src/components/common/*"],
+      "@/context/*": ["src/context/*"],
       "@/inventarioz/*": ["src/components/inventarioz/*"]
     }
   },

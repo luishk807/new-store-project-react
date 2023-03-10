@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import * as T from 'prop-types';
 import { 
   withStyles,
@@ -14,12 +14,12 @@ import Pagination from '@/common/Pagination';
 import AdminLayoutTemplate from '@/common/Layout/AdminLayoutTemplate';
 import { deleteOrderById, deleteOrderByOrderNumbers, getAllOrdersWithFilter, saveOrderStatusBulk,  } from 'src/api/orders';
 import Snackbar from '@/common/Snackbar';
-import { loadMainOptions } from 'src/utils/form';
 import Icons from '@/common/Icons';
-import DialogModal from '@/common/DialogModal';
-import CheckBoxLabel from '@/common/CheckBoxLabel';
 import Dropdown from '@/common/dropdown/Simple';
-import AdminOrderSearch from '@/common/SearchBar/AdminOrderSearch';
+// import AdminOrderSearch from '@/common/SearchBar/AdminOrderSearch';
+import { useOrderListsContext, useOrderListsUpdate } from '@/context/OrderListsContext';
+import AdminSelectItemOptions from '@/src/components/admin/orders/AdminSelectItemOptions';
+import AdminOrderSearchBar from '@/src/components/admin/orders/AdminOrderSearchBar';
 
 const styles = (theme) => ({
   root: {
@@ -34,11 +34,6 @@ const styles = (theme) => ({
     width: 20,
     height: 20,
     fill: 'rgb(248,190,21)',
-  },
-  actionIconBlack: {
-    width: 20,
-    height: 20,
-    fill: 'black',
   },
   filterIcon: {
     width: 30,
@@ -72,7 +67,7 @@ const styles = (theme) => ({
     padding: 20
   },
   headerContainer: {
-    alignItems: 'start',
+    alignItems: 'center',
     justifyContent: 'space-between'
   },
   mainHeader: {
@@ -124,40 +119,6 @@ const styles = (theme) => ({
       display: 'block'
     }
   },
-  selectStyle: {
-    padding: '8px 5px',
-    borderRadius: 5,
-  },
-  checkBoxSelectContainer: {
-    padding: '15px 13px',
-    display: 'flex',
-    '& button:not(:first-child)': {
-      marginLeft: 10,
-      padding: '9px 20px !important',
-    },
-    '& select': {
-      marginLeft: 10,
-    },
-    [theme.breakpoints.down('sm')]: {
-      '& button': {
-        padding: '10px 0px !important'
-      },
-      flexDirection: 'column',
-      margin: 10,
-      padding: 0,
-      '& button:not(:first-child)': {
-        marginLeft: 0,
-        margin: '5px 0px',
-      },
-      '& select': {
-        marginLeft: 0,
-        textAlign: 'center'
-      },
-    }
-  },
-  checkMarkItem: {
-    padding: '20px 0px',
-  },
   yellowBackground: {
     backgroundColor: '#D9D902',
   },
@@ -167,24 +128,18 @@ const styles = (theme) => ({
   blueBackground: {
     backgroundColor: '#0FC6EB',
   },
-  showAllCheckbox: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'end',
-  }
 });
 
 const Index = ({classes}) => {
   const [orders, setOrders] = useState([]);
-  const [statuses, setStatuses] = useState([]);
   const [showData, setShowData] = useState(false);
   const [reloadCheck, setReloadCheck] = useState(false);
   const [selectCheckbox, setSelectCheckbox] = useState(false);
   const [selectedChecks, setSelectedChecks] = useState([])
-  const [selectedStatusChange, setSelectedStatusChange] = useState(null);
   const [showCompletedOrders, setShowCompletedOrders] = useState(false);
   const [forceUpdate, setForceUpdate] = useState(false)
   const [totalCounts, setTotalCounts] = useState(0)
+  const orderList = useOrderListsContext();
 
   const [filterList, setFilterList] = useState({
     sortBy: null,
@@ -194,31 +149,6 @@ const Index = ({classes}) => {
     searchBy: null,
     showCompleted: null
   });
-  const [dialogContent, setDialogContent] = useState({
-    open: false,
-    value: null,
-    title: "Deleting Item",
-    content: "Are you sure, you want to delete this item?",
-    actionLabels: {
-      true: "Yes",
-      false: "No"
-    }
-  })
-
-  const resetDialog = () => {
-    setDialogContent(
-      {
-        open: false,
-        value: null,
-        title: "Deleting Item",
-        content: "Are you sure, you want to delete this item?",
-        actionLabels: {
-          true: "Yes",
-          false: "No"
-        }
-      }
-    )
-  }
 
   const [snack, setSnack] = useState({
     severity: 'success',
@@ -327,32 +257,6 @@ const Index = ({classes}) => {
     fetchOrders(sendData)
   }
 
-  const handleStatusChange = (event) => {
-    if (!selectedChecks || (selectedChecks && !selectedChecks.length)) {
-      setSnack({
-        severity: 'error',
-        open: true,
-        text: `You need to select an item`,
-      })
-      return;
-    }
-      setSelectedStatusChange(event.target.value)
-      const order_numbers = selectedChecks.map(item => {
-      const order_num = orders.filter(order => Number(order.id) === item)[0]
-      return order_num ? order_num.order_number : null;
-    }).join(",")
-    setDialogContent({
-      ...dialogContent,
-      open: true,
-      title: `Updating to '${event.target.options[event.target.selectedIndex].text}' the following order numbers?\r\n ${order_numbers}`,
-      content: "Are you sure, you want to update the items?",
-      value: {
-        type: 'update_status',
-        value: order_numbers
-      }
-    })
-  };
-
   const onSearchIconClick = async(e) => {
     if (e) {
       setFilterList({
@@ -374,32 +278,29 @@ const Index = ({classes}) => {
       fetchOrders(dataToSend)
     }
   }
-  const handleDialogClick = (e) => {
-    setDialogContent({
-      ...dialogContent,
-      open: false
-    })
+  const handleDialogClick = (data) => {
     if (e) {
-      if (dialogContent.value && dialogContent.value.type) {
-        switch(dialogContent.value.type) {
+      if (data.value && data.value.type) {
+        switch(data.value.type) {
           case 'update_status': {
             updateBulkStatus({
-              ids: dialogContent.value.value,
+              ids: data.value.value,
               status: selectedStatusChange
             });
             break;
           }
           case 'delete_items': {
             deleteBulkIds({
-              ids: dialogContent.value.value
+              ids: data.value.value
             });
             break;
           }
+          case 'single': {
+            delItem(data.value.id)
+            break;
+          }
         }
-      } else {
-        delItem(dialogContent.value.id)
       }
-
     }
     resetDialog();
   }
@@ -413,13 +314,6 @@ const Index = ({classes}) => {
     }
     setSelectedChecks(checks)
     setReloadCheck(!reloadCheck);
-  }
-
-  const loadStatus = async() => {
-    const getBasic = await loadMainOptions();
-    if (getBasic?.orderStatus) {
-      setStatuses(getBasic.orderStatus);
-    }
   }
 
   const handleCheckSelect = (id) => {
@@ -442,34 +336,7 @@ const Index = ({classes}) => {
   
   const handleCheckCancel = () => {
     setSelectedChecks([]);
-    setSelectCheckbox(false)
-  }
-
-  const hadleDeleteSelected = () => {
-    if (!selectedChecks || (selectedChecks && !selectedChecks.length)) {
-      setSnack({
-        severity: 'error',
-        open: true,
-        text: `You need to select an item`,
-      })
-      return;
-    }
-
-    const order_numbers = selectedChecks.map(item => {
-      const order_num = orders.filter(order => Number(order.id) === item)[0]
-      return order_num ? order_num.order_number : null;
-    }).join(",");
-
-    setDialogContent({
-      ...dialogContent,
-      open: true,
-      title: `Deleting the following order numbers?\r\n ${order_numbers}`,
-      content: "Are you sure, you want to delete the items?",
-      value: {
-        type: 'delete_items',
-        value: order_numbers
-      }
-    })
+    setSelectCheckbox(prev => !prev)
   }
 
   const handleShowAllCheckBox = async(e) => {
@@ -494,7 +361,13 @@ const Index = ({classes}) => {
   }
 
   const fetchOrders = async(params) => {
-    const gOrders = await getAllOrdersWithFilter(params);
+    const [gOrders, activeOrders] = await Promise.all([
+      getAllOrdersWithFilter(params), 
+      getAllOrdersWithFilter({
+        newOrdersOnly: true,
+      })
+    ]);
+
     if (gOrders) {
       setOrders('rows' in gOrders ? gOrders.rows : gOrders.items);
       setTotalCounts(gOrders?.count)
@@ -564,6 +437,7 @@ const Index = ({classes}) => {
     }
   }, [orders]);
 
+  console.log("htest", orderList)
   useEffect(() => {
     loadOrders(filterList.page);
   }, [filterList.page]);
@@ -574,21 +448,14 @@ const Index = ({classes}) => {
         <Grid lg={2} xs={6} md={3} item className={classes.headerTitle}>
           <h3>Orders</h3>
         </Grid>
-        <Hidden smUp>
-          <Grid lg={2} xs={6} md={2} item className={classes.headerAction}>
-            <Dropdown 
-                options={ORDER_STATUS} 
-                align="right"
-                onSelect={handleDropDown} 
-                iconType="filter" 
-              />
-          </Grid>
-        </Hidden>
-        <Grid lg={6} xs={12} md={5} item className={classes.headerTitle}>
-          <AdminOrderSearch onClick={onSearchIconClick} placeholder="Type search" />
+        <Grid lg={9} xs={12} md={8} item className={classes.headerAction}>
+          <AdminOrderSearchBar 
+            onDropDownChange={handleDropDown}
+            onButtonClick={onSearchIconClick}
+          />
         </Grid>
         <Hidden smDown>
-          <Grid lg={2} xs={3} md={2} item className={classes.headerAction}>
+          <Grid lg={1} xs={3} md={2} item className={classes.headerAction}>
             <Dropdown 
                 options={ORDER_STATUS} 
                 align="right"
@@ -600,58 +467,19 @@ const Index = ({classes}) => {
       </Grid>
       <Pagination 
         onPageClick={handlePaginationChange}
-        onTotalChange={loadStatus}
         showData={showData}
         total={totalCounts}
         refresh={forceUpdate}
       >
-      {
-        selectCheckbox ? (
-          <Grid container>
-            <Grid item lg={10} xs={12} className={classes.checkBoxSelectContainer}>
-              <Button className={`smallSecondButtonDefault`} onClick={() => handleCheckCancel()}>Cancel</Button>
-              <Button className={`smallSecondButtonDefault`} onClick={() => setAllChekboxes(true)}>Check All</Button>
-              <Button className={`smallSecondButtonDefault`} onClick={() => setAllChekboxes(false)}>Uncheck All</Button>
-              <Button className={`smallSecondButtonDefault`} onClick={() => hadleDeleteSelected()}>Delete Selected</Button>
-              <select
-                onChange={handleStatusChange}
-                className={classes.selectStyle}
-              >
-                <option value="">Select status</option>
-                {
-                  statuses.map((item, index) => {
-                    return (
-                      <option key={index} value={item.id}>{item.name}</option>
-                    )
-                  })
-                }
-              </select>
-            </Grid>
-            <Grid item lg={2} xs={12} className={classes.showAllCheckbox}>
-              <CheckBoxLabel 
-                name="Don't show completed"
-                defaultChecked={!showCompletedOrders}
-                onClick={handleShowAllCheckBox}
-               />
-            </Grid>
-          </Grid>
-        ) : (
-          <Grid container>
-            <Grid item lg={10} xs={2}  className={classes.checkMarkItem}>
-              <Button onClick={() => setSelectCheckbox(true)}>
-                <Icons name="goodMark" classes={{icon: classes.actionIconBlack }}/>
-              </Button>
-            </Grid>
-            <Grid item lg={2} xs={10} className={classes.showAllCheckbox}>
-              <CheckBoxLabel 
-                name="Don't show completed"
-                defaultChecked={!showCompletedOrders}
-                onClick={handleShowAllCheckBox}
-               />
-            </Grid>
-          </Grid>
-        )
-      }
+      <AdminSelectItemOptions 
+        selectedItems={selectedChecks}
+        onHandleDialogClick={handleDialogClick}
+        orders={orders}
+        onCheckCancel={handleCheckCancel}
+        onSetAllCheckboxes={setAllChekboxes}
+        showCompletedOrders={showCompletedOrders}
+        onHandleShowAllCheckBox={handleShowAllCheckBox}
+      />
       {
         showData && (
           <Grid container className={classes.mainContainer}>
@@ -763,7 +591,6 @@ const Index = ({classes}) => {
       }
       </Pagination>
       <Snackbar open={snack.open} severity={snack.severity} onClose={() => setSnack({...snack, open: false })} content={snack.text} />
-      <DialogModal open={dialogContent.open} onClick={handleDialogClick} title={dialogContent.title} content={dialogContent.content} actionLabels={dialogContent.actionLabels} />
     </AdminLayoutTemplate>
   );
 }

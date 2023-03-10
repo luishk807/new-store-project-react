@@ -65,9 +65,7 @@ const PaginationComp = ({
     {
       paginationHtml && !empty && paginationHtml
     }
-    {
-      children
-    }
+    {children}
     {
       paginationHtml && !empty && paginationHtml
     }
